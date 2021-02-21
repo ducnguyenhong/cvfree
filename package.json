@@ -1,0 +1,81 @@
+{
+  "name": "cvfree",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^6.0.0",
+    "@headlessui/react": "^0.2.0",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.6.0",
+    "@types/file-saver": "^2.0.1",
+    "@types/jest": "^26.0.19",
+    "@types/md5": "^2.2.1",
+    "@types/node": "^12.19.11",
+    "@types/react": "^16.14.2",
+    "@types/react-dom": "^16.9.10",
+    "@types/react-image-crop": "^8.1.2",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/react-select": "^4.0.10",
+    "@types/styled-components": "^5.1.7",
+    "@types/uuid": "^8.3.0",
+    "autoprefixer": "^9.8.6",
+    "axios": "^0.21.1",
+    "md5": "^2.3.0",
+    "moment": "^2.29.1",
+    "postcss": "^7.0.35",
+    "prettier": "^2.2.1",
+    "rc-rate": "^2.9.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-image-crop": "^8.6.6",
+    "react-intl": "^5.11.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "react-select": "^4.0.2",
+    "react-switch": "^6.0.0",
+    "react-toastify": "^7.0.0",
+    "styled-components": "^5.2.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
+    "typescript": "^4.1.3",
+    "uuid": "^8.3.2",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "SET PORT=1112 && craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}

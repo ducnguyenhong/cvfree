@@ -1,0 +1,57 @@
+{
+  "extends": [
+    // "airbnb",
+    // "react-app",
+    "prettier",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true, "packageDir": "./" }],
+    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "no-console": "off",
+    "react/no-unescaped-entities": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "semi": ["error", "never"],
+    "@typescript-eslint/semi": ["error", "never"],
+    "semicolon": [0, "always"],
+    "jsx-a11y/label-has-for": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "paths": ["src", "./src"]
+      }
+    }
+  }
+}
