@@ -3,7 +3,7 @@ import PrNotify from 'app/partials/pr-notify'
 
 const AppLayout = () => {
   return (
-    <div className="App">
+    <div className="App" style={{ fontFamily: `'Quicksand', sans-serif` }}>
       <RouteURL />
       <PrNotify />
     </div>

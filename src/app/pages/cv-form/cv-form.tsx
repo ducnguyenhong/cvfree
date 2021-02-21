@@ -13,12 +13,18 @@ import { useRef } from 'react'
 import 'rc-rate/assets/index.css'
 import IdeaIcon from 'assets/icons/idea.svg'
 import PrInputColor from 'app/partials/pr-input-color'
+
 import SchoolHatIcon from 'assets/icons/school-hat.svg'
 import SchoolHatBlackIcon from 'assets/icons/school-hat-black.svg'
 import ExperienceIcon from 'assets/icons/experience.svg'
+import ExperienceBlackIcon from 'assets/icons/experience-black.svg'
 import SkillIcon from 'assets/icons/skill.svg'
+import SkillBlackIcon from 'assets/icons/skill-black.svg'
 import ActivityIcon from 'assets/icons/activity.svg'
+import ActivityBlackIcon from 'assets/icons/activity-black.svg'
 import AwardIcon from 'assets/icons/award.svg'
+import AwardBlackIcon from 'assets/icons/award-black.svg'
+
 import PrDropwdown from 'app/partials/pr-dropdown'
 import { DataFontFamily } from 'constants/list-font'
 import Switch from 'react-switch'
@@ -31,9 +37,12 @@ import MetaDataAdvancedSkills from 'app/partials/metadata-advanced-skills'
 import MetaDataActivities from 'app/partials/metadata-activities'
 import MetaDataCertificates from 'app/partials/metadata-certificates'
 
+const defaultFontFamily = `"Quicksand", sans-serif`
+
 const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const [avatar, setAvatar] = useState<string>()
   const [color, setColor] = useState<string>('#10B981')
+  const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily)
   const [iconColor, setIconColor] = useState<boolean>(true)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
 
@@ -59,8 +68,8 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const metaDataActivitiesRef = useRef<MetaDataRefProps>(null)
   const metaDataCertificatesRef = useRef<MetaDataRefProps>(null)
 
-  const onChangColorCV = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setColor(e.target.value)
+  const onChangColorCV = (colorInput: string) => {
+    setColor(colorInput)
   }
 
   const onChangeIconColor = (checked: boolean) => {
@@ -95,23 +104,35 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
             <span className="block">Lưu CV</span>
             <i className="fas fa-save text-green-700 cursor-pointer text-3xl"></i>
           </div>
-          <PrInputColor onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangColorCV(e)} />
+          <PrInputColor onChange={onChangColorCV} defaultColor="#10B981" />
           <div className="mx-4 text-center">
             <span className="block">Icon màu</span>
             <Switch onChange={onChangeIconColor} checked={iconColor} />
           </div>
           <div className="w-44 mx-4 text-center">
             <span className="block">Font chữ</span>
-            <PrDropdownCV dropdownClassName="w-full" className="w-full" />
+            <PrDropdownCV
+              dropdownClassName="w-full"
+              className="w-full"
+              options={DataFontFamily}
+              onChange={(value) => setFontFamily(value)}
+              defaultValue={defaultFontFamily}
+            />
           </div>
           <div className="w-44 mx-4 text-center">
             <span className="block">Ảnh nền</span>
-            <PrDropdownCV dropdownClassName="w-full" className="w-full" type="image" />
+            <PrDropdownCV
+              dropdownClassName="w-full"
+              className="w-full"
+              type="image"
+              options={[]}
+              onChange={(value) => setFontFamily(value)}
+            />
           </div>
         </div>
 
         <div
-          style={{ width: '210mm', height: 'auto' }}
+          style={{ width: '210mm', height: 'auto', fontFamily: fontFamily }}
           className={`bg-white mx-auto shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
         >
           <div className="grid grid-cols-3 h-full">
@@ -257,7 +278,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               {/* KINH NGHIỆM */}
               <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
                 <div className="flex items-center">
-                  <img src={ExperienceIcon} alt="skill" className="w-10 h-10 mr-3" />
+                  <img src={iconColor ? ExperienceIcon : ExperienceBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
                   <span className="uppercase font-bold">Kinh nghệm</span>
                 </div>
                 <div>
@@ -284,7 +305,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               {/* KỸ NĂNG */}
               <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
                 <div className="flex items-center">
-                  <img src={SkillIcon} alt="skill" className="w-10 h-10 mr-3" />
+                  <img src={iconColor ? SkillIcon : SkillBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
                   <span className="uppercase font-bold">Kỹ năng chuyên môn</span>
                 </div>
                 <div>
@@ -307,7 +328,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               {/* HOẠT ĐỘNG */}
               <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
                 <div className="flex items-center">
-                  <img src={ActivityIcon} alt="skill" className="w-10 h-10 mr-3" />
+                  <img src={iconColor ? ActivityIcon : ActivityBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
                   <span className="uppercase font-bold">Hoạt động</span>
                 </div>
                 <div>
@@ -324,7 +345,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               {/* CHỨNG CHỈ & GIẢI THƯỞNG */}
               <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
                 <div className="flex items-center">
-                  <img src={AwardIcon} alt="skill" className="w-10 h-10 mr-3" />
+                  <img src={iconColor ? AwardIcon : AwardBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
                   <span className="uppercase font-bold">Chứng chỉ & Giải thưởng</span>
                 </div>
                 <div>

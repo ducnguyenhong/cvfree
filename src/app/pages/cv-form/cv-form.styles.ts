@@ -10,4 +10,7 @@ export const CVFormStyle = styled.div`
   .div-triangle-bottom-left {
     clip-path: polygon(0 100%, 100% 100%, 0 60%);
   }
+  .font-Roboto {
+    font-family: 'Roboto', sans-serif !important;
+  }
 `

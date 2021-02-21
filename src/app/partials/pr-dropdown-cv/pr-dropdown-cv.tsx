@@ -1,15 +1,24 @@
 import { Transition } from '@headlessui/react'
 import { useState } from 'react'
 
+interface OptionProps {
+  label: string
+  value: string | number
+}
+
 interface Props {
   className?: string
   dropdownClassName?: string
   type?: string
+  options: OptionProps[]
+  onChange: (value: string) => void
+  defaultValue?: string
 }
 
 const PrDropdownCV: React.FC<Props> = (props) => {
-  const { className, dropdownClassName, type } = props
+  const { className, dropdownClassName, type, options, onChange, defaultValue } = props
   const [visible, setVisible] = useState<boolean>(false)
+  const [value, setValue] = useState<string>(defaultValue || '')
 
   const renderOptions = () => {
     if (type === 'image') {
@@ -26,15 +35,32 @@ const PrDropdownCV: React.FC<Props> = (props) => {
     }
     return (
       <>
-        <span
-          className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-          role="menuitem"
-        >
-          Option1
-        </span>
-        <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-          Support
-        </span>
+        {options &&
+          options.length > 0 &&
+          options.map((item: OptionProps) => {
+            return (
+              <div
+                key={item.label}
+                onClick={() => {
+                  setVisible(false)
+                  setValue(`${item.value}`)
+                  onChange(`${item.value}`)
+                }}
+                className={`flex items-center justify-between cursor-pointer hover:bg-gray-100 duration-300 ${
+                  value === item.value ? 'bg-gray-100' : ''
+                }`}
+              >
+                <span
+                  style={{ fontFamily: `${item.value}` }}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 duration-300"
+                  role="menuitem"
+                >
+                  {item.label}
+                </span>
+                {value === item.value && <i className="fas fa-check text-green-500 px-4"></i>}
+              </div>
+            )
+          })}
       </>
     )
   }
