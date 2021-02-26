@@ -5,6 +5,7 @@ export interface MetaDataRefProps {
   getValue: () => void
   setValue?: (keyword: string) => void
   validate: () => boolean
+  onCreate: () => void
 }
 
 interface Props {
@@ -76,22 +77,18 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
     },
     getValue() {
       return getValue()
+    },
+    onCreate() {
+      onCreateFine()
     }
   }))
 
   return (
-    <div className="grid grid-cols-2 gap-x-24 gap-y-2">
+    <div className="grid grid-cols-2 gap-x-24 gap-y-2 mb-2">
       <div className="col-span-2">
         {metaDataList.map((item: any, index: number) => (
           <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
         ))}
-      </div>
-      <div className="col-span-2 flex justify-center">
-        <i
-          onClick={onCreateFine}
-          title="Thêm kỹ năng"
-          className="fas fa-plus-circle text-green-600 cursor-pointer text-xl hover:text-green-700 duration-300"
-        ></i>
       </div>
     </div>
   )

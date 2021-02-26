@@ -10,7 +10,17 @@ export const CVFormStyle = styled.div`
   .div-triangle-bottom-left {
     clip-path: polygon(0 100%, 100% 100%, 0 60%);
   }
-  .font-Roboto {
-    font-family: 'Roboto', sans-serif !important;
+
+  .metadata-root {
+    .metadata-control {
+      opacity: 0;
+      visibility: hidden;
+    }
+    &:hover {
+      .metadata-control {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
   }
 `

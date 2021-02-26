@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 interface OptionProps {
   label: string
-  value: string | number
+  value: string
 }
 
 interface Props {
@@ -24,12 +24,25 @@ const PrDropdownCV: React.FC<Props> = (props) => {
     if (type === 'image') {
       return (
         <>
-          <img
-            src="a"
-            alt="bg"
-            className="cursor-pointer w-5 block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            role="menuitem"
-          />
+          {options &&
+            options.length > 0 &&
+            options.map((item, index) => {
+              return (
+                <div key={JSON.stringify(index)}>
+                  <img
+                    src={item.label}
+                    alt="bg"
+                    onClick={() => {
+                      setVisible(false)
+                      setValue(`${item.value}`)
+                      onChange(`${item.value}`)
+                    }}
+                    className="cursor-pointer border rounded-md w-11/12 mx-auto block mb-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    role="menuitem"
+                  />
+                </div>
+              )
+            })}
         </>
       )
     }
@@ -37,7 +50,7 @@ const PrDropdownCV: React.FC<Props> = (props) => {
       <>
         {options &&
           options.length > 0 &&
-          options.map((item: OptionProps) => {
+          options.map((item) => {
             return (
               <div
                 key={item.label}
