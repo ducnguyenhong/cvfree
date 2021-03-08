@@ -73,11 +73,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   return (
     <div className="flex w-full">
       <div className="w-11/12">
-        <PrInputCV
-          placeholder="- Hoạt động"
-          divClassName="h-8 w-full"
-          className="bg-transparent w-full py-2 mt-2 text-sm"
-        />
+        <PrInputCV placeholder="- Hoạt động" divClassName="h-8 w-full" className="bg-transparent w-full py-2 mt-2" />
       </div>
       <div className="w-1/12 pt-3 flex justify-end">
         <span onClick={onTouchRemove} className="cursor-pointer">

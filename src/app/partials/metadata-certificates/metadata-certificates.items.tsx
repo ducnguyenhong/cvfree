@@ -76,7 +76,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
         <PrInputCV
           placeholder="- Giải thưởng (chứng chỉ)"
           divClassName="h-8 w-full"
-          className="bg-transparent w-full py-2 mt-2 text-sm"
+          className="bg-transparent w-full py-2 mt-2"
         />
       </div>
       <div className="w-1/12 pt-3 flex justify-end">

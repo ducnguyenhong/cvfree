@@ -14,7 +14,7 @@ interface Props {
 
 const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   const { metadata } = props
-  const [metaDataList, setMetaDataList] = useState<any[]>([])
+  const [metaDataList, setMetaDataList] = useState<any[]>([{ ref: null }])
 
   const onCreateFine = () => {
     const newMetaDataList = [...metaDataList]
@@ -86,9 +86,9 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   return (
     <div className="grid grid-cols-2 gap-x-24 gap-y-2 mb-2">
       <div className="col-span-2">
-        {metaDataList.map((item: any, index: number) => (
-          <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
-        ))}
+        {metaDataList.map((item: any, index: number) => {
+          return <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} onCreate={onCreateFine} />
+        })}
       </div>
     </div>
   )

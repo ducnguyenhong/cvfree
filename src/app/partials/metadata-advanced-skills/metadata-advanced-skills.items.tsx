@@ -73,16 +73,12 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   return (
     <div className="mt-2 flex w-full">
       <div className="w-11/12">
-        <PrInputCV
-          placeholder="- Kỹ năng"
-          divClassName="h-8 w-full"
-          className="bg-transparent w-full py-2 mt-2 text-sm"
-        />
+        <PrInputCV placeholder="- Kỹ năng" divClassName="h-8 w-full" className="bg-transparent w-full py-2 mt-2" />
         <PrInputCV
           placeholder=" + Mô tả chi tiết"
           divClassName="h-16 w-full"
           type="textarea"
-          className="bg-transparent w-full py-2 pl-8 mt-2 text-sm"
+          className="bg-transparent w-full py-2 pl-8 mt-2 resize-none"
         />
       </div>
       <div className="w-1/12 pt-3 flex justify-end">

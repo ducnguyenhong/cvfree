@@ -14,7 +14,7 @@ interface Props {
 
 const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   const { metadata } = props
-  const [metaDataList, setMetaDataList] = useState<any[]>([])
+  const [metaDataList, setMetaDataList] = useState<any[]>([{ ref: null }])
 
   const onCreateFine = () => {
     const newMetaDataList = [...metaDataList]

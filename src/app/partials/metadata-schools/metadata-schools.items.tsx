@@ -1,19 +1,24 @@
-import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
+import React, { forwardRef, Ref, useImperativeHandle, useRef, useState, useEffect } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
 import styled from 'styled-components'
+
 interface Props {
-  test?: string
+  onCreate?: () => void
 }
 
 const StyleLayout = styled.div`
   .metadata-root {
+    border: 1px solid #fff;
     .metadata-control {
       opacity: 0;
       visibility: hidden;
+      transition: 0.3s;
     }
+    transition: 0.3s;
     &:hover {
       border: 1px dashed #e1e1e1 !important;
       .metadata-control {
+        transition: 0.3s;
         opacity: 1;
         visibility: visible;
       }
@@ -23,39 +28,40 @@ const StyleLayout = styled.div`
 
 export interface ItemsRefProps {
   getValue: () => void
-  setValue?: (newValue: { key: string; value: string }) => void
+  setValue?: (newValue: { newSchool: string; newMajor: string }) => void
   validate?: () => void
 }
 
 const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
-  const [valueInput, setValueInput] = useState<string>('')
-  const [keyInput, setKeyInput] = useState<string>('')
+  const { onCreate } = props
+  const [school, setSchool] = useState<string>('')
+  const [major, setMajor] = useState<string>('')
   const [status, setStatus] = useState<boolean>(true)
-  const [errMessageValue, setErrMessageValue] = useState<string>('')
-  const [errMessageKey, setErrMessageKey] = useState<string>('')
+  // const [errMessageValue, setErrMessageValue] = useState<string>('')
+  // const [errMessageKey, setErrMessageKey] = useState<string>('')
   const keyRef = useRef<HTMLInputElement>(null)
   const valueRef = useRef<HTMLInputElement>(null)
 
-  const setValue = (newValue: { key: string; value: string }) => {
-    const { key, value } = newValue
-    setKeyInput(key)
-    setValueInput(value)
+  const setValue = (newValue: { newSchool: string; newMajor: string }) => {
+    const { newSchool, newMajor } = newValue
+    setSchool(newSchool)
+    setMajor(newMajor)
   }
 
   const validate = () => {
-    if (!status) {
-      return true
-    }
-    if (!keyInput) {
-      keyRef.current?.focus()
-      setErrMessageKey('Metadata name is required')
-      return false
-    }
-    if (!valueInput) {
-      valueRef.current?.focus()
-      setErrMessageValue('Metadata value is required')
-      return false
-    }
+    // if (!status) {
+    //   return true
+    // }
+    // if (!keyInput) {
+    //   keyRef.current?.focus()
+    //   setErrMessageKey('Metadata name is required')
+    //   return false
+    // }
+    // if (!valueInput) {
+    //   valueRef.current?.focus()
+    //   setErrMessageValue('Metadata value is required')
+    //   return false
+    // }
     return true
   }
 
@@ -63,7 +69,11 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     if (!status) {
       return null
     }
-    return { [keyInput.trim()]: valueInput.trim() }
+    const data = {
+      school: school.trim(),
+      major: major.trim()
+    }
+    return data
   }
 
   useImperativeHandle(ref, () => ({
@@ -73,7 +83,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     getValue() {
       return getValue()
     },
-    setValue(newValue: { key: string; value: string }) {
+    setValue(newValue: { newSchool: string; newMajor: string }) {
       setValue(newValue)
     }
   }))
@@ -82,29 +92,36 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     return null
   }
 
-  const onTouchRemove = () => {
+  const onRemove = () => {
     setStatus(false)
   }
 
   return (
     <div className="mt-2">
       <StyleLayout>
-        <div className="metadata-root flex w-full">
-          <div className="w-11/12 metadata-content">
+        <div className="metadata-root flex w-full pb-3 relative">
+          <div className="w-full metadata-content">
             <PrInputCV
               placeholder="- Trường học/Trung tâm"
               divClassName="h-8 w-full"
-              className="bg-transparent w-full py-2 mt-2 text-sm"
+              className="bg-transparent w-full py-2"
+              value={school}
+              onChange={(e) => setSchool(e)}
             />
             <PrInputCV
               placeholder=" + Chuyên ngành"
               divClassName="h-8 w-full"
-              className="bg-transparent w-full py-2 pl-8 mt-2 text-sm"
+              className="bg-transparent w-full py-2 pl-8 mt-2"
+              value={major}
+              onChange={(e) => setMajor(e)}
             />
           </div>
-          <div className="w-1/12 pt-3 flex justify-end metadata-control">
-            <span onClick={onTouchRemove} className="cursor-pointer">
-              <i className="text-red-500 fas fa-times-circle text-xl hover:text-red-600"></i>
+          <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
+            <span
+              onClick={onRemove}
+              className="cursor-pointer bg-red-400 flex justify-center items-center w-5 h-5 rounded-full hover:bg-red-500 duration-300"
+            >
+              <i className="text-white fas fa-times text-sm"></i>
             </span>
           </div>
         </div>

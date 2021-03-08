@@ -63,11 +63,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     <div className="mt-4 flex items-center">
       <img src={IdeaIcon} alt="skill" className="w-7 h-7" />
       <div>
-        <PrInputCV
-          placeholder="Kỹ năng cá nhân"
-          divClassName="h-10 w-full"
-          className="bg-transparent w-full py-2 text-sm"
-        />
+        <PrInputCV placeholder="Kỹ năng cá nhân" divClassName="h-10 w-full" className="bg-transparent w-full py-2" />
         <div className="-m-3 ml-3">
           <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
         </div>
