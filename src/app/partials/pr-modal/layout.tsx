@@ -15,11 +15,16 @@ const PrModal = forwardRef((props: PrModalProps, ref: Ref<PrModalRefProps>) => {
     }
   }))
 
+  const onClose = () => {
+    setVisible(false)
+    onHide && onHide()
+  }
+
   return (
     <ModalLib
       visible={visible}
       title={title}
-      onHide={onHide}
+      onHide={onClose}
       onChange={onChange}
       size={size}
       onShow={onShow}

@@ -1,6 +1,5 @@
 import { Transition } from '@headlessui/react'
-import { useEffect } from 'react'
-import CloseIcon from './close.svg'
+import { useEffect, RefObject } from 'react'
 import { getModalSize } from './size'
 import { ModalLibProps } from './type'
 
@@ -36,7 +35,7 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
   return (
     <div>
       <div className="overflow-y-auto h-0">
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center xs:block xs:p-0">
+        <div className="sm:flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center block p-0">
           <Transition
             show={visible}
             enter="ease-out duration-200"
@@ -46,8 +45,8 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            {(ref) => (
-              <div ref={ref} className="fixed inset-0 transition-opacity" aria-hidden="true">
+            {(ref: RefObject<HTMLDivElement> | null | undefined) => (
+              <div ref={ref} className="fixed inset-0 transition-opacity z-50" aria-hidden="true">
                 <div className="absolute inset-0 bg-gray-500 opacity-75" />
               </div>
             )}
@@ -58,16 +57,16 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
           <Transition
             show={visible}
             enter="ease-out duration-200"
-            enterFrom="opacity-0 translate-y-4 xs:translate-y-0 xs:scale-95"
-            enterTo="opacity-100 translate-y-0 xs:scale-100"
+            enterFrom="opacity-0 sm:translate-y-4 translate-y-0 scale-95"
+            enterTo="opacity-100 translate-y-0 scale-100"
             leave="ease-in duration-100"
-            leaveFrom="opacity-100 translate-y-0 xs:scale-100"
-            leaveTo="opacity-0 translate-y-4 xs:translate-y-0 xs:scale-95"
+            leaveFrom="opacity-100 translate-y-0 scale-100"
+            leaveTo="opacity-0 sm:translate-y-4 translate-y-0 scale-95"
           >
-            {(ref) => (
+            {(ref: RefObject<HTMLDivElement> | null | undefined) => (
               <div
                 ref={ref}
-                className={`z-50 absolute top-24 left-0 right-0 mx-auto inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} xs:${modalSize.xs}`}
+                className={`z-50 fixed top-24 left-0 right-0 mx-auto inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-headline"
@@ -75,13 +74,17 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                 {!disableHeader && (
                   <>
                     <div className="px-5 py-4 flex justify-between">
-                      {title && <span className="font-medium text-lg">{title}</span>}
-                      <img
-                        src={CloseIcon}
-                        alt="Close"
-                        className="w-3 opacity-70 hover:opacity-100 cursor-pointer"
+                      {title && <span className="font-bold text-lg">{title}</span>}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                         onClick={onHide}
-                      />
+                        className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100 duration-300"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
                     </div>
                     <hr />
                   </>
@@ -90,18 +93,18 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                 {!disableFooter && (
                   <>
                     <hr />
-                    <div className="px-5 py-4 xs:px-6 xs:flex xs:flex-row-reverse">
+                    <div className="sm:px-5 py-4 px-6 flex flex-row-reverse">
                       <button
                         onClick={onChange}
                         type="button"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-700 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-blue-800 xs:ml-3 xs:w-auto xs:text-sm"
+                        className="sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-700 font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-blue-800 ml-3 w-auto duration-300"
                       >
                         {okTitle || 'OK'}
                       </button>
                       <button
                         onClick={onHide}
                         type="button"
-                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-50 xs:mt-0 xs:ml-3 xs:w-auto xs:text-sm"
+                        className="sm:w-auto inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-50 mt-0 ml-3 w-auto duration-300"
                       >
                         {cancelTitle || 'Cancel'}
                       </button>

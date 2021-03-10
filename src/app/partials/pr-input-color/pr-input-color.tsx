@@ -11,9 +11,9 @@ const PrInputColor: React.FC<Props> = (props) => {
 
   return (
     <div className="mx-4 text-center">
-      <span className="mr-2 text-sm block font-medium">Màu</span>
+      <span className="mr-2 text-sm block font-medium mb-1">Màu</span>
       <div
-        className="rounded-full cursor-pointer overflow-hidden w-8 h-8 flex items-center justify-center"
+        className="rounded-full cursor-pointer overflow-hidden w-7 h-7 flex items-center justify-center"
         style={{ backgroundColor: color }}
       >
         <input

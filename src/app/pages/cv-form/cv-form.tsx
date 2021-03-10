@@ -1,54 +1,43 @@
-import MetaDataActivities from 'app/partials/metadata-activities'
-import MetaDataAdvancedSkills from 'app/partials/metadata-advanced-skills'
-import MetaDataCertificates from 'app/partials/metadata-certificates'
-import MetaDataCompanies from 'app/partials/metadata-companies'
-import {
-  default as MetaDataPersonalSkills,
-  default as MetaDataSchools,
-  MetaDataRefProps
-} from 'app/partials/metadata-schools'
+import { default as MetaDataPersonalSkills } from 'app/partials/metadata/metadata-schools'
+import { MetaDataRefProps } from 'models/metadata-type'
 import PrDropdownCV from 'app/partials/pr-dropdown-cv'
 import PrInputColor from 'app/partials/pr-input-color'
 import PrInputCV from 'app/partials/pr-input-cv'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import PrUpload from 'app/partials/pr-upload'
-import ActivityBlackIcon from 'assets/icons/activity-black.svg'
-import ActivityIcon from 'assets/icons/activity.svg'
-import AwardBlackIcon from 'assets/icons/award-black.svg'
-import AwardIcon from 'assets/icons/award.svg'
 import BirthdayIcon from 'assets/icons/birthday'
-import ExperienceBlackIcon from 'assets/icons/experience-black.svg'
-import ExperienceIcon from 'assets/icons/experience.svg'
 import FacebookIcon from 'assets/icons/facebook'
 import GenderIcon from 'assets/icons/gender'
 import IdeaIcon from 'assets/icons/idea.svg'
 import MapIcon from 'assets/icons/map'
 import PhoneIcon from 'assets/icons/phone'
-import SchoolHatBlackIcon from 'assets/icons/school-hat-black.svg'
-import SchoolHatIcon from 'assets/icons/school-hat.svg'
-import SkillBlackIcon from 'assets/icons/skill-black.svg'
-import SkillIcon from 'assets/icons/skill.svg'
+import { DataCategoryCV, DataCategoryInfo } from 'constants/category-cv'
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
 import Rate from 'rc-rate'
 import 'rc-rate/assets/index.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  Activities,
+  AdvancedSkills,
+  AnotherInfos,
+  Awards,
+  Certificates,
+  Companies,
+  Presenters,
+  Schools
+} from './category'
 import { CVFormStyle } from './cv-form.styles'
-interface CvFormProps {}
+import { CategoryProps, CvFormProps } from './cv-form.types'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
-
-interface CategoryProps {
-  name: string
-  component: React.ReactElement
-}
 
 const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const [avatar, setAvatar] = useState<string>()
   const [color, setColor] = useState<string>('#37474F')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
-  const [iconColor, setIconColor] = useState<boolean>(true)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
 
   const handleScroll = useCallback(() => {
@@ -66,19 +55,66 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     }
   }, [])
 
+  const modalListCategoryRef = useRef<PrModalRefProps>(null)
+  const metaDataSchoolsRef = useRef<MetaDataRefProps>(null)
+  const metaDataAwardsRef = useRef<MetaDataRefProps>(null)
+  const metaDataPresentersRef = useRef<MetaDataRefProps>(null)
+  const metaDataCompaniesRef = useRef<MetaDataRefProps>(null)
+  const metaDataAnotherInfoRef = useRef<MetaDataRefProps>(null)
   const metaDataPersonalSkillsRef = useRef<MetaDataRefProps>(null)
-
   const metaDataAdvancedSkillsRef = useRef<MetaDataRefProps>(null)
   const metaDataActivitiesRef = useRef<MetaDataRefProps>(null)
   const metaDataCertificatesRef = useRef<MetaDataRefProps>(null)
+
+  const defaultCategory: CategoryProps[] = [
+    {
+      name: 'school',
+      component: (props) => <Schools {...props} />,
+      categoryRef: metaDataSchoolsRef
+    },
+    {
+      name: 'company',
+      component: (props) => <Companies {...props} />,
+      categoryRef: metaDataCompaniesRef
+    },
+    {
+      name: 'advancedSkill',
+      component: (props) => <AdvancedSkills {...props} />,
+      categoryRef: metaDataAdvancedSkillsRef
+    },
+    {
+      name: 'activity',
+      component: (props) => <Activities {...props} />,
+      categoryRef: metaDataActivitiesRef
+    },
+    {
+      name: 'certificate',
+      component: (props) => <Certificates {...props} />,
+      categoryRef: metaDataCertificatesRef
+    },
+    {
+      name: 'award',
+      component: (props) => <Awards {...props} />,
+      categoryRef: metaDataAwardsRef
+    },
+    {
+      name: 'presenter',
+      component: (props) => <Presenters {...props} />,
+      categoryRef: metaDataPresentersRef
+    },
+    {
+      name: 'anotherInfo',
+      component: (props) => <AnotherInfos {...props} />,
+      categoryRef: metaDataAnotherInfoRef
+    }
+  ]
+
+  const [category, setCategory] = useState<CategoryProps[]>(defaultCategory)
 
   const onChangColorCV = (colorInput: string) => {
     setColor(colorInput)
   }
 
-  const onChangeIconColor = (checked: boolean) => {
-    setIconColor(checked)
-  }
   const getImage = (img: any) => {
     console.log('img', img)
 
@@ -92,21 +128,8 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
         : ''
   }
 
-  const onDownCategory = (name: string) => {
-    let index = 0
-    for (let i = 0; i < category.length; i++) {
-      if (category[i].name === name) {
-        index = i
-      }
-    }
-    if (index === category.length - 1) {
-      return
-    }
-    const newCategory = [...category]
-    const pr = newCategory[index]
-    newCategory[index] = newCategory[index + 1]
-    newCategory[index + 1] = pr
-    setCategory(newCategory)
+  const onSelectListCategory = () => {
+    modalListCategoryRef.current?.show()
   }
 
   const onUpCategory = (name: string) => {
@@ -126,73 +149,24 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     setCategory(newCategory)
   }
 
-  // component
-
-  const Schools: React.FC = () => {
-    const metaDataSchoolsRef = useRef<MetaDataRefProps>(null)
-    return (
-      <div className="div-one-category border-dashed border relative border-gray-300 p-4 rounded group">
-        <div className="flex items-center">
-          <img src={SchoolHatBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-          <span className="uppercase font-bold">Học vấn</span>
-        </div>
-        <div className="category-control border border-gray-400 rounded-sm overflow-hidden h-6 absolute -top-3 right-0 flex items-center opacity-0 group-hover:opacity-100  duration-300">
-          <div
-            onClick={() => onUpCategory('school')}
-            className="px-3 h-full cursor-pointer bg-gray-500 border border-gray-400 border-t-0 border-l-0 border-b-0 flex justify-center items-center hover:bg-gray-600 duration-300"
-          >
-            <i className="fas fa-caret-up text-white text-lg"></i>
-          </div>
-          <div
-            className="px-3 h-full bg-gray-500 border border-gray-400 border-t-0 border-l-0 border-b-0 cursor-pointer flex justify-center items-center hover:bg-gray-600 duration-300"
-            onClick={() => onDownCategory('school')}
-          >
-            <i className="fas fa-caret-down text-white text-lg"></i>
-          </div>
-          <div
-            onClick={() => metaDataSchoolsRef.current?.onCreate()}
-            className="flex justify-center items-center px-3 h-full cursor-pointer bg-gray-500 border border-gray-400 border-t-0 border-l-0 border-b-0 hover:bg-green-500 duration-300"
-          >
-            <i className="text-white fas fa-plus"></i>
-          </div>
-          <div
-            onClick={() => onRemoveCategory('school')}
-            className="flex justify-center items-center px-3 h-full cursor-pointer bg-gray-500 hover:bg-red-600 duration-300"
-          >
-            <i className="text-white fas fa-times"></i>
-          </div>
-        </div>
-        <MetaDataSchools ref={metaDataSchoolsRef} />
-      </div>
-    )
-  }
-
-  const Experiences: React.FC = () => {
-    const metaDataCompaniesRef = useRef<MetaDataRefProps>(null)
-    return (
-      <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
-        <div className="flex items-center">
-          <img src={ExperienceBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-          <span className="uppercase font-bold">Kinh nghệm</span>
-        </div>
-        <MetaDataCompanies ref={metaDataCompaniesRef} />
-      </div>
-    )
-  }
-
-  //
-  const defaultCategory: CategoryProps[] = [
-    {
-      name: 'school',
-      component: <Schools />
-    },
-    {
-      name: 'experience',
-      component: <Experiences />
+  const onDownCategory = (name: string) => {
+    let index = 0
+    for (let i = 0; i < category.length; i++) {
+      if (category[i].name === name) {
+        index = i
+      }
     }
-  ]
+    if (index === category.length - 1) {
+      console.log('ducnh')
 
-  const [category, setCategory] = useState<CategoryProps[]>(defaultCategory)
+      return
+    }
+    const newCategory = [...category]
+    const pr = newCategory[index]
+    newCategory[index] = newCategory[index + 1]
+    newCategory[index + 1] = pr
+    setCategory(newCategory)
+  }
 
   const onRemoveCategory = (name: string) => {
     let index = 0
@@ -201,16 +175,21 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
         index = i
       }
     }
-    const newCategory = category.splice(index - 1, 1)
+    console.log('index', index)
+
+    const newCategory = [...category]
+    newCategory.splice(index, 1)
     setCategory(newCategory)
   }
 
   useEffect(() => {
     document.title = 'CVFREE | Tạo hồ sơ'
   }, [])
+
   return (
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-40">
       <CVFormStyle>
+        {/* Control */}
         <div
           style={{ width: '210mm' }}
           className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
@@ -226,7 +205,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
           </div>
           {/* Cỡ chữ */}
           <div className="w-24 mx-4 text-center">
-            <span className="block text-sm font-medium">Cỡ chữ</span>
+            <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
             <PrDropdownCV
               dropdownClassName="w-full"
               className="w-full"
@@ -238,7 +217,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
 
           {/* Font chữ */}
           <div className="w-40 mx-4 text-center">
-            <span className="block text-sm font-medium">Font chữ</span>
+            <span className="block text-sm font-medium mb-1">Font chữ</span>
             <PrDropdownCV
               dropdownClassName="w-full"
               className="w-full"
@@ -253,8 +232,8 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
           </div>
 
           {/* Danh sách mục */}
-          <div className="mx-4 text-center">
-            <span className="block text-sm font-medium">Chuyên mục</span>
+          <div className="mx-4 text-center cursor-pointer" onClick={onSelectListCategory}>
+            <span className="block text-sm font-medium mb-1">Chuyên mục</span>
             <i className="fas fa-list-ul text-gray-600 cursor-pointer text-xl"></i>
           </div>
           {/* LƯU CV */}
@@ -264,13 +243,15 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
           </div>
         </div>
 
+        {/* CV Main */}
         <div
           style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
           className={`bg-white mx-auto shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
         >
           <div className="grid grid-cols-3 h-full">
+            {/* CV Left */}
             <div className="col-span-1 bg-gray-100 relative">
-              <div className="div-top-left p-4" style={{ backgroundColor: color }}>
+              <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
                 <div className="mb-3">
                   <PrInputCV
                     placeholder="Họ và tên"
@@ -278,17 +259,19 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                     className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
                   />
                 </div>
-                <div className="px-4">
+                <div className="px-5">
                   <PrUpload getImage={getImage} />
                 </div>
-                <div className="mt-4 mb-8">
+                <div className="mb-6 mt-6">
                   <PrInputCV
                     divClassName="h-20"
                     placeholder="Giới thiệu chung"
                     type="textarea"
-                    className="bg-transparent resize-none border-gray-100 border rounded-md placeholder-white w-full text-center text-white py-2"
+                    className="bg-transparent resize-none border-gray-400 border rounded-md placeholder-white w-full text-center text-white py-2"
                   />
                 </div>
+                <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
+                <div className="absolute -bottom-10 -right-10 w-60 h-16 transform -rotate-12 bg-gray-100"></div>
               </div>
 
               <div className="div-bottom-left bg-gray-100 mx-4">
@@ -364,133 +347,80 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               </div>
             </div>
 
+            {/* CV Right */}
             <div className="col-span-2 relative p-4">
               <div
                 className="div-triangle-top-right absolute top-0 right-0 w-36 h-40"
                 style={{ backgroundColor: color }}
               ></div>
 
-              {/* HỌC VẤN */}
-              {/* <div className="div-one-category border-dashed border border-gray-300 p-4 rounded">
-                <div className="flex items-center">
-                  <img src={iconColor ? SchoolHatIcon : SchoolHatBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-                  <span className="uppercase font-bold">Học vấn</span>
-                </div>
-                <MetaDataSchools ref={metaDataSchoolsRef} />
-              </div> */}
-              {/* {category[0].component} */}
-              {/* HỌC VẤN */}
-
               {category &&
                 category.length > 0 &&
                 category.map((item) => {
-                  return <div key={item.name}>{item.component}</div>
+                  return (
+                    <div key={item.name}>
+                      {item.component({
+                        onDownCategory,
+                        onUpCategory,
+                        onRemoveCategory,
+                        categoryRef: item.categoryRef
+                      })}
+                    </div>
+                  )
                 })}
-
-              {/* KINH NGHIỆM */}
-              {/* <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
-                <div className="flex items-center">
-                  <img src={iconColor ? ExperienceIcon : ExperienceBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-                  <span className="uppercase font-bold">Kinh nghệm</span>
-                </div>
-                <MetaDataCompanies ref={metaDataCompaniesRef} />
-              </div> */}
-              {/* {category[1].component} */}
-              {/* KINH NGHIỆM */}
-
-              {/* KỸ NĂNG */}
-              <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
-                <div className="flex items-center">
-                  <img src={SkillBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-                  <span className="uppercase font-bold">Kỹ năng chuyên môn</span>
-                </div>
-                <div className="flex">
-                  <div className="w-11/12">
-                    <PrInputCV
-                      placeholder="- Kỹ năng"
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2 mt-2 text-sm"
-                    />
-                    <PrInputCV
-                      placeholder=" + Mô tả chi tiết"
-                      divClassName="h-16 w-full"
-                      type="textarea"
-                      className="bg-transparent w-full py-2 pl-8 mt-2 text-sm resize-none"
-                    />
-                  </div>
-                  <div className="w-1/12 flex justify-end pt-3">
-                    <i
-                      onClick={() => {
-                        metaDataAdvancedSkillsRef.current?.onCreate()
-                      }}
-                      title="Thêm kỹ năng"
-                      className="fas fa-plus-circle text-green-600 cursor-pointer text-xl hover:text-green-700 duration-300"
-                    ></i>
-                  </div>
-                </div>
-                <MetaDataAdvancedSkills ref={metaDataAdvancedSkillsRef} />
-              </div>
-              {/* KỸ NĂNG */}
-
-              {/* HOẠT ĐỘNG */}
-              <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
-                <div className="flex items-center">
-                  <img src={ActivityBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-                  <span className="uppercase font-bold">Hoạt động</span>
-                </div>
-                <div className="flex">
-                  <div className="w-11/12">
-                    <PrInputCV
-                      placeholder="- Hoạt động"
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2 mt-2 text-sm"
-                    />
-                  </div>
-                  <div className="w-1/12 flex justify-end pt-3">
-                    <i
-                      onClick={() => {
-                        metaDataActivitiesRef.current?.onCreate()
-                      }}
-                      title="Thêm kỹ năng"
-                      className="fas fa-plus-circle text-green-600 cursor-pointer text-xl hover:text-green-700 duration-300"
-                    ></i>
-                  </div>
-                </div>
-
-                <MetaDataActivities ref={metaDataActivitiesRef} />
-              </div>
-              {/* HOẠT ĐỘNG */}
-
-              {/* CHỨNG CHỈ & GIẢI THƯỞNG */}
-              <div className="div-one-category border-dashed border border-gray-300 p-4 mt-6 rounded">
-                <div className="flex items-center">
-                  <img src={AwardBlackIcon} alt="skill" className="w-10 h-10 mr-3" />
-                  <span className="uppercase font-bold">Chứng chỉ & Giải thưởng</span>
-                </div>
-                <div className="flex">
-                  <div className="w-11/12">
-                    <PrInputCV
-                      placeholder="- Giải thưởng (chứng chỉ)"
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2 mt-2 text-sm"
-                    />
-                  </div>
-                  <div className="w-1/12 flex justify-end pt-3">
-                    <i
-                      onClick={() => {
-                        metaDataCertificatesRef.current?.onCreate()
-                      }}
-                      title="Thêm kỹ năng"
-                      className="fas fa-plus-circle text-green-600 cursor-pointer text-xl hover:text-green-700 duration-300"
-                    ></i>
-                  </div>
-                </div>
-                <MetaDataCertificates ref={metaDataCertificatesRef} />
-              </div>
-              {/* CHỨNG CHỈ & GIẢI THƯỞNG */}
             </div>
           </div>
         </div>
+
+        <PrModal ref={modalListCategoryRef} title={'Chọn mục hiển thị'} cancelTitle="Đóng" okTitle="Xác nhận">
+          <div className="grid-cols-2 grid gap-8 py-8">
+            <div className="col-span-1 border border-gray-300 border-dashed border-t-0 border-b-0 border-l-0 pl-8 pr-6">
+              <div className="mb-10">
+                <span className="uppercase text-lg font-semibold text-center block">Thông tin cá nhân</span>
+              </div>
+              {DataCategoryInfo &&
+                DataCategoryInfo.map((item) => {
+                  return (
+                    <div className="grid grid-cols-4 mt-5" key={`c_info_${item.value}`}>
+                      <div className="col-span-3">
+                        <span className="mr-4">{item.label}</span>
+                      </div>
+                      <div className="col-span-1">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+            <div className="col-span-1 px-8">
+              <div className="mb-10">
+                <span className="uppercase text-lg font-semibold text-center block">Thông tin hồ sơ</span>
+              </div>
+
+              {DataCategoryCV &&
+                DataCategoryCV.map((item) => {
+                  return (
+                    <div className="grid grid-cols-4 mt-5" key={`c_cv_${item.value}`}>
+                      <div className="col-span-3">
+                        <span className="mr-4">{item.label}</span>
+                      </div>
+                      <div className="col-span-1">
+                        <input
+                          type="checkbox"
+                          checked
+                          className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+          </div>
+        </PrModal>
       </CVFormStyle>
     </div>
   )

@@ -78,8 +78,6 @@ const PrDropdownCV: React.FC<Props> = (props) => {
               <div
                 key={item.label}
                 onClick={() => {
-                  console.log('item.value', item.value)
-
                   setVisible(false)
                   setValue(`${item.value}`)
                   setLabel(`${item.label}`)
@@ -105,7 +103,7 @@ const PrDropdownCV: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className={`${className} relative inline-block text-left z-40`}>
+    <div className={`${className} relative inline-block text-left z-40`} ref={dropdownRef}>
       <div>
         <button
           onClick={() => setVisible(!visible)}
@@ -134,13 +132,7 @@ const PrDropdownCV: React.FC<Props> = (props) => {
             ref={ref}
             className={`${dropdownClassName} origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5`}
           >
-            <div
-              ref={dropdownRef}
-              className="py-1"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
+            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
               {renderOptions()}
             </div>
           </div>

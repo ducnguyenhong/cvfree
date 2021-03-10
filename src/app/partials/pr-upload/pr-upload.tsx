@@ -165,6 +165,7 @@ const CVFUploadImage: React.FC<Props> = (props) => {
       </div>
       <PrModal ref={modalRef} title="This is modal title" size="nm" onHide={onHideModal} onChange={onChangeModal}>
         <div>
+          <span className="text-3xl">DUCNH</span>
           <ReactCrop
             src={upImg}
             onImageLoaded={onLoad}

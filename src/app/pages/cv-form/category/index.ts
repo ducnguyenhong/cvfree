@@ -1,0 +1,10 @@
+export { Schools } from './category-school'
+export { Activities } from './category-activity'
+export { AdvancedSkills } from './category-advanced-skill'
+export { AnotherInfos } from './category-another-info'
+export { Awards } from './category-award'
+export { Certificates } from './category-certificate'
+export { Companies } from './category-company'
+export { Presenters } from './category-presenter'
+
+export { CategoryControl } from './category-control'
