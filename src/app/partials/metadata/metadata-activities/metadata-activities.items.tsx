@@ -1,5 +1,6 @@
-import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
+import styled from 'styled-components'
 
 interface Props {
   test?: string
@@ -10,6 +11,26 @@ export interface ItemsRefProps {
   setValue?: (newValue: { key: string; value: string }) => void
   validate?: () => void
 }
+
+const StyleLayout = styled.div`
+  .metadata-root {
+    border: 1px solid #fff;
+    .metadata-control {
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+    }
+    transition: 0.3s;
+    &:hover {
+      border: 1px dashed #e1e1e1 !important;
+      .metadata-control {
+        transition: 0.3s;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+`
 
 const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   const [valueInput, setValueInput] = useState<string>('')
@@ -66,21 +87,26 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     return null
   }
 
-  const onTouchRemove = () => {
+  const onRemove = () => {
     setStatus(false)
   }
 
   return (
-    <div className="flex w-full">
-      <div className="w-11/12">
-        <PrInputCV placeholder="- Hoạt động" divClassName="h-8 w-full" className="bg-transparent w-full py-2 mt-2" />
+    <StyleLayout>
+      <div className="metadata-root flex w-full pb-0.5 relative">
+        <div className="w-full metadata-content">
+          <PrInputCV placeholder="- Hoạt động" divClassName="h-8 w-full" className="bg-transparent w-full py-1.5" />
+        </div>
+        <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
+          <span
+            onClick={onRemove}
+            className="cursor-pointer bg-red-400 flex justify-center items-center w-5 h-5 rounded-full hover:bg-red-500 duration-300"
+          >
+            <i className="text-white fas fa-times text-sm"></i>
+          </span>
+        </div>
       </div>
-      <div className="w-1/12 pt-3 flex justify-end">
-        <span onClick={onTouchRemove} className="cursor-pointer">
-          <i className="text-red-500 fas fa-times-circle text-xl hover:text-red-600"></i>
-        </span>
-      </div>
-    </div>
+    </StyleLayout>
   )
 })
 

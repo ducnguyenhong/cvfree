@@ -94,36 +94,34 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   }
 
   return (
-    <div className="mt-2">
-      <StyleLayout>
-        <div className="metadata-root flex w-full pb-3 relative">
-          <div className="w-full metadata-content">
-            <PrInputCV
-              placeholder="- Trường học/Trung tâm"
-              divClassName="h-8 w-full"
-              className="bg-transparent w-full py-2"
-              value={school}
-              onChange={(e) => setSchool(e)}
-            />
-            <PrInputCV
-              placeholder=" + Chuyên ngành"
-              divClassName="h-8 w-full"
-              className="bg-transparent w-full py-2 pl-8 mt-2"
-              value={major}
-              onChange={(e) => setMajor(e)}
-            />
-          </div>
-          <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
-            <span
-              onClick={onRemove}
-              className="cursor-pointer bg-red-400 flex justify-center items-center w-5 h-5 rounded-full hover:bg-red-500 duration-300"
-            >
-              <i className="text-white fas fa-times text-sm"></i>
-            </span>
-          </div>
+    <StyleLayout>
+      <div className="metadata-root flex w-full pb-1 relative">
+        <div className="w-full metadata-content">
+          <PrInputCV
+            placeholder="- Trường học/Trung tâm"
+            divClassName="h-8 w-full mt-0.5"
+            className="bg-transparent w-full"
+            value={school}
+            onChange={(e) => setSchool(e)}
+          />
+          <PrInputCV
+            placeholder=" + Chuyên ngành"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8"
+            value={major}
+            onChange={(e) => setMajor(e)}
+          />
         </div>
-      </StyleLayout>
-    </div>
+        <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
+          <span
+            onClick={onRemove}
+            className="cursor-pointer bg-red-400 flex justify-center items-center w-5 h-5 rounded-full hover:bg-red-500 duration-300"
+          >
+            <i className="text-white fas fa-times text-sm"></i>
+          </span>
+        </div>
+      </div>
+    </StyleLayout>
   )
 })
 

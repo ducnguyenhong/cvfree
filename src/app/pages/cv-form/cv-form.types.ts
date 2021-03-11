@@ -14,6 +14,8 @@ export interface CategoryComponentProps {
 
 export interface CategoryProps {
   name: string
+  title: string
+  enable: boolean
   component: (props: CategoryComponentProps) => React.ReactElement
   categoryRef: RefObject<MetaDataRefProps>
 }

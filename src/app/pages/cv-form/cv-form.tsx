@@ -1,5 +1,4 @@
 import { default as MetaDataPersonalSkills } from 'app/partials/metadata/metadata-schools'
-import { MetaDataRefProps } from 'models/metadata-type'
 import PrDropdownCV from 'app/partials/pr-dropdown-cv'
 import PrInputColor from 'app/partials/pr-input-color'
 import PrInputCV from 'app/partials/pr-input-cv'
@@ -11,9 +10,10 @@ import GenderIcon from 'assets/icons/gender'
 import IdeaIcon from 'assets/icons/idea.svg'
 import MapIcon from 'assets/icons/map'
 import PhoneIcon from 'assets/icons/phone'
-import { DataCategoryCV, DataCategoryInfo } from 'constants/category-cv'
+import { DataCategoryInfo } from 'constants/category-cv'
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
+import { MetaDataRefProps } from 'models/metadata-type'
 import Rate from 'rc-rate'
 import 'rc-rate/assets/index.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -55,6 +55,8 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     }
   }, [])
 
+  const checkboxRef = useRef<HTMLInputElement>(null)
+
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
   const metaDataSchoolsRef = useRef<MetaDataRefProps>(null)
   const metaDataAwardsRef = useRef<MetaDataRefProps>(null)
@@ -68,41 +70,57 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
 
   const defaultCategory: CategoryProps[] = [
     {
+      title: 'Học vấn',
+      enable: true,
       name: 'school',
       component: (props) => <Schools {...props} />,
       categoryRef: metaDataSchoolsRef
     },
     {
+      title: 'Kinh nghiệm làm việc',
+      enable: true,
       name: 'company',
       component: (props) => <Companies {...props} />,
       categoryRef: metaDataCompaniesRef
     },
     {
+      title: 'Kỹ năng chuyên môn',
+      enable: true,
       name: 'advancedSkill',
       component: (props) => <AdvancedSkills {...props} />,
       categoryRef: metaDataAdvancedSkillsRef
     },
     {
+      title: 'Hoạt động',
+      enable: true,
       name: 'activity',
       component: (props) => <Activities {...props} />,
       categoryRef: metaDataActivitiesRef
     },
     {
+      title: 'Chứng chỉ',
+      enable: true,
       name: 'certificate',
       component: (props) => <Certificates {...props} />,
       categoryRef: metaDataCertificatesRef
     },
     {
+      title: 'Giải thưởng',
+      enable: true,
       name: 'award',
       component: (props) => <Awards {...props} />,
       categoryRef: metaDataAwardsRef
     },
     {
+      title: 'Người giới thiệu',
+      enable: false,
       name: 'presenter',
       component: (props) => <Presenters {...props} />,
       categoryRef: metaDataPresentersRef
     },
     {
+      title: 'Thông tin khác',
+      enable: false,
       name: 'anotherInfo',
       component: (props) => <AnotherInfos {...props} />,
       categoryRef: metaDataAnotherInfoRef
@@ -110,6 +128,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   ]
 
   const [category, setCategory] = useState<CategoryProps[]>(defaultCategory)
+  const [categoryChecked, setCategoryChecked] = useState<CategoryProps[]>(defaultCategory)
 
   const onChangColorCV = (colorInput: string) => {
     setColor(colorInput)
@@ -169,22 +188,28 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   }
 
   const onRemoveCategory = (name: string) => {
-    let index = 0
-    for (let i = 0; i < category.length; i++) {
-      if (category[i].name === name) {
-        index = i
+    const newCategory = [...category]
+    for (let i = 0; i < newCategory.length; i++) {
+      if (newCategory[i].name === name) {
+        newCategory[i].enable = false
       }
     }
-    console.log('index', index)
-
-    const newCategory = [...category]
-    newCategory.splice(index, 1)
     setCategory(newCategory)
   }
 
   useEffect(() => {
     document.title = 'CVFREE | Tạo hồ sơ'
   }, [])
+
+  const onChangeCheckbox = (checked: boolean, name: string) => {
+    const newCategoryChecked = JSON.parse(JSON.stringify(categoryChecked))
+    for (let i = 0; i < newCategoryChecked.length; i++) {
+      if (newCategoryChecked[i].name === name) {
+        newCategoryChecked[i].enable = checked
+      }
+    }
+    setCategoryChecked(newCategoryChecked)
+  }
 
   return (
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-40">
@@ -357,13 +382,17 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               {category &&
                 category.length > 0 &&
                 category.map((item) => {
+                  const { name, enable, component, categoryRef } = item
+                  if (!enable) {
+                    return null
+                  }
                   return (
-                    <div key={item.name}>
-                      {item.component({
+                    <div key={name}>
+                      {component({
                         onDownCategory,
                         onUpCategory,
                         onRemoveCategory,
-                        categoryRef: item.categoryRef
+                        categoryRef
                       })}
                     </div>
                   )
@@ -372,7 +401,17 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
           </div>
         </div>
 
-        <PrModal ref={modalListCategoryRef} title={'Chọn mục hiển thị'} cancelTitle="Đóng" okTitle="Xác nhận">
+        <PrModal
+          ref={modalListCategoryRef}
+          title={'Chọn mục hiển thị'}
+          cancelTitle="Đóng"
+          okTitle="Xác nhận"
+          onChange={() => {
+            modalListCategoryRef.current?.hide()
+            setCategory(categoryChecked)
+          }}
+          onHide={() => setCategoryChecked(category)}
+        >
           <div className="grid-cols-2 grid gap-8 py-8">
             <div className="col-span-1 border border-gray-300 border-dashed border-t-0 border-b-0 border-l-0 pl-8 pr-6">
               <div className="mb-10">
@@ -380,15 +419,17 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               </div>
               {DataCategoryInfo &&
                 DataCategoryInfo.map((item) => {
+                  const { value, label, enable } = item
                   return (
-                    <div className="grid grid-cols-4 mt-5" key={`c_info_${item.value}`}>
+                    <div className="grid grid-cols-4 mt-5" key={`c_info_${value}`}>
                       <div className="col-span-3">
-                        <span className="mr-4">{item.label}</span>
+                        <span className="mr-4">{label}</span>
                       </div>
                       <div className="col-span-1">
                         <input
                           type="checkbox"
-                          checked
+                          checked={enable}
+                          onChange={(e) => onChangeCheckbox(e.target.checked, '')}
                           className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
                         />
                       </div>
@@ -401,17 +442,20 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                 <span className="uppercase text-lg font-semibold text-center block">Thông tin hồ sơ</span>
               </div>
 
-              {DataCategoryCV &&
-                DataCategoryCV.map((item) => {
+              {categoryChecked &&
+                categoryChecked.length > 0 &&
+                categoryChecked.map((item) => {
+                  const { title, enable, name } = item
                   return (
-                    <div className="grid grid-cols-4 mt-5" key={`c_cv_${item.value}`}>
+                    <div className="grid grid-cols-4 mt-5" key={`c_cv_${title}`}>
                       <div className="col-span-3">
-                        <span className="mr-4">{item.label}</span>
+                        <span className="mr-4">{title}</span>
                       </div>
                       <div className="col-span-1">
                         <input
                           type="checkbox"
-                          checked
+                          checked={enable}
+                          onChange={(e) => onChangeCheckbox(e.target.checked, name)}
                           className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
                         />
                       </div>
