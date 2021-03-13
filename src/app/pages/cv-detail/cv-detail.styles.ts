@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CVFormStyle = styled.div`
+export const CVDetailStyle = styled.div`
   // .div-top-left {
   //   clip-path: polygon(0 0, 100% 0%, 100% 90%, 50% 100%, 0 90%);
   // }
@@ -9,25 +9,6 @@ export const CVFormStyle = styled.div`
   }
   .div-triangle-bottom-left {
     clip-path: polygon(0 100%, 100% 100%, 0 60%);
-  }
-
-  .div-one-category {
-    border: 1px solid #fff;
-    &:hover {
-      border: 1px solid #d1d5db;
-    }
-  }
-
-  .div-one-category-left {
-    border: 1px solid #f3f4f6;
-    &:hover {
-      border: 1px solid #d1d5db;
-    }
-  }
-
-  .category-hobby,
-  .category-career-goals {
-    padding: 0px 4px 4px 4px;
   }
 
   .metadata-root {

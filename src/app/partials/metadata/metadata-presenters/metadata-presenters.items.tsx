@@ -95,9 +95,21 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     <StyleLayout>
       <div className="metadata-root flex w-full pb-1 relative">
         <div className="w-full metadata-content">
-          <PrInputCV placeholder="- Họ và tên" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
-          <PrInputCV placeholder=" + Công ty" divClassName="h-8 w-full" className="bg-transparent w-full pl-8" />
-          <PrInputCV placeholder=" + Chức vụ" divClassName="h-8 w-full" className="bg-transparent w-full pl-8" />
+          <PrInputCV
+            placeholder="- Họ và tên"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full py-2 uppercase font-semibold  text-gray-600"
+          />
+          <PrInputCV
+            placeholder=" + Công ty"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8 text-gray-600"
+          />
+          <PrInputCV
+            placeholder=" + Chức vụ"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8 text-gray-600"
+          />
           <PrInputCV
             placeholder=" + Số điện thoại"
             divClassName="h-8 w-full"

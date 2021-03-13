@@ -1,0 +1,6 @@
+export { EmailIcon } from './email-icon'
+export { FacebookIcon } from './facebook-icon'
+export { GenderIcon } from './gender-icon'
+export { BirthdayIcon } from './birthday-icon'
+export { MapIcon } from './map-icon'
+export { PhoneIcon } from './phone-icon'

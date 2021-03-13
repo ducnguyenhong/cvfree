@@ -84,7 +84,7 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   }))
 
   return (
-    <div className="mb-2">
+    <div>
       {metaDataList.map((item: any, index: number) => (
         <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
       ))}

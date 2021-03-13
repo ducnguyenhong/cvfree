@@ -1,5 +1,5 @@
 import { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
-import Items from './metadata-schools.items'
+import Items from './metadata-educations.items'
 import { MetaDataRefProps } from 'models/metadata-type'
 
 interface Props {
@@ -78,7 +78,7 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   }))
 
   return (
-    <div className="mb-2">
+    <div>
       {metaDataList.map((item: any, index: number) => {
         return <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
       })}

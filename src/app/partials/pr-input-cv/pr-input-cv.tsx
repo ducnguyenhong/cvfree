@@ -86,11 +86,11 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
           rows={6}
           placeholder={placeholder}
           style={style}
-          className={`${className} ${
+          className={`${
             icon ? 'pl-10' : 'pl-4'
           } block border-0 pr-4 absolute top-0 left-0 w-full h-full border-gray-300 focus:outline-none ${
             validateRequired ? 'focus:border-red-600' : 'focus:border-b-2'
-          } `}
+          } ${className}`}
         />
       )
     }

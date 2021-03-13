@@ -1,16 +1,14 @@
-import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
 import styled from 'styled-components'
-
-interface Props {
-  test?: string
-}
 
 export interface ItemsRefProps {
   getValue: () => void
   setValue?: (newValue: { key: string; value: string }) => void
   validate?: () => void
 }
+
+interface Props {}
 
 const StyleLayout = styled.div`
   .metadata-root {
@@ -93,13 +91,28 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
 
   return (
     <StyleLayout>
-      <div className="metadata-root flex w-full pb-4 relative">
+      <div className="metadata-root flex w-full relative">
         <div className="w-full metadata-content">
           <PrInputCV
-            placeholder=" - Thông tin khác"
+            placeholder="- Công ty"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full py-2 uppercase font-semibold text-gray-600"
+          />
+          <PrInputCV
+            placeholder=" + Vị trí"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8 text-gray-600"
+          />
+          <PrInputCV
+            placeholder=" + Thời gian"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8 text-gray-600"
+          />
+          <PrInputCV
+            placeholder=" + Mô tả công việc"
             divClassName="h-16 w-full"
             type="textarea"
-            className="bg-transparent w-full mt-1.5 resize-none"
+            className="bg-transparent w-full pl-8 pt-1 resize-none text-gray-600"
           />
         </div>
         <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">

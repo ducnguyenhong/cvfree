@@ -1,6 +1,12 @@
-import { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
-import Items from './metadata-companies.items'
-import { MetaDataRefProps } from 'models/metadata-type'
+import React, { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
+import Items from './metadata-another-infos.items'
+
+export interface MetaDataRefProps {
+  getValue: () => void
+  setValue?: (keyword: string) => void
+  validate: () => boolean
+  onCreate: () => void
+}
 
 interface Props {
   metadata?: string | Record<string, unknown> | null
@@ -78,7 +84,7 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   }))
 
   return (
-    <div className="mb-2">
+    <div>
       {metaDataList.map((item: any, index: number) => (
         <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
       ))}

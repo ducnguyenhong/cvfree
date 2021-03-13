@@ -4,7 +4,7 @@ interface Props {
   className?: string
 }
 
-const GenderIcon: React.FC<Props> = (props) => {
+export const GenderIcon: React.FC<Props> = (props) => {
   const { width, height, className } = props
   return (
     <svg
@@ -60,5 +60,3 @@ const GenderIcon: React.FC<Props> = (props) => {
     </svg>
   )
 }
-
-export default GenderIcon

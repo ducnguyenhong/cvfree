@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
-import Items from './metadata-activities.items'
+import Items from './metadata-basic-skills.items'
 
 export interface MetaDataRefProps {
   getValue: () => void
@@ -14,7 +14,7 @@ interface Props {
 
 const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   const { metadata } = props
-  const [metaDataList, setMetaDataList] = useState<any[]>([{ ref: null }])
+  const [metaDataList, setMetaDataList] = useState<any[]>([{ ref: null }, { ref: null }])
 
   const onCreateFine = () => {
     const newMetaDataList = [...metaDataList]
@@ -84,7 +84,7 @@ const MetaData = forwardRef((props: Props, ref: Ref<MetaDataRefProps>) => {
   }))
 
   return (
-    <div className=" mb-2">
+    <div>
       {metaDataList.map((item: any, index: number) => (
         <Items ref={(ref) => (item.ref = ref)} key={JSON.stringify(index)} />
       ))}

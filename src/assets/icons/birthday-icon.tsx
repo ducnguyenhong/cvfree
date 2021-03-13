@@ -4,7 +4,7 @@ interface Props {
   className?: string
 }
 
-const BirthdayIcon: React.FC<Props> = (props) => {
+export const BirthdayIcon: React.FC<Props> = (props) => {
   const { width, height, className } = props
   return (
     <svg
@@ -71,5 +71,3 @@ const BirthdayIcon: React.FC<Props> = (props) => {
     </svg>
   )
 }
-
-export default BirthdayIcon

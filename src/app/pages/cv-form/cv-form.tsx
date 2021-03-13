@@ -1,20 +1,12 @@
-import { default as MetaDataPersonalSkills } from 'app/partials/metadata/metadata-schools'
 import PrDropdownCV from 'app/partials/pr-dropdown-cv'
 import PrInputColor from 'app/partials/pr-input-color'
 import PrInputCV from 'app/partials/pr-input-cv'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import PrUpload from 'app/partials/pr-upload'
-import BirthdayIcon from 'assets/icons/birthday'
-import FacebookIcon from 'assets/icons/facebook'
-import GenderIcon from 'assets/icons/gender'
-import IdeaIcon from 'assets/icons/idea.svg'
-import MapIcon from 'assets/icons/map'
-import PhoneIcon from 'assets/icons/phone'
-import { DataCategoryInfo } from 'constants/category-cv'
+import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
 import { MetaDataRefProps } from 'models/metadata-type'
-import Rate from 'rc-rate'
 import 'rc-rate/assets/index.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
@@ -22,40 +14,28 @@ import {
   AdvancedSkills,
   AnotherInfos,
   Awards,
+  BasicSkills,
   Certificates,
-  Companies,
+  WorkExperiences,
+  CareerGoals,
+  Hobbies,
   Presenters,
-  Schools
+  Educations
 } from './category'
 import { CVFormStyle } from './cv-form.styles'
-import { CategoryProps, CvFormProps } from './cv-form.types'
+import { CategoryProps, CvFormProps, PrInputCVRefProps } from './cv-form.types'
+import { getCategoryWhenUp, getCategoryWhenDown, getCategoryWhenRemove } from 'utils/helper'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
 const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const [avatar, setAvatar] = useState<string>()
-  const [color, setColor] = useState<string>('#37474F')
+  const [color, setColor] = useState<string>('#074C6E')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
-
-  const handleScroll = useCallback(() => {
-    if (window.pageYOffset > 62) {
-      setFixedControl(true)
-    } else if (window.pageYOffset <= 62) {
-      setFixedControl(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  const checkboxRef = useRef<HTMLInputElement>(null)
+  const [cvHeight, setCvHeight] = useState<number>(0)
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
   const metaDataSchoolsRef = useRef<MetaDataRefProps>(null)
@@ -67,20 +47,24 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const metaDataAdvancedSkillsRef = useRef<MetaDataRefProps>(null)
   const metaDataActivitiesRef = useRef<MetaDataRefProps>(null)
   const metaDataCertificatesRef = useRef<MetaDataRefProps>(null)
+  const metaDataBasicSkillsRef = useRef<MetaDataRefProps>(null)
+  const inputHobbiesRef = useRef<PrInputCVRefProps>(null)
+  const inputGoalsRef = useRef<PrInputCVRefProps>(null)
+  const cvRef = useRef<HTMLDivElement>(null)
 
   const defaultCategory: CategoryProps[] = [
     {
       title: 'Học vấn',
       enable: true,
-      name: 'school',
-      component: (props) => <Schools {...props} />,
+      name: 'education',
+      component: (props) => <Educations {...props} />,
       categoryRef: metaDataSchoolsRef
     },
     {
       title: 'Kinh nghiệm làm việc',
       enable: true,
-      name: 'company',
-      component: (props) => <Companies {...props} />,
+      name: 'workExperience',
+      component: (props) => <WorkExperiences {...props} />,
       categoryRef: metaDataCompaniesRef
     },
     {
@@ -127,8 +111,34 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     }
   ]
 
+  const defaultCategoryLeft: CategoryProps[] = [
+    {
+      title: 'Kỹ năng cá nhân',
+      enable: true,
+      name: 'basicSkill',
+      component: (props) => <BasicSkills {...props} />,
+      categoryRef: metaDataBasicSkillsRef
+    },
+    {
+      title: 'Sở thích',
+      enable: false,
+      name: 'hobby',
+      component: (props) => <Hobbies {...props} />,
+      inputRef: inputHobbiesRef
+    },
+    {
+      title: 'Mục tiêu nghề nghiệp',
+      enable: true,
+      name: 'careerGoals',
+      component: (props) => <CareerGoals {...props} />,
+      inputRef: inputGoalsRef
+    }
+  ]
+
   const [category, setCategory] = useState<CategoryProps[]>(defaultCategory)
+  const [categoryLeft, setCategoryLeft] = useState<CategoryProps[]>(defaultCategoryLeft)
   const [categoryChecked, setCategoryChecked] = useState<CategoryProps[]>(defaultCategory)
+  const [categoryCheckedLeft, setCategoryCheckedLeft] = useState<CategoryProps[]>(defaultCategoryLeft)
 
   const onChangColorCV = (colorInput: string) => {
     setColor(colorInput)
@@ -152,54 +162,32 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   }
 
   const onUpCategory = (name: string) => {
-    let index = 0
-    for (let i = 0; i < category.length; i++) {
-      if (category[i].name === name) {
-        index = i
-      }
-    }
-    if (index === 0) {
-      return
-    }
-    const newCategory = [...category]
-    const pr = newCategory[index]
-    newCategory[index] = newCategory[index - 1]
-    newCategory[index - 1] = pr
-    setCategory(newCategory)
+    const newCategory = getCategoryWhenUp(category, name)
+    newCategory && setCategory(newCategory)
   }
 
   const onDownCategory = (name: string) => {
-    let index = 0
-    for (let i = 0; i < category.length; i++) {
-      if (category[i].name === name) {
-        index = i
-      }
-    }
-    if (index === category.length - 1) {
-      console.log('ducnh')
-
-      return
-    }
-    const newCategory = [...category]
-    const pr = newCategory[index]
-    newCategory[index] = newCategory[index + 1]
-    newCategory[index + 1] = pr
-    setCategory(newCategory)
+    const newCategory = getCategoryWhenDown(category, name)
+    newCategory && setCategory(newCategory)
   }
 
   const onRemoveCategory = (name: string) => {
-    const newCategory = [...category]
-    for (let i = 0; i < newCategory.length; i++) {
-      if (newCategory[i].name === name) {
-        newCategory[i].enable = false
-      }
-    }
-    setCategory(newCategory)
+    setCategory(getCategoryWhenRemove(category, name))
   }
 
-  useEffect(() => {
-    document.title = 'CVFREE | Tạo hồ sơ'
-  }, [])
+  const onUpCategoryLeft = (name: string) => {
+    const newCategory = getCategoryWhenUp(categoryLeft, name)
+    newCategory && setCategoryLeft(newCategory)
+  }
+
+  const onDownCategoryLeft = (name: string) => {
+    const newCategory = getCategoryWhenDown(categoryLeft, name)
+    newCategory && setCategoryLeft(newCategory)
+  }
+
+  const onRemoveCategoryLeft = (name: string) => {
+    setCategoryLeft(getCategoryWhenRemove(categoryLeft, name))
+  }
 
   const onChangeCheckbox = (checked: boolean, name: string) => {
     const newCategoryChecked = JSON.parse(JSON.stringify(categoryChecked))
@@ -210,6 +198,63 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     }
     setCategoryChecked(newCategoryChecked)
   }
+
+  const onChangeCheckboxLeft = (checked: boolean, name: string) => {
+    const newCategoryChecked = JSON.parse(JSON.stringify(categoryCheckedLeft))
+    for (let i = 0; i < newCategoryChecked.length; i++) {
+      if (newCategoryChecked[i].name === name) {
+        newCategoryChecked[i].enable = checked
+      }
+    }
+    setCategoryCheckedLeft(newCategoryChecked)
+  }
+
+  const onChangeCategoryList = () => {
+    modalListCategoryRef.current?.hide()
+    for (let i = 0; i < categoryChecked.length; i++) {
+      for (let j = 0; j < category.length; j++) {
+        if (categoryChecked[i].name === category[j].name) {
+          category[j].enable = categoryChecked[i].enable
+        }
+      }
+    }
+    for (let i = 0; i < categoryCheckedLeft.length; i++) {
+      for (let j = 0; j < categoryLeft.length; j++) {
+        if (categoryCheckedLeft[i].name === categoryLeft[j].name) {
+          categoryLeft[j].enable = categoryCheckedLeft[i].enable
+        }
+      }
+    }
+    setCategory(category)
+    setCategoryLeft(categoryLeft)
+  }
+
+  const onHideCategoryList = () => {
+    setCategoryChecked(category)
+    setCategoryCheckedLeft(categoryLeft)
+  }
+
+  const handleScroll = useCallback(() => {
+    if (window.pageYOffset > 62) {
+      setFixedControl(true)
+    } else if (window.pageYOffset <= 62) {
+      setFixedControl(false)
+    }
+    if (cvRef && cvRef.current) {
+      setCvHeight(cvRef.current.clientHeight)
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  useEffect(() => {
+    document.title = 'CVFREE | Tạo hồ sơ'
+  }, [])
 
   return (
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-40">
@@ -271,8 +316,19 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
         {/* CV Main */}
         <div
           style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
-          className={`bg-white mx-auto shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
+          className={`bg-white mx-auto relative shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
+          ref={cvRef}
         >
+          {cvHeight > 1150 && (
+            <div className="cv-page-2 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
+              <span className="text-white font-semibold">Trang 2</span>
+            </div>
+          )}
+          {cvHeight > 2265 && (
+            <div className="cv-page-3 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
+              <span className="text-white font-semibold">Trang 3</span>
+            </div>
+          )}
           <div className="grid grid-cols-3 h-full">
             {/* CV Left */}
             <div className="col-span-1 bg-gray-100 relative">
@@ -287,12 +343,19 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                 <div className="px-5">
                   <PrUpload getImage={getImage} />
                 </div>
-                <div className="mb-6 mt-6">
+                <div className="mt-3">
                   <PrInputCV
-                    divClassName="h-20"
+                    placeholder="Vị trí ứng tuyển"
+                    divClassName="h-8"
+                    className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
+                  />
+                </div>
+                <div className="mb-6 mt-3">
+                  <PrInputCV
+                    divClassName="h-16"
                     placeholder="Giới thiệu chung"
                     type="textarea"
-                    className="bg-transparent resize-none border-gray-400 border rounded-md placeholder-white w-full text-center text-white py-2"
+                    className="bg-transparent resize-none border-gray-400 border border-dashed rounded-md placeholder-gray-200 w-full text-center text-white py-2"
                   />
                 </div>
                 <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
@@ -300,7 +363,7 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
               </div>
 
               <div className="div-bottom-left bg-gray-100 mx-4">
-                <div className="mt-3 flex items-center">
+                <div className="flex items-center">
                   <BirthdayIcon />
                   <PrInputCV placeholder="Ngày sinh" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
                 </div>
@@ -317,6 +380,10 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                   />
                 </div>
                 <div className="flex items-center">
+                  <EmailIcon />
+                  <PrInputCV placeholder="Email" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                </div>
+                <div className="flex items-center">
                   <MapIcon />
                   <PrInputCV placeholder="Địa chỉ" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
                 </div>
@@ -325,44 +392,27 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                   <PrInputCV placeholder="Facebook" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
                 </div>
                 <hr />
-                <div className="mt-4 flex items-center">
-                  <img src={IdeaIcon} alt="skill" className="w-7 h-7" />
-                  <div>
-                    <PrInputCV
-                      placeholder="Kỹ năng cá nhân"
-                      divClassName="h-10 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                    <div className="-m-3 ml-3">
-                      <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="mt-3 flex items-center">
-                  <img src={IdeaIcon} alt="skill" className="w-7 h-7" />
-                  <div>
-                    <PrInputCV
-                      placeholder="Kỹ năng cá nhân"
-                      divClassName="h-10 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                    <div className="-m-3 ml-3">
-                      <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
-                    </div>
-                  </div>
-                </div>
-
-                <MetaDataPersonalSkills ref={metaDataPersonalSkillsRef} />
-                {/* <MetaData ref={metaDataRef} metadata={userInfo?.metadata} /> */}
-
-                <div className="mt-8 mb-3">
-                  <PrInputCV
-                    divClassName="h-48"
-                    placeholder="Mục tiêu nghề nghiệp"
-                    type="textarea"
-                    className="w-full bg-transparent rounded text-center py-2 border resize-none"
-                  />
+                <div className="mb-16">
+                  {categoryLeft &&
+                    categoryLeft.length > 0 &&
+                    categoryLeft.map((item) => {
+                      const { name, enable, component, categoryRef, inputRef } = item
+                      if (!enable) {
+                        return null
+                      }
+                      return (
+                        <div key={name}>
+                          {component({
+                            onDownCategoryLeft,
+                            onUpCategoryLeft,
+                            onRemoveCategoryLeft,
+                            categoryRef,
+                            inputRef
+                          })}
+                        </div>
+                      )
+                    })}
                 </div>
 
                 <div
@@ -406,30 +456,28 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
           title={'Chọn mục hiển thị'}
           cancelTitle="Đóng"
           okTitle="Xác nhận"
-          onChange={() => {
-            modalListCategoryRef.current?.hide()
-            setCategory(categoryChecked)
-          }}
-          onHide={() => setCategoryChecked(category)}
+          onChange={onChangeCategoryList}
+          onHide={onHideCategoryList}
         >
           <div className="grid-cols-2 grid gap-8 py-8">
             <div className="col-span-1 border border-gray-300 border-dashed border-t-0 border-b-0 border-l-0 pl-8 pr-6">
               <div className="mb-10">
                 <span className="uppercase text-lg font-semibold text-center block">Thông tin cá nhân</span>
               </div>
-              {DataCategoryInfo &&
-                DataCategoryInfo.map((item) => {
-                  const { value, label, enable } = item
+              {categoryCheckedLeft &&
+                categoryCheckedLeft.length > 0 &&
+                categoryCheckedLeft.map((item) => {
+                  const { title, enable, name } = item
                   return (
-                    <div className="grid grid-cols-4 mt-5" key={`c_info_${value}`}>
+                    <div className="grid grid-cols-4 mt-5" key={`c_info_${title}`}>
                       <div className="col-span-3">
-                        <span className="mr-4">{label}</span>
+                        <span className="mr-4">{title}</span>
                       </div>
                       <div className="col-span-1">
                         <input
                           type="checkbox"
                           checked={enable}
-                          onChange={(e) => onChangeCheckbox(e.target.checked, '')}
+                          onChange={(e) => onChangeCheckboxLeft(e.target.checked, name)}
                           className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
                         />
                       </div>

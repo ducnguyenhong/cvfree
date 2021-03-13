@@ -1,3 +1,2 @@
-import MetaData from './metadata-activities'
+import MetaData from './metadata-awards'
 export default MetaData
-export type { MetaDataRefProps } from './metadata-activities'

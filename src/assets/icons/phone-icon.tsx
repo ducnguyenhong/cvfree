@@ -4,7 +4,7 @@ interface Props {
   className?: string
 }
 
-const PhoneIcon: React.FC<Props> = (props) => {
+export const PhoneIcon: React.FC<Props> = (props) => {
   const { width, height, className } = props
   return (
     <svg
@@ -32,5 +32,3 @@ const PhoneIcon: React.FC<Props> = (props) => {
     </svg>
   )
 }
-
-export default PhoneIcon

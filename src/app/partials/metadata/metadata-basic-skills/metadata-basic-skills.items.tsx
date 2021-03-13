@@ -1,18 +1,21 @@
-import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
+import PrInputCV from 'app/partials/pr-input-cv'
 import styled from 'styled-components'
+import Rate from 'rc-rate'
 
-interface Props {}
+interface Props {
+  test?: string
+}
 
 export interface ItemsRefProps {
   getValue: () => void
-  setValue?: (newValue: { newSchool: string; newMajor: string }) => void
+  setValue?: (newValue: { key: string; value: string }) => void
   validate?: () => void
 }
 
 const StyleLayout = styled.div`
   .metadata-root {
-    border: 1px solid #fff;
+    border: 1px solid #f3f4f6;
     .metadata-control {
       opacity: 0;
       visibility: hidden;
@@ -31,34 +34,34 @@ const StyleLayout = styled.div`
 `
 
 const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
-  const [school, setSchool] = useState<string>('')
-  const [major, setMajor] = useState<string>('')
+  const [valueInput, setValueInput] = useState<string>('')
+  const [keyInput, setKeyInput] = useState<string>('')
   const [status, setStatus] = useState<boolean>(true)
-  // const [errMessageValue, setErrMessageValue] = useState<string>('')
-  // const [errMessageKey, setErrMessageKey] = useState<string>('')
+  const [errMessageValue, setErrMessageValue] = useState<string>('')
+  const [errMessageKey, setErrMessageKey] = useState<string>('')
   const keyRef = useRef<HTMLInputElement>(null)
   const valueRef = useRef<HTMLInputElement>(null)
 
-  const setValue = (newValue: { newSchool: string; newMajor: string }) => {
-    const { newSchool, newMajor } = newValue
-    setSchool(newSchool)
-    setMajor(newMajor)
+  const setValue = (newValue: { key: string; value: string }) => {
+    const { key, value } = newValue
+    setKeyInput(key)
+    setValueInput(value)
   }
 
   const validate = () => {
-    // if (!status) {
-    //   return true
-    // }
-    // if (!keyInput) {
-    //   keyRef.current?.focus()
-    //   setErrMessageKey('Metadata name is required')
-    //   return false
-    // }
-    // if (!valueInput) {
-    //   valueRef.current?.focus()
-    //   setErrMessageValue('Metadata value is required')
-    //   return false
-    // }
+    if (!status) {
+      return true
+    }
+    if (!keyInput) {
+      keyRef.current?.focus()
+      setErrMessageKey('Metadata name is required')
+      return false
+    }
+    if (!valueInput) {
+      valueRef.current?.focus()
+      setErrMessageValue('Metadata value is required')
+      return false
+    }
     return true
   }
 
@@ -66,11 +69,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     if (!status) {
       return null
     }
-    const data = {
-      school: school.trim(),
-      major: major.trim()
-    }
-    return data
+    return { [keyInput.trim()]: valueInput.trim() }
   }
 
   useImperativeHandle(ref, () => ({
@@ -80,7 +79,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     getValue() {
       return getValue()
     },
-    setValue(newValue: { newSchool: string; newMajor: string }) {
+    setValue(newValue: { key: string; value: string }) {
       setValue(newValue)
     }
   }))
@@ -95,22 +94,16 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
 
   return (
     <StyleLayout>
-      <div className="metadata-root flex w-full pb-1 relative">
+      <div className="metadata-root flex w-full pb-3 relative">
         <div className="w-full metadata-content">
           <PrInputCV
-            placeholder="- Trường học/Trung tâm"
-            divClassName="h-8 w-full mt-0.5"
-            className="bg-transparent w-full"
-            value={school}
-            onChange={(e) => setSchool(e)}
+            placeholder="Kỹ năng"
+            divClassName="h-9 w-full"
+            className="bg-transparent w-full text-gray-600 uppercase font-medium"
           />
-          <PrInputCV
-            placeholder=" + Chuyên ngành"
-            divClassName="h-8 w-full"
-            className="bg-transparent w-full pl-8"
-            value={major}
-            onChange={(e) => setMajor(e)}
-          />
+          <div className="-m-3 ml-3">
+            <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
+          </div>
         </div>
         <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
           <span
@@ -124,5 +117,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     </StyleLayout>
   )
 })
+
+Items.displayName = 'Items'
 
 export default Items

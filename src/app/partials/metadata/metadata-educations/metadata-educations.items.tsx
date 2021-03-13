@@ -1,14 +1,12 @@
-import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
+import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import styled from 'styled-components'
 
-interface Props {
-  test?: string
-}
+interface Props {}
 
 export interface ItemsRefProps {
   getValue: () => void
-  setValue?: (newValue: { key: string; value: string }) => void
+  setValue?: (newValue: { newSchool: string; newMajor: string }) => void
   validate?: () => void
 }
 
@@ -33,34 +31,34 @@ const StyleLayout = styled.div`
 `
 
 const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
-  const [valueInput, setValueInput] = useState<string>('')
-  const [keyInput, setKeyInput] = useState<string>('')
+  const [school, setSchool] = useState<string>('')
+  const [major, setMajor] = useState<string>('')
   const [status, setStatus] = useState<boolean>(true)
-  const [errMessageValue, setErrMessageValue] = useState<string>('')
-  const [errMessageKey, setErrMessageKey] = useState<string>('')
+  // const [errMessageValue, setErrMessageValue] = useState<string>('')
+  // const [errMessageKey, setErrMessageKey] = useState<string>('')
   const keyRef = useRef<HTMLInputElement>(null)
   const valueRef = useRef<HTMLInputElement>(null)
 
-  const setValue = (newValue: { key: string; value: string }) => {
-    const { key, value } = newValue
-    setKeyInput(key)
-    setValueInput(value)
+  const setValue = (newValue: { newSchool: string; newMajor: string }) => {
+    const { newSchool, newMajor } = newValue
+    setSchool(newSchool)
+    setMajor(newMajor)
   }
 
   const validate = () => {
-    if (!status) {
-      return true
-    }
-    if (!keyInput) {
-      keyRef.current?.focus()
-      setErrMessageKey('Metadata name is required')
-      return false
-    }
-    if (!valueInput) {
-      valueRef.current?.focus()
-      setErrMessageValue('Metadata value is required')
-      return false
-    }
+    // if (!status) {
+    //   return true
+    // }
+    // if (!keyInput) {
+    //   keyRef.current?.focus()
+    //   setErrMessageKey('Metadata name is required')
+    //   return false
+    // }
+    // if (!valueInput) {
+    //   valueRef.current?.focus()
+    //   setErrMessageValue('Metadata value is required')
+    //   return false
+    // }
     return true
   }
 
@@ -68,7 +66,11 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     if (!status) {
       return null
     }
-    return { [keyInput.trim()]: valueInput.trim() }
+    const data = {
+      school: school.trim(),
+      major: major.trim()
+    }
+    return data
   }
 
   useImperativeHandle(ref, () => ({
@@ -78,7 +80,7 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     getValue() {
       return getValue()
     },
-    setValue(newValue: { key: string; value: string }) {
+    setValue(newValue: { newSchool: string; newMajor: string }) {
       setValue(newValue)
     }
   }))
@@ -93,9 +95,22 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
 
   return (
     <StyleLayout>
-      <div className="metadata-root flex w-full pb-0.5 relative">
+      <div className="metadata-root flex w-full pb-1 relative">
         <div className="w-full metadata-content">
-          <PrInputCV placeholder="- Giải thưởng" divClassName="h-8 w-full" className="bg-transparent w-full py-1.5" />
+          <PrInputCV
+            placeholder="- Trường học/Trung tâm"
+            divClassName="h-8 w-full mt-0.5"
+            className="bg-transparent w-full uppercase font-semibold text-gray-600"
+            value={school}
+            onChange={(e) => setSchool(e)}
+          />
+          <PrInputCV
+            placeholder=" + Chuyên ngành"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full pl-8 text-gray-600"
+            value={major}
+            onChange={(e) => setMajor(e)}
+          />
         </div>
         <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
           <span
@@ -109,7 +124,5 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     </StyleLayout>
   )
 })
-
-Items.displayName = 'Items'
 
 export default Items

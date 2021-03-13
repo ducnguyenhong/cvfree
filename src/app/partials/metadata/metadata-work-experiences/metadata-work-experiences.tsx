@@ -1,12 +1,6 @@
-import React, { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
-import Items from './metadata-advanced-skills.items'
-
-export interface MetaDataRefProps {
-  getValue: () => void
-  setValue?: (keyword: string) => void
-  validate: () => boolean
-  onCreate: () => void
-}
+import { forwardRef, Ref, useEffect, useImperativeHandle, useState } from 'react'
+import Items from './metadata-work-experiences.items'
+import { MetaDataRefProps } from 'models/metadata-type'
 
 interface Props {
   metadata?: string | Record<string, unknown> | null

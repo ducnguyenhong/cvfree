@@ -95,12 +95,16 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     <StyleLayout>
       <div className="metadata-root flex w-full pb-4 relative">
         <div className="w-full metadata-content">
-          <PrInputCV placeholder="- Kỹ năng" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+          <PrInputCV
+            placeholder="- Kỹ năng"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full py-2  uppercase font-semibold text-gray-600"
+          />
           <PrInputCV
             placeholder=" + Mô tả chi tiết"
             divClassName="h-16 w-full"
             type="textarea"
-            className="bg-transparent w-full pl-8 mt-1.5 resize-none"
+            className="bg-transparent w-full pl-8 mt-1.5 resize-none text-gray-600"
           />
         </div>
         <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">

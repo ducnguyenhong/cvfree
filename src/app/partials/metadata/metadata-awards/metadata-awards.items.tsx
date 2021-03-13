@@ -1,7 +1,6 @@
 import React, { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
-import IdeaIcon from 'assets/icons/idea.svg'
-import Rate from 'rc-rate'
+import styled from 'styled-components'
 
 interface Props {
   test?: string
@@ -12,6 +11,26 @@ export interface ItemsRefProps {
   setValue?: (newValue: { key: string; value: string }) => void
   validate?: () => void
 }
+
+const StyleLayout = styled.div`
+  .metadata-root {
+    border: 1px solid #fff;
+    .metadata-control {
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+    }
+    transition: 0.3s;
+    &:hover {
+      border: 1px dashed #e1e1e1 !important;
+      .metadata-control {
+        transition: 0.3s;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+`
 
 const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   const [valueInput, setValueInput] = useState<string>('')
@@ -29,6 +48,19 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   }
 
   const validate = () => {
+    if (!status) {
+      return true
+    }
+    if (!keyInput) {
+      keyRef.current?.focus()
+      setErrMessageKey('Metadata name is required')
+      return false
+    }
+    if (!valueInput) {
+      valueRef.current?.focus()
+      setErrMessageValue('Metadata value is required')
+      return false
+    }
     return true
   }
 
@@ -55,27 +87,30 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
     return null
   }
 
-  const onTouchRemove = () => {
+  const onRemove = () => {
     setStatus(false)
   }
 
   return (
-    <div className="mt-4 flex items-center">
-      <img src={IdeaIcon} alt="skill" className="w-7 h-7" />
-      <div>
-        <PrInputCV
-          placeholder="Kỹ năng cá nhân"
-          divClassName="h-10 w-full"
-          className="bg-transparent w-full py-2 text-gray-600"
-        />
-        <div className="-m-3 ml-3">
-          <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
+    <StyleLayout>
+      <div className="metadata-root flex w-full pb-0.5 relative">
+        <div className="w-full metadata-content">
+          <PrInputCV
+            placeholder="- Giải thưởng"
+            divClassName="h-8 w-full"
+            className="bg-transparent w-full py-1.5 text-gray-600"
+          />
+        </div>
+        <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">
+          <span
+            onClick={onRemove}
+            className="cursor-pointer bg-red-400 flex justify-center items-center w-5 h-5 rounded-full hover:bg-red-500 duration-300"
+          >
+            <i className="text-white fas fa-times text-sm"></i>
+          </span>
         </div>
       </div>
-      <span onClick={onTouchRemove} className="cursor-pointer mt-6 ml-6">
-        <i className="text-red-500 fas fa-times-circle text-xl hover:text-red-600"></i>
-      </span>
-    </div>
+    </StyleLayout>
   )
 })
 
