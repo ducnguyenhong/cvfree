@@ -17,7 +17,7 @@ const data: CvInfo = {
       name: 'hobby'
     },
     {
-      name: 'goal'
+      name: 'careerGoals'
     }
   ],
   categoryCV: [
@@ -25,7 +25,7 @@ const data: CvInfo = {
       name: 'education'
     },
     {
-      name: 'hobby'
+      name: 'workExperience'
     },
     {
       name: 'advancedSkill'
@@ -48,11 +48,10 @@ const data: CvInfo = {
   ],
   detail: {
     fullname: 'Nguyễn Hồng Đức',
-    avatar: 'http://nhduc.site/static/media/profile.23c73f83.jpg',
+    avatar: 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-avatar-de-thuong-cute.jpg',
     applyPosition: 'Frontend Developer',
-    generalIntro: 'Lập trình web là đam mê của tôi',
     birthday: '11/12/1999',
-    gender: 'MALE',
+    gender: 'Nam',
     phone: '0389755202',
     address: 'Ba Đình, Hà Nội',
     email: 'autoclickvn@gmail.com',
@@ -71,8 +70,8 @@ const data: CvInfo = {
         star: 3
       }
     ],
-    hobby: 'Nghe nhạc, xem phim',
-    goals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
+    hobby: '',
+    careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
     - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
 
     education: [
@@ -115,17 +114,24 @@ const data: CvInfo = {
         time: '09/2017 - 09/2020'
       }
     ],
-    cetificate: [
-      {
-        name: 'Chứng chỉ Tiếng Anh B1'
-      }
+    certificate: [
+      // {
+      //   name: 'Chứng chỉ Tiếng Anh B1'
+      // }
     ],
     award: [
       {
         name: 'Giải 3 cuộc thi sáng tạo cấp tỉnh (Tin học)'
       }
     ],
-    presenter: [],
+    presenter: [
+      // {
+      //   name: 'Nguyễn Hồng Đức',
+      //   position: 'HR',
+      //   phone: '0123456789',
+      //   company: 'HR.vn'
+      // }
+    ],
     anotherInfo: [
       {
         info: 'Website cá nhân http://nhduc.site'

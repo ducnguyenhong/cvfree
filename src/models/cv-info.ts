@@ -15,7 +15,6 @@ export interface CvInfo {
     fullname: string
     avatar?: string
     applyPosition?: string
-    generalIntro?: string
     birthday?: string
     gender?: string
     phone?: string
@@ -27,7 +26,7 @@ export interface CvInfo {
       star: number
     }[]
     hobby?: string
-    goals?: string
+    careerGoals?: string
 
     education?: {
       name: string
@@ -47,7 +46,7 @@ export interface CvInfo {
       name: string
       time: string
     }[]
-    cetificate?: {
+    certificate?: {
       name: string
     }[]
     award?: {

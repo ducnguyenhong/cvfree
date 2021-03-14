@@ -7,7 +7,6 @@ import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon }
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
 import { MetaDataRefProps } from 'models/metadata-type'
-import 'rc-rate/assets/index.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Activities,
@@ -31,7 +30,7 @@ const defaultFontSize = { label: '14px', value: '14px' }
 
 const CvFormLayout: React.FC<CvFormProps> = (props) => {
   const [avatar, setAvatar] = useState<string>()
-  const [color, setColor] = useState<string>('#074C6E')
+  const [color, setColor] = useState<string>('#176F9B')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
@@ -340,22 +339,14 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
                     className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
                   />
                 </div>
-                <div className="px-5">
+                <div className="px-6">
                   <PrUpload getImage={getImage} />
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 mb-5">
                   <PrInputCV
                     placeholder="Vị trí ứng tuyển"
                     divClassName="h-8"
                     className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
-                  />
-                </div>
-                <div className="mb-6 mt-3">
-                  <PrInputCV
-                    divClassName="h-16"
-                    placeholder="Giới thiệu chung"
-                    type="textarea"
-                    className="bg-transparent resize-none border-gray-400 border border-dashed rounded-md placeholder-gray-200 w-full text-center text-white py-2"
                   />
                 </div>
                 <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
