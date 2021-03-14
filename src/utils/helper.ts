@@ -50,7 +50,7 @@ export const getCategoryWhenDown = (category: CategoryProps[], name: string) => 
       index = i
     }
   }
-  if (index === category.length - 1) {
+  if (index === categoryActive.length - 1) {
     return null
   }
   const newCategory = [...categoryActive]

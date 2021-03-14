@@ -41,7 +41,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
           )}
           <div className="grid grid-cols-3 h-full">
             {/* CV Left */}
-            <div className="col-span-1 bg-gray-100 relative">
+            <div className="col-span-1 bg-gray-100 relative overflow-hidden">
               {/* <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}> */}
               <div className="div-top-left p-4 pb-10 overflow-hidden relative">
                 <div className="mb-3">
@@ -81,7 +81,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                 <div className="absolute -bottom-10 -right-10 w-60 h-16 transform -rotate-12 bg-gray-100"></div>
               </div>
 
-              <div className="div-bottom-left bg-gray-100 mx-4">
+              <div className="div-middle-left mx-4">
                 <div className="flex items-center">
                   <BirthdayIcon />
                   <PrInputCV placeholder="Ngày sinh" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
@@ -111,8 +111,10 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                   <PrInputCV placeholder="Facebook" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
                 </div>
                 <hr />
+              </div>
 
-                <div className="mb-20">
+              <div className="div-bottom-left bg-gray-100 mx-2">
+                <div className="mb-16">
                   {/* {categoryLeft &&
                     categoryLeft.length > 0 &&
                     categoryLeft.map((item) => {
@@ -135,16 +137,16 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                 </div>
 
                 <div
-                  className="div-triangle-bottom-left absolute bottom-0 left-0 w-40 h-40"
+                  className="div-triangle-bottom-left absolute -bottom-20 -left-7 w-48 h-28"
                   // style={{ backgroundColor: color }}
                 ></div>
               </div>
             </div>
 
             {/* CV Right */}
-            <div className="col-span-2 relative p-4">
+            <div className="col-span-2 relative p-4 overflow-hidden">
               <div
-                className="div-triangle-top-right absolute top-0 right-0 w-36 h-40"
+                className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
                 // style={{ backgroundColor: color }}
               ></div>
 

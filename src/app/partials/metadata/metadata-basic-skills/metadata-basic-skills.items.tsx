@@ -1,7 +1,8 @@
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import PrInputCV from 'app/partials/pr-input-cv'
 import styled from 'styled-components'
-import Rate from 'rc-rate'
+import { PrRate } from 'app/partials/pr-rate'
+import { InactiveStarIcon } from 'assets/icons'
 
 interface Props {
   test?: string
@@ -95,14 +96,14 @@ const Items = forwardRef((props: Props, ref: Ref<ItemsRefProps>) => {
   return (
     <StyleLayout>
       <div className="metadata-root flex w-full pb-3 relative">
-        <div className="w-full metadata-content">
+        <div className="w-full metadata-content pb-1.5">
           <PrInputCV
-            placeholder="Kỹ năng"
+            placeholder="Tên kỹ năng"
             divClassName="h-9 w-full"
             className="bg-transparent w-full text-gray-600 uppercase font-medium"
           />
-          <div className="-m-3 ml-3">
-            <Rate count={5} style={{ fontSize: 27 }} allowHalf allowClear={false} defaultValue={3} />
+          <div className="-m-3 ml-5 mt-0.5">
+            <PrRate count={5} defaultValue={3} />
           </div>
         </div>
         <div className="flex justify-end metadata-control absolute -top-3 -right-2.5">

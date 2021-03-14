@@ -13,7 +13,7 @@ export const CategoryControl: React.FC<CategoryControlProps> = (props) => {
     onRemoveCategoryLeft
   } = props
   return (
-    <div className="category-control border border-gray-400 rounded-sm h-6 absolute -top-4 right-0 flex items-center opacity-0 group-hover:opacity-100  duration-300">
+    <div className="z-30 category-control border border-gray-400 rounded-sm h-6 absolute -top-4 right-0 flex items-center opacity-0 group-hover:opacity-100  duration-300">
       <div
         onClick={() => {
           onUpCategory && onUpCategory(name)

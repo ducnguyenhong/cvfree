@@ -21,7 +21,8 @@ export const CareerGoals: React.FC<CategoryComponentProps> = (props) => {
       />
       <PrInputCV
         ref={inputRef}
-        divClassName="h-40"
+        divClassName="h-44"
+        placeholder=" - Mục tiêu ngắn hạn, mục tiêu dài hạn..."
         type="textarea"
         className="w-full bg-transparent rounded py-2 resize-none text-gray-600 category-career-goals"
       />
