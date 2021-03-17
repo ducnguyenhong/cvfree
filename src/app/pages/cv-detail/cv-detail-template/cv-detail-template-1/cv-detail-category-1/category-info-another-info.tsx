@@ -17,7 +17,7 @@ export const AnotherInfo: React.FC<AnotherInfoProps> = (props) => {
     <div className="px-2 py-1">
       <div className="flex items-center mb-4">
         <img src={AnotherInfoIcon} alt="icon" className="w-10 h-10 mr-3" />
-        <span className="uppercase font-bold">Giải thưởng</span>
+        <span className="uppercase font-bold">Thông tin khác</span>
       </div>
       {anotherInfo &&
         anotherInfo.length > 0 &&

@@ -1,47 +1,72 @@
-import { lazy } from 'react'
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import localeData from 'app/language'
 import Navbar from 'app/pages/navbar'
+import ErrorFallback from 'app/partials/layout/error-fallback'
+import { Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
+import { IntlProvider } from 'react-intl'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { MainRouteWrapper } from './main-route-wrapper'
+import { DASHBOARD_ROUTES, MAIN_ROUTES } from './route'
 
-const SignInComponent = lazy(() => import('app/pages/sign-in'))
-const SignUpComponent = lazy(() => import('app/pages/sign-up'))
-const ForgotPasswordComponent = lazy(() => import('app/pages/forgot-password'))
+const MainRoute: React.FC = () => {
+  return (
+    <Switch>
+      {MAIN_ROUTES.map((props, index) => {
+        const { path, component, exact } = props
+        return <Route key={`main_${index}`} path={path} component={component} exact={exact} />
+      })}
+    </Switch>
+  )
+}
 
-const ErrorComponent = lazy(() => import('app/pages/error'))
-const HomeComponent = lazy(() => import('app/pages/home'))
+const DashboardRoute: React.FC = () => {
+  return (
+    <Switch>
+      {DASHBOARD_ROUTES.map((props, index) => {
+        const { path, component, exact } = props
+        return (
+          <div key={`${index}${path}`}>
+            <Navbar />
+            <Route path={path} component={component} exact={exact} />
+            <Redirect to="/dashboard" />
+          </div>
+        )
+      })}
+    </Switch>
+  )
+}
 
-const SampleCvComponent = lazy(() => import('app/pages/sample-cv'))
-const JobsNewComponent = lazy(() => import('app/pages/job-new'))
-const EmployerComponent = lazy(() => import('app/pages/employer'))
-const EmployerSignUpComponent = lazy(() => import('app/pages/employer-sign-up'))
+const SwitchRenderer: React.FC = () => {
+  const token = ''
 
-const CvFormComponent = lazy(() => import('app/pages/cv-form'))
-const CvDetailComponent = lazy(() => import('app/pages/cv-detail'))
+  if (token) {
+    return (
+      <div>
+        <Navbar />
+        <DashboardRoute />
+      </div>
+    )
+  }
+
+  return (
+    <MainRouteWrapper>
+      <MainRoute />
+    </MainRouteWrapper>
+  )
+}
 
 const RouteURL: React.FC = () => {
+  const language = 'vi'
   return (
-    <div>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/employer/sign-up" component={EmployerSignUpComponent} />
-          <Route path="/employer" component={EmployerComponent} />
-          <Route path="/jobs-new" component={JobsNewComponent} />
-          <Route path="/sample-cv" component={SampleCvComponent} />
-
-          {/* Auth */}
-          <Route path="/sign-in" component={SignInComponent} />
-          <Route path="/sign-up" component={SignUpComponent} />
-          <Route path="/forgot-password" component={ForgotPasswordComponent} />
-
-          {/* CV */}
-          <Route path="/create-cv" component={CvFormComponent} />
-          <Route path="/cv/:name.:id" component={CvDetailComponent} />
-
-          <Route path="/error" component={ErrorComponent} />
-          <Route exact path="/" component={HomeComponent} />
-        </Switch>
-      </Router>
-    </div>
+    <IntlProvider locale={language} messages={localeData[language] as Record<string, string>}>
+      <BrowserRouter>
+        <Suspense fallback={<span>Loading</span>}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <SwitchRenderer />
+          </ErrorBoundary>
+        </Suspense>
+      </BrowserRouter>
+    </IntlProvider>
   )
 }
 

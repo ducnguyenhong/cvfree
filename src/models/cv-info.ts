@@ -5,6 +5,7 @@ export interface CvInfo {
   template: number
   fontSize: string
   fontFamily: string
+  name?: string
   categoryInfo: {
     name: string
   }[]
@@ -62,6 +63,6 @@ export interface CvInfo {
       info: string
     }[]
   }
-  createdAt?: number
-  updatedAt?: number
+  createdAt: number
+  updatedAt: number
 }

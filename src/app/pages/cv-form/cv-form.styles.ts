@@ -42,10 +42,10 @@ export const CVFormStyle = styled.div`
 
   .cv-page-2 {
     top: 1115px;
-    left: -80px;
+    left: -100px;
   }
   .cv-page-3 {
     top: 2230px;
-    left: -80px;
+    left: -100px;
   }
 `

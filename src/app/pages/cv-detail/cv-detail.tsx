@@ -70,7 +70,7 @@ const data: CvInfo = {
         star: 3
       }
     ],
-    hobby: '',
+    hobby: 'abc',
     careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
     - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
 
@@ -115,9 +115,9 @@ const data: CvInfo = {
       }
     ],
     certificate: [
-      // {
-      //   name: 'Chứng chỉ Tiếng Anh B1'
-      // }
+      {
+        name: 'Chứng chỉ Tiếng Anh B1'
+      }
     ],
     award: [
       {
@@ -125,12 +125,12 @@ const data: CvInfo = {
       }
     ],
     presenter: [
-      // {
-      //   name: 'Nguyễn Hồng Đức',
-      //   position: 'HR',
-      //   phone: '0123456789',
-      //   company: 'HR.vn'
-      // }
+      {
+        name: 'Nguyễn Hồng Đức',
+        position: 'HR',
+        phone: '0123456789',
+        company: 'HR.vn'
+      }
     ],
     anotherInfo: [
       {

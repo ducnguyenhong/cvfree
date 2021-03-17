@@ -2,6 +2,7 @@ import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon }
 import { CvInfo } from 'models/cv-info'
 import { useEffect, useRef, useState } from 'react'
 import { CVDetailStyle } from '../../cv-detail.styles'
+import AvatarTest from 'assets/images/avatar.jpg'
 import {
   BasicSkillInfo,
   CareerGoalsInfo,
@@ -15,6 +16,9 @@ import {
   PresenterInfo,
   AnotherInfo
 } from './cv-detail-category-1'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import { Link } from 'react-router-dom'
 
 interface CvDetailProps {
   data: CvInfo
@@ -85,6 +89,68 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
     }
   }
 
+  const onDownloadPDF = () => {
+    window.scrollTo(0, 0)
+    const input: HTMLElement | null = document.getElementById('cv-detail')
+    input &&
+      html2canvas(input, { useCORS: true, allowTaint: true, scrollY: 0 }).then((canvas) => {
+        const image = { type: 'png', quality: 0.98 }
+        const margin = [0, 0]
+
+        const imgWidth = 8.5
+        let pageHeight = 11
+
+        const innerPageWidth = imgWidth - margin[0] * 2
+        const innerPageHeight = pageHeight - margin[1] * 2 - 0.2
+
+        // Calculate the number of pages.
+        const pxFullHeight = canvas.height
+        const pxPageHeight = Math.floor(canvas.width * (pageHeight / imgWidth))
+        const nPages = Math.ceil(pxFullHeight / pxPageHeight)
+
+        // Define pageHeight separately so it can be trimmed on the final page.
+        pageHeight = innerPageHeight
+
+        // Create a one-page canvas to split up the full image.
+        const pageCanvas = document.createElement('canvas')
+        const pageCtx: CanvasRenderingContext2D | null = pageCanvas.getContext('2d')
+        pageCanvas.width = canvas.width
+        pageCanvas.height = pxPageHeight
+
+        // Initialize the PDF.
+        const pdf = new jsPDF('p', 'in', [8.5, 11])
+
+        for (let page = 0; page < nPages; page++) {
+          // Trim the final page to reduce file size.
+          if (page === nPages - 1 && pxFullHeight % pxPageHeight !== 0) {
+            pageCanvas.height = pxFullHeight % pxPageHeight
+            pageHeight = (pageCanvas.height * innerPageWidth) / pageCanvas.width
+          }
+
+          // Display the page.
+          const w = pageCanvas.width
+          const h = pageCanvas.height
+          if (pageCtx) {
+            pageCtx.fillStyle = 'white'
+            pageCtx.fillRect(0, 0, w, h)
+            pageCtx.drawImage(canvas, 0, page * pxPageHeight, w, h, 0, 0, w, h)
+          }
+
+          // Add the page to the PDF.
+          if (page > 0) pdf.addPage()
+          debugger
+          const imgData = pageCanvas.toDataURL('image/' + image.type, image.quality)
+          pdf.addImage(imgData, image.type, margin[1], margin[0], innerPageWidth, pageHeight)
+        }
+
+        pdf.save(`CVFREE - ${fullname}.pdf`)
+      })
+  }
+
+  const onPrintCV = () => {
+    window.print()
+  }
+
   useEffect(() => {
     if (cvRef && cvRef.current) {
       setCvHeight(cvRef.current.clientHeight)
@@ -92,13 +158,36 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
   }, [cvRef])
 
   return (
-    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-24">
+    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-5">
       <CVDetailStyle>
+        {/* Control */}
+        <div className="fixed bottom-8 right-8">
+          <a
+            href="/"
+            className="mb-3 bg-gray-500 cursor-pointer rounded-full w-12 h-12 flex justify-center items-center hover:bg-gray-600 duration-300"
+          >
+            <i className="fas fa-home block text-white" />
+          </a>
+          <div
+            onClick={onPrintCV}
+            className="mb-3 bg-gray-500 cursor-pointer rounded-full w-12 h-12 flex justify-center items-center hover:bg-gray-600 duration-300"
+          >
+            <i className="fas fa-print block text-white" />
+          </div>
+          <div
+            onClick={onDownloadPDF}
+            className="bg-gray-500 cursor-pointer rounded-full w-12 h-12 flex justify-center items-center hover:bg-gray-600 duration-300"
+          >
+            <i className="fas fa-download block text-white" />
+          </div>
+        </div>
+
         {/* CV Main */}
         <div
           style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
-          className="bg-white mx-auto relative shadow-2xl mt-10"
+          className="mx-auto relative shadow-2xl mt-10"
           ref={cvRef}
+          id="cv-detail"
         >
           {cvHeight > 1150 && (
             <div className="cv-page-2 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
@@ -120,7 +209,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                   </span>
                 </div>
                 <div className="mx-6 rounded-full overflow-hidden">
-                  <img src={avatar} alt="avatar" className="w-full" style={{ aspectRatio: '1/1' }} />
+                  <img src={AvatarTest} alt="avatar" className="w-full" style={{ aspectRatio: '1/1' }} />
                 </div>
                 <div className="mt-3 mb-5">
                   <span className="block uppercase font-medium w-full text-center text-gray-100 py-2">
@@ -176,7 +265,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
             </div>
 
             {/* CV Right */}
-            <div className="col-span-2 relative p-4 overflow-hidden">
+            <div className="col-span-2 relative p-4 overflow-hidden bg-white">
               <div
                 className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
                 style={{ backgroundColor: color }}
