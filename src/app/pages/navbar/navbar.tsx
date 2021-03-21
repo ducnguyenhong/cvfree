@@ -4,19 +4,23 @@ import { userInfoState, userTokenState } from 'app/states/user-info-state'
 import Logo from 'assets/images/logo.png'
 import { languageList } from 'constants/data-language'
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useIntl } from 'react-intl'
+import { Link } from 'react-router-dom'
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
+import { languageState } from 'app/states/language-state'
 
 const NavbarHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
-  const history = useHistory()
+
+  const intl = useIntl()
   const languageRef = useRef<HTMLDivElement>(null)
   const dialogUserRef = useRef<HTMLDivElement>(null)
   const [showUserDialog, setShowUserDialog] = useState(false)
   const [showLangugage, setShowLanguage] = useState(false)
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
-  const language: string = localStorage.getItem('i18n-language') || 'vi'
+  const [language, setLanguage] = useRecoilState(languageState)
+
   const helloName = userInfo?.fullname
     ? userInfo.fullname.split(' ')[userInfo.fullname.split.length]
     : userInfo?.username
@@ -25,13 +29,11 @@ const NavbarHome: React.FC = () => {
     setShowUserDialog(false)
     setUserInfoRecoil(undefined)
     setUserTokenRecoil(undefined)
-    // history.push('/sign-in')
   }, [])
 
   const onChangeLanguage = useCallback((lang: string) => {
-    localStorage.setItem('i18n-language', lang)
+    setLanguage(lang)
     setShowLanguage(false)
-    window.location.reload()
   }, [])
 
   const useOutsideDialog = (ref: RefObject<HTMLDivElement>) => {
@@ -125,31 +127,31 @@ const NavbarHome: React.FC = () => {
                     to="/"
                     className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
                   >
-                    Trang chủ
+                    {intl.formatMessage({ id: 'NAVBAR.HOME' })}
                   </Link>
                   <Link
                     to="/sample-cv"
                     className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
                   >
-                    Mẫu CV
+                    {intl.formatMessage({ id: 'NAVBAR.CV_TEMPLATE' })}
                   </Link>
                   <Link
                     to="/jobs-new"
                     className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
                   >
-                    Việc làm mới
+                    {intl.formatMessage({ id: 'NAVBAR.NEW_JOB' })}
                   </Link>
                   <Link
                     to="/about-us"
                     className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
                   >
-                    Về chúng tôi
+                    {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
                   <Link
                     to="/employer"
                     className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
                   >
-                    Nhà tuyển dụng
+                    {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}
                   </Link>
                 </div>
               </div>
@@ -213,13 +215,13 @@ const NavbarHome: React.FC = () => {
                       to="/sign-in"
                       className="text-white rounded-xl bg-blue-500 shadow-lg block hover:bg-blue-600 duration-300 px-4 py-1.5 text-md font-semibold mr-5"
                     >
-                      Đăng nhập
+                      {intl.formatMessage({ id: 'NAVBAR.SIGN_IN' })}
                     </Link>
                     <Link
                       to="sign-up"
                       className="text-blue-600 rounded-2xl bg-gray-50 shadow-lg block hover:bg-gray-100 duration-300 px-4 py-1.5 text-md font-semibold"
                     >
-                      Đăng ký
+                      {intl.formatMessage({ id: 'NAVBAR.SIGN_UP' })}
                     </Link>
                   </div>
                 ) : (
@@ -233,7 +235,7 @@ const NavbarHome: React.FC = () => {
                       onClick={() => setShowUserDialog(!showUserDialog)}
                     >
                       <div className="flex items-center mr-4">
-                        <span>Xin chào</span>
+                        <span>{intl.formatMessage({ id: 'NAVBAR.HELLO' })}</span>
                         <span className="ml-2 font-semibold">{helloName}</span>
                       </div>
                       <AvatarUser classNameDiv="w-10 h-10" src={userInfo.avatar} gender={userInfo.gender} />

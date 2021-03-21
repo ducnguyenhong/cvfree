@@ -37,12 +37,6 @@ export const PUBLIC_ROUTES: RouteType[] = [
     exact: true
   },
 
-  // auth
-  // {
-  //   path: '/sign-in',
-  //   component: SignIn,
-  //   exact: true
-  // },
   {
     path: '/sign-up',
     component: SignUp,

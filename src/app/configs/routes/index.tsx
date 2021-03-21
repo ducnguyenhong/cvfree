@@ -1,5 +1,4 @@
 import localeData from 'app/language'
-import SignIn from 'app/pages/sign-in'
 import ErrorFallback from 'app/partials/layout/error-fallback'
 import { userTokenState } from 'app/states/user-info-state'
 import { Suspense, lazy } from 'react'
@@ -9,13 +8,13 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
+import { languageState } from 'app/states/language-state'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
+const SignInPage = lazy(() => import('app/pages/sign-in'))
 
 const PublicRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
-
-  console.log('token', token)
 
   return (
     <Switch>
@@ -23,8 +22,8 @@ const PublicRoute: React.FC = () => {
         const { path, component, exact } = props
         return <Route key={`public_${index}`} path={path} component={component} exact={exact} />
       })}
-      {!token ? <Route path="/sign-in" component={SignIn} /> : <Redirect to="/" />}
-      <Route path="/404" exact={true} component={ErrorPage} />
+      {!token ? <Route path="/sign-in" exact component={SignInPage} /> : <Redirect to="/" />}
+      <Route path="/404" exact component={ErrorPage} />
       <Redirect to="/404" />
     </Switch>
   )
@@ -44,7 +43,7 @@ const PrivateRoute: React.FC = () => {
           })}
         </>
       )}
-      <Route path="/404" exact={true} component={ErrorPage} />
+      <Route path="/404" exact component={ErrorPage} />
       <Redirect to="/404" />
     </Switch>
   )
@@ -62,7 +61,7 @@ const SwitchRenderer: React.FC = () => {
 }
 
 const RouteURL: React.FC = () => {
-  const language: string = localStorage.getItem('i18n-language') || 'vi'
+  const language = useRecoilValue(languageState)
   return (
     <IntlProvider locale={language} messages={localeData[language] as Record<string, string>}>
       <BrowserRouter>

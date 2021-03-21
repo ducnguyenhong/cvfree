@@ -10,9 +10,6 @@ const TopHome: React.FC = () => {
       <div className="col-span-1">
         <img src={ImgHomeIntro} alt="intro" />
       </div>
-      <div className="text-center col-span-2 mt-5">
-        <span className="font-medium text-xl italic text-green-600">"Miễn phí và mãi mãi như vậy"</span>
-      </div>
     </div>
   )
 }
