@@ -14,6 +14,7 @@ import { checkEmail, checkUsername } from 'utils/helper'
 import { v4 as uuidv4 } from 'uuid'
 import { SignInStyle } from './styles'
 import AuthIntro from 'app/pages/auth-intro'
+import { get } from 'lodash'
 
 interface SignUpProps {}
 
@@ -21,11 +22,10 @@ interface DataSignUpType {
   username: string
   password: string
   email: string
-  deviceId: string
   type: string
 }
 
-const SignInLayout: React.FC<SignUpProps> = (props) => {
+const SignUp: React.FC<SignUpProps> = (props) => {
   const [checkPolicy, setCheckPolicy] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -103,7 +103,6 @@ const SignInLayout: React.FC<SignUpProps> = (props) => {
       username,
       password: md5(password),
       email,
-      deviceId: uuidv4(),
       type: 'USER'
     }
 
@@ -111,7 +110,7 @@ const SignInLayout: React.FC<SignUpProps> = (props) => {
   }
 
   const callApi = (data: DataSignUpType) => {
-    const url = `${SERVER_URL}/users/sign-up`
+    const url = `${SERVER_URL}/auth/sign-up`
     const headers = {
       'Content-Type': 'application/json'
     }
@@ -141,8 +140,7 @@ const SignInLayout: React.FC<SignUpProps> = (props) => {
       })
       .catch((e) => {
         setLoading(false)
-        showNotify.error(e ? e : 'Lỗi hệ thống!')
-        console.log('e', e)
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
 
@@ -257,4 +255,4 @@ const SignInLayout: React.FC<SignUpProps> = (props) => {
   )
 }
 
-export default SignInLayout
+export default SignUp

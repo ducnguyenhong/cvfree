@@ -22,7 +22,7 @@ interface RouteType {
   exact: boolean
 }
 
-export const MAIN_ROUTES: RouteType[] = [
+export const PUBLIC_ROUTES: RouteType[] = [
   // Home
   {
     path: '/',
@@ -38,11 +38,11 @@ export const MAIN_ROUTES: RouteType[] = [
   },
 
   // auth
-  {
-    path: '/sign-in',
-    component: SignIn,
-    exact: true
-  },
+  // {
+  //   path: '/sign-in',
+  //   component: SignIn,
+  //   exact: true
+  // },
   {
     path: '/sign-up',
     component: SignUp,
@@ -54,13 +54,6 @@ export const MAIN_ROUTES: RouteType[] = [
     exact: true
   },
 
-  // CV
-
-  {
-    path: '/create-cv',
-    component: CvForm,
-    exact: true
-  },
   {
     path: '/sample-cv',
     component: SampleCv,
@@ -69,11 +62,6 @@ export const MAIN_ROUTES: RouteType[] = [
   {
     path: '/cv-public/:name.:id',
     component: CvDetail,
-    exact: true
-  },
-  {
-    path: '/manage-cv',
-    component: CvManage,
     exact: true
   },
 
@@ -97,4 +85,16 @@ export const MAIN_ROUTES: RouteType[] = [
   }
 ]
 
-export const DASHBOARD_ROUTES: RouteType[] = []
+export const PRIVATE_ROUTES: RouteType[] = [
+  // auth
+  {
+    path: '/create-cv',
+    component: CvForm,
+    exact: true
+  },
+  {
+    path: '/manage-cv',
+    component: CvManage,
+    exact: true
+  }
+]

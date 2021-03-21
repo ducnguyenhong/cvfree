@@ -1,4 +1,5 @@
 import DefaultImage from 'assets/images/default-avatar.png'
+import DefaultImageFemale from 'assets/images/default-avatar-female.png'
 import styled from 'styled-components'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
   styleDiv?: React.CSSProperties
   className?: string
   classNameDiv?: string
+  gender?: string
 }
 
 const StyleComponent = styled.div`
@@ -33,10 +35,15 @@ const StyleComponent = styled.div`
 `
 
 export const AvatarUser: React.FC<Props> = (props) => {
-  const { src, alt, style, className, styleDiv, classNameDiv } = props
+  const { src, alt, style, className, styleDiv, classNameDiv, gender } = props
   return (
     <StyleComponent style={{ ...styleDiv }} className={classNameDiv}>
-      <img className={className} src={src || DefaultImage} style={{ ...style }} alt={alt || 'avatar user'} />
+      <img
+        className={className}
+        src={src || (gender === 'FEMALE' ? DefaultImageFemale : DefaultImage)}
+        style={{ ...style }}
+        alt={alt || 'avatar user'}
+      />
     </StyleComponent>
   )
 }

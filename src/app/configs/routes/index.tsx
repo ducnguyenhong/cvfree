@@ -1,62 +1,68 @@
 import localeData from 'app/language'
-import Navbar from 'app/pages/navbar'
+import SignIn from 'app/pages/sign-in'
 import ErrorFallback from 'app/partials/layout/error-fallback'
-import { Suspense } from 'react'
+import { userTokenState } from 'app/states/user-info-state'
+import { Suspense, lazy } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
-import { DASHBOARD_ROUTES, MAIN_ROUTES } from './route'
+import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
 
-const MainRoute: React.FC = () => {
+const ErrorPage = lazy(() => import('app/pages/error'))
+
+const PublicRoute: React.FC = () => {
+  const token = useRecoilValue(userTokenState)?.token
+
+  console.log('token', token)
+
   return (
     <Switch>
-      {MAIN_ROUTES.map((props, index) => {
+      {PUBLIC_ROUTES.map((props, index) => {
         const { path, component, exact } = props
-        return <Route key={`main_${index}`} path={path} component={component} exact={exact} />
+        return <Route key={`public_${index}`} path={path} component={component} exact={exact} />
       })}
+      {!token ? <Route path="/sign-in" component={SignIn} /> : <Redirect to="/" />}
+      <Route path="/404" exact={true} component={ErrorPage} />
+      <Redirect to="/404" />
     </Switch>
   )
 }
 
-const DashboardRoute: React.FC = () => {
+const PrivateRoute: React.FC = () => {
+  const token = useRecoilValue(userTokenState)?.token
   return (
     <Switch>
-      {DASHBOARD_ROUTES.map((props, index) => {
-        const { path, component, exact } = props
-        return (
-          <div key={`${index}${path}`}>
-            <Navbar />
-            <Route path={path} component={component} exact={exact} />
-            <Redirect to="/dashboard" />
-          </div>
-        )
-      })}
+      {!token ? (
+        <Redirect to="/sign-in" />
+      ) : (
+        <>
+          {PRIVATE_ROUTES.map((props, index) => {
+            const { path, component, exact } = props
+            return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
+          })}
+        </>
+      )}
+      <Route path="/404" exact={true} component={ErrorPage} />
+      <Redirect to="/404" />
     </Switch>
   )
 }
 
 const SwitchRenderer: React.FC = () => {
-  const token = ''
-
-  if (token) {
-    return (
-      <div>
-        <Navbar />
-        <DashboardRoute />
-      </div>
-    )
-  }
-
   return (
     <MainRouteWrapper>
-      <MainRoute />
+      <Switch>
+        <PublicRoute />
+        <PrivateRoute />
+      </Switch>
     </MainRouteWrapper>
   )
 }
 
 const RouteURL: React.FC = () => {
-  const language = 'vi'
+  const language: string = localStorage.getItem('i18n-language') || 'vi'
   return (
     <IntlProvider locale={language} messages={localeData[language] as Record<string, string>}>
       <BrowserRouter>

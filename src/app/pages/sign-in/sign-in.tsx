@@ -1,19 +1,108 @@
 import Logo from 'assets/images/logo.png'
 import BgLogo from 'assets/images/bg-login.png'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { SignInStyle } from './styles'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Button from 'app/partials/pr-button'
 import LoadingIcon from 'assets/icons/loading.svg'
 import LoginIcon from 'assets/icons/login'
-import PrInput from 'app/partials/pr-input-auth'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import HomeIntro from 'app/pages/home/home-intro'
 import ImgDotConnect from 'assets/images/img-dot-connect.png'
 import AuthIntro from 'app/pages/auth-intro'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import md5 from 'md5'
+import { SERVER_URL } from 'constants/index'
+import { showNotify } from 'app/partials/pr-notify'
+import { get } from 'lodash'
+import { UserInfo } from 'models/user-info'
+import { userInfoState, userTokenState } from 'app/states/user-info-state'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import Cookies from 'js-cookie'
 
 interface SignInProps {}
 
-const SignInLayout: React.FC<SignInProps> = (props) => {
+interface DataSignIn {
+  username: string
+  password: string
+  deviceId?: string
+}
+
+interface ResponseSignIn {
+  success: boolean
+  data: {
+    auth: {
+      token: string
+      expiredAt: number
+    }
+    userInfo: UserInfo
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+const SignIn: React.FC<SignInProps> = (props) => {
+  const usernameRef = useRef<PrInputRefProps>(null)
+  const passwordRef = useRef<PrInputRefProps>(null)
+
+  const accessToken = Cookies.get('token')
+
+  const setUserInfoRecoil = useSetRecoilState(userInfoState)
+  const setUserTokenRecoil = useSetRecoilState(userTokenState)
+
+  const onSignIn = useCallback(() => {
+    const username = usernameRef.current?.getValue() || ''
+    const password = passwordRef.current?.getValue() || ''
+
+    const data: DataSignIn = {
+      username,
+      password: md5(password)
+    }
+
+    callApi(data)
+  }, [])
+
+  const callApi = (data: DataSignIn) => {
+    const url = `${SERVER_URL}/auth/sign-in`
+    const headers = {
+      'Content-Type': 'application/json',
+      accessToken
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      headers,
+      url,
+      data,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseSignIn>) => {
+        const { success, data, message, error } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+
+        const { auth, userInfo } = data
+
+        showNotify.success(message)
+        setUserInfoRecoil(userInfo)
+        setUserTokenRecoil({ token: auth.token, expiredAt: auth.expiredAt })
+
+        // history.push('/')
+
+        // setLoading(false)
+        // resetInput()
+      })
+      .catch((e) => {
+        // setLoading(false)
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
   useEffect(() => {
     document.title = 'CVFREE | Đăng nhập'
   }, [])
@@ -35,13 +124,13 @@ const SignInLayout: React.FC<SignInProps> = (props) => {
                     <span className="text-green-600"> CVFREE</span>
                   </span>
                   <div className="mt-16">
-                    <PrInput label="Tài khoản" icon="fas fa-user" />
+                    <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Mật khẩu" type="password" icon="fas fa-lock" />
+                    <PrInput label="Mật khẩu" type="password" icon="fas fa-lock" ref={passwordRef} />
                   </div>
                   <div className="flex justify-center mt-12">
-                    <Button type="success" className="flex items-center">
+                    <Button type="success" className="flex items-center" onClick={onSignIn}>
                       {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                       </svg> */}
@@ -85,4 +174,4 @@ const SignInLayout: React.FC<SignInProps> = (props) => {
   )
 }
 
-export default SignInLayout
+export default SignIn

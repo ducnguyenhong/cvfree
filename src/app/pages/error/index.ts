@@ -1,3 +1,3 @@
-import Layout from './error-layout'
+import { ErrorLayout } from './error-layout'
 
-export default Layout
+export default ErrorLayout
