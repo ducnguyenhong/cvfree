@@ -1,4 +1,7 @@
-import { CategoryProps } from 'app/pages/cv-form/cv-form.types'
+import { CategoryProps } from 'app/pages/cv-template-create/cv-form-1/cv-form.types'
+import DefaultImage from 'assets/images/default-avatar.png'
+import DefaultImageFemale from 'assets/images/default-avatar-female.png'
+
 export const checkEmail = (email: string) => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
 }
@@ -86,4 +89,11 @@ export const slugURL = (str: string) => {
   str = str.replace(/^-+/g, '')
   str = str.replace(/-+$/g, '')
   return str
+}
+
+export const getDefaultAvatar = (gender?: string) => {
+  if (gender === 'FEMALE') {
+    return DefaultImageFemale
+  }
+  return DefaultImage
 }

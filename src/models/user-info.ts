@@ -9,9 +9,12 @@ export interface UserInfo {
   country?: string
   fullname?: string
   gender?: string
-  id: number
+  id?: number
   phone?: string
   status: string
   type: string
   avatar?: string
+  seeCV?: boolean
+  findJob?: boolean
+  typeAccount?: string
 }

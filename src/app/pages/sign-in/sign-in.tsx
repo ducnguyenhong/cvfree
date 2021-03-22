@@ -46,8 +46,6 @@ const SignIn: React.FC<SignInProps> = (props) => {
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
 
-  const accessToken = Cookies.get('token')
-
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
 
@@ -66,8 +64,8 @@ const SignIn: React.FC<SignInProps> = (props) => {
   const callApi = (data: DataSignIn) => {
     const url = `${SERVER_URL}/auth/sign-in`
     const headers = {
-      'Content-Type': 'application/json',
-      accessToken
+      'Content-Type': 'application/json'
+      // Authorization: `Bearer ${accessToken}`
     }
 
     const config: AxiosRequestConfig = {

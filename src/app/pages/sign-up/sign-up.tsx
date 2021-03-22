@@ -15,15 +15,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { SignInStyle } from './styles'
 import AuthIntro from 'app/pages/auth-intro'
 import { get } from 'lodash'
+import { UserInfo } from '../../../models/user-info'
 
 interface SignUpProps {}
-
-interface DataSignUpType {
-  username: string
-  password: string
-  email: string
-  type: string
-}
 
 const SignUp: React.FC<SignUpProps> = (props) => {
   const [checkPolicy, setCheckPolicy] = useState<boolean>(true)
@@ -99,17 +93,21 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     const password = passwordRef.current?.getValue() || ''
     const email = emailRef.current?.getValue() || ''
 
-    const data: DataSignUpType = {
+    const data: UserInfo = {
       username,
       password: md5(password),
       email,
-      type: 'USER'
+      type: 'USER',
+      status: 'ACTIVE',
+      seeCV: true,
+      findJob: true,
+      typeAccount: 'NORMAL'
     }
 
     callApi(data)
   }
 
-  const callApi = (data: DataSignUpType) => {
+  const callApi = (data: UserInfo) => {
     const url = `${SERVER_URL}/auth/sign-up`
     const headers = {
       'Content-Type': 'application/json'

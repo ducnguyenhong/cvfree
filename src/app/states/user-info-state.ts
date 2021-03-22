@@ -30,8 +30,6 @@ const userInfoAtom = atom<UserAtomType>({
   default: new Promise<UserAtomType>((resolve) => {
     let userInfo: UserInfo | undefined
     const userInfoStorage = localStorage.getItem('user-info')
-    console.log('userInfoStorage', userInfoStorage)
-
     if (userInfoStorage) {
       userInfo = JSON.parse(userInfoStorage) as UserInfo
     }
@@ -55,8 +53,8 @@ export const userTokenState = selector<TokenAtomType | undefined>({
     }
 
     const { token, expiredAt } = data
-    data ? Cookies.set('token', data) : Cookies.remove('token')
-    expiredAt ? Cookies.set('expired-at', data) : Cookies.remove('expired-at')
+    token ? Cookies.set('token', token) : Cookies.remove('token')
+    expiredAt ? Cookies.set('expired-at', `${expiredAt}`) : Cookies.remove('expired-at')
     set(tokenAtom, { ...get(tokenAtom), token, expiredAt: Number(expiredAt) })
   }
 })

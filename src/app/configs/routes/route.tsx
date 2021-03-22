@@ -7,12 +7,12 @@ const ForgotPassword = lazy(() => import('app/pages/forgot-password'))
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
 
-const SampleCv = lazy(() => import('app/pages/sample-cv'))
+const TemplateSelectCV = lazy(() => import('app/pages/cv-template-select'))
 const JobsNew = lazy(() => import('app/pages/job-new'))
 const Employer = lazy(() => import('app/pages/employer'))
 const EmployerSignUp = lazy(() => import('app/pages/employer-sign-up'))
 
-const CvForm = lazy(() => import('app/pages/cv-form'))
+const CvForm = lazy(() => import('app/pages/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv-detail'))
 const CvManage = lazy(() => import('app/pages/cv-manage'))
 
@@ -49,8 +49,8 @@ export const PUBLIC_ROUTES: RouteType[] = [
   },
 
   {
-    path: '/sample-cv',
-    component: SampleCv,
+    path: '/template-cv',
+    component: TemplateSelectCV,
     exact: true
   },
   {
@@ -81,6 +81,39 @@ export const PUBLIC_ROUTES: RouteType[] = [
 
 export const PRIVATE_ROUTES: RouteType[] = [
   // auth
+  {
+    path: '/',
+    component: Home,
+    exact: true
+  },
+  {
+    path: '/error',
+    component: ErrorComponent,
+    exact: true
+  },
+  {
+    path: '/template-cv',
+    component: TemplateSelectCV,
+    exact: true
+  },
+  {
+    path: '/cv-public/:name.:id',
+    component: CvDetail,
+    exact: true
+  },
+  {
+    path: '/employer',
+    component: Employer,
+    exact: true
+  },
+
+  // Menu
+  {
+    path: '/jobs-new',
+    component: JobsNew,
+    exact: true
+  },
+
   {
     path: '/create-cv',
     component: CvForm,

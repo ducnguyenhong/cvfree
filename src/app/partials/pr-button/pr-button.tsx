@@ -8,6 +8,13 @@ interface PrButtonProps {
 }
 
 const PrButtonStyle = styled.div`
+  .bg-primary {
+    background-color: #059669;
+    &:hover {
+      background-color: #047857;
+    }
+  }
+
   .bg-success {
     background-color: #059669;
     &:hover {

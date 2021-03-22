@@ -225,8 +225,8 @@ const NavbarHome: React.FC = () => {
                     </Link>
                   </div>
                 ) : (
-                  <div>
-                    <span
+                  <div className="relative">
+                    <div
                       className={`flex cursor-pointer px-3 py-1 rounded-lg items-center hover:bg-gray-100 duration-300 ${
                         showUserDialog && 'bg-gray-100'
                       }`}
@@ -239,38 +239,38 @@ const NavbarHome: React.FC = () => {
                         <span className="ml-2 font-semibold">{helloName}</span>
                       </div>
                       <AvatarUser classNameDiv="w-10 h-10" src={userInfo.avatar} gender={userInfo.gender} />
-                    </span>
+                    </div>
                     {showUserDialog && (
-                      <div className="rounded origin-top-right absolute right-0 mt-8 w-96 shadow-lg bg-white">
-                        <div className="bg-indigo-700 flex p-4">
+                      <div className="rounded absolute overflow-hidden right-0 top-16 w-96 shadow-lg bg-white">
+                        <div className="bg-indigo-800 flex p-4 items-center">
                           <AvatarUser classNameDiv="w-16 h-16" src={userInfo.avatar} gender={userInfo.gender} />
                           <div className="ml-4">
-                            <span className="text-white text-xl">Nguyễn Đức (ID: 1)</span>
+                            <span className="text-white text-lg">{userInfo.fullname || 'Ứng viên'}</span>
                             <div className="flex items-center text-white">
-                              <i className="fas fa-user-circle text-white mr-2"></i>
-                              <span className="text-white text-md">ducnh</span>
+                              <i className="fas fa-user-circle text-white text-sm mr-2"></i>
+                              <span className="text-gray-300">{userInfo.username}</span>
                             </div>
                           </div>
                         </div>
                         <Link
                           to="/profile"
-                          className="px-4 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         >
                           <i className="fas fa-info-circle mr-2"></i>
                           <span className="text-md">Your Profile</span>
                         </Link>
                         <Link
-                          to="/create-cv"
-                          className="px-4 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                          to="/manage-cv"
+                          className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                           onClick={() => setShowUserDialog(false)}
                         >
-                          <i className="fas fa-info-circle mr-2"></i>
-                          <span className="text-md">Create CV</span>
+                          <i className="fas fa-paste mr-2"></i>
+                          <span className="text-md">Quản lý CV</span>
                         </Link>
-                        <div onClick={onSignOut}>
-                          <Button type="primary" className="">
-                            <i className="fas fa-sign-out-alt "></i>
-                            <span className="text-gray-900 text-md">Logout</span>
+                        <div className="px-6 mb-4 mt-3">
+                          <Button type="danger" onClick={onSignOut}>
+                            <i className="fas fa-sign-out-alt mr-2"></i>
+                            <span className="text-white text-md">Logout</span>
                           </Button>
                         </div>
                       </div>

@@ -28,7 +28,7 @@ import { getCategoryWhenUp, getCategoryWhenDown, getCategoryWhenRemove } from 'u
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
-const CvFormLayout: React.FC<CvFormProps> = (props) => {
+export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   const [avatar, setAvatar] = useState<string>()
   const [color, setColor] = useState<string>('#176F9B')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
@@ -234,9 +234,9 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   }
 
   const handleScroll = useCallback(() => {
-    if (window.pageYOffset > 62) {
+    if (window.pageYOffset > 51) {
       setFixedControl(true)
-    } else if (window.pageYOffset <= 62) {
+    } else if (window.pageYOffset <= 51) {
       setFixedControl(false)
     }
     if (cvRef && cvRef.current) {
@@ -256,13 +256,13 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
   }, [])
 
   return (
-    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-40">
+    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-32">
       <CVFormStyle>
         {/* Control */}
         <div
-          style={{ width: '210mm' }}
+          style={{ width: '210mm', top: fixedControl ? 76 : undefined }}
           className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
-            fixedControl ? 'fixed top-24 left-0 right-0 mx-auto' : 'relative'
+            fixedControl ? 'fixed left-0 right-0 mx-auto' : 'relative'
           }`}
         >
           {/* Màu CV */}
@@ -510,5 +510,3 @@ const CvFormLayout: React.FC<CvFormProps> = (props) => {
     </div>
   )
 }
-
-export default CvFormLayout

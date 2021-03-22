@@ -50,12 +50,10 @@ const PrivateRoute: React.FC = () => {
 }
 
 const SwitchRenderer: React.FC = () => {
+  const token = useRecoilValue(userTokenState)?.token
   return (
     <MainRouteWrapper>
-      <Switch>
-        <PublicRoute />
-        <PrivateRoute />
-      </Switch>
+      <Switch>{token ? <PrivateRoute /> : <PublicRoute />}</Switch>
     </MainRouteWrapper>
   )
 }
