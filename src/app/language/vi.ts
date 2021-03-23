@@ -17,5 +17,11 @@ export default {
     SIGN_IN: 'Đăng nhập',
     SIGN_UP: 'Đăng ký',
     HELLO: 'Xin chào'
+  },
+  PR_UPLOAD_CROP: {
+    OK: 'Cắt ảnh',
+    CANCEL: 'Hủy',
+    CROP_IMAGE: 'Cắt ảnh',
+    NOTE: 'Cắt ảnh theo tỷ lệ 1 : 1 sẽ giúp CV của bạn đẹp hơn'
   }
 }

@@ -1,8 +1,8 @@
 export interface CvInfo {
-  id: number
+  id?: number
   userId: number
   color: string
-  template: number
+  template: string
   fontSize: string
   fontFamily: string
   name?: string
@@ -16,11 +16,11 @@ export interface CvInfo {
     fullname: string
     avatar?: string
     applyPosition?: string
-    birthday?: string
-    gender?: string
-    phone?: string
+    birthday: string
+    gender: string
+    phone: string
     address?: string
-    email?: string
+    email: string
     facebook?: string
     basicSkill?: {
       name: string
@@ -63,6 +63,6 @@ export interface CvInfo {
       info: string
     }[]
   }
-  createdAt: number
-  updatedAt: number
+  createdAt?: number
+  updatedAt?: number
 }

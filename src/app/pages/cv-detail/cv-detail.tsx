@@ -6,7 +6,7 @@ const data: CvInfo = {
   id: 1,
   userId: 1,
   color: '#176F9B',
-  template: 1,
+  template: '<i class="fas fa-wifi-1    "></i>',
   fontSize: '14px',
   fontFamily: `"Quicksand", sans-serif`,
   categoryInfo: [
@@ -154,7 +154,7 @@ const CvDetail: React.FC = () => {
 
   const { template } = cvInfo
 
-  if (template === 1) {
+  if (template === '1') {
     return <CvDetailTemplate1 data={cvInfo} />
   }
 

@@ -23,32 +23,50 @@ import {
 } from './category'
 import { CVFormStyle } from './cv-form.styles'
 import { CategoryProps, CvFormProps, PrInputCVRefProps } from './cv-form.types'
-import { getCategoryWhenUp, getCategoryWhenDown, getCategoryWhenRemove } from 'utils/helper'
+import { getCategoryWhenUp, getCategoryWhenDown, getCategoryWhenRemove, uploadServer } from 'utils/helper'
+import { CvInfo } from 'models/cv-info'
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'app/states/user-info-state'
+import { SERVER_URL } from 'constants/index'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import Cookies from 'js-cookie'
+import { ResponseCVDetail } from 'models/response-api'
+import { showNotify } from 'app/partials/pr-notify'
+import { get } from 'lodash'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
 export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
-  const [avatar, setAvatar] = useState<string>()
+  const userInfo = useRecoilValue(userInfoState)
+  const [avatar, setAvatar] = useState<File | null>(null)
   const [color, setColor] = useState<string>('#176F9B')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
   const [cvHeight, setCvHeight] = useState<number>(0)
 
+  const fullnameRef = useRef<PrInputCVRefProps>(null)
+  const applyPositionRef = useRef<PrInputCVRefProps>(null)
+  const birthdayRef = useRef<PrInputCVRefProps>(null)
+  const phoneRef = useRef<PrInputCVRefProps>(null)
+  const genderRef = useRef<PrInputCVRefProps>(null)
+  const emailRef = useRef<PrInputCVRefProps>(null)
+  const addressRef = useRef<PrInputCVRefProps>(null)
+  const facbookRef = useRef<PrInputCVRefProps>(null)
+
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
-  const metaDataSchoolsRef = useRef<MetaDataRefProps>(null)
-  const metaDataAwardsRef = useRef<MetaDataRefProps>(null)
-  const metaDataPresentersRef = useRef<MetaDataRefProps>(null)
-  const metaDataCompaniesRef = useRef<MetaDataRefProps>(null)
-  const metaDataAnotherInfoRef = useRef<MetaDataRefProps>(null)
-  const metaDataPersonalSkillsRef = useRef<MetaDataRefProps>(null)
-  const metaDataAdvancedSkillsRef = useRef<MetaDataRefProps>(null)
-  const metaDataActivitiesRef = useRef<MetaDataRefProps>(null)
-  const metaDataCertificatesRef = useRef<MetaDataRefProps>(null)
-  const metaDataBasicSkillsRef = useRef<MetaDataRefProps>(null)
-  const inputHobbiesRef = useRef<PrInputCVRefProps>(null)
-  const inputGoalsRef = useRef<PrInputCVRefProps>(null)
+  const educationsRef = useRef<MetaDataRefProps>(null)
+  const awardsRef = useRef<MetaDataRefProps>(null)
+  const presentersRef = useRef<MetaDataRefProps>(null)
+  const workExperiencesRef = useRef<MetaDataRefProps>(null)
+  const anotherInfoRef = useRef<MetaDataRefProps>(null)
+  const advancedSkillsRef = useRef<MetaDataRefProps>(null)
+  const activitiesRef = useRef<MetaDataRefProps>(null)
+  const certificatesRef = useRef<MetaDataRefProps>(null)
+  const basicSkillsRef = useRef<MetaDataRefProps>(null)
+  const hobbiesRef = useRef<PrInputCVRefProps>(null)
+  const careerGoalsRef = useRef<PrInputCVRefProps>(null)
   const cvRef = useRef<HTMLDivElement>(null)
 
   const defaultCategory: CategoryProps[] = [
@@ -57,56 +75,56 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
       enable: true,
       name: 'education',
       component: (props) => <Educations {...props} />,
-      categoryRef: metaDataSchoolsRef
+      categoryRef: educationsRef
     },
     {
       title: 'Kinh nghiệm làm việc',
       enable: true,
       name: 'workExperience',
       component: (props) => <WorkExperiences {...props} />,
-      categoryRef: metaDataCompaniesRef
+      categoryRef: workExperiencesRef
     },
     {
       title: 'Kỹ năng chuyên môn',
       enable: true,
       name: 'advancedSkill',
       component: (props) => <AdvancedSkills {...props} />,
-      categoryRef: metaDataAdvancedSkillsRef
+      categoryRef: advancedSkillsRef
     },
     {
       title: 'Hoạt động',
       enable: true,
       name: 'activity',
       component: (props) => <Activities {...props} />,
-      categoryRef: metaDataActivitiesRef
+      categoryRef: activitiesRef
     },
     {
       title: 'Chứng chỉ',
       enable: true,
       name: 'certificate',
       component: (props) => <Certificates {...props} />,
-      categoryRef: metaDataCertificatesRef
+      categoryRef: certificatesRef
     },
     {
       title: 'Giải thưởng',
       enable: true,
       name: 'award',
       component: (props) => <Awards {...props} />,
-      categoryRef: metaDataAwardsRef
+      categoryRef: awardsRef
     },
     {
       title: 'Người giới thiệu',
       enable: false,
       name: 'presenter',
       component: (props) => <Presenters {...props} />,
-      categoryRef: metaDataPresentersRef
+      categoryRef: presentersRef
     },
     {
       title: 'Thông tin khác',
       enable: false,
       name: 'anotherInfo',
       component: (props) => <AnotherInfos {...props} />,
-      categoryRef: metaDataAnotherInfoRef
+      categoryRef: anotherInfoRef
     }
   ]
 
@@ -116,21 +134,21 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
       enable: true,
       name: 'basicSkill',
       component: (props) => <BasicSkills {...props} />,
-      categoryRef: metaDataBasicSkillsRef
+      categoryRef: basicSkillsRef
     },
     {
       title: 'Sở thích',
       enable: false,
       name: 'hobby',
       component: (props) => <Hobbies {...props} />,
-      inputRef: inputHobbiesRef
+      inputRef: hobbiesRef
     },
     {
       title: 'Mục tiêu nghề nghiệp',
       enable: true,
       name: 'careerGoals',
       component: (props) => <CareerGoals {...props} />,
-      inputRef: inputGoalsRef
+      inputRef: careerGoalsRef
     }
   ]
 
@@ -144,16 +162,162 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   }
 
   const getImage = (img: any) => {
-    console.log('img', img)
+    console.log('ducnh2', img)
 
     setAvatar(img)
   }
 
+  const validate = () => {
+    return true
+  }
+
   const onCreateCV = () => {
-    const metaData =
-      metaDataPersonalSkillsRef && metaDataPersonalSkillsRef.current
-        ? metaDataPersonalSkillsRef.current?.getValue()
-        : ''
+    if (!validate()) {
+      return
+    }
+
+    const fullname = fullnameRef.current?.getValue() || ''
+    const applyPosition = applyPositionRef.current?.getValue()
+    const birthday = birthdayRef.current?.getValue() || ''
+    const gender = genderRef.current?.getValue() || ''
+    const phone = phoneRef.current?.getValue() || ''
+    const email = emailRef.current?.getValue() || ''
+    const address = addressRef.current?.getValue()
+    const facebook = facbookRef.current?.getValue()
+
+    const basicSkill = basicSkillsRef.current?.getValue()
+    const hobby = hobbiesRef.current?.getValue()
+    const careerGoals = careerGoalsRef.current?.getValue()
+    const education = educationsRef.current?.getValue()
+    const workExperience = workExperiencesRef.current?.getValue()
+    const advancedSkill = advancedSkillsRef.current?.getValue()
+    const activity = activitiesRef.current?.getValue()
+    const certificate = certificatesRef.current?.getValue()
+    const award = awardsRef.current?.getValue()
+    const presenter = presentersRef.current?.getValue()
+    const anotherInfo = anotherInfoRef.current?.getValue()
+
+    const dataCV: CvInfo = {
+      userId: userInfo?.id || 0,
+      color,
+      template: '1',
+      fontSize,
+      fontFamily,
+      name: '',
+      categoryInfo: [
+        {
+          name: 'string'
+        }
+      ],
+      categoryCV: [
+        {
+          name: 'string'
+        }
+      ],
+      detail: {
+        fullname,
+        avatar: 'string',
+        applyPosition,
+        birthday,
+        gender,
+        phone,
+        address,
+        email,
+        facebook,
+        basicSkill: [
+          {
+            name: 'string',
+            star: 0
+          }
+        ],
+        hobby: 'string',
+        careerGoals: 'string',
+
+        education: [
+          {
+            name: 'string',
+            major: 'string'
+          }
+        ],
+        workExperience: [
+          {
+            companyName: 'string',
+            position: 'string',
+            time: 'string',
+            description: 'string'
+          }
+        ],
+        advancedSkill: [
+          {
+            name: 'string',
+            description: 'string'
+          }
+        ],
+        activity: [
+          {
+            name: 'string',
+            time: 'string'
+          }
+        ],
+        certificate: [
+          {
+            name: 'string'
+          }
+        ],
+        award: [
+          {
+            name: 'string'
+          }
+        ],
+        presenter: [
+          {
+            name: 'string',
+            company: 'string',
+            position: 'string',
+            phone: 'string'
+          }
+        ],
+        anotherInfo: [
+          {
+            info: 'string'
+          }
+        ]
+      }
+    }
+
+    // callApiCreate(dataCV)
+  }
+
+  const callApiCreate = (data: CvInfo) => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/cv`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      headers,
+      url,
+      data,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseCVDetail>) => {
+        const { success, data, message, error } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+
+        showNotify.success(message)
+      })
+      .catch((e) => {
+        // setLoading(false)
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
   }
 
   const onSelectListCategory = () => {
@@ -306,7 +470,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
             <i className="fas fa-list-ul text-gray-600 cursor-pointer text-xl"></i>
           </div>
           {/* LƯU CV */}
-          <div className="mx-4 text-center bg-green-600 px-4 py-2 rounded cursor-pointer duration-300 hover:bg-green-700">
+          <div
+            className="mx-4 text-center bg-green-600 px-4 py-2 rounded cursor-pointer duration-300 hover:bg-green-700"
+            onClick={onCreateCV}
+          >
             <span className="block text-sm text-white font-semibold whitespace-nowrap">Lưu CV</span>
             <i className="fas fa-save text-white cursor-pointer text-2xl"></i>
           </div>
@@ -334,6 +501,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
                 <div className="mb-3">
                   <PrInputCV
+                    ref={fullnameRef}
                     placeholder="Họ và tên"
                     divClassName="h-8"
                     className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
@@ -344,6 +512,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
                 </div>
                 <div className="mt-3 mb-5">
                   <PrInputCV
+                    ref={applyPositionRef}
                     placeholder="Vị trí ứng tuyển"
                     divClassName="h-8"
                     className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
@@ -356,15 +525,26 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               <div className="div-middle-left mx-4">
                 <div className="flex items-center">
                   <BirthdayIcon />
-                  <PrInputCV placeholder="Ngày sinh" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                  <PrInputCV
+                    ref={birthdayRef}
+                    placeholder="Ngày sinh"
+                    divClassName="h-8 w-full"
+                    className="bg-transparent w-full py-2"
+                  />
                 </div>
                 <div className="flex items-center">
                   <GenderIcon />
-                  <PrInputCV placeholder="Giới tính" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                  <PrInputCV
+                    ref={genderRef}
+                    placeholder="Giới tính"
+                    divClassName="h-8 w-full"
+                    className="bg-transparent w-full py-2"
+                  />
                 </div>
                 <div className="flex items-center">
                   <PhoneIcon />
                   <PrInputCV
+                    ref={phoneRef}
                     placeholder="Điện thoại"
                     divClassName="h-8 w-full"
                     className="bg-transparent w-full py-2"
@@ -372,15 +552,30 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
                 </div>
                 <div className="flex items-center">
                   <EmailIcon />
-                  <PrInputCV placeholder="Email" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                  <PrInputCV
+                    ref={emailRef}
+                    placeholder="Email"
+                    divClassName="h-8 w-full"
+                    className="bg-transparent w-full py-2"
+                  />
                 </div>
                 <div className="flex items-center">
                   <MapIcon />
-                  <PrInputCV placeholder="Địa chỉ" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                  <PrInputCV
+                    ref={addressRef}
+                    placeholder="Địa chỉ"
+                    divClassName="h-8 w-full"
+                    className="bg-transparent w-full py-2"
+                  />
                 </div>
                 <div className="flex items-center mb-3">
                   <FacebookIcon />
-                  <PrInputCV placeholder="Facebook" divClassName="h-8 w-full" className="bg-transparent w-full py-2" />
+                  <PrInputCV
+                    ref={facbookRef}
+                    placeholder="Facebook link"
+                    divClassName="h-8 w-full"
+                    className="bg-transparent w-full py-2"
+                  />
                 </div>
                 <hr />
               </div>

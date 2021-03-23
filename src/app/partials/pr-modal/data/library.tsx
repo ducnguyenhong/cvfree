@@ -74,7 +74,7 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                 {!disableHeader && (
                   <>
                     <div className="px-5 py-4 flex justify-between">
-                      {title && <span className="font-bold text-lg">{title}</span>}
+                      {title && <span className="font-semibold text-lg">{title}</span>}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

@@ -17,5 +17,11 @@ export default {
     SIGN_IN: 'Sign in',
     SIGN_UP: 'Sign up',
     HELLO: 'Hello'
+  },
+  PR_UPLOAD_CROP: {
+    OK: 'Crop',
+    CANCEL: 'Cancel',
+    CROP_IMAGE: 'Crop photo',
+    NOTE: 'Cropping photos in 1 : 1 ratio will help your CV look better'
   }
 }

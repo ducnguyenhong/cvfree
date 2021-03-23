@@ -9,9 +9,11 @@ import { useRecoilValue } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
 import { languageState } from 'app/states/language-state'
+// import { LoadingPage } from 'app/partials/layout/loading'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/sign-in'))
+const LoadingPage = lazy(() => import('app/partials/layout/loading'))
 
 const PublicRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
@@ -63,7 +65,7 @@ const RouteURL: React.FC = () => {
   return (
     <IntlProvider locale={language} messages={localeData[language] as Record<string, string>}>
       <BrowserRouter>
-        <Suspense fallback={<span>Loading</span>}>
+        <Suspense fallback={<LoadingPage />}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <SwitchRenderer />
           </ErrorBoundary>

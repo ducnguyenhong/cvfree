@@ -19,7 +19,7 @@ const data: CvInfo[] = [
     id: 1,
     userId: 1,
     color: '#176F9B',
-    template: 1,
+    template: '1',
     fontSize: '14px',
     name: 'Đức',
     fontFamily: `"Quicksand", sans-serif`,
@@ -159,7 +159,7 @@ const data: CvInfo[] = [
     id: 1,
     userId: 1,
     color: '#176F9B',
-    template: 1,
+    template: '1',
     fontSize: '14px',
     fontFamily: `"Quicksand", sans-serif`,
     categoryInfo: [
@@ -305,7 +305,7 @@ export const CvManage: React.FC = () => {
   const accessToken = Cookies.get('token')
 
   const callApiUserDetail = useCallback(() => {
-    const url = `${SERVER_URL}/users`
+    const url = `${SERVER_URL}/users/${userInfo?.id}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
@@ -406,7 +406,9 @@ export const CvManage: React.FC = () => {
                             <i className="far fa-clock mr-2"></i>
                             <span>Ngày tạo</span>
                           </div>
-                          <span className="block">{moment(createdAt * 1000).format('DD/MM/YYYY HH:mm')}</span>
+                          <span className="block">
+                            {createdAt && moment(createdAt * 1000).format('DD/MM/YYYY HH:mm')}
+                          </span>
                         </div>
                       </div>
                       <div className="grid grid-cols-5 mt-2">
@@ -416,7 +418,9 @@ export const CvManage: React.FC = () => {
                             <i className="fas fa-history mr-2"></i>
                             <span>Ngày sửa</span>
                           </div>
-                          <span className="block">{moment(updatedAt * 1000).format('DD/MM/YYYY HH:mm')}</span>
+                          <span className="block">
+                            {updatedAt && moment(updatedAt * 1000).format('DD/MM/YYYY HH:mm')}
+                          </span>
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-x-16 mt-5">

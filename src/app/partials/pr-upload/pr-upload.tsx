@@ -1,118 +1,49 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import CirclePlusIcon from 'assets/icons/circle-plus'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
-import axios from 'axios'
-import CirclePlusIcon from 'assets/icons/circle-plus'
-import Logo from 'assets/images/logo.png'
+import { useIntl } from 'react-intl'
 
-interface Props {
-  ratio?: {
-    x: number
-    y: number
-  }
-  getImage?: (img: any) => void
+interface CVFUploadProps {
+  ratio?: { x: number; y: number }
+  getImage?: (img: File) => void
 }
 
-const generateDownload = (canvas: any, crop: any) => {
-  if (!crop || !canvas) {
-    return
-  }
-
-  canvas.toBlob(
-    (blob: any) => {
-      const previewUrl = window.URL.createObjectURL(blob)
-
-      const anchor = document.createElement('a')
-      anchor.download = 'cropPreview.png'
-      anchor.href = URL.createObjectURL(blob)
-      anchor.click()
-
-      window.URL.revokeObjectURL(previewUrl)
-    },
-    'image/png',
-    1
-  )
-}
-
-const CVFUploadImage: React.FC<Props> = (props) => {
+const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
+  const intl = useIntl()
   const { ratio, getImage } = props
-  const [upImg, setUpImg] = useState<any>()
-  const [finalImg, setFinalImg] = useState<any>()
-  const imgRef = useRef(null)
-  const previewCanvasRef = useRef<any>(null)
-  const [crop, setCrop] = useState<any>({ unit: '%', width: 30, aspect: ratio ? ratio.x / ratio.y : 1 / 1 })
-  const [completedCrop, setCompletedCrop] = useState<any>(null)
+  const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
+  const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
+  const imgRef = useRef<HTMLImageElement | null>(null)
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null)
+  const [crop, setCrop] = useState<ReactCrop.Crop>({ unit: '%', width: 30, aspect: ratio ? ratio.x / ratio.y : 1 / 1 })
+  const [completedCrop, setCompletedCrop] = useState<ReactCrop.Crop | null>(null)
   const modalRef = useRef<PrModalRefProps>(null)
 
-  const onSelectFile = (e: any) => {
+  const onSelectFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const reader: any = new FileReader()
+      const reader: FileReader = new FileReader()
       reader.addEventListener('load', () => setUpImg(reader.result))
       reader.readAsDataURL(e.target.files[0])
+      modalRef && modalRef.current && modalRef.current.show()
     }
-    console.log('modalRef', modalRef)
+  }, [])
 
-    if (modalRef && modalRef.current && modalRef.current.show) {
-      modalRef.current.show()
-    }
-  }
-
-  const onHideModal = () => {
-    if (modalRef && modalRef.current && modalRef.current.hide) {
+  const onHideModal = useCallback(() => {
+    if (modalRef && modalRef.current) {
       modalRef.current.hide()
     }
-  }
+  }, [])
 
-  const onChangeModal = () => {
-    if (modalRef && modalRef.current && modalRef.current.hide) {
+  const onChangeModal = useCallback(() => {
+    setCompletedCrop(croppingImg)
+    if (modalRef && modalRef.current) {
       modalRef.current.hide()
     }
-    const canvas: any = previewCanvasRef.current
-    // const img = canvas.toBlob(function (blob: any) {
-    //   saveAs(blob, 'pretty-image.png')
-    // })
-    const img = new Image()
-    // img.src = canvas.toDataURL()
-    setFinalImg(canvas.toDataURL())
-    // const url = canvas.toDataURL()
-    // fetch(url)
-    //   .then((res) => res.blob())
-    //   .then((blob) => {
-    //     const file = new File([blob], 'avatar', { type: 'image/png' })
-    //     uploadServer(file)
-    //   })
+  }, [croppingImg])
 
-    // getImage && getImage(img)
-  }
-
-  const uploadServer = async (img: any) => {
-    const formData = new FormData()
-    formData.append('avatar', img)
-    axios.post('http://localhost:1234/courses/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    // const client = new ftp.Client()
-    // client.ftp.verbose = true
-    // try {
-    //   await client.access({
-    //     host: 'ftpupload.net',
-    //     user: 'epiz_27759647',
-    //     password: 'TklEYhN5zz5i4pe',
-    //     secure: true
-    //   })
-    //   console.log(await client.list())
-    //   await client.uploadFrom('data.png', img)
-    //   // await client.downloadTo("README_COPY.md", "README_FTP.md")
-    // } catch (err) {
-    //   console.log(err)
-    // }
-    // client.close()
-  }
-
-  const onLoad = useCallback((img) => {
+  const onLoad = useCallback((img: HTMLImageElement) => {
     imgRef.current = img
   }, [])
 
@@ -121,80 +52,92 @@ const CVFUploadImage: React.FC<Props> = (props) => {
       return
     }
 
-    const image: any = imgRef.current
-    const canvas: any = previewCanvasRef.current
-    const crop: any = completedCrop
-
+    const image: HTMLImageElement | null = imgRef.current
+    const canvas: HTMLCanvasElement = previewCanvasRef.current
+    const crop: ReactCrop.Crop = completedCrop
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
     const ctx = canvas.getContext('2d')
     const pixelRatio = window.devicePixelRatio
 
-    canvas.width = crop.width * pixelRatio
-    canvas.height = crop.height * pixelRatio
+    if (typeof crop.width !== 'undefined' && typeof crop.height !== 'undefined') {
+      canvas.width = crop.width * pixelRatio
+      canvas.height = crop.height * pixelRatio
+    }
 
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
-    ctx.imageSmoothingQuality = 'high'
+    if (ctx !== null) {
+      ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+      ctx.imageSmoothingQuality = 'high'
+      if (
+        typeof crop.x !== 'undefined' &&
+        typeof crop.y !== 'undefined' &&
+        typeof crop.width !== 'undefined' &&
+        typeof crop.height !== 'undefined'
+      ) {
+        ctx.drawImage(
+          image,
+          crop.x * scaleX,
+          crop.y * scaleY,
+          crop.width * scaleX,
+          crop.height * scaleY,
+          0,
+          0,
+          crop.width,
+          crop.height
+        )
+      }
+    }
 
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height
-    )
+    const img = new Image()
+    img.src = canvas.toDataURL()
+    const url = canvas.toDataURL()
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const file = new File([blob], 'avatar', { type: 'image/png' })
+        getImage && getImage(file)
+      })
   }, [completedCrop])
 
-  console.log('completedCrop', completedCrop)
-
   return (
-    <>
+    <div>
       <div className="relative w-full bg-white rounded-full overflow-hidden" style={{ paddingTop: '100%' }}>
         <div className="absolute inset-0 flex justify-center items-center">
-          <label className="inline-block cursor-pointer">
-            {!completedCrop && <CirclePlusIcon width={60} height={60} className="text-green-600" />}
-            {/* {!completedCrop && <img src={Logo} alt="default avatar" className="w-full" />} */}
+          <label className="inline-block cursor-pointer" title="Chọn ảnh từ thiết bị">
+            {!completedCrop && <i className="fas fa-camera text-7xl text-gray-500 duration-300 hover:text-gray-600" />}
             {completedCrop && <canvas className="w-full" ref={previewCanvasRef} />}
             <input type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
           </label>
         </div>
       </div>
-      <PrModal ref={modalRef} title="This is modal title" size="nm" onHide={onHideModal} onChange={onChangeModal}>
-        <div>
-          <span className="text-3xl">DUCNH</span>
+      <PrModal
+        ref={modalRef}
+        title={
+          <div className="flex items-center">
+            <i className="fas fa-crop-alt mr-3" />
+            <span className="uppercase">{intl.formatMessage({ id: 'PR_UPLOAD_CROP.CROP_IMAGE' })}</span>
+          </div>
+        }
+        size="nm"
+        onHide={onHideModal}
+        onChange={onChangeModal}
+        okTitle={intl.formatMessage({ id: 'PR_UPLOAD_CROP.OK' })}
+        cancelTitle={intl.formatMessage({ id: 'PR_UPLOAD_CROP.CANCEL' })}
+      >
+        <div className="pb-5">
+          <span className="text-lg block text-center italic text-blue-700 font-medium mb-10 mt-5">
+            {intl.formatMessage({ id: 'PR_UPLOAD_CROP.NOTE' })}
+          </span>
           <ReactCrop
-            src={upImg}
+            src={`${upImg}`}
             onImageLoaded={onLoad}
             crop={crop}
             onChange={(c) => setCrop(c)}
-            onComplete={(c) => {
-              setCompletedCrop(c)
-            }}
+            onComplete={(c) => setCroppingImg(c)}
           />
-          <div>
-            {/* <canvas
-              ref={previewCanvasRef}
-              // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
-              style={{
-                width: Math.round(completedCrop?.width ?? 0),
-                height: Math.round(completedCrop?.height ?? 0)
-              }}
-            /> */}
-          </div>
-          <button
-            type="button"
-            disabled={!completedCrop?.width || !completedCrop?.height}
-            onClick={() => generateDownload(previewCanvasRef.current, completedCrop)}
-          >
-            Download cropped image
-          </button>
         </div>
       </PrModal>
-    </>
+    </div>
   )
 }
 
