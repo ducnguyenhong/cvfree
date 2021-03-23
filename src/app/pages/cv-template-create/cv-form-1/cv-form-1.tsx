@@ -162,8 +162,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   }
 
   const getImage = (img: any) => {
-    console.log('ducnh2', img)
-
     setAvatar(img)
   }
 
@@ -171,119 +169,123 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
     return true
   }
 
-  const onCreateCV = () => {
+  const onCreateCV = async () => {
     if (!validate()) {
       return
     }
-
-    const fullname = fullnameRef.current?.getValue() || ''
-    const applyPosition = applyPositionRef.current?.getValue()
-    const birthday = birthdayRef.current?.getValue() || ''
-    const gender = genderRef.current?.getValue() || ''
-    const phone = phoneRef.current?.getValue() || ''
-    const email = emailRef.current?.getValue() || ''
-    const address = addressRef.current?.getValue()
-    const facebook = facbookRef.current?.getValue()
-
-    const basicSkill = basicSkillsRef.current?.getValue()
-    const hobby = hobbiesRef.current?.getValue()
-    const careerGoals = careerGoalsRef.current?.getValue()
-    const education = educationsRef.current?.getValue()
-    const workExperience = workExperiencesRef.current?.getValue()
-    const advancedSkill = advancedSkillsRef.current?.getValue()
-    const activity = activitiesRef.current?.getValue()
-    const certificate = certificatesRef.current?.getValue()
-    const award = awardsRef.current?.getValue()
-    const presenter = presentersRef.current?.getValue()
-    const anotherInfo = anotherInfoRef.current?.getValue()
-
-    const dataCV: CvInfo = {
-      userId: userInfo?.id || 0,
-      color,
-      template: '1',
-      fontSize,
-      fontFamily,
-      name: '',
-      categoryInfo: [
-        {
-          name: 'string'
-        }
-      ],
-      categoryCV: [
-        {
-          name: 'string'
-        }
-      ],
-      detail: {
-        fullname,
-        avatar: 'string',
-        applyPosition,
-        birthday,
-        gender,
-        phone,
-        address,
-        email,
-        facebook,
-        basicSkill: [
-          {
-            name: 'string',
-            star: 0
-          }
-        ],
-        hobby: 'string',
-        careerGoals: 'string',
-
-        education: [
-          {
-            name: 'string',
-            major: 'string'
-          }
-        ],
-        workExperience: [
-          {
-            companyName: 'string',
-            position: 'string',
-            time: 'string',
-            description: 'string'
-          }
-        ],
-        advancedSkill: [
-          {
-            name: 'string',
-            description: 'string'
-          }
-        ],
-        activity: [
-          {
-            name: 'string',
-            time: 'string'
-          }
-        ],
-        certificate: [
-          {
-            name: 'string'
-          }
-        ],
-        award: [
-          {
-            name: 'string'
-          }
-        ],
-        presenter: [
-          {
-            name: 'string',
-            company: 'string',
-            position: 'string',
-            phone: 'string'
-          }
-        ],
-        anotherInfo: [
-          {
-            info: 'string'
-          }
-        ]
-      }
+    let avatarURL = ''
+    if (avatar) {
+      avatarURL = await uploadServer(avatar)
     }
+
+    // const fullname = fullnameRef.current?.getValue() || ''
+    // const applyPosition = applyPositionRef.current?.getValue()
+    // const birthday = birthdayRef.current?.getValue() || ''
+    // const gender = genderRef.current?.getValue() || ''
+    // const phone = phoneRef.current?.getValue() || ''
+    // const email = emailRef.current?.getValue() || ''
+    // const address = addressRef.current?.getValue()
+    // const facebook = facbookRef.current?.getValue()
+
+    // const basicSkill = basicSkillsRef.current?.getValue()
+    // const hobby = hobbiesRef.current?.getValue()
+    // const careerGoals = careerGoalsRef.current?.getValue()
+    // const education = educationsRef.current?.getValue()
+    // const workExperience = workExperiencesRef.current?.getValue()
+    // const advancedSkill = advancedSkillsRef.current?.getValue()
+    // const activity = activitiesRef.current?.getValue()
+    // const certificate = certificatesRef.current?.getValue()
+    // const award = awardsRef.current?.getValue()
+    // const presenter = presentersRef.current?.getValue()
+    // const anotherInfo = anotherInfoRef.current?.getValue()
+
+    // const dataCV: CvInfo = {
+    //   userId: userInfo?.id || 0,
+    //   color,
+    //   template: '1',
+    //   fontSize,
+    //   fontFamily,
+    //   name: '',
+    //   categoryInfo: [
+    //     {
+    //       name: 'string'
+    //     }
+    //   ],
+    //   categoryCV: [
+    //     {
+    //       name: 'string'
+    //     }
+    //   ],
+    //   detail: {
+    //     fullname,
+    //     avatar: 'string',
+    //     applyPosition,
+    //     birthday,
+    //     gender,
+    //     phone,
+    //     address,
+    //     email,
+    //     facebook,
+    //     basicSkill: [
+    //       {
+    //         name: 'string',
+    //         star: 0
+    //       }
+    //     ],
+    //     hobby: 'string',
+    //     careerGoals: 'string',
+
+    //     education: [
+    //       {
+    //         name: 'string',
+    //         major: 'string'
+    //       }
+    //     ],
+    //     workExperience: [
+    //       {
+    //         companyName: 'string',
+    //         position: 'string',
+    //         time: 'string',
+    //         description: 'string'
+    //       }
+    //     ],
+    //     advancedSkill: [
+    //       {
+    //         name: 'string',
+    //         description: 'string'
+    //       }
+    //     ],
+    //     activity: [
+    //       {
+    //         name: 'string',
+    //         time: 'string'
+    //       }
+    //     ],
+    //     certificate: [
+    //       {
+    //         name: 'string'
+    //       }
+    //     ],
+    //     award: [
+    //       {
+    //         name: 'string'
+    //       }
+    //     ],
+    //     presenter: [
+    //       {
+    //         name: 'string',
+    //         company: 'string',
+    //         position: 'string',
+    //         phone: 'string'
+    //       }
+    //     ],
+    //     anotherInfo: [
+    //       {
+    //         info: 'string'
+    //       }
+    //     ]
+    //   }
+    // }
 
     // callApiCreate(dataCV)
   }
@@ -423,6 +425,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-32">
       <CVFormStyle>
         {/* Control */}
+
         <div
           style={{ width: '210mm', top: fixedControl ? 76 : undefined }}
           className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${

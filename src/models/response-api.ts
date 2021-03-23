@@ -20,3 +20,13 @@ export interface ResponseCVDetail {
   error?: { message: string }
   message?: string
 }
+
+export interface ResponseUpload {
+  success: boolean
+  data: {
+    url: string
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}

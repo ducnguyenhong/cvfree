@@ -1,7 +1,10 @@
 import { CategoryProps } from 'app/pages/cv-template-create/cv-form-1/cv-form.types'
 import DefaultImage from 'assets/images/default-avatar.png'
 import DefaultImageFemale from 'assets/images/default-avatar-female.png'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
+import { SERVER_URL } from 'constants/index'
+import Cookies from 'js-cookie'
+import { ResponseUpload } from 'models/response-api'
 
 export const checkEmail = (email: string) => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
@@ -102,15 +105,18 @@ export const getDefaultAvatar = (gender?: string) => {
 export const uploadServer = async (img: File) => {
   const formData = new FormData()
   formData.append('avatar', img)
-  axios
-    .post('http://localhost:1234/media/upload', formData, {
+  const accessToken = Cookies.get('token')
+  return axios
+    .post(`${SERVER_URL}/media/upload`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${accessToken}`
+      },
+      timeout: 20000
     })
-    .then((res: any) => {
-      const { url } = res
-      return url
+    .then((response: AxiosResponse<ResponseUpload>) => {
+      const { data } = response.data
+      return data.url
     })
     .catch((e) => {
       throw new Error(e)
