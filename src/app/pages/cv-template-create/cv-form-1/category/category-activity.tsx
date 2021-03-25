@@ -1,6 +1,6 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
-import MetaDataActivities from 'app/partials/metadata/metadata-activities'
+import { Activity1 } from 'app/partials/metadata/template-1'
 import ActivityBlackIcon from 'assets/icons/activity.svg'
 
 export const Activities: React.FC<CategoryComponentProps> = (props) => {
@@ -18,7 +18,7 @@ export const Activities: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataActivities ref={categoryRef} />
+      <Activity1 ref={categoryRef} />
     </div>
   )
 }

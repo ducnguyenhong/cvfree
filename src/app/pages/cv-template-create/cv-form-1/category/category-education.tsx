@@ -1,6 +1,6 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
-import MetaDataEducations from 'app/partials/metadata/metadata-educations'
+import { Education1 } from 'app/partials/metadata/template-1'
 import EducationsIcon from 'assets/icons/education.svg'
 
 export const Educations: React.FC<CategoryComponentProps> = (props) => {
@@ -18,7 +18,7 @@ export const Educations: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataEducations ref={categoryRef} />
+      <Education1 ref={categoryRef} />
     </div>
   )
 }

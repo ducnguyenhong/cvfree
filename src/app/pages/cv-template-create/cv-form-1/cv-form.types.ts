@@ -15,7 +15,7 @@ export interface PrInputCVRefProps {
 }
 
 export interface CategoryComponentProps {
-  categoryRef?: RefObject<MetaDataRefProps>
+  categoryRef?: any
   onDownCategory?: (name: string) => void
   onUpCategory?: (name: string) => void
   onRemoveCategory?: (name: string) => void
@@ -30,7 +30,7 @@ export interface CategoryProps {
   title: string
   enable: boolean
   component: (props: CategoryComponentProps) => React.ReactElement
-  categoryRef?: RefObject<MetaDataRefProps>
+  categoryRef?: any
   inputRef?: RefObject<PrInputCVRefProps>
 }
 

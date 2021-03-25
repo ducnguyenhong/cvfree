@@ -50,7 +50,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
 
   useImperativeHandle(ref, () => ({
     getValue() {
-      return valueInput.trim()
+      return `${valueInput}`.trim()
     },
     setValue(data: string) {
       setValueInput(data)

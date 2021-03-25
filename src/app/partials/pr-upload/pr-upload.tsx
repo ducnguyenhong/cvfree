@@ -1,5 +1,4 @@
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
-import CirclePlusIcon from 'assets/icons/circle-plus'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'

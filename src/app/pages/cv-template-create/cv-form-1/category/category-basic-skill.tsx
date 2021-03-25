@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import BasicSkillIcon from 'assets/icons/basic-skill.svg'
-import MetaDataBasicSkills from 'app/partials/metadata/metadata-basic-skills'
+import { BasicSkill1 } from 'app/partials/metadata/template-1'
 
 export const BasicSkills: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, categoryRef } = props
@@ -18,7 +18,7 @@ export const BasicSkills: React.FC<CategoryComponentProps> = (props) => {
         onDownCategoryLeft={onDownCategoryLeft}
         onRemoveCategoryLeft={onRemoveCategoryLeft}
       />
-      <MetaDataBasicSkills ref={categoryRef} />
+      <BasicSkill1 ref={categoryRef} />
     </div>
   )
 }

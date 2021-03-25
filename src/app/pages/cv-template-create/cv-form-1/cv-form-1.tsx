@@ -33,6 +33,7 @@ import Cookies from 'js-cookie'
 import { ResponseCVDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
+import { BasicSkillRef, EducationRef, ActivityRef } from 'app/partials/metadata/metadata.type'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
@@ -56,18 +57,24 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   const facbookRef = useRef<PrInputCVRefProps>(null)
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
-  const educationsRef = useRef<MetaDataRefProps>(null)
+  const educationsRef = useRef<EducationRef>(null)
   const awardsRef = useRef<MetaDataRefProps>(null)
   const presentersRef = useRef<MetaDataRefProps>(null)
   const workExperiencesRef = useRef<MetaDataRefProps>(null)
   const anotherInfoRef = useRef<MetaDataRefProps>(null)
   const advancedSkillsRef = useRef<MetaDataRefProps>(null)
-  const activitiesRef = useRef<MetaDataRefProps>(null)
+  const activitiesRef = useRef<ActivityRef>(null)
   const certificatesRef = useRef<MetaDataRefProps>(null)
-  const basicSkillsRef = useRef<MetaDataRefProps>(null)
+  const basicSkillsRef = useRef<BasicSkillRef>(null)
   const hobbiesRef = useRef<PrInputCVRefProps>(null)
   const careerGoalsRef = useRef<PrInputCVRefProps>(null)
   const cvRef = useRef<HTMLDivElement>(null)
+
+  const test2 = [
+    { star: 2, name: '1' },
+    { star: 3, name: '2' },
+    { star: 4, name: '3' }
+  ]
 
   const defaultCategory: CategoryProps[] = [
     {
@@ -173,10 +180,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
     if (!validate()) {
       return
     }
-    let avatarURL = ''
-    if (avatar) {
-      avatarURL = await uploadServer(avatar)
-    }
+    // let avatarURL = ''
+    // if (avatar) {
+    //   avatarURL = await uploadServer(avatar)
+    // }
 
     // const fullname = fullnameRef.current?.getValue() || ''
     // const applyPosition = applyPositionRef.current?.getValue()
@@ -187,7 +194,9 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
     // const address = addressRef.current?.getValue()
     // const facebook = facbookRef.current?.getValue()
 
-    // const basicSkill = basicSkillsRef.current?.getValue()
+    const basicSkill = basicSkillsRef.current?.getValue()
+    console.log('ducnhX', basicSkill)
+
     // const hobby = hobbiesRef.current?.getValue()
     // const careerGoals = careerGoalsRef.current?.getValue()
     // const education = educationsRef.current?.getValue()
@@ -419,6 +428,12 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
 
   useEffect(() => {
     document.title = 'CVFREE | Tạo hồ sơ'
+  }, [])
+
+  useEffect(() => {
+    if (basicSkillsRef && basicSkillsRef.current && basicSkillsRef.current.setValue) {
+      basicSkillsRef.current?.setValue(test2)
+    }
   }, [])
 
   return (
