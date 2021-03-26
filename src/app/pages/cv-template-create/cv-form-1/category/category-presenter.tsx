@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import PresenterIcon from 'assets/icons/presenter.svg'
-import MetaDataPresenters from 'app/partials/metadata/metadata-presenters'
+import { Presenter1 } from 'app/partials/metadata/template-1'
 
 export const Presenters: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
@@ -18,7 +18,7 @@ export const Presenters: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataPresenters ref={categoryRef} />
+      <Presenter1 ref={categoryRef} />
     </div>
   )
 }

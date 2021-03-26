@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 const FooterHome: React.FC = () => {
   return (
     <div className="bg-green-600 w-full py-5 pb-24">

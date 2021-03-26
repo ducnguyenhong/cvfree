@@ -3,7 +3,6 @@ import { PrInputProps, PrInputRefProps } from './pr-input-cv.type'
 
 const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>) => {
   const {
-    value,
     onChange,
     onFocus,
     onBlur,

@@ -6,7 +6,7 @@ import FooterHome from './homt-footer'
 
 interface HomeProps {}
 
-const HomeLayout: React.FC<HomeProps> = (props) => {
+const HomeLayout: React.FC<HomeProps> = () => {
   return (
     <div style={{ backgroundColor: '#f9fffa' }}>
       <TopHome />

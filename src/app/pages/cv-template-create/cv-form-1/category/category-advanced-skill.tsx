@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import AdvancedSkillBlackIcon from 'assets/icons/advanced-skill.svg'
-import MetaDataAdvancedSkills from 'app/partials/metadata/metadata-advanced-skills'
+import { AdvancedSkill1 } from 'app/partials/metadata/template-1'
 
 export const AdvancedSkills: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
@@ -18,7 +18,7 @@ export const AdvancedSkills: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataAdvancedSkills ref={categoryRef} />
+      <AdvancedSkill1 ref={categoryRef} />
     </div>
   )
 }

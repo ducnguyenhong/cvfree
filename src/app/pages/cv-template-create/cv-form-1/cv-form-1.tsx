@@ -6,7 +6,6 @@ import PrUpload from 'app/partials/pr-upload'
 import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
-import { MetaDataRefProps } from 'models/metadata-type'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Activities,
@@ -33,12 +32,22 @@ import Cookies from 'js-cookie'
 import { ResponseCVDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
-import { BasicSkillRef, EducationRef, ActivityRef } from 'app/partials/metadata/metadata.type'
+import {
+  BasicSkillRef,
+  EducationRef,
+  ActivityRef,
+  WorkExperienceRef,
+  AdvancedSkillRef,
+  AwardRef,
+  CertificateRef,
+  AnotherInfoRef,
+  PresenterRef
+} from 'app/partials/metadata/metadata.type'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
-export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
+export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const userInfo = useRecoilValue(userInfoState)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [color, setColor] = useState<string>('#176F9B')
@@ -58,13 +67,13 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
   const educationsRef = useRef<EducationRef>(null)
-  const awardsRef = useRef<MetaDataRefProps>(null)
-  const presentersRef = useRef<MetaDataRefProps>(null)
-  const workExperiencesRef = useRef<MetaDataRefProps>(null)
-  const anotherInfoRef = useRef<MetaDataRefProps>(null)
-  const advancedSkillsRef = useRef<MetaDataRefProps>(null)
+  const awardsRef = useRef<AwardRef>(null)
+  const presentersRef = useRef<PresenterRef>(null)
+  const workExperiencesRef = useRef<WorkExperienceRef>(null)
+  const anotherInfoRef = useRef<AnotherInfoRef>(null)
+  const advancedSkillsRef = useRef<AdvancedSkillRef>(null)
   const activitiesRef = useRef<ActivityRef>(null)
-  const certificatesRef = useRef<MetaDataRefProps>(null)
+  const certificatesRef = useRef<CertificateRef>(null)
   const basicSkillsRef = useRef<BasicSkillRef>(null)
   const hobbiesRef = useRef<PrInputCVRefProps>(null)
   const careerGoalsRef = useRef<PrInputCVRefProps>(null)

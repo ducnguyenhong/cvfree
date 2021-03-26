@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import CerticficateBlackIcon from 'assets/icons/certificate.svg'
-import MetaDataCertificates from 'app/partials/metadata/metadata-certificates'
+import { Certificate1 } from 'app/partials/metadata/template-1'
 
 export const Certificates: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
@@ -18,7 +18,7 @@ export const Certificates: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataCertificates ref={categoryRef} />
+      <Certificate1 ref={categoryRef} />
     </div>
   )
 }

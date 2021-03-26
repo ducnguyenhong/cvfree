@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import AwardIcon from 'assets/icons/award.svg'
-import MetaDataAwards from 'app/partials/metadata/metadata-awards'
+import { Award1 } from 'app/partials/metadata/template-1'
 
 export const Awards: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
@@ -18,7 +18,7 @@ export const Awards: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataAwards ref={categoryRef} />
+      <Award1 ref={categoryRef} />
     </div>
   )
 }

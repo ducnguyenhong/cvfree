@@ -1,5 +1,4 @@
 import { RefObject } from 'react'
-import { MetaDataRefProps } from 'models/metadata-type'
 
 export interface CategoryControlProps extends CategoryComponentProps {
   name: string

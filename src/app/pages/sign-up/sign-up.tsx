@@ -1,25 +1,22 @@
+import AuthIntro from 'app/pages/auth-intro'
 import Button from 'app/partials/pr-button'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { showNotify } from 'app/partials/pr-notify/pr-notify'
 import LoadingIcon from 'assets/icons/loading.svg'
-import BgLogo from 'assets/images/bg-login.png'
-import Logo from 'assets/images/logo.png'
 import axios, { AxiosRequestConfig } from 'axios'
 import { SERVER_URL } from 'constants/index'
+import { get } from 'lodash'
 import md5 from 'md5'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { checkEmail, checkUsername } from 'utils/helper'
-import { v4 as uuidv4 } from 'uuid'
-import { SignInStyle } from './styles'
-import AuthIntro from 'app/pages/auth-intro'
-import { get } from 'lodash'
 import { UserInfo } from '../../../models/user-info'
+import { SignInStyle } from './styles'
 
 interface SignUpProps {}
 
-const SignUp: React.FC<SignUpProps> = (props) => {
+const SignUp: React.FC<SignUpProps> = () => {
   const [checkPolicy, setCheckPolicy] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -122,7 +119,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 
     axios(config)
       .then((response) => {
-        const { data, success, message } = response.data
+        const { success, message } = response.data
         console.log('response.data', response)
 
         if (!success) {

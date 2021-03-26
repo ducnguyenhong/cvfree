@@ -1,7 +1,7 @@
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 import WorkExperienceIcon from 'assets/icons/experience.svg'
-import MetaDataWorkExperiences from 'app/partials/metadata/metadata-work-experiences'
+import { WorkExperience1 } from 'app/partials/metadata/template-1'
 
 export const WorkExperiences: React.FC<CategoryComponentProps> = (props) => {
   const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
@@ -18,7 +18,7 @@ export const WorkExperiences: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <MetaDataWorkExperiences ref={categoryRef} />
+      <WorkExperience1 ref={categoryRef} />
     </div>
   )
 }

@@ -1,13 +1,13 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import { ActivityItem1 } from './activity-1.items'
-import { ActivityMetaDataType, ActivityValue } from 'app/partials/metadata/metadata.type'
+import { AnotherInfoItem1 } from './another-info-1.items'
+import { AnotherInfoMetaDataType, AnotherInfoValue } from 'app/partials/metadata/metadata.type'
 
-export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
-  const [metaDataList, setMetaDataList] = useState<ActivityMetaDataType[]>([{ ref: null, name: '', time: '' }])
+export const AnotherInfo1 = forwardRef((props: Record<string, unknown>, ref) => {
+  const [metaDataList, setMetaDataList] = useState<AnotherInfoMetaDataType[]>([{ ref: null, info: '' }])
 
   const onCreateFine = () => {
     const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, name: '', time: '' })
+    newMetaDataList.push({ ref: null, info: '' })
     setMetaDataList(newMetaDataList)
   }
 
@@ -16,7 +16,7 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
       return null
     }
 
-    const value: ActivityValue[] = []
+    const value: AnotherInfoValue[] = []
     for (let i = 0; i < metaDataList.length; i++) {
       const data = metaDataList[i].ref?.getValue()
       data && value.push(data)
@@ -28,8 +28,8 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
   useEffect(() => {
     if (metaDataList) {
       for (let i = 0; i < metaDataList.length; i++) {
-        const { name, time, ref } = metaDataList[i]
-        ref && ref.setValue && ref.setValue({ name, time })
+        const { info, ref } = metaDataList[i]
+        ref && ref.setValue && ref.setValue({ info })
       }
     }
   }, [metaDataList])
@@ -41,11 +41,11 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
     onCreate() {
       onCreateFine()
     },
-    setValue(value: ActivityValue[] | null) {
+    setValue(value: AnotherInfoValue[] | null) {
       if (value && value.length > 0) {
-        const newMetaDataList: ActivityMetaDataType[] = []
+        const newMetaDataList: AnotherInfoMetaDataType[] = []
         for (let i = 0; i < value.length; i++) {
-          newMetaDataList.push({ name: value[i].name, time: value[i].time, ref: null })
+          newMetaDataList.push({ info: value[i].info, ref: null })
         }
         setMetaDataList(newMetaDataList)
       }
@@ -55,7 +55,7 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <ActivityItem1 ref={(ref) => (item.ref = ref)} key={`activity_${index}`} />
+        <AnotherInfoItem1 ref={(ref) => (item.ref = ref)} key={`another_info_${index}`} />
       ))}
     </div>
   )

@@ -1,24 +1,16 @@
-import Logo from 'assets/images/logo.png'
-import BgLogo from 'assets/images/bg-login.png'
-import { useCallback, useEffect, useRef } from 'react'
-import { SignInStyle } from './styles'
-import { Link, useHistory } from 'react-router-dom'
-import Button from 'app/partials/pr-button'
-import LoadingIcon from 'assets/icons/loading.svg'
-import LoginIcon from 'assets/icons/login'
-import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
-import HomeIntro from 'app/pages/home/home-intro'
-import ImgDotConnect from 'assets/images/img-dot-connect.png'
 import AuthIntro from 'app/pages/auth-intro'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import md5 from 'md5'
-import { SERVER_URL } from 'constants/index'
+import Button from 'app/partials/pr-button'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import { showNotify } from 'app/partials/pr-notify'
-import { get } from 'lodash'
-import { UserInfo } from 'models/user-info'
 import { userInfoState, userTokenState } from 'app/states/user-info-state'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import Cookies from 'js-cookie'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { SERVER_URL } from 'constants/index'
+import { get } from 'lodash'
+import md5 from 'md5'
+import { UserInfo } from 'models/user-info'
+import { useCallback, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
 
 interface SignInProps {}
 
@@ -42,7 +34,7 @@ interface ResponseSignIn {
   message?: string
 }
 
-const SignIn: React.FC<SignInProps> = (props) => {
+const SignIn: React.FC<SignInProps> = () => {
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
 

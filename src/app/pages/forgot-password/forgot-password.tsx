@@ -1,16 +1,14 @@
-import Logo from 'assets/images/logo.png'
-import BgLogo from 'assets/images/bg-login.png'
-import { useEffect } from 'react'
-import { SignInStyle } from './styles'
-import { Link } from 'react-router-dom'
 import Button from 'app/partials/pr-button'
-import LoadingIcon from 'assets/icons/loading.svg'
-import LoginIcon from 'assets/icons/login'
 import PrInput from 'app/partials/pr-input'
+import BgLogo from 'assets/images/bg-login.png'
+import Logo from 'assets/images/logo.png'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { SignInStyle } from './styles'
 
 interface SignInProps {}
 
-const SignInLayout: React.FC<SignInProps> = (props) => {
+const SignInLayout: React.FC<SignInProps> = () => {
   useEffect(() => {
     document.title = 'CVFREE | Quên mật khẩu'
   }, [])
