@@ -14,287 +14,287 @@ import { get } from 'lodash'
 import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 
-const data: CvInfo[] = [
-  {
-    id: 1,
-    userId: 1,
-    color: '#176F9B',
-    template: '1',
-    fontSize: '14px',
-    name: 'Đức',
-    fontFamily: `"Quicksand", sans-serif`,
-    categoryInfo: [
-      {
-        name: 'basicSkill'
-      },
-      {
-        name: 'hobby'
-      },
-      {
-        name: 'careerGoals'
-      }
-    ],
-    categoryCV: [
-      {
-        name: 'education'
-      },
-      {
-        name: 'workExperience'
-      },
-      {
-        name: 'advancedSkill'
-      },
-      {
-        name: 'activity'
-      },
-      {
-        name: 'certificate'
-      },
-      {
-        name: 'award'
-      },
-      {
-        name: 'presenter'
-      },
-      {
-        name: 'anotherInfo'
-      }
-    ],
-    detail: {
-      fullname: 'Nguyễn Hồng Đức',
-      avatar: 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-avatar-de-thuong-cute.jpg',
-      applyPosition: 'Frontend Developer',
-      birthday: '11/12/1999',
-      gender: 'Nam',
-      phone: '0389755202',
-      address: 'Ba Đình, Hà Nội',
-      email: 'autoclickvn@gmail.com',
-      facebook: 'fb.com/ducnh99',
-      basicSkill: [
-        {
-          name: 'Tiếng Anh',
-          star: 3
-        },
-        {
-          name: 'Teamwork',
-          star: 4
-        },
-        {
-          name: 'Tiếng Trung',
-          star: 3
-        }
-      ],
-      hobby: 'abc',
-      careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
-      - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
+// const data: CvInfo[] = [
+//   {
+//     id: 1,
+//     userId: 1,
+//     color: '#176F9B',
+//     template: '1',
+//     fontSize: '14px',
+//     name: 'Đức',
+//     fontFamily: `"Quicksand", sans-serif`,
+//     categoryInfo: [
+//       {
+//         name: 'basicSkill'
+//       },
+//       {
+//         name: 'hobby'
+//       },
+//       {
+//         name: 'careerGoals'
+//       }
+//     ],
+//     categoryCV: [
+//       {
+//         name: 'education'
+//       },
+//       {
+//         name: 'workExperience'
+//       },
+//       {
+//         name: 'advancedSkill'
+//       },
+//       {
+//         name: 'activity'
+//       },
+//       {
+//         name: 'certificate'
+//       },
+//       {
+//         name: 'award'
+//       },
+//       {
+//         name: 'presenter'
+//       },
+//       {
+//         name: 'anotherInfo'
+//       }
+//     ],
+//     detail: {
+//       fullname: 'Nguyễn Hồng Đức',
+//       avatar: 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-avatar-de-thuong-cute.jpg',
+//       applyPosition: 'Frontend Developer',
+//       birthday: '11/12/1999',
+//       gender: 'Nam',
+//       phone: '0389755202',
+//       address: 'Ba Đình, Hà Nội',
+//       email: 'autoclickvn@gmail.com',
+//       facebook: 'fb.com/ducnh99',
+//       basicSkill: [
+//         {
+//           name: 'Tiếng Anh',
+//           star: 3
+//         },
+//         {
+//           name: 'Teamwork',
+//           star: 4
+//         },
+//         {
+//           name: 'Tiếng Trung',
+//           star: 3
+//         }
+//       ],
+//       hobby: 'abc',
+//       careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
+//       - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
 
-      education: [
-        {
-          name: 'Đại học Giao Thông Vận Tải',
-          major: 'Công nghệ thông tin'
-        }
-      ],
-      workExperience: [
-        {
-          companyName: 'SOFTVIET',
-          position: 'Trainee',
-          time: '06/2019 - 07/2019',
-          description: 'Học hỏi kiến thức, kinh nghiệm về front-end.'
-        },
-        {
-          companyName: 'OMNISCHOOL (Ekidpro)',
-          position: 'Frontend Developer',
-          time: '08/2020 - Hiện tại',
-          description: ''
-        }
-      ],
-      advancedSkill: [
-        {
-          name: 'Ngôn ngữ lập trình cơ bản',
-          description: 'C, C++, Python, Javascript'
-        },
-        {
-          name: 'Frontend',
-          description: 'HTML5, CSS3, JS(ES6)'
-        },
-        {
-          name: 'Framework/Library',
-          description: 'React, Jquery, Material UI, Andt Design, Bootstrap, Tailwind'
-        }
-      ],
-      activity: [
-        {
-          name: 'Thành viên CLB Tin học ĐH Giao Thông Vận Tải',
-          time: '09/2017 - 09/2020'
-        }
-      ],
-      certificate: [
-        {
-          name: 'Chứng chỉ Tiếng Anh B1'
-        }
-      ],
-      award: [
-        {
-          name: 'Giải 3 cuộc thi sáng tạo cấp tỉnh (Tin học)'
-        }
-      ],
-      presenter: [
-        {
-          name: 'Nguyễn Hồng Đức',
-          position: 'HR',
-          phone: '0123456789',
-          company: 'HR.vn'
-        }
-      ],
-      anotherInfo: [
-        {
-          info: 'Website cá nhân http://nhduc.site'
-        }
-      ]
-    },
-    createdAt: 1615655698,
-    updatedAt: 1615655698
-  },
-  {
-    id: 1,
-    userId: 1,
-    color: '#176F9B',
-    template: '1',
-    fontSize: '14px',
-    fontFamily: `"Quicksand", sans-serif`,
-    categoryInfo: [
-      {
-        name: 'basicSkill'
-      },
-      {
-        name: 'hobby'
-      },
-      {
-        name: 'careerGoals'
-      }
-    ],
-    categoryCV: [
-      {
-        name: 'education'
-      },
-      {
-        name: 'workExperience'
-      },
-      {
-        name: 'advancedSkill'
-      },
-      {
-        name: 'activity'
-      },
-      {
-        name: 'certificate'
-      },
-      {
-        name: 'award'
-      },
-      {
-        name: 'presenter'
-      },
-      {
-        name: 'anotherInfo'
-      }
-    ],
-    detail: {
-      fullname: 'Nguyễn Hồng Đức',
-      avatar: 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-avatar-de-thuong-cute.jpg',
-      applyPosition: 'Frontend Developer',
-      birthday: '11/12/1999',
-      gender: 'Nam',
-      phone: '0389755202',
-      address: 'Ba Đình, Hà Nội',
-      email: 'autoclickvn@gmail.com',
-      facebook: 'fb.com/ducnh99',
-      basicSkill: [
-        {
-          name: 'Tiếng Anh',
-          star: 3
-        },
-        {
-          name: 'Teamwork',
-          star: 4
-        },
-        {
-          name: 'Tiếng Trung',
-          star: 3
-        }
-      ],
-      hobby: 'abc',
-      careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
-      - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
+//       education: [
+//         {
+//           name: 'Đại học Giao Thông Vận Tải',
+//           major: 'Công nghệ thông tin'
+//         }
+//       ],
+//       workExperience: [
+//         {
+//           companyName: 'SOFTVIET',
+//           position: 'Trainee',
+//           time: '06/2019 - 07/2019',
+//           description: 'Học hỏi kiến thức, kinh nghiệm về front-end.'
+//         },
+//         {
+//           companyName: 'OMNISCHOOL (Ekidpro)',
+//           position: 'Frontend Developer',
+//           time: '08/2020 - Hiện tại',
+//           description: ''
+//         }
+//       ],
+//       advancedSkill: [
+//         {
+//           name: 'Ngôn ngữ lập trình cơ bản',
+//           description: 'C, C++, Python, Javascript'
+//         },
+//         {
+//           name: 'Frontend',
+//           description: 'HTML5, CSS3, JS(ES6)'
+//         },
+//         {
+//           name: 'Framework/Library',
+//           description: 'React, Jquery, Material UI, Andt Design, Bootstrap, Tailwind'
+//         }
+//       ],
+//       activity: [
+//         {
+//           name: 'Thành viên CLB Tin học ĐH Giao Thông Vận Tải',
+//           time: '09/2017 - 09/2020'
+//         }
+//       ],
+//       certificate: [
+//         {
+//           name: 'Chứng chỉ Tiếng Anh B1'
+//         }
+//       ],
+//       award: [
+//         {
+//           name: 'Giải 3 cuộc thi sáng tạo cấp tỉnh (Tin học)'
+//         }
+//       ],
+//       presenter: [
+//         {
+//           name: 'Nguyễn Hồng Đức',
+//           position: 'HR',
+//           phone: '0123456789',
+//           company: 'HR.vn'
+//         }
+//       ],
+//       anotherInfo: [
+//         {
+//           info: 'Website cá nhân http://nhduc.site'
+//         }
+//       ]
+//     },
+//     createdAt: 1615655698,
+//     updatedAt: 1615655698
+//   },
+//   {
+//     id: 1,
+//     userId: 1,
+//     color: '#176F9B',
+//     template: '1',
+//     fontSize: '14px',
+//     fontFamily: `"Quicksand", sans-serif`,
+//     categoryInfo: [
+//       {
+//         name: 'basicSkill'
+//       },
+//       {
+//         name: 'hobby'
+//       },
+//       {
+//         name: 'careerGoals'
+//       }
+//     ],
+//     categoryCV: [
+//       {
+//         name: 'education'
+//       },
+//       {
+//         name: 'workExperience'
+//       },
+//       {
+//         name: 'advancedSkill'
+//       },
+//       {
+//         name: 'activity'
+//       },
+//       {
+//         name: 'certificate'
+//       },
+//       {
+//         name: 'award'
+//       },
+//       {
+//         name: 'presenter'
+//       },
+//       {
+//         name: 'anotherInfo'
+//       }
+//     ],
+//     detail: {
+//       fullname: 'Nguyễn Hồng Đức',
+//       avatar: 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-avatar-de-thuong-cute.jpg',
+//       applyPosition: 'Frontend Developer',
+//       birthday: '11/12/1999',
+//       gender: 'Nam',
+//       phone: '0389755202',
+//       address: 'Ba Đình, Hà Nội',
+//       email: 'autoclickvn@gmail.com',
+//       facebook: 'fb.com/ducnh99',
+//       basicSkill: [
+//         {
+//           name: 'Tiếng Anh',
+//           star: 3
+//         },
+//         {
+//           name: 'Teamwork',
+//           star: 4
+//         },
+//         {
+//           name: 'Tiếng Trung',
+//           star: 3
+//         }
+//       ],
+//       hobby: 'abc',
+//       careerGoals: `- Mục tiêu ngắn hạn: trở thành TTS Front-end của công ty, được tích luỹ học hỏi thêm nhiều kinh nhiệm, kiến thức chuyên môn
+//       - Mục tiêu dài hạn: trở thành nhân viên chính thức của công ty, củng cố, hoàn thiện hơn kiến thức của bản thân, nỗ lực đóng góp cho sự phát triển của công ty.`,
 
-      education: [
-        {
-          name: 'Đại học Giao Thông Vận Tải',
-          major: 'Công nghệ thông tin'
-        }
-      ],
-      workExperience: [
-        {
-          companyName: 'SOFTVIET',
-          position: 'Trainee',
-          time: '06/2019 - 07/2019',
-          description: 'Học hỏi kiến thức, kinh nghiệm về front-end.'
-        },
-        {
-          companyName: 'OMNISCHOOL (Ekidpro)',
-          position: 'Frontend Developer',
-          time: '08/2020 - Hiện tại',
-          description: ''
-        }
-      ],
-      advancedSkill: [
-        {
-          name: 'Ngôn ngữ lập trình cơ bản',
-          description: 'C, C++, Python, Javascript'
-        },
-        {
-          name: 'Frontend',
-          description: 'HTML5, CSS3, JS(ES6)'
-        },
-        {
-          name: 'Framework/Library',
-          description: 'React, Jquery, Material UI, Andt Design, Bootstrap, Tailwind'
-        }
-      ],
-      activity: [
-        {
-          name: 'Thành viên CLB Tin học ĐH Giao Thông Vận Tải',
-          time: '09/2017 - 09/2020'
-        }
-      ],
-      certificate: [
-        {
-          name: 'Chứng chỉ Tiếng Anh B1'
-        }
-      ],
-      award: [
-        {
-          name: 'Giải 3 cuộc thi sáng tạo cấp tỉnh (Tin học)'
-        }
-      ],
-      presenter: [
-        {
-          name: 'Nguyễn Hồng Đức',
-          position: 'HR',
-          phone: '0123456789',
-          company: 'HR.vn'
-        }
-      ],
-      anotherInfo: [
-        {
-          info: 'Website cá nhân http://nhduc.site'
-        }
-      ]
-    },
-    createdAt: 1615655698,
-    updatedAt: 1615655698
-  }
-]
+//       education: [
+//         {
+//           name: 'Đại học Giao Thông Vận Tải',
+//           major: 'Công nghệ thông tin'
+//         }
+//       ],
+//       workExperience: [
+//         {
+//           companyName: 'SOFTVIET',
+//           position: 'Trainee',
+//           time: '06/2019 - 07/2019',
+//           description: 'Học hỏi kiến thức, kinh nghiệm về front-end.'
+//         },
+//         {
+//           companyName: 'OMNISCHOOL (Ekidpro)',
+//           position: 'Frontend Developer',
+//           time: '08/2020 - Hiện tại',
+//           description: ''
+//         }
+//       ],
+//       advancedSkill: [
+//         {
+//           name: 'Ngôn ngữ lập trình cơ bản',
+//           description: 'C, C++, Python, Javascript'
+//         },
+//         {
+//           name: 'Frontend',
+//           description: 'HTML5, CSS3, JS(ES6)'
+//         },
+//         {
+//           name: 'Framework/Library',
+//           description: 'React, Jquery, Material UI, Andt Design, Bootstrap, Tailwind'
+//         }
+//       ],
+//       activity: [
+//         {
+//           name: 'Thành viên CLB Tin học ĐH Giao Thông Vận Tải',
+//           time: '09/2017 - 09/2020'
+//         }
+//       ],
+//       certificate: [
+//         {
+//           name: 'Chứng chỉ Tiếng Anh B1'
+//         }
+//       ],
+//       award: [
+//         {
+//           name: 'Giải 3 cuộc thi sáng tạo cấp tỉnh (Tin học)'
+//         }
+//       ],
+//       presenter: [
+//         {
+//           name: 'Nguyễn Hồng Đức',
+//           position: 'HR',
+//           phone: '0123456789',
+//           company: 'HR.vn'
+//         }
+//       ],
+//       anotherInfo: [
+//         {
+//           info: 'Website cá nhân http://nhduc.site'
+//         }
+//       ]
+//     },
+//     createdAt: 1615655698,
+//     updatedAt: 1615655698
+//   }
+// ]
 
 export const CvManage: React.FC = () => {
   const [cvList, setCvList] = useState<CvInfo[] | null>(null)
@@ -315,7 +315,7 @@ export const CvManage: React.FC = () => {
       method: 'GET',
       headers,
       url,
-      data,
+      data: undefined,
       timeout: 20000
     }
 
@@ -335,7 +335,7 @@ export const CvManage: React.FC = () => {
 
   useEffect(() => {
     callApiUserDetail()
-    setCvList(data)
+    // setCvList(data)
   }, [])
 
   if (!cvList || !userDetail) {

@@ -106,7 +106,6 @@ export const PRIVATE_ROUTES: RouteType[] = [
     exact: true
   },
 
-  // Menu
   {
     path: '/jobs-new',
     component: JobsNew,
@@ -115,6 +114,11 @@ export const PRIVATE_ROUTES: RouteType[] = [
 
   {
     path: '/create-cv',
+    component: CvForm,
+    exact: true
+  },
+  {
+    path: '/update-cv/:id',
     component: CvForm,
     exact: true
   },

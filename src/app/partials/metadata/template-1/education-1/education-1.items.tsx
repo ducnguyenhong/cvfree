@@ -26,7 +26,7 @@ export const EducationItem1 = forwardRef((props: Record<string, unknown>, ref: R
     setValue(value: EducationValue) {
       const { name, major } = value
       nameRef.current?.setValue(name)
-      majorRef.current?.setValue(major)
+      majorRef.current?.setValue(major || '')
     }
   }))
 

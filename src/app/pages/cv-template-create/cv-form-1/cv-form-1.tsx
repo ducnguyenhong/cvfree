@@ -6,6 +6,7 @@ import PrUpload from 'app/partials/pr-upload'
 import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
+import LoadingIcon from 'assets/icons/loading.svg'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Activities,
@@ -43,11 +44,14 @@ import {
   AnotherInfoRef,
   PresenterRef
 } from 'app/partials/metadata/metadata.type'
+import { useRouteMatch } from 'react-router-dom'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
 export const CvFormLayout1: React.FC<CvFormProps> = () => {
+  const match = useRouteMatch()
+  const cvId = get(match.params, 'id')
   const userInfo = useRecoilValue(userInfoState)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [color, setColor] = useState<string>('#176F9B')
@@ -55,6 +59,9 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
   const [cvHeight, setCvHeight] = useState<number>(0)
+  const [loadingAction, setLoadingAction] = useState<boolean>(false)
+  const [showRecommend, setShowRecommend] = useState<boolean>(false)
+  const [cvInfo, setCvInfo] = useState<CvInfo | null>(null)
 
   const fullnameRef = useRef<PrInputCVRefProps>(null)
   const applyPositionRef = useRef<PrInputCVRefProps>(null)
@@ -63,27 +70,27 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const genderRef = useRef<PrInputCVRefProps>(null)
   const emailRef = useRef<PrInputCVRefProps>(null)
   const addressRef = useRef<PrInputCVRefProps>(null)
-  const facbookRef = useRef<PrInputCVRefProps>(null)
+  const facebookRef = useRef<PrInputCVRefProps>(null)
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
-  const educationsRef = useRef<EducationRef>(null)
-  const awardsRef = useRef<AwardRef>(null)
-  const presentersRef = useRef<PresenterRef>(null)
-  const workExperiencesRef = useRef<WorkExperienceRef>(null)
+  const educationRef = useRef<EducationRef>(null)
+  const awardRef = useRef<AwardRef>(null)
+  const presenterRef = useRef<PresenterRef>(null)
+  const workExperienceRef = useRef<WorkExperienceRef>(null)
   const anotherInfoRef = useRef<AnotherInfoRef>(null)
-  const advancedSkillsRef = useRef<AdvancedSkillRef>(null)
-  const activitiesRef = useRef<ActivityRef>(null)
-  const certificatesRef = useRef<CertificateRef>(null)
-  const basicSkillsRef = useRef<BasicSkillRef>(null)
+  const advancedSkillRef = useRef<AdvancedSkillRef>(null)
+  const activityRef = useRef<ActivityRef>(null)
+  const certificateRef = useRef<CertificateRef>(null)
+  const basicSkillRef = useRef<BasicSkillRef>(null)
   const hobbiesRef = useRef<PrInputCVRefProps>(null)
-  const careerGoalsRef = useRef<PrInputCVRefProps>(null)
+  const careerGoalRef = useRef<PrInputCVRefProps>(null)
   const cvRef = useRef<HTMLDivElement>(null)
 
-  const test2 = [
-    { star: 2, name: '1' },
-    { star: 3, name: '2' },
-    { star: 4, name: '3' }
-  ]
+  // const test2 = [
+  //   { star: 2, name: '1' },
+  //   { star: 3, name: '2' },
+  //   { star: 4, name: '3' }
+  // ]
 
   const defaultCategory: CategoryProps[] = [
     {
@@ -91,49 +98,49 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       enable: true,
       name: 'education',
       component: (props) => <Educations {...props} />,
-      categoryRef: educationsRef
+      categoryRef: educationRef
     },
     {
       title: 'Kinh nghiệm làm việc',
       enable: true,
       name: 'workExperience',
       component: (props) => <WorkExperiences {...props} />,
-      categoryRef: workExperiencesRef
+      categoryRef: workExperienceRef
     },
     {
       title: 'Kỹ năng chuyên môn',
       enable: true,
       name: 'advancedSkill',
       component: (props) => <AdvancedSkills {...props} />,
-      categoryRef: advancedSkillsRef
+      categoryRef: advancedSkillRef
     },
     {
       title: 'Hoạt động',
       enable: true,
       name: 'activity',
       component: (props) => <Activities {...props} />,
-      categoryRef: activitiesRef
+      categoryRef: activityRef
     },
     {
       title: 'Chứng chỉ',
       enable: true,
       name: 'certificate',
       component: (props) => <Certificates {...props} />,
-      categoryRef: certificatesRef
+      categoryRef: certificateRef
     },
     {
       title: 'Giải thưởng',
       enable: true,
       name: 'award',
       component: (props) => <Awards {...props} />,
-      categoryRef: awardsRef
+      categoryRef: awardRef
     },
     {
       title: 'Người giới thiệu',
       enable: false,
       name: 'presenter',
       component: (props) => <Presenters {...props} />,
-      categoryRef: presentersRef
+      categoryRef: presenterRef
     },
     {
       title: 'Thông tin khác',
@@ -150,7 +157,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       enable: true,
       name: 'basicSkill',
       component: (props) => <BasicSkills {...props} />,
-      categoryRef: basicSkillsRef
+      categoryRef: basicSkillRef
     },
     {
       title: 'Sở thích',
@@ -164,7 +171,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       enable: true,
       name: 'careerGoals',
       component: (props) => <CareerGoals {...props} />,
-      inputRef: careerGoalsRef
+      inputRef: careerGoalRef
     }
   ]
 
@@ -177,147 +184,121 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
     setColor(colorInput)
   }
 
-  const getImage = (img: any) => {
+  const getImage = (img: File) => {
     setAvatar(img)
   }
 
   const validate = () => {
+    if (!fullnameRef.current?.checkRequired()) {
+      return false
+    }
+    if (!birthdayRef.current?.checkRequired()) {
+      return false
+    }
+    if (!genderRef.current?.checkRequired()) {
+      return false
+    }
+    if (!phoneRef.current?.checkRequired()) {
+      return false
+    }
+    if (!emailRef.current?.checkRequired()) {
+      return false
+    }
     return true
   }
 
-  const onCreateCV = async () => {
+  const onSaveCV = async () => {
+    setLoadingAction(true)
     if (!validate()) {
+      showNotify('Hãy nhập đủ thông tin')
+      setLoadingAction(false)
       return
     }
-    // let avatarURL = ''
-    // if (avatar) {
-    //   avatarURL = await uploadServer(avatar)
-    // }
+    let avatarURL = ''
+    if (avatar) {
+      avatarURL = await uploadServer(avatar)
+    }
 
-    // const fullname = fullnameRef.current?.getValue() || ''
-    // const applyPosition = applyPositionRef.current?.getValue()
-    // const birthday = birthdayRef.current?.getValue() || ''
-    // const gender = genderRef.current?.getValue() || ''
-    // const phone = phoneRef.current?.getValue() || ''
-    // const email = emailRef.current?.getValue() || ''
-    // const address = addressRef.current?.getValue()
-    // const facebook = facbookRef.current?.getValue()
+    const fullname = fullnameRef.current?.getValue() || ''
+    const applyPosition = applyPositionRef.current?.getValue()
+    const birthday = birthdayRef.current?.getValue() || ''
+    const gender = genderRef.current?.getValue() || ''
+    const phone = phoneRef.current?.getValue() || ''
+    const email = emailRef.current?.getValue() || ''
+    const address = addressRef.current?.getValue() || ''
+    const facebook = facebookRef.current?.getValue() || ''
 
-    const basicSkill = basicSkillsRef.current?.getValue()
-    console.log('ducnhX', basicSkill)
+    const basicSkill = basicSkillRef.current?.getValue()
+    const hobby = hobbiesRef.current?.getValue()
+    const careerGoals = careerGoalRef.current?.getValue()
+    const education = educationRef.current?.getValue()
+    const workExperience = workExperienceRef.current?.getValue()
+    const advancedSkill = advancedSkillRef.current?.getValue()
+    const activity = activityRef.current?.getValue()
+    const certificate = certificateRef.current?.getValue()
+    const award = awardRef.current?.getValue()
+    const presenter = presenterRef.current?.getValue()
+    const anotherInfo = anotherInfoRef.current?.getValue()
 
-    // const hobby = hobbiesRef.current?.getValue()
-    // const careerGoals = careerGoalsRef.current?.getValue()
-    // const education = educationsRef.current?.getValue()
-    // const workExperience = workExperiencesRef.current?.getValue()
-    // const advancedSkill = advancedSkillsRef.current?.getValue()
-    // const activity = activitiesRef.current?.getValue()
-    // const certificate = certificatesRef.current?.getValue()
-    // const award = awardsRef.current?.getValue()
-    // const presenter = presentersRef.current?.getValue()
-    // const anotherInfo = anotherInfoRef.current?.getValue()
+    const categoryInfo: { name: string }[] = []
+    const categoryCV: { name: string }[] = []
 
-    // const dataCV: CvInfo = {
-    //   userId: userInfo?.id || 0,
-    //   color,
-    //   template: '1',
-    //   fontSize,
-    //   fontFamily,
-    //   name: '',
-    //   categoryInfo: [
-    //     {
-    //       name: 'string'
-    //     }
-    //   ],
-    //   categoryCV: [
-    //     {
-    //       name: 'string'
-    //     }
-    //   ],
-    //   detail: {
-    //     fullname,
-    //     avatar: 'string',
-    //     applyPosition,
-    //     birthday,
-    //     gender,
-    //     phone,
-    //     address,
-    //     email,
-    //     facebook,
-    //     basicSkill: [
-    //       {
-    //         name: 'string',
-    //         star: 0
-    //       }
-    //     ],
-    //     hobby: 'string',
-    //     careerGoals: 'string',
+    for (let i = 0; i < category.length; i++) {
+      category[i].enable && categoryCV.push({ name: category[i].name })
+    }
 
-    //     education: [
-    //       {
-    //         name: 'string',
-    //         major: 'string'
-    //       }
-    //     ],
-    //     workExperience: [
-    //       {
-    //         companyName: 'string',
-    //         position: 'string',
-    //         time: 'string',
-    //         description: 'string'
-    //       }
-    //     ],
-    //     advancedSkill: [
-    //       {
-    //         name: 'string',
-    //         description: 'string'
-    //       }
-    //     ],
-    //     activity: [
-    //       {
-    //         name: 'string',
-    //         time: 'string'
-    //       }
-    //     ],
-    //     certificate: [
-    //       {
-    //         name: 'string'
-    //       }
-    //     ],
-    //     award: [
-    //       {
-    //         name: 'string'
-    //       }
-    //     ],
-    //     presenter: [
-    //       {
-    //         name: 'string',
-    //         company: 'string',
-    //         position: 'string',
-    //         phone: 'string'
-    //       }
-    //     ],
-    //     anotherInfo: [
-    //       {
-    //         info: 'string'
-    //       }
-    //     ]
-    //   }
-    // }
+    for (let i = 0; i < categoryLeft.length; i++) {
+      categoryLeft[i].enable && categoryInfo.push({ name: categoryLeft[i].name })
+    }
 
-    // callApiCreate(dataCV)
+    const dataCV: CvInfo = {
+      userId: userInfo?.id || 0,
+      color,
+      template: '1',
+      fontSize,
+      fontFamily,
+      name: '',
+      categoryInfo,
+      categoryCV,
+      detail: {
+        fullname,
+        avatar: 'string',
+        applyPosition,
+        birthday,
+        gender,
+        phone,
+        address,
+        email,
+        facebook,
+        basicSkill,
+        hobby,
+        careerGoals,
+        education,
+        workExperience,
+        advancedSkill,
+        activity,
+        certificate,
+        award,
+        presenter,
+        anotherInfo
+      }
+    }
+
+    console.log('ducnh', dataCV)
+
+    callApiSave(dataCV)
   }
 
-  const callApiCreate = (data: CvInfo) => {
+  const callApiSave = (data: CvInfo) => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/cv`
+    const url = cvId ? `${SERVER_URL}/cvs/${cvId}` : `${SERVER_URL}/cvs`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
     }
 
     const config: AxiosRequestConfig = {
-      method: 'POST',
+      method: cvId ? 'PUT' : 'POST',
       headers,
       url,
       data,
@@ -326,16 +307,16 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
 
     axios(config)
       .then((response: AxiosResponse<ResponseCVDetail>) => {
-        const { success, data, message, error } = response.data
+        const { success, message, error } = response.data
 
         if (!success) {
           throw Error(error?.message)
         }
-
+        setLoadingAction(false)
         showNotify.success(message)
       })
       .catch((e) => {
-        // setLoading(false)
+        setLoadingAction(false)
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
@@ -417,10 +398,46 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
     setCategoryCheckedLeft(categoryLeft)
   }
 
+  const callApiCvDetail = () => {
+    const url = `${SERVER_URL}/cvs/${cvId}`
+    const accessToken = Cookies.get('token')
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers,
+      url,
+      data: undefined,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseCVDetail>) => {
+        const { success, data, error } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        setCvInfo(data.cvDetail)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  useEffect(() => {
+    if (cvId) {
+      callApiCvDetail()
+    }
+  }, [cvId])
+
   const handleScroll = useCallback(() => {
-    if (window.pageYOffset > 51) {
+    if (window.pageYOffset > 50) {
       setFixedControl(true)
-    } else if (window.pageYOffset <= 51) {
+    } else if (window.pageYOffset <= 50) {
       setFixedControl(false)
     }
     if (cvRef && cvRef.current) {
@@ -440,232 +457,369 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   }, [])
 
   useEffect(() => {
-    if (basicSkillsRef && basicSkillsRef.current && basicSkillsRef.current.setValue) {
-      basicSkillsRef.current?.setValue(test2)
+    if (cvInfo) {
+      const { color, fontFamily, fontSize, categoryCV, categoryInfo, detail } = cvInfo
+      const {
+        fullname,
+        avatar,
+        applyPosition,
+        birthday,
+        gender,
+        phone,
+        address,
+        email,
+        facebook,
+        basicSkill,
+        hobby,
+        careerGoals,
+        education,
+        workExperience,
+        advancedSkill,
+        activity,
+        certificate,
+        award,
+        presenter,
+        anotherInfo
+      } = detail
+      setColor(color)
+      setFontFamily(fontFamily)
+      setFontSize(fontSize)
+      fullnameRef.current?.setValue(fullname)
+      // avatar
+      applyPositionRef.current?.setValue(applyPosition || '')
+      birthdayRef.current?.setValue(birthday)
+      genderRef.current?.setValue(gender)
+      phoneRef.current?.setValue(phone)
+      addressRef.current?.setValue(address || '')
+      emailRef.current?.setValue(email)
+      facebookRef.current?.setValue(facebook || '')
+      basicSkillRef.current?.setValue(basicSkill || null)
+      hobbiesRef.current?.setValue(hobby || '')
+      careerGoalRef.current?.setValue(careerGoals || '')
+      educationRef.current?.setValue(education || null)
+      workExperienceRef.current?.setValue(workExperience || null)
+      advancedSkillRef.current?.setValue(advancedSkill || null)
+      activityRef.current?.setValue(activity || null)
+      certificateRef.current?.setValue(certificate || null)
+      awardRef.current?.setValue(award || null)
+      presenterRef.current?.setValue(presenter || null)
+      anotherInfoRef.current?.setValue(anotherInfo || null)
+
+      // setCategory(categoryCV)
+      // setCategoryLeft(categoryInfo)
     }
-  }, [])
+  }, [cvInfo])
 
   return (
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-32">
       <CVFormStyle>
-        {/* Control */}
-
+        {/* Recommend */}
         <div
-          style={{ width: '210mm', top: fixedControl ? 76 : undefined }}
-          className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
-            fixedControl ? 'fixed left-0 right-0 mx-auto' : 'relative'
-          }`}
+          className={`${
+            showRecommend ? 'opacity-100 bg-white' : 'opacity-80 bg-gray-700'
+          } right-0 px-4 py-2 shadow rounded-md rounded-r-none duration-300 fixed top-48 hover:opacity-100`}
+          style={{ width: showRecommend ? 500 : 150 }}
         >
-          {/* Màu CV */}
-          <PrInputColor onChange={onChangColorCV} defaultColor="#37474F" />
-          {/* Đổi mẫu */}
-          <div className="mx-4 text-center">
-            <span className="block text-sm font-medium">Đổi mẫu CV</span>
-            <i className="fas fa-copy text-gray-600 cursor-pointer text-2xl"></i>
+          <div className="relative">
+            <span
+              className={`${
+                showRecommend ? 'text-gray-800' : 'text-white'
+              } block text-lg font-semibold text-center leading-10 duration-300 overflow-hidden overflow-ellipsis whitespace-nowrap`}
+            >
+              <i className="fas fa-exclamation mr-2 text-base"></i>
+              {showRecommend ? 'Gợi ý viết CV' : 'Gợi ý'}
+            </span>
+            {showRecommend && (
+              <i
+                onClick={() => setShowRecommend(!showRecommend)}
+                className="absolute cursor-pointer left-0 top-0 text-3xl fas fa-chevron-circle-right text-red-400 duration-300 hover:text-red-600"
+              ></i>
+            )}
           </div>
-          {/* Cỡ chữ */}
-          <div className="w-24 mx-4 text-center">
-            <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
-            <PrDropdownCV
-              dropdownClassName="w-full"
-              className="w-full"
-              options={DataFontSize}
-              onChange={(value) => setFontSize(value)}
-              defaultValue={defaultFontSize}
-            />
-          </div>
+          <hr />
+          <div className="flex items-center justify-start pl-0 pt-6 pb-4 pr-0" style={{ height: '60vh' }}>
+            <div onClick={() => setShowRecommend(!showRecommend)} className="h-full cursor-pointer flex items-center">
+              {showRecommend ? null : (
+                <div style={{ width: 120 }} className="mr-10">
+                  <div className="flex items-start -mt-28">
+                    <i
+                      className={`${showRecommend ? 'text-gray-800' : 'text-white'} fas fa-check-circle text-sm mr-1`}
+                    />
+                    <span className={`${showRecommend ? 'text-gray-800' : 'text-white'} text-sm`}>Chuẩn</span>
+                  </div>
+                  <div className="flex items-start mt-5">
+                    <i
+                      className={`${showRecommend ? 'text-gray-800' : 'text-white'} fas fa-check-circle text-sm mr-1`}
+                    />
+                    <span className={`${showRecommend ? 'text-gray-800' : 'text-white'} text-sm`}>Chính xác</span>
+                  </div>
+                  <div className="flex items-start mt-5">
+                    <i
+                      className={`${showRecommend ? 'text-gray-800' : 'text-white'} fas fa-check-circle text-sm mr-1`}
+                    />
+                    <span className={`${showRecommend ? 'text-gray-800' : 'text-white'} text-sm`}>Chuyên nghiệp</span>
+                  </div>
+                  <div className="mt-20 text-center">
+                    <span className="block text-white uppercase text-lg font-semibold whitespace-nowrap">Xem ngay</span>
+                    <i className="fas fa-angle-double-left text-white text-xl block arrow-recommend cursor-pointer mt-1"></i>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="h-full w-full overflow-hidden">
+              <span className="block text-xl font-medium text-center">
+                Chào mừng đến với <span className="text-green-600 font-semibold">CVFREE</span>
+              </span>
+              <div className="mt-5 px-2">
+                <span className="block text-center italic">
+                  Chọn vào ô cần nhập thông tin và bạn sẽ thấy gợi ý của chúng tôi tại đây
+                </span>
+              </div>
+              <div className="px-2 mt-10">
+                <span className="block font-semibold text-green-600 mb-2">Gợi ý</span>
+                <div className="border border-dashed border-gray-300 px-3 py-2 rounded">
+                  <span>
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkwscnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                  </span>
+                </div>
+              </div>
 
-          {/* Font chữ */}
-          <div className="w-40 mx-4 text-center">
-            <span className="block text-sm font-medium mb-1">Font chữ</span>
-            <PrDropdownCV
-              dropdownClassName="w-full"
-              className="w-full"
-              options={DataFontFamily}
-              onChange={(value) => {
-                console.log('value', value)
-
-                setFontFamily(value)
-              }}
-              defaultValue={defaultFontFamily}
-            />
-          </div>
-
-          {/* Danh sách mục */}
-          <div className="mx-4 text-center cursor-pointer" onClick={onSelectListCategory}>
-            <span className="block text-sm font-medium mb-1">Chuyên mục</span>
-            <i className="fas fa-list-ul text-gray-600 cursor-pointer text-xl"></i>
-          </div>
-          {/* LƯU CV */}
-          <div
-            className="mx-4 text-center bg-green-600 px-4 py-2 rounded cursor-pointer duration-300 hover:bg-green-700"
-            onClick={onCreateCV}
-          >
-            <span className="block text-sm text-white font-semibold whitespace-nowrap">Lưu CV</span>
-            <i className="fas fa-save text-white cursor-pointer text-2xl"></i>
+              <div className="px-2 mt-5">
+                <span className="block font-semibold text-green-600 mb-2">Ví dụ</span>
+                <div className="border border-dashed border-gray-300 px-3 py-2 rounded">
+                  <span>
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkwscnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <div style={{ width: '210mm', right: showRecommend ? '10%' : '0' }} className="duration-300 relative mx-auto">
+          {/* Control */}
 
-        {/* CV Main */}
-        <div
-          style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
-          className={`bg-white mx-auto relative shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
-          ref={cvRef}
-        >
-          {cvHeight > 1150 && (
-            <div className="cv-page-2 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
-              <span className="text-white font-semibold">Trang 2</span>
+          <div
+            style={{ width: '210mm', top: fixedControl ? 76 : undefined }}
+            className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
+              fixedControl ? 'fixed left-0 right-0 mx-auto' : 'relative'
+            }`}
+          >
+            {/* Màu CV */}
+            <PrInputColor onChange={onChangColorCV} defaultColor="#37474F" />
+            {/* Đổi mẫu */}
+            <div className="mx-4 text-center">
+              <span className="block text-sm font-medium">Đổi mẫu CV</span>
+              <i className="fas fa-copy text-gray-600 cursor-pointer text-2xl"></i>
             </div>
-          )}
-          {cvHeight > 2265 && (
-            <div className="cv-page-3 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
-              <span className="text-white font-semibold">Trang 3</span>
+            {/* Cỡ chữ */}
+            <div className="w-24 mx-4 text-center">
+              <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
+              <PrDropdownCV
+                dropdownClassName="w-full"
+                className="w-full"
+                options={DataFontSize}
+                onChange={(value) => setFontSize(value)}
+                defaultValue={defaultFontSize}
+              />
             </div>
-          )}
-          <div className="grid grid-cols-3 h-full">
-            {/* CV Left */}
-            <div className="col-span-1 bg-gray-100 relative overflow-hidden">
-              <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
-                <div className="mb-3">
-                  <PrInputCV
-                    ref={fullnameRef}
-                    placeholder="Họ và tên"
-                    divClassName="h-8"
-                    className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
-                  />
+
+            {/* Font chữ */}
+            <div className="w-40 mx-4 text-center">
+              <span className="block text-sm font-medium mb-1">Font chữ</span>
+              <PrDropdownCV
+                dropdownClassName="w-full"
+                className="w-full"
+                options={DataFontFamily}
+                onChange={(value) => {
+                  console.log('value', value)
+
+                  setFontFamily(value)
+                }}
+                defaultValue={defaultFontFamily}
+              />
+            </div>
+
+            {/* Danh sách mục */}
+            <div className="mx-4 text-center cursor-pointer" onClick={onSelectListCategory}>
+              <span className="block text-sm font-medium mb-1">Chuyên mục</span>
+              <i className="fas fa-list-ul text-gray-600 cursor-pointer text-xl"></i>
+            </div>
+            {/* LƯU CV */}
+            <div
+              className="mx-4 text-center bg-green-600 px-4 py-2 rounded cursor-pointer duration-300 hover:bg-green-700"
+              onClick={onSaveCV}
+            >
+              <span className="block text-sm text-white font-semibold whitespace-nowrap">Lưu CV</span>
+              {loadingAction ? (
+                <img src={LoadingIcon} alt="loading" className="w-7 h-7 block mx-auto mt-1" />
+              ) : (
+                <i className="fas fa-save text-white text-2xl"></i>
+              )}
+            </div>
+          </div>
+
+          {/* CV Main */}
+          <div
+            style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
+            className={`bg-white mx-auto relative shadow-2xl ${fixedControl ? 'mt-28' : 'mt-10'}`}
+            ref={cvRef}
+          >
+            {cvHeight > 1150 && (
+              <div className="cv-page-2 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
+                <span className="text-white font-semibold">Trang 2</span>
+              </div>
+            )}
+            {cvHeight > 2265 && (
+              <div className="cv-page-3 absolute bg-green-500 shadow px-3 py-2 rounded-sm">
+                <span className="text-white font-semibold">Trang 3</span>
+              </div>
+            )}
+            <div className="grid grid-cols-3 h-full">
+              {/* CV Left */}
+              <div className="col-span-1 bg-gray-100 relative overflow-hidden">
+                <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
+                  <div className="mb-3">
+                    <PrInputCV
+                      ref={fullnameRef}
+                      placeholder="Họ và tên"
+                      divClassName="h-8"
+                      className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
+                    />
+                  </div>
+                  <div className="px-6">
+                    <PrUpload getImage={getImage} />
+                  </div>
+                  <div className="mt-3 mb-5">
+                    <PrInputCV
+                      ref={applyPositionRef}
+                      placeholder="Vị trí ứng tuyển"
+                      divClassName="h-8"
+                      className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
+                    />
+                  </div>
+                  <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
+                  <div className="absolute -bottom-10 -right-10 w-60 h-16 transform -rotate-12 bg-gray-100"></div>
                 </div>
-                <div className="px-6">
-                  <PrUpload getImage={getImage} />
+
+                <div className="div-middle-left mx-4">
+                  <div className="flex items-center">
+                    <BirthdayIcon />
+                    <PrInputCV
+                      ref={birthdayRef}
+                      placeholder="Ngày sinh"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <GenderIcon />
+                    <PrInputCV
+                      ref={genderRef}
+                      placeholder="Giới tính"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <PhoneIcon />
+                    <PrInputCV
+                      ref={phoneRef}
+                      placeholder="Điện thoại"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <EmailIcon />
+                    <PrInputCV
+                      ref={emailRef}
+                      placeholder="Email"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <MapIcon />
+                    <PrInputCV
+                      ref={addressRef}
+                      placeholder="Địa chỉ"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <div className="flex items-center mb-3">
+                    <FacebookIcon />
+                    <PrInputCV
+                      ref={facebookRef}
+                      placeholder="Facebook link"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    />
+                  </div>
+                  <hr />
                 </div>
-                <div className="mt-3 mb-5">
-                  <PrInputCV
-                    ref={applyPositionRef}
-                    placeholder="Vị trí ứng tuyển"
-                    divClassName="h-8"
-                    className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
-                  />
+
+                <div className="div-bottom-left bg-gray-100 mx-2">
+                  <div className="mb-16">
+                    {categoryLeft &&
+                      categoryLeft.length > 0 &&
+                      categoryLeft.map((item) => {
+                        const { name, enable, component, categoryRef, inputRef } = item
+                        if (!enable) {
+                          return null
+                        }
+                        return (
+                          <div key={name}>
+                            {component({
+                              onDownCategoryLeft,
+                              onUpCategoryLeft,
+                              onRemoveCategoryLeft,
+                              categoryRef,
+                              inputRef
+                            })}
+                          </div>
+                        )
+                      })}
+                  </div>
+
+                  <div
+                    className="div-triangle-bottom-left absolute -bottom-20 -left-7 w-48 h-28"
+                    style={{ backgroundColor: color }}
+                  ></div>
                 </div>
-                <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
-                <div className="absolute -bottom-10 -right-10 w-60 h-16 transform -rotate-12 bg-gray-100"></div>
               </div>
 
-              <div className="div-middle-left mx-4">
-                <div className="flex items-center">
-                  <BirthdayIcon />
-                  <PrInputCV
-                    ref={birthdayRef}
-                    placeholder="Ngày sinh"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <GenderIcon />
-                  <PrInputCV
-                    ref={genderRef}
-                    placeholder="Giới tính"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <PhoneIcon />
-                  <PrInputCV
-                    ref={phoneRef}
-                    placeholder="Điện thoại"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <EmailIcon />
-                  <PrInputCV
-                    ref={emailRef}
-                    placeholder="Email"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <div className="flex items-center">
-                  <MapIcon />
-                  <PrInputCV
-                    ref={addressRef}
-                    placeholder="Địa chỉ"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <div className="flex items-center mb-3">
-                  <FacebookIcon />
-                  <PrInputCV
-                    ref={facbookRef}
-                    placeholder="Facebook link"
-                    divClassName="h-8 w-full"
-                    className="bg-transparent w-full py-2"
-                  />
-                </div>
-                <hr />
-              </div>
-
-              <div className="div-bottom-left bg-gray-100 mx-2">
-                <div className="mb-16">
-                  {categoryLeft &&
-                    categoryLeft.length > 0 &&
-                    categoryLeft.map((item) => {
-                      const { name, enable, component, categoryRef, inputRef } = item
-                      if (!enable) {
-                        return null
-                      }
-                      return (
-                        <div key={name}>
-                          {component({
-                            onDownCategoryLeft,
-                            onUpCategoryLeft,
-                            onRemoveCategoryLeft,
-                            categoryRef,
-                            inputRef
-                          })}
-                        </div>
-                      )
-                    })}
-                </div>
-
+              {/* CV Right */}
+              <div className="col-span-2 relative p-4 overflow-hidden">
                 <div
-                  className="div-triangle-bottom-left absolute -bottom-20 -left-7 w-48 h-28"
+                  className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
                   style={{ backgroundColor: color }}
                 ></div>
+
+                {category &&
+                  category.length > 0 &&
+                  category.map((item) => {
+                    const { name, enable, component, categoryRef } = item
+                    if (!enable) {
+                      return null
+                    }
+                    return (
+                      <div key={name}>
+                        {component({
+                          onDownCategory,
+                          onUpCategory,
+                          onRemoveCategory,
+                          categoryRef
+                        })}
+                      </div>
+                    )
+                  })}
               </div>
-            </div>
-
-            {/* CV Right */}
-            <div className="col-span-2 relative p-4 overflow-hidden">
-              <div
-                className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
-                style={{ backgroundColor: color }}
-              ></div>
-
-              {category &&
-                category.length > 0 &&
-                category.map((item) => {
-                  const { name, enable, component, categoryRef } = item
-                  if (!enable) {
-                    return null
-                  }
-                  return (
-                    <div key={name}>
-                      {component({
-                        onDownCategory,
-                        onUpCategory,
-                        onRemoveCategory,
-                        categoryRef
-                      })}
-                    </div>
-                  )
-                })}
             </div>
           </div>
         </div>
-
         <PrModal
           ref={modalListCategoryRef}
           title={'Chọn mục hiển thị'}

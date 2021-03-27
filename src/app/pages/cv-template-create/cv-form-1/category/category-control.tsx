@@ -19,6 +19,7 @@ export const CategoryControl: React.FC<CategoryControlProps> = (props) => {
           onUpCategory && onUpCategory(name)
           onUpCategoryLeft && onUpCategoryLeft(name)
         }}
+        title="Di chuyển lên"
         className="px-3 h-full cursor-pointer bg-gray-600 border border-gray-400 border-t-0 border-l-0 border-b-0 flex justify-center items-center hover:bg-gray-700 duration-300"
       >
         <i className="fas fa-caret-up text-white text-lg"></i>
@@ -29,6 +30,7 @@ export const CategoryControl: React.FC<CategoryControlProps> = (props) => {
           onDownCategory && onDownCategory(name)
           onDownCategoryLeft && onDownCategoryLeft(name)
         }}
+        title="Di chuyển xuống"
       >
         <i className="fas fa-caret-down text-white text-lg"></i>
       </div>
@@ -37,6 +39,7 @@ export const CategoryControl: React.FC<CategoryControlProps> = (props) => {
           onClick={() => {
             categoryRef && categoryRef.current?.onCreate()
           }}
+          title="Tạo thêm dòng"
           className="flex justify-center items-center px-3 h-full cursor-pointer bg-gray-600 border border-gray-400 border-t-0 border-l-0 border-b-0 hover:bg-green-500 duration-300"
         >
           <i className="text-white fas fa-plus"></i>
@@ -47,6 +50,7 @@ export const CategoryControl: React.FC<CategoryControlProps> = (props) => {
           onRemoveCategory && onRemoveCategory(name)
           onRemoveCategoryLeft && onRemoveCategoryLeft(name)
         }}
+        title="Ẩn mục"
         className="flex justify-center items-center px-3 h-full cursor-pointer bg-gray-600 hover:bg-red-600 duration-300"
       >
         <i className="text-white fas fa-times"></i>

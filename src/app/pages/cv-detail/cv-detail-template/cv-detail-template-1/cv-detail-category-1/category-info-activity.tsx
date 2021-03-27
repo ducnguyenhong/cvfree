@@ -3,7 +3,7 @@ import ActivityIcon from 'assets/icons/activity.svg'
 interface ActivityInfoProps {
   activity?: {
     name: string
-    time: string
+    time?: string
   }[]
 }
 

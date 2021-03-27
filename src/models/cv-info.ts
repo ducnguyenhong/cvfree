@@ -31,21 +31,21 @@ export interface CvInfo {
 
     education?: {
       name: string
-      major: string
+      major?: string
     }[]
     workExperience?: {
       companyName: string
-      position: string
-      time: string
+      position?: string
+      time?: string
       description?: string
     }[]
     advancedSkill?: {
       name: string
-      description: string
+      description?: string
     }[]
     activity?: {
       name: string
-      time: string
+      time?: string
     }[]
     certificate?: {
       name: string
@@ -55,9 +55,9 @@ export interface CvInfo {
     }[]
     presenter?: {
       name: string
-      company: string
-      position: string
-      phone: string
+      company?: string
+      position?: string
+      phone?: string
     }[]
     anotherInfo?: {
       info: string

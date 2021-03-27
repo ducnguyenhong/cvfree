@@ -3,9 +3,9 @@ import PresenterIcon from 'assets/icons/presenter.svg'
 interface PresenterInfoProps {
   presenter?: {
     name: string
-    company: string
-    position: string
-    phone: string
+    company?: string
+    position?: string
+    phone?: string
   }[]
 }
 

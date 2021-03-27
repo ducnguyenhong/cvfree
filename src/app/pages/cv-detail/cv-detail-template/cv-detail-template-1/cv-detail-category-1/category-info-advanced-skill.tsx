@@ -3,7 +3,7 @@ import AdvancedSkillIcon from 'assets/icons/advanced-skill.svg'
 interface AdvancedSkillInfoProps {
   advancedSkill?: {
     name: string
-    description: string
+    description?: string
   }[]
 }
 

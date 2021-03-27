@@ -127,13 +127,15 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
           <span className="text-lg block text-center italic text-blue-700 font-medium mb-10 mt-5">
             {intl.formatMessage({ id: 'PR_UPLOAD_CROP.NOTE' })}
           </span>
-          <ReactCrop
-            src={`${upImg}`}
-            onImageLoaded={onLoad}
-            crop={crop}
-            onChange={(c) => setCrop(c)}
-            onComplete={(c) => setCroppingImg(c)}
-          />
+          <div className="w-80 mx-auto">
+            <ReactCrop
+              src={`${upImg}`}
+              onImageLoaded={onLoad}
+              crop={crop}
+              onChange={(c) => setCrop(c)}
+              onComplete={(c) => setCroppingImg(c)}
+            />
+          </div>
         </div>
       </PrModal>
     </div>

@@ -26,7 +26,7 @@ export const ActivityItem1 = forwardRef((props: Record<string, unknown>, ref: Re
     setValue(value: ActivityValue) {
       const { name, time } = value
       nameRef.current?.setValue(name)
-      timeRef.current?.setValue(time)
+      timeRef.current?.setValue(time || '')
     }
   }))
 

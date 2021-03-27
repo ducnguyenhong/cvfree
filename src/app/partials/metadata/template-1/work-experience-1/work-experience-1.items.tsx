@@ -30,9 +30,9 @@ export const WorkExperienceItem1 = forwardRef((props: Record<string, unknown>, r
     setValue(value: WorkExperienceValue) {
       const { companyName, position, description, time } = value
       companyNameRef.current?.setValue(companyName)
-      positionRef.current?.setValue(position)
+      positionRef.current?.setValue(position || '')
       descriptionRef.current?.setValue(description || '')
-      timeRef.current?.setValue(time)
+      timeRef.current?.setValue(time || '')
     }
   }))
 

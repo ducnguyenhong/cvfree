@@ -209,7 +209,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                   </span>
                 </div>
                 <div className="mx-6 rounded-full overflow-hidden">
-                  <img src={AvatarTest} alt="avatar" className="w-full" style={{ aspectRatio: '1/1' }} />
+                  <img src={avatar} alt="avatar" className="w-full" style={{ aspectRatio: '1/1' }} />
                 </div>
                 <div className="mt-3 mb-5">
                   <span className="block uppercase font-medium w-full text-center text-gray-100 py-2">

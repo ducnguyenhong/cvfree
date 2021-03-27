@@ -108,7 +108,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
         className={`${className} ${
           icon ? 'pl-10' : 'pl-4'
         } block border-0 pr-4 absolute top-0 left-0 w-full h-full border-gray-300 focus:outline-none ${
-          validateRequired ? 'focus:border-red-600' : 'focus:border-b-2'
+          validateRequired ? 'focus:border-red-600 placeholder-red-400' : 'focus:border-b-2'
         } `}
       />
     )
@@ -136,8 +136,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
         )}
         {renderInput()}
       </div>
-      {validateRequired && <span className="text-red-500 font-medium block text-base mt-1">* Bắt buộc!</span>}
-      {!validateRequired && error && <span className="text-red-500 font-medium block text-base mt-1">{error}</span>}
+      {/* {validateRequired && <span className="text-red-500 font-medium block text-base mt-1">* Bắt buộc!</span>} */}
+      {/* {!validateRequired && error && <span className="text-red-500 font-medium block text-base mt-1">{error}</span>} */}
     </div>
   )
 })

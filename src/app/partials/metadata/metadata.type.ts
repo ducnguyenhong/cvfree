@@ -4,14 +4,14 @@ export interface BasicSkillValue {
   star: number
 }
 export interface BasicSkillRef {
-  getValue: () => void
-  setValue?: (value: BasicSkillValue[] | null) => void
+  getValue: () => BasicSkillValue[]
+  setValue: (value: BasicSkillValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface BasicSkillItemRef {
   getValue: () => void
-  setValue?: (value: BasicSkillValue) => void
+  setValue: (value: BasicSkillValue) => void
   validate?: () => void
 }
 export interface BasicSkillMetaDataType extends BasicSkillValue {
@@ -21,17 +21,17 @@ export interface BasicSkillMetaDataType extends BasicSkillValue {
 // Education
 export interface EducationValue {
   name: string
-  major: string
+  major?: string
 }
 export interface EducationRef {
-  getValue: () => void
-  setValue?: (value: EducationValue[] | null) => void
+  getValue: () => EducationValue[]
+  setValue: (value: EducationValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface EducationItemRef {
   getValue: () => void
-  setValue?: (value: EducationValue) => void
+  setValue: (value: EducationValue) => void
   validate?: () => void
 }
 export interface EducationMetaDataType extends EducationValue {
@@ -41,17 +41,17 @@ export interface EducationMetaDataType extends EducationValue {
 // Activity
 export interface ActivityValue {
   name: string
-  time: string
+  time?: string
 }
 export interface ActivityRef {
-  getValue: () => void
-  setValue?: (value: ActivityValue[] | null) => void
+  getValue: () => ActivityValue[]
+  setValue: (value: ActivityValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface ActivityItemRef {
   getValue: () => void
-  setValue?: (value: ActivityValue) => void
+  setValue: (value: ActivityValue) => void
   validate?: () => void
 }
 export interface ActivityMetaDataType extends ActivityValue {
@@ -61,19 +61,19 @@ export interface ActivityMetaDataType extends ActivityValue {
 // Work experience
 export interface WorkExperienceValue {
   companyName: string
-  time: string
-  position: string
+  time?: string
+  position?: string
   description?: string
 }
 export interface WorkExperienceRef {
-  getValue: () => void
-  setValue?: (value: WorkExperienceValue[] | null) => void
+  getValue: () => WorkExperienceValue[]
+  setValue: (value: WorkExperienceValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface WorkExperienceItemRef {
   getValue: () => void
-  setValue?: (value: WorkExperienceValue) => void
+  setValue: (value: WorkExperienceValue) => void
   validate?: () => void
 }
 export interface WorkExperienceMetaDataType extends WorkExperienceValue {
@@ -86,14 +86,14 @@ export interface AdvancedSkillValue {
   description?: string
 }
 export interface AdvancedSkillRef {
-  getValue: () => void
-  setValue?: (value: AdvancedSkillValue[] | null) => void
+  getValue: () => AdvancedSkillValue[]
+  setValue: (value: AdvancedSkillValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface AdvancedSkillItemRef {
   getValue: () => void
-  setValue?: (value: AdvancedSkillValue) => void
+  setValue: (value: AdvancedSkillValue) => void
   validate?: () => void
 }
 export interface AdvancedSkillMetaDataType extends AdvancedSkillValue {
@@ -105,14 +105,14 @@ export interface AwardValue {
   name: string
 }
 export interface AwardRef {
-  getValue: () => void
-  setValue?: (value: AwardValue[] | null) => void
+  getValue: () => AwardValue[]
+  setValue: (value: AwardValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface AwardItemRef {
   getValue: () => void
-  setValue?: (value: AwardValue) => void
+  setValue: (value: AwardValue) => void
   validate?: () => void
 }
 export interface AwardMetaDataType extends AwardValue {
@@ -124,14 +124,14 @@ export interface CertificateValue {
   name: string
 }
 export interface CertificateRef {
-  getValue: () => void
-  setValue?: (value: CertificateValue[] | null) => void
+  getValue: () => CertificateValue[]
+  setValue: (value: CertificateValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface CertificateItemRef {
   getValue: () => void
-  setValue?: (value: CertificateValue) => void
+  setValue: (value: CertificateValue) => void
   validate?: () => void
 }
 export interface CertificateMetaDataType extends CertificateValue {
@@ -143,14 +143,14 @@ export interface AnotherInfoValue {
   info: string
 }
 export interface AnotherInfoRef {
-  getValue: () => void
-  setValue?: (value: AnotherInfoValue[] | null) => void
+  getValue: () => AnotherInfoValue[]
+  setValue: (value: AnotherInfoValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface AnotherInfoItemRef {
   getValue: () => void
-  setValue?: (value: AnotherInfoValue) => void
+  setValue: (value: AnotherInfoValue) => void
   validate?: () => void
 }
 export interface AnotherInfoMetaDataType extends AnotherInfoValue {
@@ -165,14 +165,14 @@ export interface PresenterValue {
   phone?: string
 }
 export interface PresenterRef {
-  getValue: () => void
-  setValue?: (value: PresenterValue[] | null) => void
+  getValue: () => PresenterValue[]
+  setValue: (value: PresenterValue[] | null) => void
   validate?: () => boolean
   onCreate: () => void
 }
 export interface PresenterItemRef {
   getValue: () => void
-  setValue?: (value: PresenterValue) => void
+  setValue: (value: PresenterValue) => void
   validate?: () => void
 }
 export interface PresenterMetaDataType extends PresenterValue {

@@ -3,7 +3,7 @@ import EducationIcon from 'assets/icons/education.svg'
 interface EducationInfoProps {
   education?: {
     name: string
-    major: string
+    major?: string
   }[]
 }
 

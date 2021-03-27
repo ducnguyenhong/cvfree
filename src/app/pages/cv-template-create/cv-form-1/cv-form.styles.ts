@@ -1,4 +1,9 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const arrowRecommend = keyframes`
+  0%{transform: translateX(5px); opacity: 0.3;};
+  100%{transform: translateX(-5px); opacity: 1;}
+`
 
 export const CVFormStyle = styled.div`
   .div-triangle-top-right {
@@ -38,6 +43,10 @@ export const CVFormStyle = styled.div`
         visibility: visible;
       }
     }
+  }
+
+  .arrow-recommend {
+    animation: ${arrowRecommend} 2s infinite;
   }
 
   .cv-page-2 {

@@ -3,8 +3,8 @@ import WorkExperienceIcon from 'assets/icons/experience.svg'
 interface WorkExperienceInfoProps {
   workExperience?: {
     companyName: string
-    position: string
-    time: string
+    position?: string
+    time?: string
     description?: string
   }[]
 }
