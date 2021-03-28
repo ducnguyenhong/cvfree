@@ -13,7 +13,7 @@ export const AwardItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<A
       return null
     }
     return {
-      name: nameRef.current?.getValue().trim()
+      name: nameRef.current?.getValue().trim() || ''
     }
   }
 

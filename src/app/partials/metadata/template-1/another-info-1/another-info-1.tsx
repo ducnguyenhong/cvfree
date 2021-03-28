@@ -6,9 +6,15 @@ export const AnotherInfo1 = forwardRef((props: Record<string, unknown>, ref) => 
   const [metaDataList, setMetaDataList] = useState<AnotherInfoMetaDataType[]>([{ ref: null, info: '' }])
 
   const onCreateFine = () => {
-    const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, info: '' })
-    setMetaDataList(newMetaDataList)
+    const oldMetaData: AnotherInfoMetaDataType[] = []
+    if (metaDataList && metaDataList.length > 0) {
+      for (let i = 0; i < metaDataList.length; i++) {
+        const data = metaDataList[i].ref?.getValue()
+        data && oldMetaData.push({ ...data, ref: null })
+      }
+    }
+    const newMetaData = [...oldMetaData, { ref: null, info: '' }]
+    setMetaDataList(newMetaData)
   }
 
   const getValue = () => {

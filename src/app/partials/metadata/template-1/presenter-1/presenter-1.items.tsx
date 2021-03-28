@@ -16,10 +16,10 @@ export const PresenterItem1 = forwardRef((props: Record<string, unknown>, ref: R
       return null
     }
     return {
-      company: companyRef.current?.getValue().trim(),
-      name: nameRef.current?.getValue().trim(),
-      position: positionRef.current?.getValue().trim(),
-      phone: phoneRef.current?.getValue().trim()
+      company: companyRef.current?.getValue().trim() || '',
+      name: nameRef.current?.getValue().trim() || '',
+      position: positionRef.current?.getValue().trim() || '',
+      phone: phoneRef.current?.getValue().trim() || ''
     }
   }
 

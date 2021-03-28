@@ -10,7 +10,7 @@ export interface BasicSkillRef {
   onCreate: () => void
 }
 export interface BasicSkillItemRef {
-  getValue: () => void
+  getValue: () => BasicSkillValue | null
   setValue: (value: BasicSkillValue) => void
   validate?: () => void
 }
@@ -30,7 +30,7 @@ export interface EducationRef {
   onCreate: () => void
 }
 export interface EducationItemRef {
-  getValue: () => void
+  getValue: () => EducationValue | null
   setValue: (value: EducationValue) => void
   validate?: () => void
 }
@@ -50,7 +50,7 @@ export interface ActivityRef {
   onCreate: () => void
 }
 export interface ActivityItemRef {
-  getValue: () => void
+  getValue: () => ActivityValue | null
   setValue: (value: ActivityValue) => void
   validate?: () => void
 }
@@ -72,7 +72,7 @@ export interface WorkExperienceRef {
   onCreate: () => void
 }
 export interface WorkExperienceItemRef {
-  getValue: () => void
+  getValue: () => WorkExperienceValue | null
   setValue: (value: WorkExperienceValue) => void
   validate?: () => void
 }
@@ -92,7 +92,7 @@ export interface AdvancedSkillRef {
   onCreate: () => void
 }
 export interface AdvancedSkillItemRef {
-  getValue: () => void
+  getValue: () => AdvancedSkillValue | null
   setValue: (value: AdvancedSkillValue) => void
   validate?: () => void
 }
@@ -111,7 +111,7 @@ export interface AwardRef {
   onCreate: () => void
 }
 export interface AwardItemRef {
-  getValue: () => void
+  getValue: () => AwardValue | null
   setValue: (value: AwardValue) => void
   validate?: () => void
 }
@@ -130,7 +130,7 @@ export interface CertificateRef {
   onCreate: () => void
 }
 export interface CertificateItemRef {
-  getValue: () => void
+  getValue: () => CertificateValue | null
   setValue: (value: CertificateValue) => void
   validate?: () => void
 }
@@ -149,7 +149,7 @@ export interface AnotherInfoRef {
   onCreate: () => void
 }
 export interface AnotherInfoItemRef {
-  getValue: () => void
+  getValue: () => AnotherInfoValue | null
   setValue: (value: AnotherInfoValue) => void
   validate?: () => void
 }
@@ -171,7 +171,7 @@ export interface PresenterRef {
   onCreate: () => void
 }
 export interface PresenterItemRef {
-  getValue: () => void
+  getValue: () => PresenterValue | null
   setValue: (value: PresenterValue) => void
   validate?: () => void
 }

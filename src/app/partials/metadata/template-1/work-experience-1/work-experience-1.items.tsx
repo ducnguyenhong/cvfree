@@ -16,10 +16,10 @@ export const WorkExperienceItem1 = forwardRef((props: Record<string, unknown>, r
       return null
     }
     return {
-      companyName: companyNameRef.current?.getValue().trim(),
-      time: timeRef.current?.getValue().trim(),
-      position: positionRef.current?.getValue().trim(),
-      description: descriptionRef.current?.getValue().trim()
+      companyName: companyNameRef.current?.getValue().trim() || '',
+      time: timeRef.current?.getValue().trim() || '',
+      position: positionRef.current?.getValue().trim() || '',
+      description: descriptionRef.current?.getValue().trim() || ''
     }
   }
 

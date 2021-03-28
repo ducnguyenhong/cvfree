@@ -14,8 +14,8 @@ export const ActivityItem1 = forwardRef((props: Record<string, unknown>, ref: Re
       return null
     }
     return {
-      time: timeRef.current?.getValue(),
-      name: nameRef.current?.getValue().trim()
+      time: timeRef.current?.getValue() || '',
+      name: nameRef.current?.getValue().trim() || ''
     }
   }
 

@@ -1,3 +1,3 @@
-import Layout from './employer-sign-up'
+import { EmployerSignUp } from './employer-sign-up'
 
-export default Layout
+export default EmployerSignUp

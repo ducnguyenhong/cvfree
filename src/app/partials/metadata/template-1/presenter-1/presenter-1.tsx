@@ -8,9 +8,15 @@ export const Presenter1 = forwardRef((props: Record<string, unknown>, ref) => {
   ])
 
   const onCreateFine = () => {
-    const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, company: '', name: '', position: '', phone: '' })
-    setMetaDataList(newMetaDataList)
+    const oldMetaData: PresenterMetaDataType[] = []
+    if (metaDataList && metaDataList.length > 0) {
+      for (let i = 0; i < metaDataList.length; i++) {
+        const data = metaDataList[i].ref?.getValue()
+        data && oldMetaData.push({ ...data, ref: null })
+      }
+    }
+    const newMetaData = [...oldMetaData, { ref: null, company: '', name: '', position: '', phone: '' }]
+    setMetaDataList(newMetaData)
   }
 
   const getValue = () => {

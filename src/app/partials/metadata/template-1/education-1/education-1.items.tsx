@@ -14,8 +14,8 @@ export const EducationItem1 = forwardRef((props: Record<string, unknown>, ref: R
       return null
     }
     return {
-      major: majorRef.current?.getValue(),
-      name: nameRef.current?.getValue().trim()
+      major: majorRef.current?.getValue() || '',
+      name: nameRef.current?.getValue().trim() || ''
     }
   }
 

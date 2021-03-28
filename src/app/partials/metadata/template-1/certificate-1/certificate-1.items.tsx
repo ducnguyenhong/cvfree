@@ -13,7 +13,7 @@ export const CertificateItem1 = forwardRef((props: Record<string, unknown>, ref:
       return null
     }
     return {
-      name: nameRef.current?.getValue().trim()
+      name: nameRef.current?.getValue().trim() || ''
     }
   }
 

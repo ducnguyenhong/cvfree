@@ -9,9 +9,15 @@ export const BasicSkill1 = forwardRef((props: Record<string, unknown>, ref) => {
   ])
 
   const onCreateFine = () => {
-    const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, name: '', star: 0 })
-    setMetaDataList(newMetaDataList)
+    const oldMetaData: BasicSkillMetaDataType[] = []
+    if (metaDataList && metaDataList.length > 0) {
+      for (let i = 0; i < metaDataList.length; i++) {
+        const data = metaDataList[i].ref?.getValue()
+        data && oldMetaData.push({ ...data, ref: null })
+      }
+    }
+    const newMetaData = [...oldMetaData, { ref: null, name: '', star: 0 }]
+    setMetaDataList(newMetaData)
   }
 
   const getValue = () => {

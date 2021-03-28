@@ -607,7 +607,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
             }`}
           >
             {/* Màu CV */}
-            <PrInputColor onChange={onChangColorCV} defaultColor="#37474F" />
+            <PrInputColor onChange={onChangColorCV} defaultColor="#176F9B" />
             {/* Đổi mẫu */}
             <div className="mx-4 text-center">
               <span className="block text-sm font-medium">Đổi mẫu CV</span>

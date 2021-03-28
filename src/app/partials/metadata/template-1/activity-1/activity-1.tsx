@@ -6,9 +6,15 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
   const [metaDataList, setMetaDataList] = useState<ActivityMetaDataType[]>([{ ref: null, name: '', time: '' }])
 
   const onCreateFine = () => {
-    const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, name: '', time: '' })
-    setMetaDataList(newMetaDataList)
+    const oldMetaData: ActivityMetaDataType[] = []
+    if (metaDataList && metaDataList.length > 0) {
+      for (let i = 0; i < metaDataList.length; i++) {
+        const data = metaDataList[i].ref?.getValue()
+        data && oldMetaData.push({ ...data, ref: null })
+      }
+    }
+    const newMetaData = [...oldMetaData, { ref: null, name: '', time: '' }]
+    setMetaDataList(newMetaData)
   }
 
   const getValue = () => {

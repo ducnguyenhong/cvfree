@@ -15,8 +15,8 @@ export const BasicSkillItem1 = forwardRef((props: Record<string, unknown>, ref: 
       return null
     }
     return {
-      star: starRef.current?.getValue(),
-      name: nameRef.current?.getValue().trim()
+      star: starRef.current?.getValue() || 0,
+      name: nameRef.current?.getValue().trim() || ''
     }
   }
 

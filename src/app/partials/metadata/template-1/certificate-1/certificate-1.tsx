@@ -6,9 +6,15 @@ export const Certificate1 = forwardRef((props: Record<string, unknown>, ref) => 
   const [metaDataList, setMetaDataList] = useState<CertificateMetaDataType[]>([{ ref: null, name: '' }])
 
   const onCreateFine = () => {
-    const newMetaDataList = [...metaDataList]
-    newMetaDataList.push({ ref: null, name: '' })
-    setMetaDataList(newMetaDataList)
+    const oldMetaData: CertificateMetaDataType[] = []
+    if (metaDataList && metaDataList.length > 0) {
+      for (let i = 0; i < metaDataList.length; i++) {
+        const data = metaDataList[i].ref?.getValue()
+        data && oldMetaData.push({ ...data, ref: null })
+      }
+    }
+    const newMetaData = [...oldMetaData, { ref: null, name: '' }]
+    setMetaDataList(newMetaData)
   }
 
   const getValue = () => {

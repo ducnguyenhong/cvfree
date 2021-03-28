@@ -15,7 +15,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     label,
     type,
     icon,
-    errorMessage
+    errorMessage,
+    required
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -72,7 +73,12 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
 
   return (
     <div>
-      {label && <span className="block font-semibold text-green-800 ">{label}</span>}
+      {label && (
+        <span className="block font-semibold text-green-800 ">
+          {label}
+          {required && <span className="text-red-600 ml-1 text-lg font-bold">*</span>}
+        </span>
+      )}
       <div className="relative" style={{ height: 42 }}>
         {type === 'password' && valueInput && (
           <i

@@ -13,7 +13,7 @@ export const AnotherInfoItem1 = forwardRef((props: Record<string, unknown>, ref:
       return null
     }
     return {
-      name: infoRef.current?.getValue().trim()
+      info: infoRef.current?.getValue().trim() || ''
     }
   }
 

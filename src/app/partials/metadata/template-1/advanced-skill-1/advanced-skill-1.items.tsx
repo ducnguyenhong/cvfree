@@ -14,8 +14,8 @@ export const AdvancedSkillItem1 = forwardRef((props: Record<string, unknown>, re
       return null
     }
     return {
-      name: nameRef.current?.getValue().trim(),
-      description: descriptionRef.current?.getValue().trim()
+      name: nameRef.current?.getValue().trim() || '',
+      description: descriptionRef.current?.getValue().trim() || ''
     }
   }
 
