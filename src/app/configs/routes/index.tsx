@@ -12,7 +12,7 @@ import { languageState } from 'app/states/language-state'
 // import { LoadingPage } from 'app/partials/layout/loading'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
-const SignInPage = lazy(() => import('app/pages/sign-in'))
+const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
 const LoadingPage = lazy(() => import('app/partials/layout/loading'))
 
 const PublicRoute: React.FC = () => {

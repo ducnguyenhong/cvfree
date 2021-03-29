@@ -10,6 +10,7 @@ export interface PrDropdownProps {
   label?: string
   isLanguage?: boolean
   requiredMesseage?: string
+  labelClassName?: string
 }
 
 export interface PrDropdownRefProps {

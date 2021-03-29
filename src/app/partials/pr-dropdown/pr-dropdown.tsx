@@ -17,7 +17,8 @@ const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefPro
     label,
     required,
     isLanguage,
-    requiredMesseage
+    requiredMesseage,
+    labelClassName
   } = props
   const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue || null)
   const [validateRequired, setValidateRequired] = useState<boolean>(false)
@@ -54,7 +55,7 @@ const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefPro
     <div className="w-full h-full">
       <Language>
         <div className="w-full h-full">
-          <span className="font-medium block mb-1 text-base">
+          <span className={`${labelClassName} font-medium block mb-1 text-base`}>
             {isLanguage && label ? <FormattedMessage id={label} /> : label}
             {required && <span className="text-red-500 font-bold">&nbsp;*</span>}
           </span>
@@ -66,7 +67,7 @@ const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefPro
             isMulti={isMulti}
             autoFocus={focus}
             isClearable={isClearable || typeof isClearable === 'undefined'}
-            placeholder={isLanguage ? <FormattedMessage id={placeholder || 'SELECT'} /> : placeholder || 'Select...'}
+            placeholder={isLanguage ? <FormattedMessage id={placeholder || 'SELECT'} /> : placeholder || 'Chọn...'}
             options={options}
             onChange={(e: any) => onSelected(e)}
             isDisabled={isDisabled}

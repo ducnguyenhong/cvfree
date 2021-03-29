@@ -1,4 +1,4 @@
-import AuthIntro from 'app/pages/auth-intro'
+import AuthIntro from 'app/pages/auth/auth-intro'
 import Button from 'app/partials/pr-button'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
@@ -11,9 +11,12 @@ import md5 from 'md5'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { checkEmail, checkUsername } from 'utils/helper'
-import { UserInfo } from '../../../models/user-info'
+import { UserInfo } from 'models/user-info'
 import { SignInStyle } from './employer-sign-up.styles'
 import ImgIntro from 'assets/images/img-employer-intro.png'
+import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
+import { DataRecruitmentProfession } from 'constants/data-employer'
+import { DataGender } from 'constants/data-common'
 
 interface SignUpProps {}
 
@@ -24,7 +27,14 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
   const confPasswordRef = useRef<PrInputRefProps>(null)
+  const fullnameRef = useRef<PrInputRefProps>(null)
   const emailRef = useRef<PrInputRefProps>(null)
+  const phonelRef = useRef<PrInputRefProps>(null)
+  const genderRef = useRef<PrDropdownRefProps>(null)
+  const companyNameRef = useRef<PrInputRefProps>(null)
+  const companyPositionRef = useRef<PrInputRefProps>(null)
+  const companyAddressRef = useRef<PrInputRefProps>(null)
+  const recruitmentRefRef = useRef<PrDropdownRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
 
   const validateInput = () => {
@@ -102,10 +112,10 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
       typeAccount: 'NORMAL'
     }
 
-    callApi(data)
+    callApiCreate(data)
   }
 
-  const callApi = (data: UserInfo) => {
+  const callApiCreate = (data: UserInfo) => {
     const url = `${SERVER_URL}/auth/sign-up`
     const headers = {
       'Content-Type': 'application/json'
@@ -174,29 +184,47 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                   </div>
                   <span className="block uppercase font-bold text-lg mt-12">2. Thông tin cá nhân</span>
                   <div className="mt-5">
-                    <PrInput label="Họ và tên" icon="fas fa-user" required ref={emailRef} />
+                    <PrInput label="Họ và tên" icon="fas fa-user" required ref={fullnameRef} />
                   </div>
                   <div className="mt-5">
                     <PrInput label="Email" required icon="fas fa-envelope" ref={emailRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Số điện thoại" required icon="fas fa-phone" ref={emailRef} />
+                    <PrInput label="Số điện thoại" required icon="fas fa-phone" ref={phonelRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Giới tính" required icon="fas fa-phone" ref={emailRef} />
+                    <PrDropdown
+                      required
+                      ref={genderRef}
+                      options={DataGender}
+                      label="Giới tính"
+                      labelClassName="text-green-700 font-semibold mb-3"
+                    />
                   </div>
                   <span className="block uppercase font-bold text-lg mt-12">3. Thông tin tuyển dụng</span>
                   <div className="mt-5">
-                    <PrInput label="Công ty" placeholder="Tên công ty" required icon="fas fa-building" ref={emailRef} />
+                    <PrInput
+                      label="Công ty"
+                      ref={companyNameRef}
+                      placeholder="Tên công ty"
+                      required
+                      icon="fas fa-building"
+                    />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Địa chỉ công ty" required icon="fas fa-map-marker-alt" ref={emailRef} />
+                    <PrInput label="Địa chỉ công ty" ref={companyAddressRef} required icon="fas fa-map-marker-alt" />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Vị trí công tác" required icon="fas fa-briefcase" ref={emailRef} />
+                    <PrInput label="Vị trí công tác" required icon="fas fa-briefcase" ref={companyPositionRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Cần tuyển dụng vị trí" required icon="fas fa-briefcase" ref={emailRef} />
+                    <PrDropdown
+                      required
+                      ref={recruitmentRefRef}
+                      options={DataRecruitmentProfession}
+                      label="Ngành nghề tuyển dụng"
+                      labelClassName="text-green-700 font-semibold mb-3"
+                    />
                   </div>
 
                   <div className="mt-5">
@@ -233,21 +261,12 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                   <div className="mt-10">
                     <span className="block text-center">
                       Bạn đã có tài khoản?{' '}
-                      <Link to="/sign-in" className="text-green-600 font-semibold">
+                      <Link to="/employer/sign-in" className="text-green-600 font-semibold">
                         Đăng nhập
                       </Link>
                     </span>
                   </div>
                 </div>
-              </div>
-              <div className="h-1/6 flex justify-center items-center">
-                <span className="text-green-700 font-semibold">2021© CVFREE</span>
-                <Link to="/terms-of-use" className="mx-10 text-green-700 font-semibold">
-                  Điều khoản sử dụng
-                </Link>
-                <Link to="/contact" className="text-green-700 font-semibold">
-                  Liên hệ
-                </Link>
               </div>
             </div>
           </div>

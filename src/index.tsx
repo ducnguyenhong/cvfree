@@ -4,6 +4,7 @@ import 'tailwindcss/tailwind.css'
 import App from './App'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
+import 'react-datepicker/dist/react-datepicker.css'
 
 ReactDOM.render(
   <StrictMode>

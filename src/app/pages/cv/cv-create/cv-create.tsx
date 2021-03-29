@@ -1,6 +1,6 @@
 import { selectedCVTemplateState } from 'app/states/selected-cv-template-state'
 import { useRecoilValue } from 'recoil'
-import { CvFormLayout1 } from 'app/pages/cv-template-create'
+import { CvFormLayout1 } from 'app/pages/cv/cv-template-create'
 
 export const CvCreate: React.FC = () => {
   const selectedCvTemplate = useRecoilValue(selectedCVTemplateState)

@@ -1,7 +1,7 @@
 import ImgIntro from 'assets/images/img-employer-intro.png'
 import { Link } from 'react-router-dom'
 
-const Employer: React.FC = () => {
+export const EmployerIntro: React.FC = () => {
   return (
     <div className="pt-12 max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 grid grid-cols-2 gap-20 bg-cvfree h-screen">
       <div className="col-span-1 flex items-center">
@@ -22,11 +22,15 @@ const Employer: React.FC = () => {
                 Tạo tài khoản mới
               </Link>
             </span>
+            <span className="text-xl font-semibold block mt-16">
+              hoặc
+              <Link to="/employer/sign-in" className="bg-blue-600 text-white px-4 py-2 rounded-md ml-3">
+                Đăng nhập
+              </Link>
+            </span>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
-export default Employer

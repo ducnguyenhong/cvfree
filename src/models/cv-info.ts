@@ -1,5 +1,7 @@
 export interface CvInfo {
+  _id?: string
   id?: number
+  status?: string
   userId: number
   color: string
   template: string

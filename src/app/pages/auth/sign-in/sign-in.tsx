@@ -1,4 +1,4 @@
-import AuthIntro from 'app/pages/auth-intro'
+import AuthIntro from 'app/pages/auth/auth-intro'
 import Button from 'app/partials/pr-button'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import { showNotify } from 'app/partials/pr-notify'

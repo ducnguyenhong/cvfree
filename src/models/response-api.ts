@@ -11,6 +11,16 @@ export interface ResponseUserDetail {
   message?: string
 }
 
+export interface ResponseListCV {
+  success: boolean
+  data: {
+    items: CvInfo[]
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
 export interface ResponseCVDetail {
   success: boolean
   data: {
@@ -26,6 +36,14 @@ export interface ResponseUpload {
   data: {
     url: string
   }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseDelete {
+  success: boolean
+  data: undefined | null
   code: number
   error?: { message: string }
   message?: string

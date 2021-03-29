@@ -1,4 +1,4 @@
-import { CategoryProps } from 'app/pages/cv-template-create/cv-form-1/cv-form.types'
+import { CategoryProps } from 'app/pages/cv/cv-template-create/cv-form-1/cv-form.types'
 import DefaultImage from 'assets/images/default-avatar.png'
 import DefaultImageFemale from 'assets/images/default-avatar-female.png'
 import axios, { AxiosResponse } from 'axios'

@@ -148,7 +148,7 @@ const NavbarHome: React.FC = () => {
                     {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
                   <Link
-                    to="/employer"
+                    to={userInfo ? '/employer' : '/employer-intro'}
                     className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}
@@ -218,7 +218,7 @@ const NavbarHome: React.FC = () => {
                       {intl.formatMessage({ id: 'NAVBAR.SIGN_IN' })}
                     </Link>
                     <Link
-                      to="sign-up"
+                      to="/sign-up"
                       className="text-blue-600 rounded-2xl bg-gray-50 shadow-lg block hover:bg-gray-100 duration-300 px-4 py-1.5 text-md font-semibold"
                     >
                       {intl.formatMessage({ id: 'NAVBAR.SIGN_UP' })}
