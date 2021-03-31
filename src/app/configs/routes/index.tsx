@@ -1,14 +1,15 @@
 import localeData from 'app/language'
 import ErrorFallback from 'app/partials/layout/error-fallback'
-import { languageState } from 'app/states/language-state'
-import { userTokenState } from 'app/states/user-info-state'
-import { lazy, Suspense } from 'react'
+import { userTokenState, userInfoState } from 'app/states/user-info-state'
+import { Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
+import { languageState } from 'app/states/language-state'
+// import { LoadingPage } from 'app/partials/layout/loading'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
@@ -16,6 +17,15 @@ const LoadingPage = lazy(() => import('app/partials/layout/loading'))
 
 const PublicRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
+  const setUserInfoRecoil = useSetRecoilState(userInfoState)
+  const setUserTokenRecoil = useSetRecoilState(userTokenState)
+
+  useEffect(() => {
+    if (!token) {
+      setUserInfoRecoil(undefined)
+      setUserTokenRecoil(undefined)
+    }
+  }, [token])
 
   return (
     <Switch>
