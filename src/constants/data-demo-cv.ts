@@ -11,23 +11,11 @@ export const DataDemoCV: DataDemoCVType[] = [
     value: '1'
   },
   {
-    image: Image1,
+    image: 'https://static.careerbuilder.vn/themes/cv_tool/images/template/cvtemplate08_1605606667.jpg',
     value: '2'
   },
   {
-    image: Image1,
+    image: 'https://fedudesign.vn/wp-content/uploads/2020/07/01_Resume_Page_1-scaled.jpg',
     value: '3'
-  },
-  {
-    image: Image1,
-    value: '4'
-  },
-  {
-    image: Image1,
-    value: '5'
-  },
-  {
-    image: Image1,
-    value: '6'
   }
 ]

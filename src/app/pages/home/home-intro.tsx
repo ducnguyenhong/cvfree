@@ -31,7 +31,7 @@ const HomeIntro: React.FC = () => {
         <Link to="/template-cv" className="px-4 py-3 bg-green-600 mr-8 text-white rounded-md font-semibold">
           {intl.formatMessage({ id: 'HOME.CREATE_CV_NOW' })}
         </Link>
-        <Link to="/abc" className="px-4 py-3 bg-purple-700 text-white rounded-md font-semibold">
+        <Link to="/jobs" className="px-4 py-3 bg-purple-700 text-white rounded-md font-semibold">
           {intl.formatMessage({ id: 'HOME.FIND_JOB' })}
         </Link>
       </div>

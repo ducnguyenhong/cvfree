@@ -14,6 +14,7 @@ import { languageState } from 'app/states/language-state'
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
 const LoadingPage = lazy(() => import('app/partials/layout/loading'))
+const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 const PublicRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
@@ -43,19 +44,18 @@ const PublicRoute: React.FC = () => {
 
 const PrivateRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
+
+  if (!token) {
+    return <Redirect to="/sign-in" />
+  }
+
   return (
     <Switch>
-      {!token ? (
-        <Redirect to="/sign-in" />
-      ) : (
-        <>
-          {PRIVATE_ROUTES.map((props, index) => {
-            const { path, component, exact } = props
-            return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
-          })}
-          <Redirect to="/" />
-        </>
-      )}
+      {PRIVATE_ROUTES.map((props, index) => {
+        const { path, component, exact } = props
+        return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
+      })}
+      {/* <Redirect to="/" /> */}
       <Route path="/404" exact component={ErrorPage} />
       <Redirect to="/404" />
     </Switch>

@@ -140,7 +140,6 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: EmployerCompanyInfo,
     exact: true
   },
-
   {
     path: '/employer/create-job-postings',
     component: EmployerCreateJobPostings,

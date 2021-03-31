@@ -13,7 +13,7 @@ const HomeLayout: React.FC<HomeProps> = () => {
   }, [])
 
   return (
-    <div style={{ backgroundColor: '#f9fffa' }}>
+    <div>
       <TopHome />
       <JobHome />
       <FeatureHome />

@@ -8,6 +8,7 @@ import { DataFontFamily } from 'constants/font-family-cv'
 import { DataFontSize } from 'constants/font-size-cv'
 import LoadingIcon from 'assets/icons/loading.svg'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import vi from 'date-fns/locale/vi'
 import {
   Activities,
   AdvancedSkills,
@@ -45,6 +46,8 @@ import {
   PresenterRef
 } from 'app/partials/metadata/metadata.type'
 import { useRouteMatch } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import { DropdownAsync } from 'app/partials/dropdown-async'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
@@ -53,7 +56,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const match = useRouteMatch()
   const cvId = get(match.params, 'id')
   const userInfo = useRecoilValue(userInfoState)
-  const [avatar, setAvatar] = useState<File | null>(null)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [defaultAvatar, setDefaultAvatar] = useState<string>('')
   const [color, setColor] = useState<string>('#176F9B')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
@@ -71,8 +75,11 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const emailRef = useRef<PrInputCVRefProps>(null)
   const addressRef = useRef<PrInputCVRefProps>(null)
   const facebookRef = useRef<PrInputCVRefProps>(null)
+  const [birthday, setBirthday] = useState<Date | null>(null)
+  const [address, setAddress] = useState<any>()
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
+  const modalAddressRef = useRef<PrModalRefProps>(null)
   const educationRef = useRef<EducationRef>(null)
   const awardRef = useRef<AwardRef>(null)
   const presenterRef = useRef<PresenterRef>(null)
@@ -85,12 +92,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const hobbiesRef = useRef<PrInputCVRefProps>(null)
   const careerGoalRef = useRef<PrInputCVRefProps>(null)
   const cvRef = useRef<HTMLDivElement>(null)
-
-  // const test2 = [
-  //   { star: 2, name: '1' },
-  //   { star: 3, name: '2' },
-  //   { star: 4, name: '3' }
-  // ]
 
   const defaultCategory: CategoryProps[] = [
     {
@@ -185,11 +186,14 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   }
 
   const getImage = (img: File) => {
-    setAvatar(img)
+    setAvatarFile(img)
   }
 
   const validate = () => {
     if (!fullnameRef.current?.checkRequired()) {
+      return false
+    }
+    if (!applyPositionRef.current?.checkRequired()) {
       return false
     }
     if (!birthdayRef.current?.checkRequired()) {
@@ -215,8 +219,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       return
     }
     let avatarURL = ''
-    if (avatar) {
-      avatarURL = await uploadServer(avatar)
+    if (avatarFile) {
+      avatarURL = await uploadServer(avatarFile)
     }
 
     const fullname = fullnameRef.current?.getValue() || ''
@@ -262,7 +266,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       categoryCV,
       detail: {
         fullname,
-        avatar: 'string',
+        avatar: avatarURL,
         applyPosition,
         birthday,
         gender,
@@ -428,6 +432,12 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       })
   }
 
+  const onHideAddress = () => {
+    setAddress(null)
+  }
+
+  const onChangeAddress = () => {}
+
   useEffect(() => {
     if (cvId) {
       callApiCvDetail()
@@ -485,7 +495,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       setFontFamily(fontFamily)
       setFontSize(fontSize)
       fullnameRef.current?.setValue(fullname)
-      // avatar
+      setDefaultAvatar(avatar || '')
       applyPositionRef.current?.setValue(applyPosition || '')
       birthdayRef.current?.setValue(birthday)
       genderRef.current?.setValue(gender)
@@ -597,6 +607,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
             </div>
           </div>
         </div>
+
+        {/* CV */}
         <div style={{ width: '210mm', right: showRecommend ? '10%' : '0' }} className="duration-300 relative mx-auto">
           {/* Control */}
 
@@ -689,7 +701,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     />
                   </div>
                   <div className="px-6">
-                    <PrUpload getImage={getImage} />
+                    <PrUpload getImage={getImage} defaultURL={defaultAvatar} />
                   </div>
                   <div className="mt-3 mb-5">
                     <PrInputCV
@@ -706,12 +718,31 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                 <div className="div-middle-left mx-4">
                   <div className="flex items-center">
                     <BirthdayIcon />
-                    <PrInputCV
+                    <DatePicker
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Ngày sinh"
+                      selected={birthday}
+                      locale={vi}
+                      popperModifiers={{
+                        offset: {
+                          enabled: true,
+                          offset: '-20px, 0px'
+                        },
+                        preventOverflow: {
+                          enabled: true,
+                          escapeWithReference: false,
+                          boundariesElement: 'viewport'
+                        }
+                      }}
+                      onChange={(e: Date | null) => setBirthday(e)}
+                      className="h-8 w-full py-2 ml-4 bg-transparent focus:outline-none"
+                    />
+                    {/* <PrInputCV
                       ref={birthdayRef}
                       placeholder="Ngày sinh"
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
-                    />
+                    /> */}
                   </div>
                   <div className="flex items-center">
                     <GenderIcon />
@@ -744,6 +775,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <MapIcon />
                     <PrInputCV
                       ref={addressRef}
+                      onFocus={() => modalAddressRef.current?.show()}
                       placeholder="Địa chỉ"
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
@@ -820,6 +852,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
             </div>
           </div>
         </div>
+
+        {/* Chọn mục hiển thị */}
         <PrModal
           ref={modalListCategoryRef}
           title={'Chọn mục hiển thị'}
@@ -880,6 +914,22 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                   )
                 })}
             </div>
+          </div>
+        </PrModal>
+
+        {/* Chọn địa chỉ */}
+        <PrModal
+          ref={modalAddressRef}
+          title={'Chọn địa chỉ của bạn'}
+          cancelTitle="Đóng"
+          okTitle="Xác nhận"
+          onChange={onChangeAddress}
+          onHide={onHideAddress}
+        >
+          <div className="grid-cols-3 grid gap-x-10 py-8">
+            <DropdownAsync label="Tỉnh/Thành phố" urlApi="https://thongtindoanhnghiep.co/api/city" />
+            <DropdownAsync label="Quận/Huyện" urlApi="" />
+            <DropdownAsync label="Phường/Xã" urlApi="" />
           </div>
         </PrModal>
       </CVFormStyle>

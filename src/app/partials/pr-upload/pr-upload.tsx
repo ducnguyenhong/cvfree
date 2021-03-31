@@ -7,11 +7,12 @@ import { useIntl } from 'react-intl'
 interface CVFUploadProps {
   ratio?: { x: number; y: number }
   getImage?: (img: File) => void
+  defaultURL?: string
 }
 
 const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   const intl = useIntl()
-  const { ratio, getImage } = props
+  const { ratio, getImage, defaultURL } = props
   const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
   const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
@@ -52,6 +53,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
     }
 
     const image: HTMLImageElement | null = imgRef.current
+    defaultURL && (image.src = defaultURL)
     const canvas: HTMLCanvasElement = previewCanvasRef.current
     const crop: ReactCrop.Crop = completedCrop
     const scaleX = image.naturalWidth / image.width
