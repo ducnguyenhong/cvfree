@@ -8,7 +8,7 @@ export const EmployerDashboard: React.FC = () => {
           to="employer/publish-recruitment"
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-purple-800 px-6 py-16 block duration-300 hover:shadow-lg"
         >
-          <span className="uppercase text-xl font-bold block text-center text-gray-100">Đăng tin tuyển dụng</span>
+          <span className="uppercase text-xl font-bold block text-center text-gray-100">Quản lý tuyển dụng</span>
           <i className="fas fa-address-card text-5xl block text-center mt-10 text-gray-100"></i>
           <span className="text-justify block mt-10 text-gray-100">
             Tạo bài tin tuyển dụng cho công ty của bạn. Ứng viên sẽ có thể nhìn thấy việc làm từ công ty bạn một cách

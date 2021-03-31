@@ -8,6 +8,7 @@ import { useIntl } from 'react-intl'
 import { Link } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { languageState } from 'app/states/language-state'
+import { showNotify } from '../../partials/pr-notify/pr-notify'
 
 const NavbarHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
@@ -26,6 +27,7 @@ const NavbarHome: React.FC = () => {
     : userInfo?.username
 
   const onSignOut = useCallback(() => {
+    showNotify.success('Đăng xuất tài khoản thành công')
     setShowUserDialog(false)
     setUserInfoRecoil(undefined)
     setUserTokenRecoil(undefined)
@@ -136,7 +138,7 @@ const NavbarHome: React.FC = () => {
                     {intl.formatMessage({ id: 'NAVBAR.CV_TEMPLATE' })}
                   </Link>
                   <Link
-                    to="/jobs-new"
+                    to="/jobs"
                     className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.NEW_JOB' })}

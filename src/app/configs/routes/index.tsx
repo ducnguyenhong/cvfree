@@ -1,15 +1,14 @@
 import localeData from 'app/language'
 import ErrorFallback from 'app/partials/layout/error-fallback'
+import { languageState } from 'app/states/language-state'
 import { userTokenState } from 'app/states/user-info-state'
-import { Suspense, lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
-import { languageState } from 'app/states/language-state'
-// import { LoadingPage } from 'app/partials/layout/loading'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
@@ -26,6 +25,7 @@ const PublicRoute: React.FC = () => {
       })}
       {!token ? <Route path="/sign-in" exact component={SignInPage} /> : <Redirect to="/" />}
       <Route path="/404" exact component={ErrorPage} />
+      <Redirect to="/sign-in" />
       <Redirect to="/404" />
     </Switch>
   )
@@ -43,6 +43,7 @@ const PrivateRoute: React.FC = () => {
             const { path, component, exact } = props
             return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
           })}
+          <Redirect to="/" />
         </>
       )}
       <Route path="/404" exact component={ErrorPage} />

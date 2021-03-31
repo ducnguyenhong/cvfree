@@ -6,8 +6,8 @@ const ForgotPassword = lazy(() => import('app/pages/auth/forgot-password'))
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
 
-const TemplateSelectCV = lazy(() => import('app/pages/cv/cv-template-select'))
-const JobsNew = lazy(() => import('app/pages/job-new'))
+const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
+const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
 
 const EmployerDashboard = lazy(() => import('app/pages/employer/employer-dashboard'))
 const EmployerIntro = lazy(() => import('app/pages/employer/employer-intro'))
@@ -21,6 +21,7 @@ const EmployerCreateJobPostings = lazy(() => import('app/pages/employer/employer
 const CvForm = lazy(() => import('app/pages/cv/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
 const CvManage = lazy(() => import('app/pages/cv/cv-manage'))
+const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 interface RouteType {
   path: string
@@ -56,7 +57,7 @@ export const PUBLIC_ROUTES: RouteType[] = [
 
   {
     path: '/template-cv',
-    component: TemplateSelectCV,
+    component: CvTemplateList,
     exact: true
   },
   {
@@ -82,10 +83,15 @@ export const PUBLIC_ROUTES: RouteType[] = [
     exact: true
   },
 
-  // Menu
+  // Job
   {
-    path: '/jobs-new',
-    component: JobsNew,
+    path: '/jobs',
+    component: JobsListGeneral,
+    exact: true
+  },
+  {
+    path: '/jobs/:slug.:id',
+    component: JobsDetail,
     exact: true
   }
 ]
@@ -104,7 +110,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
   },
   {
     path: '/template-cv',
-    component: TemplateSelectCV,
+    component: CvTemplateList,
     exact: true
   },
   {
@@ -140,13 +146,20 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: EmployerCreateJobPostings,
     exact: true
   },
-  //
+
+  // Jobs
 
   {
-    path: '/jobs-new',
-    component: JobsNew,
+    path: '/jobs',
+    component: JobsListGeneral,
     exact: true
   },
+  {
+    path: '/jobs/:slug.:id',
+    component: JobsDetail,
+    exact: true
+  },
+  //
 
   {
     path: '/create-cv',

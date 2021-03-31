@@ -2,7 +2,7 @@ import LoadingIcon from 'assets/icons/loading-page.svg'
 
 const LoadingPage: React.FC = () => {
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-screen h-screen flex items-center justify-center bg-transparent">
       <img src={LoadingIcon} alt="loading" />
     </div>
   )

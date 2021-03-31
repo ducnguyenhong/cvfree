@@ -108,8 +108,8 @@ export const EmployerRecruitment: React.FC = () => {
 
   return (
     <div className="bg-green-100 py-32 w-full">
-      <div className="grid grid-cols-3 w-2/3 mx-auto gap-x-6 rounded">
-        <div className="col-span-2 bg-white shadow-md border-gray-300 px-8 py-10">
+      <div className="w-2/3 mx-auto rounded">
+        <div className="bg-white shadow-md border-gray-300 px-8 py-10">
           <div className="flex justify-between items-center">
             <span className="block uppercase text-xl font-bold text-gray-700">Danh sách tin tuyển dụng đã đăng</span>
             <Link
@@ -195,31 +195,6 @@ export const EmployerRecruitment: React.FC = () => {
                   </div>
                 )
               })}
-          </div>
-        </div>
-        <div className="col-span-1 bg-white shadow-md py-10 px-8">
-          <span className="block uppercase text-xl font-semibold text-gray-700">Thông tin cá nhân</span>
-          <div className="mt-8">
-            <div className="grid grid-cols-3 gap-x-4 mt-5">
-              <div className="col-span-1 px-3">
-                <img
-                  src={avatar || getDefaultAvatar(gender)}
-                  // https://www.flaticon.com/svg/vstatic/svg/3135/3135789.svg?token=exp=1615960752~hmac=84a9bb6fb70fe5bdab317b81b776b7de
-                  alt="avatar"
-                  className=""
-                />
-              </div>
-              <div className="col-span-2">
-                <span className="font-semibold text-lg">{fullname || username}</span>
-                <div className="mt-2 mb-3">
-                  <span>Tài khoản {`${typeAccount === 'VIP' ? 'VIP' : 'thường'}`}</span>
-                  <i className="fas fa-circle-check" />
-                </div>
-                <span className="bg-green-600 px-3 py-1 text-sm font-medium cursor-pointer rounded text-white">
-                  Nâng cấp
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
