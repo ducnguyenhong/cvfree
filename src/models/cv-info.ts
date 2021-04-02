@@ -18,10 +18,16 @@ export interface CvInfo {
     fullname: string
     avatar?: string
     applyPosition?: string
-    birthday: string
+    birthday: number
     gender: string
     phone: string
-    address?: string
+    address?: {
+      label: string
+      value: {
+        city: string
+        district: string
+      }
+    }
     email: string
     facebook?: string
     basicSkill?: {

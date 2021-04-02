@@ -13,6 +13,7 @@ interface CVFUploadProps {
 const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   const intl = useIntl()
   const { ratio, getImage, defaultURL } = props
+  const [defaultImage, setDefaultImage] = useState<string>('')
   const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
   const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
   const imgRef = useRef<HTMLImageElement | null>(null)
@@ -48,12 +49,17 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   }, [])
 
   useEffect(() => {
+    if (defaultURL) {
+      setDefaultImage(defaultURL)
+    }
+  }, [defaultURL])
+
+  useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
       return
     }
 
     const image: HTMLImageElement | null = imgRef.current
-    defaultURL && (image.src = defaultURL)
     const canvas: HTMLCanvasElement = previewCanvasRef.current
     const crop: ReactCrop.Crop = completedCrop
     const scaleX = image.naturalWidth / image.width
@@ -107,6 +113,11 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
           <label className="inline-block cursor-pointer" title="Chọn ảnh từ thiết bị">
             {!completedCrop && <i className="fas fa-camera text-7xl text-gray-500 duration-300 hover:text-gray-600" />}
             {completedCrop && <canvas className="w-full" ref={previewCanvasRef} />}
+            {defaultImage && (
+              <div className="w-full h-full absolute top-0 left-0 z-30 bg-white">
+                <img src={defaultImage} alt="avatar" className="block w-full h-full" />
+              </div>
+            )}
             <input type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
           </label>
         </div>
@@ -135,7 +146,10 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
               onImageLoaded={onLoad}
               crop={crop}
               onChange={(c) => setCrop(c)}
-              onComplete={(c) => setCroppingImg(c)}
+              onComplete={(c) => {
+                setDefaultImage('')
+                setCroppingImg(c)
+              }}
             />
           </div>
         </div>

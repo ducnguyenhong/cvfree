@@ -5,6 +5,8 @@ import axios, { AxiosResponse } from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { ResponseUpload } from 'models/response-api'
+import { OptionProps } from 'app/partials/pr-dropdown'
+import { OptionsType } from 'react-select'
 
 export const checkEmail = (email: string) => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
@@ -121,4 +123,24 @@ export const uploadServer = async (img: File) => {
     .catch((e) => {
       throw new Error(e)
     })
+}
+
+const isSingleElement = (data: OptionsType<OptionProps> | OptionProps | null): data is OptionProps => {
+  return !Array.isArray(data)
+}
+
+export const getDataDropdown = (data: OptionsType<OptionProps> | OptionProps | null): OptionProps[] => {
+  if (data === null) {
+    return []
+  }
+
+  if (Array.isArray(data)) {
+    return data
+  }
+
+  if (isSingleElement(data)) {
+    return [data]
+  }
+
+  return []
 }

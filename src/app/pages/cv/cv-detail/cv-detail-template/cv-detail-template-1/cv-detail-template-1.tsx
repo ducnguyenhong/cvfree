@@ -19,6 +19,7 @@ import {
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 interface CvDetailProps {
   data: CvInfo
@@ -223,7 +224,9 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
               <div className="div-middle-left mx-4">
                 <div className="flex items-center">
                   <BirthdayIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{birthday}</span>
+                  <span className="block py-1 ml-4 font-medium text-gray-600">
+                    {moment(birthday).format('DD/MM/YYYY')}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <GenderIcon />
@@ -239,7 +242,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                 </div>
                 <div className="flex items-center">
                   <MapIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{address}</span>
+                  <span className="block py-1 ml-4 font-medium text-gray-600">{address?.label}</span>
                 </div>
                 <div className="flex items-center mb-3">
                   <FacebookIcon />

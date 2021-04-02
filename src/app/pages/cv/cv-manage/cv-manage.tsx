@@ -194,7 +194,7 @@ export const CvManage: React.FC = () => {
                           <span className="text-white">Xem</span>
                         </Link>
                         <Link
-                          to="/edit-cv/"
+                          to={`/update-cv/${slugURL(fullname)}.${_id}`}
                           className="col-span-1 py-1 bg-purple-700 rounded flex justify-center items-center hover:bg-purple-800 duration-300"
                         >
                           <i className="fas fa-edit mr-2 text-white"></i>

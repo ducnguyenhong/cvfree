@@ -118,7 +118,7 @@ const NavbarHome: React.FC = () => {
             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex-shrink-0 flex items-center">
                 <Link to="/">
-                  <img className="block h-16 w-auto" src={Logo} alt="Logo" />
+                  <img className="block h-10 w-auto" src={Logo} alt="Logo" />
                 </Link>
                 {/* <img className="hidden lg:block h-8 w-auto" src={Logo} alt="Workflow" /> */}
               </div>

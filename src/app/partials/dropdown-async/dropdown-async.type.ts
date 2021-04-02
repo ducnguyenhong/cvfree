@@ -5,6 +5,9 @@ export interface DropdownAsyncProps {
   label?: string
   defaultValue?: OptionProps[] | OptionProps
   urlApi: string
+  isMulti?: boolean
+  onChange?: (data: OptionProps[]) => void
+  isDisabled?: boolean
 }
 
 export interface DropdownAsyncRef {

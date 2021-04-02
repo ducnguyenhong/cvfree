@@ -166,7 +166,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     exact: true
   },
   {
-    path: '/update-cv/:id',
+    path: '/update-cv/:name.:id',
     component: CvForm,
     exact: true
   },

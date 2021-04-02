@@ -1,4 +1,4 @@
-import { AsyncPaginate, reduceGroupedOptions } from 'react-select-async-paginate'
+import { AsyncPaginate } from 'react-select-async-paginate'
 import { DropdownAsyncProps, DropdownAsyncRef, OptionProps } from './dropdown-async.type'
 import { FormattedMessage } from 'react-intl'
 import { forwardRef, Ref, useImperativeHandle, useState } from 'react'
@@ -7,86 +7,40 @@ import { get } from 'lodash'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { showNotify } from 'app/partials/pr-notify'
-
-const options = (
-  url: string
-  // convert: any,
-  // paramResponse: string | undefined,
-  // paramsApi: object | undefined,
-  // apiPagination: boolean | undefined,
-) => (input: string, loadedOptions: any, response: any) => {
-  const { page } = response
-  // const queryLimit: string = paramLimit || 'offset'
-  axios
-    .get(`${url}?keyword=${input}`, {
-      // params: { ...paramsApi, status: noNeedFilterStatus ? undefined : 'ACTIVATED' }
-    })
-    .then((response) => {
-      const { data: result } = response
-      const { code, data, success } = result
-      if ((code && code !== 200) || success === false) {
-        throw new Error(get(result, 'data.message') || 'Lỗi hệ thống')
-      }
-      // const items = paramResponse ? data[`${paramResponse}`] : data
-      // const list: ItemType[] = items.map((item: any) => convert(item))
-      console.log('ducnh api', data)
-
-      // const hasMore = apiPagination === false ? false : list && list.length > 0
-
-      return {
-        options: [
-          {
-            value: 1,
-            label: 'Audi'
-          }
-        ],
-        hasMore: true
-        // additional: {
-        //   page: page + 1
-        // }
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-      // return {
-      //   options: [],
-      //   hasMore: false,
-      //   additional: {
-      //     page: page + 1
-      //   }
-      // }
-    })
-  return []
-}
+import { getDataDropdown } from 'utils/helper'
 
 export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<DropdownAsyncRef>) => {
-  const { labelClassName, required, isLanguage, label, defaultValue, urlApi } = props
+  const { labelClassName, required, isLanguage, label, defaultValue, urlApi, isMulti, onChange, isDisabled } = props
   const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue ?? null)
 
-  const loadOptions = async (search: any, loadedOptions: any) => {
+  const loadOptions = async (search: string) => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/locations`
+    const url = `${SERVER_URL}${urlApi}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
     }
-    console.log('ducnh3', search)
-
     return await axios
-      .get(url, { headers })
+      .get(url, {
+        headers,
+        params: {
+          keyword: search
+        }
+      })
       .then((response) => {
         const { success, error, data } = response.data
-
         if (!success) {
           throw Error(error?.message)
         }
-
-        const dataLoad = data.items.map((item: any) => {
-          return { value: item.id, label: item.name }
-        })
-
-        console.log('dataLoad', dataLoad)
-
+        const dataLoad: OptionProps[] = []
+        for (let i = 0; i < data.items.length; i++) {
+          if (data.items[i]) {
+            dataLoad.push({
+              value: data.items[i].value,
+              label: data.items[i].label
+            })
+          }
+        }
         return {
           options: dataLoad,
           hasMore: false
@@ -131,8 +85,14 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
       <AsyncPaginate
         value={dataDropdown}
         loadOptions={loadOptions}
-        // reduceOptions={reduceGroupedOptions}
-        onChange={() => {}}
+        debounceTimeout={500}
+        isDisabled={isDisabled}
+        isMulti={isMulti}
+        onChange={(e) => {
+          const data = getDataDropdown(e)
+          onChange && onChange(data)
+          setDataDropdown(data)
+        }}
       />
     </div>
   )
