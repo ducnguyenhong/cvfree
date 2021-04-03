@@ -150,7 +150,7 @@ const NavbarHome: React.FC = () => {
                     {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
                   <Link
-                    to={userInfo ? '/employer' : '/employer-intro'}
+                    to={userInfo?.type === 'EMPLOYER' ? '/employer' : '/employer-intro'}
                     className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}

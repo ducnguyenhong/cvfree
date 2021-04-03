@@ -1,3 +1,3 @@
-import Layout from './forgot-password'
+import { ForgotPassword } from './forgot-password'
 
-export default Layout
+export default ForgotPassword

@@ -1,6 +1,6 @@
 import { lazy, LazyExoticComponent } from 'react'
 
-const SignUp = lazy(() => import('app/pages/auth/sign-in'))
+const SignUp = lazy(() => import('app/pages/auth/sign-up'))
 const ForgotPassword = lazy(() => import('app/pages/auth/forgot-password'))
 
 const ErrorComponent = lazy(() => import('app/pages/error'))

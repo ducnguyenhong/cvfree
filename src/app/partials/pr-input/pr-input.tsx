@@ -1,4 +1,4 @@
-import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { PrInputProps, PrInputRefProps } from './pr-input.type'
 
 const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>) => {
@@ -66,9 +66,19 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
       setValidateRequired(false)
     },
     setErrorMessage(err: string) {
+      setFocus(inputRef)
       setError(err)
     }
   }))
+
+  useEffect(() => {
+    if (errorMessage) {
+      console.log('ducnh3', errorMessage)
+
+      setError(errorMessage)
+      setFocus(inputRef)
+    }
+  }, [errorMessage])
 
   return (
     <div>
@@ -85,7 +95,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
         {icon && (
           <i
             className={`absolute opacity-70 left-3 top-1.5 text-lg z-10 fas ${icon} ${
-              validateRequired ? 'text-red-700' : 'text-green-900'
+              validateRequired || error ? 'text-red-700' : 'text-green-900'
             }`}
             onClick={onShowPassword}
           ></i>
@@ -104,7 +114,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
           className={`${className} ${
             icon ? 'pl-10' : 'pl-4'
           } block pr-10 py-5 rounded-md absolute top-0 left-0 w-full h-full border border-gray-300 bg-white  focus:outline-none ${
-            validateRequired ? 'focus:border-red-600' : 'focus:border-green-600'
+            validateRequired || error ? 'focus:border-red-600' : 'focus:border-green-600'
           } `}
         />
       </div>

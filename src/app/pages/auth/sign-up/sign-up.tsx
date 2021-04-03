@@ -119,14 +119,14 @@ const SignUp: React.FC<SignUpProps> = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message } = response.data
+        const { success, message, error } = response.data
         console.log('response.data', response)
 
         if (!success) {
-          throw Error(message.vi)
+          throw Error(error)
         }
 
-        showNotify.success('Đăng ký tài khoản thành công!')
+        showNotify.success(message)
         setLoading(false)
         resetInput()
         setTimeout(() => {
