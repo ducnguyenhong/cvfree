@@ -144,3 +144,11 @@ export const getDataDropdown = (data: OptionsType<OptionProps> | OptionProps | n
 
   return []
 }
+
+export const checkSpecialCharacter = (data: string) => {
+  const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
+  if (data.match(format)) {
+    return true
+  }
+  return false
+}

@@ -31,10 +31,10 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   const emailRef = useRef<PrInputRefProps>(null)
   const phonelRef = useRef<PrInputRefProps>(null)
   const genderRef = useRef<PrDropdownRefProps>(null)
-  const companyNameRef = useRef<PrInputRefProps>(null)
-  const companyPositionRef = useRef<PrInputRefProps>(null)
-  const companyAddressRef = useRef<PrInputRefProps>(null)
-  const recruitmentRefRef = useRef<PrDropdownRefProps>(null)
+  // const companyNameRef = useRef<PrInputRefProps>(null)
+  // const companyPositionRef = useRef<PrInputRefProps>(null)
+  // const companyAddressRef = useRef<PrInputRefProps>(null)
+  // const recruitmentRefRef = useRef<PrDropdownRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
 
   const validateInput = () => {
@@ -47,7 +47,16 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
     if (!confPasswordRef.current?.checkRequired()) {
       return false
     }
+    if (!fullnameRef.current?.checkRequired()) {
+      return false
+    }
     if (!emailRef.current?.checkRequired()) {
+      return false
+    }
+    if (!phonelRef.current?.checkRequired()) {
+      return false
+    }
+    if (!genderRef.current?.checkRequired()) {
       return false
     }
     if (!checkPolicy) {
@@ -99,16 +108,20 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
     setLoading(true)
     const username = usernameRef.current?.getValue() || ''
     const password = passwordRef.current?.getValue() || ''
+    const fullname = fullnameRef.current?.getValue() || ''
     const email = emailRef.current?.getValue() || ''
+    const phone = phonelRef.current?.getValue() || ''
+    const gender = genderRef.current?.getValue()
 
     const data: UserInfo = {
       username,
       password: md5(password),
       email,
-      type: 'USER',
+      fullname,
+      type: 'EMPLOYER',
+      phone,
       status: 'ACTIVE',
-      seeCV: true,
-      findJob: true,
+      gender: gender ? gender[0].value : 'ANOTHER',
       typeAccount: 'NORMAL'
     }
 
@@ -130,14 +143,12 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message } = response.data
-        console.log('response.data', response)
-
+        const { success, message, error } = response.data
         if (!success) {
-          throw Error(message.vi)
+          throw Error(error)
         }
 
-        showNotify.success('Đăng ký tài khoản thành công!')
+        showNotify.success(message)
         setLoading(false)
         resetInput()
         setTimeout(() => {
@@ -201,7 +212,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                       labelClassName="text-green-700 font-semibold mb-3"
                     />
                   </div>
-                  <span className="block uppercase font-bold text-lg mt-12">3. Thông tin tuyển dụng</span>
+                  {/* <span className="block uppercase font-bold text-lg mt-12">3. Thông tin tuyển dụng</span>
                   <div className="mt-5">
                     <PrInput
                       label="Công ty"
@@ -225,7 +236,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                       label="Ngành nghề tuyển dụng"
                       labelClassName="text-green-700 font-semibold mb-3"
                     />
-                  </div>
+                  </div>*/}
 
                   <div className="mt-5">
                     <label className="inline-flex mt-3 items-start">
@@ -276,17 +287,15 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
         <div>
           <div className="flex items-center justify-center my-10">
             <i className="far fa-check-circle text-5xl text-green-600 mr-6"></i>
-            <span className="text-xl text-green-700 font-semibold">Đăng ký tài khoản thành công</span>
+            <span className="text-lg text-green-700 font-semibold">
+              Đăng ký tài khoản thành công!
+              <br />
+              Một liên kết xác thực đã được gửi đến email của bạn.
+              <br />
+              Hãy kiểm tra email mà bạn đã đăng ký.
+            </span>
           </div>
           <div className="flex justify-center mb-10">
-            <Link
-              to="/sign-in"
-              className="font-semibold px-4 py-2 text-white duration-150 rounded cursor-pointer bg-green-600 hover:bg-green-700 flex items-center mr-10"
-            >
-              <span className="font-semibold">Đăng nhập ngay</span>
-              <i className="ml-2 fas fa-sign-in-alt"></i>
-            </Link>
-
             <Button onClick={onHideModal} type="danger" className="flex items-center">
               <span className="font-semibold">Trở về</span>
               <i className="fas fa-times ml-2"></i>

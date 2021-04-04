@@ -14,10 +14,10 @@ export interface PrDropdownProps {
 }
 
 export interface PrDropdownRefProps {
-  getValue?: () => void
-  setValue?: (value: OptionProps | OptionProps[] | null) => void
-  checkRequired?: () => boolean
-  reset?: () => void
+  getValue: () => OptionProps[]
+  setValue: (value: OptionProps | OptionProps[] | null) => void
+  checkRequired: () => boolean
+  reset: () => void
 }
 
 export interface OptionProps {

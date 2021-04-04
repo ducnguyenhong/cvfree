@@ -11,7 +11,7 @@ export interface DropdownAsyncProps {
 }
 
 export interface DropdownAsyncRef {
-  getValue?: () => void
+  getValue?: () => OptionProps[]
   setValue?: (value: OptionProps | OptionProps[] | null) => void
   checkRequired?: () => boolean
   reset?: () => void

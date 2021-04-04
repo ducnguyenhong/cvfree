@@ -3,11 +3,67 @@ import { DataFormOfWork, DataRecruitmentPosition, DataExperience, DataAnother } 
 import { DataGender } from 'constants/data-common'
 import PrSearch from 'app/partials/pr-component/pr-search'
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
+import { SERVER_URL } from 'constants/index'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { ResponseListCandidate } from 'models/response-api'
+import { CandidateInfo } from 'models/candidate-info'
+import { get } from 'lodash'
+import { showNotify } from 'app/partials/pr-notify'
+import { List } from 'react-content-loader'
+import moment from 'moment'
 
 export const EmployerLookingForCandidates: React.FC = () => {
+  const [candidateList, setCandidateList] = useState<CandidateInfo[] | null>(null)
+
+  const callApiGetListCandidate = () => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/candidate`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers,
+      url,
+      data: undefined,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseListCandidate>) => {
+        const { success, error, data } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        setCandidateList(data.items)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  useEffect(() => {
+    callApiGetListCandidate()
+  }, [])
+
+  if (!candidateList || candidateList.length === 0) {
+    return (
+      <div>
+        <div className="mt-28 mb-40 py-8 w-2/3 mx-auto shadow-md rounded-md bg-gray-100 px-10">
+          <List />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="bg-green-100">
-      <div className="pt-40 w-2/3 mx-auto bg-white px-10">
+    <div>
+      <div className="mt-28 mb-40 py-8 w-2/3 mx-auto shadow-md rounded-md bg-gray-100 px-10">
         <div className="filter grid-cols-4 grid gap-8">
           <div className="col-span-1">
             <PrSearch labelSearch="Tìm kiếm" placeholder="Vị trí ứng tuyển" />
@@ -35,37 +91,81 @@ export const EmployerLookingForCandidates: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-20">
-          <span className="block uppercase text-2xl font-semibold text-center">Kết quả tìm kiếm ứng viên</span>
+        <div className="mt-10">
+          <hr />
+          <span className="block mt-10 uppercase text-3xl font-semibold text-center text-green-700">
+            Kết quả tìm kiếm ứng viên
+          </span>
           <div className="mt-24">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => {
-              return (
-                <div key={item} className="mt-10 block">
-                  <div className="grid grid-cols-4 gap-x-8 pb-10">
-                    <div className="col-span-1">
-                      <Link to="/" className="block">
-                        <img
-                          src="http://localhost:1112/static/media/logo.f26dbc28.png"
-                          alt="avatar"
-                          className="rounded-full overflow-hidden w-28 h-28 block mx-auto"
-                        />
-                      </Link>
+            {candidateList.length > 0 &&
+              candidateList.map((item) => {
+                const {
+                  avatar,
+                  address,
+                  candidateId,
+                  workExperience,
+                  gender,
+                  birthday,
+                  fullname,
+                  applyPosition,
+                  career
+                } = item
+                return (
+                  <div key={candidateId} className="mt-10 block">
+                    <div className="grid grid-cols-4 gap-x-8 pb-10">
+                      <div className="col-span-1">
+                        <Link to={`/candidate/${candidateId}`} className="block">
+                          <div className="w-28 h-28 rounded-full overflow-hidden bg-white mx-auto">
+                            <img src={avatar} alt="avatar" className="block w-full h-full" />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="col-span-3">
+                        <Link to="/" className="block">
+                          <span className="block text-xl font-bold">
+                            {fullname}
+                            <span className="ml-3">
+                              {gender === 'MALE' ? (
+                                <i className="fas fa-mars text-blue-500"></i>
+                              ) : (
+                                <i className="fas fa-venus text-pink-500"></i>
+                              )}
+                            </span>
+                          </span>
+                        </Link>
+
+                        <div className="flex items-center my-1">
+                          <i className="fas fa-birthday-cake text-gray-500 mr-3"></i>
+                          <span className="block font-medium">{moment().diff(birthday, 'years')} tuổi</span>
+                        </div>
+
+                        <div className="flex items-center my-1">
+                          <i className="fas fa-user text-gray-500 mr-3"></i>
+                          <span className="block font-medium">{applyPosition}</span>
+                        </div>
+
+                        <div className="flex items-center my-1">
+                          <i className="fas fa-briefcase text-gray-500 mr-3"></i>
+                          <span className="block font-medium">{career}</span>
+                        </div>
+
+                        <div className="flex items-center my-1">
+                          <i className="fas fa-map-marker-alt text-gray-500 mr-3"></i>
+                          <span className="block font-medium">{address}</span>
+                        </div>
+
+                        <div className="flex items-center my-1">
+                          <i className="fas fa-award text-gray-500 mr-3"></i>
+                          <span className="block font-medium">
+                            {workExperience ? 'Đã' : 'Chưa'} có kinh nghiệm làm việc
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="col-span-3">
-                      <Link to="/" className="block">
-                        <span className="block text-xl font-bold">Nguyễn T...</span>
-                      </Link>
-                      <span className="block">Nữ</span>
-                      <span className="block">26 tuổi</span>
-                      <span className="block">Vị trí ứng tuyển: Nhân Viên Kế Toán</span>
-                      <span className="block">Địa điểm: Hà Nội</span>
-                      <span className="block">Đã có kinh nghiệm làm việc</span>
-                    </div>
+                    <hr />
                   </div>
-                  <hr />
-                </div>
-              )
-            })}
+                )
+              })}
           </div>
         </div>
 

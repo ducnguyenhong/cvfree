@@ -156,12 +156,12 @@ export const EmployerSignIn: React.FC<SignUpProps> = () => {
   return (
     <div className="w-full">
       <SignInStyle>
-        <div className="grid grid-cols-5 gap-4 h-full w-full pt-16">
+        <div className="grid grid-cols-5 gap-4 h-screen w-full pt-16">
           <div className="col-span-2 bg-blue-50 h-full">
             <AuthIntro title="Đăng nhập tài khoản nhà tuyển dụng" bgLogo={ImgIntro} />
           </div>
 
-          <div className="col-span-3 h-full pt-32">
+          <div className="col-span-3 h-full">
             <div className="h-full">
               <div className="h-5/6 flex items-center justify-center">
                 <div className="w-2/5 mt-20">
@@ -188,6 +188,12 @@ export const EmployerSignIn: React.FC<SignUpProps> = () => {
                       <Link to="/employer/sign-up" className="text-green-600 font-semibold">
                         Đăng ký ngay
                       </Link>
+                      <span className="block mt-3">
+                        hoặc&nbsp;
+                        <Link to="/forgot-password" className="text-green-600 font-semibold">
+                          Quên mật khẩu
+                        </Link>
+                      </span>
                     </span>
                   </div>
                 </div>

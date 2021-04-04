@@ -2,6 +2,7 @@ import { lazy, LazyExoticComponent } from 'react'
 
 const SignUp = lazy(() => import('app/pages/auth/sign-up'))
 const ForgotPassword = lazy(() => import('app/pages/auth/forgot-password'))
+const VerifyAccount = lazy(() => import('app/pages/auth/verify'))
 
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
@@ -44,9 +45,15 @@ export const PUBLIC_ROUTES: RouteType[] = [
     exact: true
   },
 
+  // auth
   {
     path: '/sign-up',
     component: SignUp,
+    exact: true
+  },
+  {
+    path: '/verify-account/:id',
+    component: VerifyAccount,
     exact: true
   },
   {

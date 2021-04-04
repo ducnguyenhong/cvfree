@@ -101,10 +101,10 @@ const SignUp: React.FC<SignUpProps> = () => {
       typeAccount: 'NORMAL'
     }
 
-    callApi(data)
+    callApiCreate(data)
   }
 
-  const callApi = (data: UserInfo) => {
+  const callApiCreate = (data: UserInfo) => {
     const url = `${SERVER_URL}/auth/sign-up`
     const headers = {
       'Content-Type': 'application/json'
@@ -120,8 +120,6 @@ const SignUp: React.FC<SignUpProps> = () => {
     axios(config)
       .then((response) => {
         const { success, message, error } = response.data
-        console.log('response.data', response)
-
         if (!success) {
           throw Error(error)
         }
@@ -144,21 +142,18 @@ const SignUp: React.FC<SignUpProps> = () => {
   }, [])
 
   return (
-    <div className="w-full h-screen overflow-hidden">
+    <div className="w-full h-screen">
       <SignInStyle>
-        <div className="grid grid-cols-5 gap-4 h-full w-full pt-20">
-          <div className="col-span-2 bg-blue-50 h-full pt-20">
-            <AuthIntro />
+        <div className="grid grid-cols-5 gap-4 h-full w-full">
+          <div className="col-span-2 bg-blue-50 h-screen">
+            <AuthIntro title="Đăng ký tài khoản" />
           </div>
 
           <div className="col-span-3 h-full">
             <div className="h-full">
               <div className="h-5/6 flex items-center justify-center">
-                <div className="w-2/5 mt-24">
-                  <span className="block text-2xl font-semibold text-center">
-                    Chào mừng đến với <span className="text-green-600">CVFREE</span>
-                  </span>
-                  <div className="mt-7">
+                <div className="w-2/5 mt-20">
+                  <div className="mt-20">
                     <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>
                   <div className="mt-5">
@@ -211,15 +206,6 @@ const SignUp: React.FC<SignUpProps> = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-1/6 flex justify-center items-center">
-                <span className="text-green-700 font-semibold">2021© CVFREE</span>
-                <Link to="/terms-of-use" className="mx-10 text-green-700 font-semibold">
-                  Điều khoản sử dụng
-                </Link>
-                <Link to="/contact" className="text-green-700 font-semibold">
-                  Liên hệ
-                </Link>
-              </div>
             </div>
           </div>
         </div>
@@ -228,17 +214,15 @@ const SignUp: React.FC<SignUpProps> = () => {
         <div>
           <div className="flex items-center justify-center my-10">
             <i className="far fa-check-circle text-5xl text-green-600 mr-6"></i>
-            <span className="text-xl text-green-700 font-semibold">Đăng ký tài khoản thành công</span>
+            <span className="text-lg text-green-700 font-semibold">
+              Đăng ký tài khoản thành công!
+              <br />
+              Một liên kết xác thực đã được gửi đến email của bạn.
+              <br />
+              Hãy kiểm tra email mà bạn đã đăng ký.
+            </span>
           </div>
           <div className="flex justify-center mb-10">
-            <Link
-              to="/sign-in"
-              className="font-semibold px-4 py-2 text-white duration-150 rounded cursor-pointer bg-green-600 hover:bg-green-700 flex items-center mr-10"
-            >
-              <span className="font-semibold">Đăng nhập ngay</span>
-              <i className="ml-2 fas fa-sign-in-alt"></i>
-            </Link>
-
             <Button onClick={onHideModal} type="danger" className="flex items-center">
               <span className="font-semibold">Trở về</span>
               <i className="fas fa-times ml-2"></i>

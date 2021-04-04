@@ -57,7 +57,7 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
 
   useImperativeHandle(ref, () => ({
     getValue() {
-      return dataDropdown
+      return getDataDropdown(dataDropdown)
     },
     setValue(data: OptionProps | OptionProps[] | null) {
       setDataDropdown(data)

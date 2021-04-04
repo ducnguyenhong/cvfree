@@ -8,6 +8,7 @@ export interface CvInfo {
   fontSize: string
   fontFamily: string
   name?: string
+  isPrimary?: boolean
   categoryInfo: {
     name: string
   }[]

@@ -4,6 +4,7 @@ import ReactSelect from 'react-select'
 import moment from 'moment'
 import Language from './data/languages'
 import { FormattedMessage } from 'react-intl'
+import { getDataDropdown } from 'utils/helper'
 
 const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefProps>) => {
   const {
@@ -26,7 +27,7 @@ const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefPro
 
   useImperativeHandle(ref, () => ({
     getValue() {
-      return dataDropdown
+      return getDataDropdown(dataDropdown)
     },
     setValue(data: OptionProps | OptionProps[] | null) {
       setDataDropdown(data)

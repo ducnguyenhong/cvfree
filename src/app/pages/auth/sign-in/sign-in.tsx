@@ -99,9 +99,9 @@ const SignIn: React.FC<SignInProps> = () => {
 
   return (
     <div className="w-full h-screen overflow-hidden">
-      <div className="grid grid-cols-5 gap-4 h-full w-full pt-20">
+      <div className="grid grid-cols-5 gap-4 h-full w-full pt-16">
         <div className="col-span-2 bg-blue-50 h-full pt-20">
-          <AuthIntro />
+          <AuthIntro title="Đăng nhập tài khoản" />
         </div>
 
         <div className="col-span-3 h-full">
@@ -109,10 +109,6 @@ const SignIn: React.FC<SignInProps> = () => {
             <div className="mx-auto">
               <div className="flex items-center justify-center">
                 <div className="w-2/5 mt-24">
-                  <span className="block text-2xl font-semibold text-center">
-                    Chào mừng đến với
-                    <span className="text-green-600"> CVFREE</span>
-                  </span>
                   <div className="mt-16">
                     <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>
@@ -146,15 +142,6 @@ const SignIn: React.FC<SignInProps> = () => {
                     </span>
                   </div>
                 </div>
-              </div>
-              <div className="flex justify-center items-center mt-20">
-                <span className="text-green-700 font-semibold">2021© CVFREE</span>
-                <Link to="/terms-of-use" className="mx-20 text-green-700 font-semibold">
-                  Điều khoản sử dụng
-                </Link>
-                <Link to="/contact" className="text-green-700 font-semibold">
-                  Liên hệ
-                </Link>
               </div>
             </div>
           </div>

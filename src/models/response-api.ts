@@ -1,5 +1,6 @@
 import { UserInfo } from './user-info'
 import { CvInfo } from './cv-info'
+import { CandidateInfo } from './candidate-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -44,6 +45,16 @@ export interface ResponseUpload {
 export interface ResponseDelete {
   success: boolean
   data: undefined | null
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseListCandidate {
+  success: boolean
+  data: {
+    items: CandidateInfo[]
+  }
   code: number
   error?: { message: string }
   message?: string
