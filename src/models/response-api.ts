@@ -54,6 +54,20 @@ export interface ResponseListCandidate {
   success: boolean
   data: {
     items: CandidateInfo[]
+    page: number
+    size: number
+    totalItems: number
+    totalPages: number
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseCandidateDetail {
+  success: boolean
+  data: {
+    candidateDetail: CandidateInfo
   }
   code: number
   error?: { message: string }

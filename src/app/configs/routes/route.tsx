@@ -10,6 +10,8 @@ const Home = lazy(() => import('app/pages/home'))
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
 
+const CandidateDetail = lazy(() => import('app/pages/candidate/candidate-detail'))
+
 const EmployerDashboard = lazy(() => import('app/pages/employer/employer-dashboard'))
 const EmployerIntro = lazy(() => import('app/pages/employer/employer-intro'))
 const EmployerSignUp = lazy(() => import('app/pages/employer/employer-sign-up'))
@@ -150,6 +152,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/employer/create-job-postings',
     component: EmployerCreateJobPostings,
+    exact: true
+  },
+
+  // candidate
+  {
+    path: '/candidate/:id',
+    component: CandidateDetail,
     exact: true
   },
 

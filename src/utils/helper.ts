@@ -7,6 +7,7 @@ import Cookies from 'js-cookie'
 import { ResponseUpload } from 'models/response-api'
 import { OptionProps } from 'app/partials/pr-dropdown'
 import { OptionsType } from 'react-select'
+import queryString from 'query-string'
 
 export const checkEmail = (email: string) => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
@@ -151,4 +152,20 @@ export const checkSpecialCharacter = (data: string) => {
     return true
   }
   return false
+}
+
+export const pushParamURL = (history: any, params: Record<string, string | number>) => {
+  const parsed = queryString.parse(window.location.search)
+  for (const [key, value] of Object.entries(params)) {
+    parsed[`${key}`] = `${value}` || null
+  }
+  history.push({
+    pathname: window.location.pathname,
+    search: queryString.stringify(parsed)
+  })
+}
+
+export const getParamURL = () => {
+  const parsed = queryString.parse(window.location.search)
+  return parsed
 }

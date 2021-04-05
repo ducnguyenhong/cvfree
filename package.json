@@ -1,6 +1,6 @@
 {
   "name": "cvfree",
-  "version": "210405.01.10",
+  "version": "210406.01.30",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
@@ -38,6 +38,7 @@
     "moment": "^2.29.1",
     "postcss": "^7.0.35",
     "prettier": "^2.2.1",
+    "query-string": "^7.0.0",
     "react": "^17.0.1",
     "react-content-loader": "^6.0.2",
     "react-datepicker": "^3.6.0",
