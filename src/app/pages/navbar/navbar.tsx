@@ -23,7 +23,7 @@ const NavbarHome: React.FC = () => {
   const [language, setLanguage] = useRecoilState(languageState)
 
   const helloName = userInfo?.fullname
-    ? userInfo.fullname.split(' ')[userInfo.fullname.split.length]
+    ? userInfo.fullname.split(' ')[userInfo.fullname.split.length - 1]
     : userInfo?.username
 
   const onSignOut = useCallback(() => {

@@ -1,39 +1,53 @@
 import { Link } from 'react-router-dom'
+import { BreadCrumb } from 'app/pages/bread-crumb'
 
 export const EmployerDashboard: React.FC = () => {
   return (
-    <div className="py-60 bg-green-100">
-      <div className="grid grid-cols-3 gap-x-16 w-2/3 mx-auto">
+    <div className="py-32 w-2/3 mx-auto">
+      <BreadCrumb title="Bảng điều khiển" />
+      <div className="grid grid-cols-4 gap-16 mt-10">
         <Link
           to="employer/publish-recruitment"
-          className="col-span-1 rounded-md overflow-hidden shadow-md bg-purple-800 px-6 py-16 block duration-300 hover:shadow-lg"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
         >
-          <span className="uppercase text-xl font-bold block text-center text-gray-100">Quản lý tuyển dụng</span>
-          <i className="fas fa-address-card text-5xl block text-center mt-10 text-gray-100"></i>
-          <span className="text-justify block mt-10 text-gray-100">
-            Tạo bài tin tuyển dụng cho công ty của bạn. Ứng viên sẽ có thể nhìn thấy việc làm từ công ty bạn một cách
-            tốt hơn
-          </span>
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Quản lý tin tuyển dụng</span>
+          <i className="fas fa-address-card text-5xl block text-center mt-10 text-gray-500"></i>
         </Link>
         <Link
           to="employer/looking-for-candidates"
-          className="col-span-1 rounded-md overflow-hidden shadow-md bg-yellow-700 px-6 py-16 block duration-300 hover:shadow-lg"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
         >
-          <span className="uppercase text-xl font-bold block text-center text-gray-100">Tìm kiếm ứng viên</span>
-          <i className="fas fa-search text-5xl block text-center mt-10 text-gray-100"></i>
-          <span className="text-justify block mt-10 text-gray-100">
-            Tìm kiếm ứng viên phù hợp với công việc mà bạn đang tuyển dụng một cách nhanh chóng và chính xác
-          </span>
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Tìm kiếm ứng viên</span>
+          <i className="fas fa-search text-5xl block text-center mt-10 text-gray-500"></i>
         </Link>
         <Link
-          to="employer/company-info"
-          className="col-span-1 rounded-md overflow-hidden shadow-md bg-green-700 px-6 py-16 block duration-300 hover:shadow-lg"
+          to="employer/manage-candidate"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
         >
-          <span className="uppercase text-xl font-bold block text-center text-gray-100">Thông tin công ty</span>
-          <i className="fas fa-building text-5xl block text-center mt-10 text-gray-100"></i>
-          <span className="text-justify block mt-10 text-gray-100">
-            Cập nhật thông tin công ty của bạn để tạo sự tin cậy cho ứng viên khi muốn ứng tuyển
-          </span>
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Quản lý CV ứng viên</span>
+          <i className="fas fa-users text-5xl block text-center mt-10 text-gray-500"></i>
+        </Link>
+        <Link
+          to="employer/payment"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
+        >
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Nạp thẻ/Thanh toán</span>
+          <i className="fas fa-coins text-5xl block text-center mt-10 text-gray-500"></i>
+        </Link>
+        <Link
+          to="employer/info"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
+        >
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Thông tin cá nhân</span>
+          <i className="fas fa-user-circle text-5xl block text-center mt-10 text-gray-500"></i>
+        </Link>
+
+        <Link
+          to="employer/company-info"
+          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
+        >
+          <span className="uppercase text-md font-bold block text-center text-gray-600">Thông tin công ty</span>
+          <i className="fas fa-building text-5xl block text-center mt-10 text-gray-500"></i>
         </Link>
       </div>
     </div>

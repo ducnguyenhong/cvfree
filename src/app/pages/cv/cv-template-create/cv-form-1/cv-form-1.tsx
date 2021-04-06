@@ -298,7 +298,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
         award,
         presenter,
         anotherInfo
-      }
+      },
+      unlockedEmployers: []
     }
 
     console.log('ducnh', dataCV)

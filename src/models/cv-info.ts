@@ -72,6 +72,7 @@ export interface CvInfo {
       info: string
     }[]
   }
+  unlockedEmployers: number[]
   createdAt?: number
   updatedAt?: number
 }

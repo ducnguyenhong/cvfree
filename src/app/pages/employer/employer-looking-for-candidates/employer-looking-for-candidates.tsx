@@ -19,6 +19,7 @@ import { languageState } from 'app/states/language-state'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
 import { getParamURL } from 'utils/helper'
 import ImgNoData from 'assets/images/no-data.png'
+import DefaultAvatarCandidate from 'assets/images/default-avatar-candidate.png'
 
 export const EmployerLookingForCandidates: React.FC = () => {
   const [candidateList, setCandidateList] = useState<CandidateInfo[] | null>(null)
@@ -128,7 +129,8 @@ export const EmployerLookingForCandidates: React.FC = () => {
                   fullname,
                   applyPosition,
                   career,
-                  updatedAt
+                  updatedAt,
+                  cvId
                 } = item
                 return (
                   <div key={candidateId} className="mt-10 block">
@@ -136,7 +138,7 @@ export const EmployerLookingForCandidates: React.FC = () => {
                       <div className="col-span-1">
                         <Link to={`/candidate/${candidateId}`} className="block">
                           <div className="w-28 h-28 rounded-full overflow-hidden bg-white mx-auto">
-                            <img src={avatar} alt="avatar" className="block w-full h-full" />
+                            <img src={avatar || DefaultAvatarCandidate} alt="avatar" className="block w-full h-full" />
                           </div>
                         </Link>
                       </div>
@@ -144,6 +146,13 @@ export const EmployerLookingForCandidates: React.FC = () => {
                         <div className="absolute right-0 top-0">
                           <span>Cập nhật CV cách đây {moment(updatedAt).locale(language).fromNow()}</span>
                         </div>
+                        {cvId && (
+                          <div className="absolute bottom-0 right-0">
+                            <span className="block text-red-500 border border-red-500 px-2 py-1 rounded-sm font-medium">
+                              Đã mở khóa
+                            </span>
+                          </div>
+                        )}
                         <Link to={`/candidate/${candidateId}`} className="block">
                           <span className="block text-xl font-bold">
                             {fullname}

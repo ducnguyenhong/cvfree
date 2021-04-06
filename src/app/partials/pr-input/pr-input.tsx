@@ -15,7 +15,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     label,
     type,
     icon,
-    errorMessage
+    errorMessage,
+    required
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -82,24 +83,13 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
 
   return (
     <div>
-      {label && <span className="block font-semibold text-green-800 ">{label}</span>}
+      {label && (
+        <span className="block font-semibold text-green-800 mb-1">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </span>
+      )}
       <div className="relative" style={{ height: 42 }}>
-        {type === 'password' && valueInput && (
-          <i
-            className={`absolute right-3 cursor-pointer top-1.5 text-lg z-10 text-green-700 fas ${
-              showPassword ? 'fa-eye' : 'fa-eye-slash'
-            }`}
-            onClick={onShowPassword}
-          ></i>
-        )}
-        {icon && (
-          <i
-            className={`absolute opacity-70 left-3 top-1.5 text-lg z-10 fas ${icon} ${
-              validateRequired || error ? 'text-red-700' : 'text-green-900'
-            }`}
-            onClick={onShowPassword}
-          ></i>
-        )}
         <input
           value={valueInput}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeInput(e)}
@@ -117,6 +107,22 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
             validateRequired || error ? 'focus:border-red-600' : 'focus:border-green-600'
           } `}
         />
+        {type === 'password' && valueInput && (
+          <i
+            className={`absolute right-3 cursor-pointer top-1.5 text-lg text-green-700 fas ${
+              showPassword ? 'fa-eye' : 'fa-eye-slash'
+            }`}
+            onClick={onShowPassword}
+          ></i>
+        )}
+        {icon && (
+          <i
+            className={`absolute opacity-70 left-3 top-1.5 text-lg fas ${icon} ${
+              validateRequired || error ? 'text-red-700' : 'text-green-900'
+            }`}
+            onClick={onShowPassword}
+          ></i>
+        )}
       </div>
       {validateRequired && <span className="text-red-500 font-medium block text-base mt-1">* Bắt buộc!</span>}
       {!validateRequired && error && <span className="text-red-500 font-medium block text-base mt-1">{error}</span>}

@@ -86,6 +86,7 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
         value={dataDropdown}
         loadOptions={loadOptions}
         debounceTimeout={500}
+        placeholder="Chọn..."
         isDisabled={isDisabled}
         isMulti={isMulti}
         onChange={(e) => {

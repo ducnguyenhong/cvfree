@@ -5,6 +5,8 @@ export interface CandidateInfo {
   birthday: number
   applyPosition: string
   address: string
+  careerGoals?: string
+  cvId: string
   education?: {
     name: string
     major?: string

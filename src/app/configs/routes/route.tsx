@@ -20,6 +20,9 @@ const EmployerCompanyInfo = lazy(() => import('app/pages/employer/employer-compa
 const EmployerLookingForCandidates = lazy(() => import('app/pages/employer/employer-looking-for-candidates'))
 const EmployerRecruitment = lazy(() => import('app/pages/employer/employer-recruitment'))
 const EmployerCreateJobPostings = lazy(() => import('app/pages/employer/employer-create-job-postings'))
+const EmployerManageCandidate = lazy(() => import('app/pages/employer/employer-manage-candidate'))
+const EmployerPayment = lazy(() => import('app/pages/employer/employer-payment'))
+const EmployerInfo = lazy(() => import('app/pages/employer/employer-info'))
 
 const CvForm = lazy(() => import('app/pages/cv/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
@@ -140,6 +143,11 @@ export const PRIVATE_ROUTES: RouteType[] = [
     exact: true
   },
   {
+    path: '/employer/manage-candidate',
+    component: EmployerManageCandidate,
+    exact: true
+  },
+  {
     path: '/employer/looking-for-candidates',
     component: EmployerLookingForCandidates,
     exact: true
@@ -152,6 +160,16 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/employer/create-job-postings',
     component: EmployerCreateJobPostings,
+    exact: true
+  },
+  {
+    path: '/employer/payment',
+    component: EmployerPayment,
+    exact: true
+  },
+  {
+    path: '/employer/info',
+    component: EmployerInfo,
     exact: true
   },
 

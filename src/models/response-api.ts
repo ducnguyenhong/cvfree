@@ -1,6 +1,7 @@
 import { UserInfo } from './user-info'
 import { CvInfo } from './cv-info'
 import { CandidateInfo } from './candidate-info'
+import { EmployerInfo } from './employer-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -69,6 +70,24 @@ export interface ResponseCandidateDetail {
   data: {
     candidateDetail: CandidateInfo
   }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseEmployerDetail {
+  success: boolean
+  data: {
+    employerDetail: EmployerInfo
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseDefault {
+  success: boolean
+  data: null | undefined
   code: number
   error?: { message: string }
   message?: string

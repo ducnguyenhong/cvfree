@@ -122,7 +122,9 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
       phone,
       status: 'ACTIVE',
       gender: gender ? gender[0].value : 'ANOTHER',
-      typeAccount: 'NORMAL'
+      typeAccount: 'NORMAL',
+      numberOfCandidateOpening: 2,
+      numberOfPosting: 2
     }
 
     callApiCreate(data)

@@ -1,7 +1,5 @@
-export interface UserInfo {
+export interface EmployerInfo {
   username: string
-  password: string
-  deviceId?: string
   email: string
   address?: {
     label: string
@@ -12,18 +10,11 @@ export interface UserInfo {
   }
   birthday?: number
   coin?: number
-  country?: string
   fullname?: string
   gender?: string
-  id?: number
   companyId?: number
   phone?: string
-  status: string
-  type: string
   avatar?: string
-  verify?: boolean
-  seeCV?: boolean
-  findJob?: boolean
   typeAccount?: string
   numberOfPosting?: number
   numberOfCandidateOpening?: number

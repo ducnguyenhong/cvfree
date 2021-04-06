@@ -25,6 +25,7 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "no-console": "off",
     "no-var": 0,
+    "react/no-children-prop": 0,
     "react/display-name": 0,
     "react/no-unescaped-entities": 0,
     "@typescript-eslint/no-empty-function": 0,
