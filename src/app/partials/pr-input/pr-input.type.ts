@@ -14,6 +14,7 @@ export interface PrInputProps {
   type?: 'password' | 'text' | 'textarea'
   icon?: string
   errorMessage?: string
+  divClassName?: string
 }
 
 export interface PrInputRefProps {

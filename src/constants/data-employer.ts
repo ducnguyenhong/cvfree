@@ -192,3 +192,41 @@ export const DataAnother: DropdownProps[] = [
     label: 'Có chứng chỉ'
   }
 ]
+
+export const DataCurrency: DropdownProps[] = [
+  {
+    value: 'VND',
+    label: 'VNĐ'
+  },
+  {
+    value: 'USD',
+    label: 'USD'
+  }
+]
+
+export const DataPersonnelSize: DropdownProps[] = [
+  {
+    value: '1 - 50',
+    label: '1 - 50'
+  },
+  {
+    value: '50 - 100',
+    label: '50 - 100'
+  },
+  {
+    value: '100 - 200',
+    label: '100 - 200'
+  },
+  {
+    value: '200 - 500',
+    label: '200 - 500'
+  },
+  {
+    value: '500 - 1000',
+    label: '500 - 1000'
+  },
+  {
+    value: '> 1000',
+    label: '> 1000'
+  }
+]

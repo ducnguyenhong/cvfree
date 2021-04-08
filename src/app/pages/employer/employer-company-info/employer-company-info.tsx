@@ -1,7 +1,95 @@
+import { showNotify } from 'app/partials/pr-notify'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { SERVER_URL } from 'constants/index'
+import Cookies from 'js-cookie'
+import { get } from 'lodash'
+import { ResponseCompanyDetail } from 'models/response-api'
+import { useEffect, useState } from 'react'
+import { CompanyInfo } from 'models/company-info'
+import { List } from 'react-content-loader'
+import { BreadCrumb } from 'app/pages/bread-crumb'
+import { Link } from 'react-router-dom'
+import { DropdownAsync } from 'app/partials/dropdown-async'
+
 export const EmployerCompanyInfo: React.FC = () => {
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | undefined | null>(undefined)
+
+  const callApiCompanyInfo = () => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/company/detail`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers,
+      url,
+      data: undefined,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseCompanyDetail>) => {
+        const { success, data, error } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        setCompanyInfo(data.companyDetail)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  useEffect(() => {
+    callApiCompanyInfo()
+  }, [])
+
+  if (typeof companyInfo === 'undefined') {
+    return <List />
+  }
+
+  if (companyInfo === null) {
+    return (
+      <div className="w-2/3 mx-auto py-32">
+        <BreadCrumb title="Thông tin công ty" />
+        <div className="bg-blue-50 shadow px-8 pt-20 pb-72 mt-10">
+          <span className="block text-xl font-semibold text-center">Bạn chưa cập nhật thông tin công ty của bạn</span>
+          <div className="flex items-center justify-center mt-10">
+            <span className="block bg-purple-500 text-white px-4 font-semibold rounded-md py-2 duration-300 hover:bg-purple-600">
+              Chọn công ty trong danh sách
+            </span>
+            <span className="block mx-10 font-medium">hoặc</span>
+            <Link
+              to="/employer/register-company"
+              className="px-4 py-2 bg-green-500 rounded-md duration-300 hover:bg-green-600"
+            >
+              <span className="text-white font-semibold">Đăng ký công ty mới</span>
+            </Link>
+          </div>
+          <div className="mt-16 w-1/2 mx-auto">
+            <div>
+              <DropdownAsync
+                label="Danh sách công ty đã có trong hệ thống"
+                urlApi={`/company/suggest`}
+                onChange={(e) => {
+                  console.log(e)
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="bg-green-100">
-      <div className="pt-20 pb-40 w-2/3 mx-auto bg-white">
+    <div className="w-2/3 mx-auto py-32">
+      <BreadCrumb title="Thông tin công ty" />
+      <div className="bg-blue-50 shadow px-8 py-10 mt-10">
         <div style={{ aspectRatio: '5/2' }} className="relative">
           <img
             src="https://scontent.fhan5-3.fna.fbcdn.net/v/t1.0-9/s960x960/72411195_2511782889102410_8447476148903870464_o.jpg?_nc_cat=106&ccb=1-3&_nc_sid=e3f864&_nc_ohc=JD8ct1Z9AQgAX-BdWx2&_nc_ht=scontent.fhan5-3.fna&tp=7&oh=b43918a30a6b9ea4a7d119a563eb654e&oe=60894256"

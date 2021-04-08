@@ -105,12 +105,12 @@ export const getDefaultAvatar = (gender?: string) => {
   return DefaultImage
 }
 
-export const uploadServer = async (img: File) => {
+export const uploadServer = async (img: File, folderServer?: string) => {
   const formData = new FormData()
-  formData.append('avatar', img)
+  formData.append('image', img)
   const accessToken = Cookies.get('token')
   return axios
-    .post(`${SERVER_URL}/media/upload`, formData, {
+    .post(`${SERVER_URL}/media/upload/${folderServer ?? 'common'}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${accessToken}`
@@ -141,6 +141,26 @@ export const getDataDropdown = (data: OptionsType<OptionProps> | OptionProps | n
 
   if (isSingleElement(data)) {
     return [data]
+  }
+
+  return []
+}
+
+export const getValueDropdown = (data: OptionsType<OptionProps> | OptionProps | undefined | null): string[] => {
+  if (data === null || typeof data === 'undefined') {
+    return []
+  }
+
+  if (Array.isArray(data)) {
+    const arrValue: string[] = []
+    for (let i = 0; i < data.length; i++) {
+      arrValue.push(data[i].value)
+    }
+    return arrValue
+  }
+
+  if (isSingleElement(data)) {
+    return [data.value]
   }
 
   return []

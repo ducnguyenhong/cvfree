@@ -80,7 +80,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const [birthday, setBirthday] = useState<Date | null>(null)
   const [city, setCity] = useState<OptionProps | null>(null)
   const [district, setDistrict] = useState<OptionProps | null>(null)
-  const [address, setAddress] = useState<{ value: string[]; label: string } | null>(null)
+  const [address, setAddress] = useState<{ value: { district: string; city: string }; label: string } | null>(null)
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
   const modalAddressRef = useRef<PrModalRefProps>(null)
@@ -225,7 +225,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
     }
     let avatarURL = cvInfo?.detail.avatar ?? ''
     if (avatarFile) {
-      avatarURL = await uploadServer(avatarFile)
+      avatarURL = await uploadServer(avatarFile, 'cv')
     }
 
     const fullname = fullnameRef.current?.getValue() || ''
@@ -453,7 +453,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const onChangeAddress = () => {
     setAddress({
       label: `${district?.label}, ${city?.label}`,
-      value: [city?.value ?? '', district?.value ?? '']
+      value: {
+        city: city?.value ?? '',
+        district: district?.value ?? ''
+      }
     })
     addressRef.current?.setValue(`${district?.label}, ${city?.label}`)
     modalAddressRef.current?.hide()

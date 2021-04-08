@@ -3,16 +3,29 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { useIntl } from 'react-intl'
+import styled from 'styled-components'
 
+const UploadStyle = styled.div`
+  .circle {
+    border-radius: 50%;
+  }
+  .rectangle {
+    aspect-ratio: 2/1;
+  }
+  .square {
+    aspect-ratio: 1/1;
+  }
+`
 interface CVFUploadProps {
   ratio?: { x: number; y: number }
   getImage?: (img: File) => void
   defaultURL?: string
+  shape?: 'circle' | 'rectangle' | 'square'
 }
 
 const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   const intl = useIntl()
-  const { ratio, getImage, defaultURL } = props
+  const { ratio, getImage, defaultURL, shape } = props
   const [defaultImage, setDefaultImage] = useState<string>('')
   const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
   const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
@@ -107,8 +120,8 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   }, [completedCrop])
 
   return (
-    <div>
-      <div className="relative w-full bg-white rounded-full overflow-hidden" style={{ paddingTop: '100%' }}>
+    <UploadStyle>
+      <div className={`relative w-full bg-white overflow-hidden ${shape || 'circle'}`} style={{ paddingTop: '100%' }}>
         <div className="absolute inset-0 flex justify-center items-center">
           <label className="inline-block cursor-pointer" title="Chọn ảnh từ thiết bị">
             {!completedCrop && <i className="fas fa-camera text-7xl text-gray-500 duration-300 hover:text-gray-600" />}
@@ -137,10 +150,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
         cancelTitle={intl.formatMessage({ id: 'PR_UPLOAD_CROP.CANCEL' })}
       >
         <div className="pb-5">
-          <span className="text-lg block text-center italic text-blue-700 font-medium mb-10 mt-5">
-            {intl.formatMessage({ id: 'PR_UPLOAD_CROP.NOTE' })}
-          </span>
-          <div className="w-80 mx-auto">
+          <div className="w-80 mx-auto py-12">
             <ReactCrop
               src={`${upImg}`}
               onImageLoaded={onLoad}
@@ -154,7 +164,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
           </div>
         </div>
       </PrModal>
-    </div>
+    </UploadStyle>
   )
 }
 

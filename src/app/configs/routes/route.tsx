@@ -23,6 +23,7 @@ const EmployerCreateJobPostings = lazy(() => import('app/pages/employer/employer
 const EmployerManageCandidate = lazy(() => import('app/pages/employer/employer-manage-candidate'))
 const EmployerPayment = lazy(() => import('app/pages/employer/employer-payment'))
 const EmployerInfo = lazy(() => import('app/pages/employer/employer-info'))
+const EmployerRegisterCompany = lazy(() => import('app/pages/employer/employer-register-company'))
 
 const CvForm = lazy(() => import('app/pages/cv/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
@@ -170,6 +171,11 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/employer/info',
     component: EmployerInfo,
+    exact: true
+  },
+  {
+    path: '/employer/register-company',
+    component: EmployerRegisterCompany,
     exact: true
   },
 

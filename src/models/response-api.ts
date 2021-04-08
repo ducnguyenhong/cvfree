@@ -2,6 +2,8 @@ import { UserInfo } from './user-info'
 import { CvInfo } from './cv-info'
 import { CandidateInfo } from './candidate-info'
 import { EmployerInfo } from './employer-info'
+import { JobPostingInfo } from './job-posting-info'
+import { CompanyInfo } from './company-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -17,6 +19,16 @@ export interface ResponseListCV {
   success: boolean
   data: {
     items: CvInfo[]
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseListJob {
+  success: boolean
+  data: {
+    items: JobPostingInfo[]
   }
   code: number
   error?: { message: string }
@@ -79,6 +91,16 @@ export interface ResponseEmployerDetail {
   success: boolean
   data: {
     employerDetail: EmployerInfo
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseCompanyDetail {
+  success: boolean
+  data: {
+    companyDetail: CompanyInfo | null
   }
   code: number
   error?: { message: string }

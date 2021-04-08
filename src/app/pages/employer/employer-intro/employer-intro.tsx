@@ -24,7 +24,7 @@ export const EmployerIntro: React.FC = () => {
             </span>
             <span className="text-xl font-semibold block mt-16">
               hoặc
-              <Link to="/employer/sign-in" className="bg-blue-600 text-white px-4 py-2 rounded-md ml-3">
+              <Link to="/sign-in" className="bg-blue-600 text-white px-4 py-2 rounded-md ml-3">
                 Đăng nhập
               </Link>
             </span>
