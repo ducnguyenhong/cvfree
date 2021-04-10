@@ -125,19 +125,17 @@ export const EmployerRecruitment: React.FC = () => {
 
           {jobList &&
             jobList.length > 0 &&
-            jobList.map((item, index) => {
-              const { name, createdAt, updatedAt } = item
+            jobList.map((item) => {
+              const { name, createdAt, updatedAt, timeToApply, _id } = item
               // const { fullname } = detail
               return (
                 <div
                   className="py-5 items-center gap-x-4 border border-dashed border-gray-300 rounded mb-12"
-                  key={`cv_${index}`}
+                  key={`cv_${_id}`}
                 >
                   <div>
                     <div>
-                      <span className="block text-center font-bold text-xl text-green-600">
-                        {name || `CV${index + 1}`}
-                      </span>
+                      <span className="block text-center font-bold text-xl text-green-600">{name}</span>
                     </div>
                     <div className="mt-2">
                       <div className="flex items-center justify-between">
@@ -152,9 +150,7 @@ export const EmployerRecruitment: React.FC = () => {
                           <i className="far fa-clock mr-2"></i>
                           <span>Ngày tạo</span>
                         </div>
-                        <span className="block">
-                          {createdAt && moment(createdAt * 1000).format('DD/MM/YYYY HH:mm')}
-                        </span>
+                        <span className="block">{createdAt && moment(createdAt).format('DD/MM/YYYY HH:mm')}</span>
                       </div>
                     </div>
                     <div className="mt-2">
@@ -163,19 +159,21 @@ export const EmployerRecruitment: React.FC = () => {
                           <i className="fas fa-history mr-2"></i>
                           <span>Ngày sửa</span>
                         </div>
-                        <span className="block">
-                          {updatedAt && moment(updatedAt * 1000).format('DD/MM/YYYY HH:mm')}
-                        </span>
+                        <span className="block">{updatedAt && moment(updatedAt).format('DD/MM/YYYY HH:mm')}</span>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-x-16 mt-5">
-                      {/* <Link
-                        to={`/cv-public/${slugURL(fullname)}.${_id}`}
+                    <div className="grid grid-cols-4 gap-x-16 mt-5">
+                      <span className="col-span-1 py-1 cursor-pointer bg-yellow-400 rounded flex justify-center items-center hover:bg-yellow-500 duration-300">
+                        <i className="fas fa-edit mr-2 text-white"></i>
+                        <span className="text-white">Ứng viên đã ứng tuyển</span>
+                      </span>
+                      <Link
+                        to={`/jobs/${slugURL(name)}.${_id}`}
                         className="col-span-1 bg-green-600 py-1 rounded flex justify-center items-center hover:bg-green-700 duration-300"
                       >
                         <i className="fas fa-eye mr-2 text-white"></i>
                         <span className="text-white">Xem</span>
-                      </Link> */}
+                      </Link>
                       <Link
                         to="/edit-cv/"
                         className="col-span-1 py-1 bg-purple-700 rounded flex justify-center items-center hover:bg-purple-800 duration-300"
@@ -183,6 +181,10 @@ export const EmployerRecruitment: React.FC = () => {
                         <i className="fas fa-edit mr-2 text-white"></i>
                         <span className="text-white">Sửa</span>
                       </Link>
+                      <span className="col-span-1 py-1 cursor-pointer bg-red-700 rounded flex justify-center items-center hover:bg-red-800 duration-300">
+                        <i className="fas fa-edit mr-2 text-white"></i>
+                        <span className="text-white">Xóa</span>
+                      </span>
                     </div>
                   </div>
                 </div>

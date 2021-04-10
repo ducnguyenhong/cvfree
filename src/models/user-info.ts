@@ -3,6 +3,7 @@ export interface UserInfo {
   password: string
   deviceId?: string
   email: string
+  listCV?: string[]
   address?: {
     label: string
     value: {

@@ -1,3 +1,3 @@
-import Layout from './job-new'
+import Layout from './job-list-general'
 
 export default Layout

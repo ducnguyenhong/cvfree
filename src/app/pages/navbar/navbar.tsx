@@ -12,7 +12,6 @@ import { showNotify } from '../../partials/pr-notify/pr-notify'
 
 const NavbarHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
-
   const intl = useIntl()
   const languageRef = useRef<HTMLDivElement>(null)
   const dialogUserRef = useRef<HTMLDivElement>(null)
@@ -149,12 +148,14 @@ const NavbarHome: React.FC = () => {
                   >
                     {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
-                  <Link
-                    to={userInfo?.type === 'EMPLOYER' ? '/employer' : '/employer-intro'}
-                    className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
-                  >
-                    {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}
-                  </Link>
+                  {userInfo?.type !== 'USER' && userInfo?.type !== 'ADMIN' && (
+                    <Link
+                      to={userInfo?.type === 'EMPLOYER' ? '/employer' : '/employer-intro'}
+                      className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
+                    >
+                      {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

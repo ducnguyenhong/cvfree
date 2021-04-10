@@ -8,13 +8,14 @@ export interface DropdownAsyncProps {
   isMulti?: boolean
   onChange?: (data: OptionProps[]) => void
   isDisabled?: boolean
+  isSearchable?: boolean
 }
 
 export interface DropdownAsyncRef {
-  getValue?: () => OptionProps[]
-  setValue?: (value: OptionProps | OptionProps[] | null) => void
-  checkRequired?: () => boolean
-  reset?: () => void
+  getValue: () => OptionProps[]
+  setValue: (value: OptionProps | OptionProps[] | null) => void
+  checkRequired: () => boolean
+  reset: () => void
 }
 
 export interface OptionProps {

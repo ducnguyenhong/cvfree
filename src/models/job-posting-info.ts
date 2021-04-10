@@ -1,5 +1,7 @@
 export interface JobPostingInfo {
+  _id?: string
   name: string
+  isApplied?: boolean
   address: {
     value: { district: string; city: string }
     label: string
@@ -20,6 +22,6 @@ export interface JobPostingInfo {
   requirementForCandidate: string
   benefitToEnjoy: string
   status: string
-  createdAt?: number
-  updatedAt?: number
+  createdAt?: Date
+  updatedAt?: Date
 }

@@ -1,6 +1,7 @@
 import PrDropdownCV from 'app/partials/pr-dropdown-cv'
 import PrInputColor from 'app/partials/pr-input-color'
 import PrInputCV from 'app/partials/pr-input-cv'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import PrUpload from 'app/partials/pr-upload'
 import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
@@ -49,6 +50,11 @@ import { useRouteMatch } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
 import moment from 'moment'
+import PrDropdown from 'app/partials/pr-dropdown/pr-dropdown'
+import { DataCareer, DataFormOfWork } from 'constants/data-employer'
+
+import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
+import { getValueDropdown } from '../../../../../utils/helper'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
@@ -69,6 +75,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const [focusBirthday, setFocusBirthday] = useState<boolean>(false)
   const [showRecommend, setShowRecommend] = useState<boolean>(false)
   const [cvInfo, setCvInfo] = useState<CvInfo | null>(null)
+
+  const cvNameRef = useRef<PrInputRefProps>(null)
+  const careerRef = useRef<PrDropdownRefProps>(null)
+  const formOfWorkRef = useRef<PrDropdownRefProps>(null)
 
   const fullnameRef = useRef<PrInputCVRefProps>(null)
   const applyPositionRef = useRef<PrInputCVRefProps>(null)
@@ -194,6 +204,18 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   }
 
   const validate = () => {
+    if (!cvNameRef.current?.checkRequired()) {
+      setShowRecommend(false)
+      return false
+    }
+    if (!careerRef.current?.checkRequired()) {
+      setShowRecommend(false)
+      return false
+    }
+    if (!formOfWorkRef.current?.checkRequired()) {
+      setShowRecommend(false)
+      return false
+    }
     if (!fullnameRef.current?.checkRequired()) {
       return false
     }
@@ -228,13 +250,17 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       avatarURL = await uploadServer(avatarFile, 'cv')
     }
 
-    const fullname = fullnameRef.current?.getValue() || ''
+    const name = cvNameRef.current?.getValue() ?? ''
+    const formOfWork = getValueDropdown(formOfWorkRef.current?.getValue())
+    const career = getValueDropdown(careerRef.current?.getValue())
+
+    const fullname = fullnameRef.current?.getValue() ?? ''
     const applyPosition = applyPositionRef.current?.getValue()
     const birthdayValue = moment(birthday).valueOf()
-    const gender = genderRef.current?.getValue() || ''
-    const phone = phoneRef.current?.getValue() || ''
-    const email = emailRef.current?.getValue() || ''
-    const facebook = facebookRef.current?.getValue() || ''
+    const gender = genderRef.current?.getValue() ?? ''
+    const phone = phoneRef.current?.getValue() ?? ''
+    const email = emailRef.current?.getValue() ?? ''
+    const facebook = facebookRef.current?.getValue() ?? ''
 
     const basicSkill = basicSkillRef.current?.getValue()
     const hobby = hobbiesRef.current?.getValue()
@@ -266,7 +292,9 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       template: '1',
       fontSize,
       fontFamily,
-      name: '',
+      name,
+      formOfWork,
+      career,
       categoryInfo,
       categoryCV,
       detail: {
@@ -629,6 +657,48 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Sub info */}
+        <div
+          className={`${
+            showRecommend ? 'opacity-0' : 'opacity-100'
+          } rounded-l-none duration-300 fixed top-48 left-0 bg-white p-5 shadow-md overflow-hidden rounded-md`}
+          style={{ width: showRecommend ? 0 : 400, height: '65vh' }}
+        >
+          <span className="block font-semibold text-lg text-center mb-2">Thông tin phụ</span>
+          <hr />
+          <div className="px-5">
+            <div className="mt-5">
+              <PrInput
+                label="Tên CV"
+                divClassName="h-9"
+                required
+                ref={cvNameRef}
+                placeholder="Ví dụ: CV 1, CV chính..."
+              />
+            </div>
+            <div className="mt-5">
+              <PrDropdown label="Ngành nghề muốn ứng tuyển" options={DataCareer} required isMulti ref={careerRef} />
+              <span className="text-sm">(Có thể chọn nhiều)</span>
+            </div>
+            <div className="mt-5">
+              <PrDropdown
+                label="Hình thức làm việc muốn ứng tuyển"
+                options={DataFormOfWork}
+                required
+                isMulti
+                ref={formOfWorkRef}
+              />
+              <span className="text-sm">(Có thể chọn nhiều)</span>
+            </div>
+          </div>
+          <div className="px-5 mt-10">
+            <span className="block italic font-medium">
+              <span className="text-red-500 font-semibold">Lưu ý:</span> Những thông tin tại đây sẽ không hiển thị trong
+              CV. Nhưng sẽ giúp CV của bạn tiếp cận đến nhiều nhà tuyển dụng hơn.
+            </span>
           </div>
         </div>
 

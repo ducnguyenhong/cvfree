@@ -4,7 +4,7 @@ import {
   DataFormOfWork,
   DataRecruitmentPosition,
   DataGender,
-  DataRecruitmentProfession,
+  DataCareer,
   DataCurrency,
   DataPersonnelSize
 } from 'constants/data-employer'

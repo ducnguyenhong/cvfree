@@ -9,7 +9,7 @@ import { get } from 'lodash'
 import md5 from 'md5'
 import { UserInfo } from 'models/user-info'
 import { useCallback, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 
 interface SignInProps {}
@@ -37,6 +37,7 @@ interface ResponseSignIn {
 const SignIn: React.FC<SignInProps> = () => {
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
+  const history = useHistory()
 
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
@@ -82,7 +83,22 @@ const SignIn: React.FC<SignInProps> = () => {
         setUserInfoRecoil(userInfo)
         setUserTokenRecoil({ token: auth.token, expiredAt: auth.expiredAt })
 
-        // history.push('/')
+        const redirectTo = localStorage.getItem('redirect-to')
+        if (redirectTo) {
+          history.push(redirectTo)
+          localStorage.removeItem('redirect-to')
+        }
+        if (!redirectTo) {
+          if (userInfo.type === 'USER') {
+            history.push('/')
+          }
+          if (userInfo.type === 'EMPLOYER') {
+            history.push('/employer')
+          }
+          if (userInfo.type === 'ADMIN') {
+            history.push('/dashboard')
+          }
+        }
 
         // setLoading(false)
         // resetInput()

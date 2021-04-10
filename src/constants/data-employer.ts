@@ -1,4 +1,4 @@
-interface DropdownProps {
+export interface DropdownProps {
   label: string
   value: string
 }
@@ -60,7 +60,7 @@ export const DataGender: DropdownProps[] = [
   }
 ]
 
-export const DataRecruitmentProfession: DropdownProps[] = [
+export const DataCareer: DropdownProps[] = [
   {
     value: '1',
     label: 'Bán hàng'

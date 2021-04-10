@@ -1,12 +1,6 @@
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import {
-  DataFormOfWork,
-  DataRecruitmentPosition,
-  DataGender,
-  DataRecruitmentProfession,
-  DataCurrency
-} from 'constants/data-employer'
+import { DataFormOfWork, DataRecruitmentPosition, DataGender, DataCareer, DataCurrency } from 'constants/data-employer'
 import DatePicker from 'react-datepicker'
 import { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
@@ -98,6 +92,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
     }
 
     console.log('ducnh2', data)
+    callApiCreate(data)
   }
 
   return (
@@ -141,7 +136,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
           <PrDropdown
             required
             ref={careerRef}
-            options={DataRecruitmentProfession}
+            options={DataCareer}
             label="Ngành nghề"
             isMulti
             labelClassName="text-green-700 font-semibold"

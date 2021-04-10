@@ -10,7 +10,18 @@ import { showNotify } from 'app/partials/pr-notify'
 import { getDataDropdown } from 'utils/helper'
 
 export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<DropdownAsyncRef>) => {
-  const { labelClassName, required, isLanguage, label, defaultValue, urlApi, isMulti, onChange, isDisabled } = props
+  const {
+    labelClassName,
+    required,
+    isLanguage,
+    label,
+    defaultValue,
+    urlApi,
+    isMulti,
+    onChange,
+    isDisabled,
+    isSearchable
+  } = props
   const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue ?? null)
 
   const loadOptions = async (search: string) => {
@@ -86,6 +97,7 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
         value={dataDropdown}
         loadOptions={loadOptions}
         debounceTimeout={500}
+        isSearchable={isSearchable}
         placeholder="Chọn..."
         isDisabled={isDisabled}
         isMulti={isMulti}

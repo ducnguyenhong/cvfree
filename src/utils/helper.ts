@@ -8,6 +8,7 @@ import { ResponseUpload } from 'models/response-api'
 import { OptionProps } from 'app/partials/pr-dropdown'
 import { OptionsType } from 'react-select'
 import queryString from 'query-string'
+import { DropdownProps } from 'constants/data-employer'
 
 export const checkEmail = (email: string) => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
@@ -188,4 +189,17 @@ export const pushParamURL = (history: any, params: Record<string, string | numbe
 export const getParamURL = () => {
   const parsed = queryString.parse(window.location.search)
   return parsed
+}
+
+export const getDefaultLabelDropdown = (DataDefault: DropdownProps[], dataValue: string[]): string => {
+  let labelCareer = ''
+  for (let i = 0; i < DataDefault.length; i++) {
+    for (let j = 0; j < dataValue.length; j++) {
+      if (DataDefault[i].value === dataValue[j]) {
+        labelCareer += DataDefault[i].label + ', '
+      }
+    }
+  }
+  labelCareer = labelCareer.substring(0, labelCareer.length - 2)
+  return labelCareer
 }

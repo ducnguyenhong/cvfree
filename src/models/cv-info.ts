@@ -8,6 +8,8 @@ export interface CvInfo {
   fontSize: string
   fontFamily: string
   name?: string
+  career?: string[]
+  formOfWork?: string[]
   isPrimary?: boolean
   categoryInfo: {
     name: string

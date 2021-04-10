@@ -97,6 +97,16 @@ export interface ResponseEmployerDetail {
   message?: string
 }
 
+export interface ResponseJobDetail {
+  success: boolean
+  data: {
+    jobDetail: JobPostingInfo
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
 export interface ResponseCompanyDetail {
   success: boolean
   data: {

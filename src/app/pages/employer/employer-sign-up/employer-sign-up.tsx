@@ -15,7 +15,7 @@ import { UserInfo } from 'models/user-info'
 import { SignInStyle } from './employer-sign-up.styles'
 import ImgIntro from 'assets/images/img-employer-intro.png'
 import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import { DataRecruitmentProfession } from 'constants/data-employer'
+import { DataCareer } from 'constants/data-employer'
 import { DataGender } from 'constants/data-common'
 
 interface SignUpProps {}
@@ -234,7 +234,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                     <PrDropdown
                       required
                       ref={recruitmentRefRef}
-                      options={DataRecruitmentProfession}
+                      options={DataCareer}
                       label="Ngành nghề tuyển dụng"
                       labelClassName="text-green-700 font-semibold mb-3"
                     />
