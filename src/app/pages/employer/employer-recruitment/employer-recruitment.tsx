@@ -1,27 +1,28 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { CvInfo } from 'models/cv-info'
-import moment from 'moment'
-import { slugURL, getDefaultAvatar } from 'utils/helper'
-import { Link, useHistory } from 'react-router-dom'
-import { RadioButton } from 'app/partials/layout/radio-button'
-import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ResponseListCV, ResponseDelete, ResponseListJob, ResponseEmployerDetail } from 'models/response-api'
-import Cookies from 'js-cookie'
-import { showNotify } from 'app/partials/pr-notify'
-import { get } from 'lodash'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'app/states/user-info-state'
-import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { BreadCrumb } from 'app/pages/bread-crumb'
-import { JobPostingInfo } from 'models/job-posting-info'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { showNotify } from 'app/partials/pr-notify'
+import { userInfoState } from 'app/states/user-info-state'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { SERVER_URL } from 'constants/index'
+import Cookies from 'js-cookie'
+import { get } from 'lodash'
+import { CandidateInfo } from 'models/candidate-info'
 import { EmployerInfo } from 'models/employer-info'
+import { JobPostingInfo } from 'models/job-posting-info'
+import { ResponseEmployerDetail, ResponseListCandidate, ResponseListJob } from 'models/response-api'
+import moment from 'moment'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { slugURL } from 'utils/helper'
 
 export const EmployerRecruitment: React.FC = () => {
   const [jobList, setJobList] = useState<JobPostingInfo[] | null>(null)
+  const [candidateList, setCandidateList] = useState<CandidateInfo[] | null>(null)
   const userInfo = useRecoilValue(userInfoState)
   const [employerInfo, setEmployerInfo] = useState<EmployerInfo | null>(null)
   const modalNotify = useRef<PrModalRefProps>(null)
+  const modalListCandidateRef = useRef<PrModalRefProps>(null)
   const history = useHistory()
 
   const callApiEmployerDetail = () => {
@@ -84,6 +85,48 @@ export const EmployerRecruitment: React.FC = () => {
       })
   }, [])
 
+  const callApiListCandidate = (listCandidate: string[]) => {
+    const accessToken = Cookies.get('token')
+    let ids = ''
+    for (let i = 0; i < listCandidate.length; i++) {
+      ids += listCandidate[i] + ','
+    }
+    ids = ids.substring(0, ids.length - 1)
+    const url = `${SERVER_URL}/candidate/informations=${ids}`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers,
+      url,
+      data: undefined,
+      timeout: 20000
+    }
+
+    console.log('ducnh4', config)
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseListCandidate>) => {
+        const { success, error, data } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        setCandidateList(data.items)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  const onShowListCandidate = (listCandidate: string[]) => {
+    callApiListCandidate(listCandidate)
+    modalListCandidateRef.current?.show()
+  }
+
   const onHideNotify = () => {
     modalNotify.current?.hide()
   }
@@ -126,7 +169,7 @@ export const EmployerRecruitment: React.FC = () => {
           {jobList &&
             jobList.length > 0 &&
             jobList.map((item) => {
-              const { name, createdAt, updatedAt, timeToApply, _id } = item
+              const { name, createdAt, updatedAt, timeToApply, _id, candidateApplied } = item
               // const { fullname } = detail
               return (
                 <div
@@ -135,13 +178,31 @@ export const EmployerRecruitment: React.FC = () => {
                 >
                   <div>
                     <div>
-                      <span className="block text-center font-bold text-xl text-green-600">{name}</span>
+                      <span className="block font-bold text-xl text-green-600">{name}</span>
                     </div>
                     <div className="mt-2">
-                      <div className="flex items-center justify-between">
-                        {/* <span className="whitespace-nowrap overflow-ellipsis overflow-hidden italic text-blue-800 pr-2">
-                          http://localhost:1112/cv-public/{slugURL(fullname)}.{`${_id}`}
-                        </span> */}
+                      <div className="flex justify-between">
+                        <div>
+                          <i className="far fa-clock mr-2"></i>
+                          <span>{candidateApplied?.length} ứng viên đã ứng tuyển</span>
+                        </div>
+                        {candidateApplied && candidateApplied?.length > 0 && (
+                          <span
+                            onClick={() => onShowListCandidate(candidateApplied || [])}
+                            className="block font-semibold text-red-500 cursor-pointer"
+                          >
+                            Xem danh sách ứng viên
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <div className="flex justify-between">
+                        <div>
+                          <i className="far fa-clock mr-2"></i>
+                          <span>Thời hạn ứng tuyển</span>
+                        </div>
+                        <span className="block">{timeToApply && moment(timeToApply).format('DD/MM/YYYY')}</span>
                       </div>
                     </div>
                     <div className="mt-2">
@@ -163,10 +224,6 @@ export const EmployerRecruitment: React.FC = () => {
                       </div>
                     </div>
                     <div className="grid grid-cols-4 gap-x-16 mt-5">
-                      <span className="col-span-1 py-1 cursor-pointer bg-yellow-400 rounded flex justify-center items-center hover:bg-yellow-500 duration-300">
-                        <i className="fas fa-edit mr-2 text-white"></i>
-                        <span className="text-white">Ứng viên đã ứng tuyển</span>
-                      </span>
                       <Link
                         to={`/jobs/${slugURL(name)}.${_id}`}
                         className="col-span-1 bg-green-600 py-1 rounded flex justify-center items-center hover:bg-green-700 duration-300"
@@ -205,6 +262,43 @@ export const EmployerRecruitment: React.FC = () => {
             >
               Cập nhật ngay
             </Link>
+          </div>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Thông báo"
+        disableFooter
+        onHide={() => modalListCandidateRef.current?.hide()}
+        ref={modalListCandidateRef}
+      >
+        <div className="px-5 py-10">
+          <span className="block text-xl font-semibold text-center">Danh sách ứng viên ứng tuyển</span>
+          <div className="flex justify-center mt-10">
+            {candidateList &&
+              candidateList.length > 0 &&
+              candidateList.map((item) => {
+                const { fullname, cvId, gender, avatar } = item
+                return (
+                  <div key={`candidate_${cvId}`} className="grid grid-cols-5 gap-x-8">
+                    <div className="col-span-1 px-2">
+                      <img src={avatar} alt="avatar" />
+                    </div>
+                    <div className="col-span-2">
+                      {fullname} {gender}
+                    </div>
+                    <a
+                      href={`/cv-public/${slugURL(fullname)}.${cvId}`}
+                      className="block col-span-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Xem CV
+                    </a>
+                    <div className="col-span-1">Hành động</div>
+                  </div>
+                )
+              })}
           </div>
         </div>
       </PrModal>

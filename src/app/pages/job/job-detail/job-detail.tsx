@@ -122,7 +122,9 @@ export const JobDetail: React.FC = () => {
     jobDescription,
     requirementForCandidate,
     benefitToEnjoy,
-    isApplied
+    isApplied,
+    companyName,
+    companyLogo
   } = jobInfo
 
   const onShowApplyJob = () => {
@@ -162,11 +164,11 @@ export const JobDetail: React.FC = () => {
       <div className="shadow bg-blue-50 px-8 py-10 mt-10">
         <div className="grid grid-cols-5 mt-10 gap-x-10">
           <div className="col-span-1 px-4">
-            <img src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2021/01/logo-viettel-4-1.jpg" alt="logo" />
+            <img src={companyLogo} alt="logo" />
           </div>
           <div className="col-span-4">
             <span className="font-semibold uppercase text-lg block">{name}</span>
-            <span className="block">Công ty TNHH ABC</span>
+            <span className="block">{companyName}</span>
             <span className="block">{address?.label}</span>
           </div>
         </div>
@@ -204,7 +206,7 @@ export const JobDetail: React.FC = () => {
               onClick={onShowApplyJob}
               className={`${
                 isApplied ? '' : 'cursor-pointer'
-              }inline-block bg-green-600 text-white px-5 py-3 rounded-md uppercase font-semibold duration-300 hover:bg-green-500`}
+              } inline-block bg-green-600 text-white px-5 py-3 rounded-md uppercase font-semibold duration-300 hover:bg-green-500`}
             >
               {isApplied ? 'Đã ứng tuyển' : 'Ứng tuyển ngay'}
             </span>

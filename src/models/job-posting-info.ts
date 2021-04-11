@@ -2,6 +2,10 @@ export interface JobPostingInfo {
   _id?: string
   name: string
   isApplied?: boolean
+  companyId?: number
+  companyName?: string
+  companyLogo?: string
+  candidateApplied?: string[]
   address: {
     value: { district: string; city: string }
     label: string
