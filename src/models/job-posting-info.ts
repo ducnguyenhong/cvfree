@@ -5,7 +5,10 @@ export interface JobPostingInfo {
   companyId?: number
   companyName?: string
   companyLogo?: string
-  candidateApplied?: string[]
+  candidateApplied?: {
+    cvId: string
+    accept: boolean
+  }[]
   address: {
     value: { district: string; city: string }
     label: string

@@ -4,6 +4,7 @@ import { CandidateInfo } from './candidate-info'
 import { EmployerInfo } from './employer-info'
 import { JobPostingInfo } from './job-posting-info'
 import { CompanyInfo } from './company-info'
+import { CandidateManageInfo } from './candidate-manage-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -67,6 +68,20 @@ export interface ResponseListCandidate {
   success: boolean
   data: {
     items: CandidateInfo[]
+    page: number
+    size: number
+    totalItems: number
+    totalPages: number
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseListCandidateManage {
+  success: boolean
+  data: {
+    items: CandidateManageInfo[]
     page: number
     size: number
     totalItems: number

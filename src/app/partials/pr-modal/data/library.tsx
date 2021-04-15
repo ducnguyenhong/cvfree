@@ -21,16 +21,8 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
   const modalSize = getModalSize(size)
 
   useEffect(() => {
-    if (visible) {
-      if (onShow) {
-        onShow()
-      }
-    } else {
-      if (onHide) {
-        onHide()
-      }
-    }
-  }, [visible, onShow, onHide])
+    visible && onShow && onShow()
+  }, [visible, onShow])
 
   return (
     <div>

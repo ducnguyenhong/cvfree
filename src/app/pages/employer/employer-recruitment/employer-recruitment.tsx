@@ -9,19 +9,24 @@ import { get } from 'lodash'
 import { CandidateInfo } from 'models/candidate-info'
 import { EmployerInfo } from 'models/employer-info'
 import { JobPostingInfo } from 'models/job-posting-info'
-import { ResponseEmployerDetail, ResponseListCandidate, ResponseListJob } from 'models/response-api'
+import { ResponseEmployerDetail, ResponseListCandidate, ResponseListJob, ResponseDefault } from 'models/response-api'
 import moment from 'moment'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { slugURL } from 'utils/helper'
+import DefaultImage from 'assets/images/default-avatar.png'
 
 export const EmployerRecruitment: React.FC = () => {
   const [jobList, setJobList] = useState<JobPostingInfo[] | null>(null)
   const [candidateList, setCandidateList] = useState<CandidateInfo[] | null>(null)
   const userInfo = useRecoilValue(userInfoState)
+  const [currentJobId, setCurrentJobId] = useState<string>('')
+  const [currentCandidateId, setCurrentCandidateId] = useState<string>('')
   const [employerInfo, setEmployerInfo] = useState<EmployerInfo | null>(null)
-  const modalNotify = useRef<PrModalRefProps>(null)
+  const modalNotifyRef = useRef<PrModalRefProps>(null)
+  const modalAcceptCandidateRef = useRef<PrModalRefProps>(null)
+  const modalRejectCandidateRef = useRef<PrModalRefProps>(null)
   const modalListCandidateRef = useRef<PrModalRefProps>(null)
   const history = useHistory()
 
@@ -85,14 +90,9 @@ export const EmployerRecruitment: React.FC = () => {
       })
   }, [])
 
-  const callApiListCandidate = (listCandidate: string[]) => {
+  const callApiListCandidate = (ids: string, jobId: string) => {
     const accessToken = Cookies.get('token')
-    let ids = ''
-    for (let i = 0; i < listCandidate.length; i++) {
-      ids += listCandidate[i] + ','
-    }
-    ids = ids.substring(0, ids.length - 1)
-    const url = `${SERVER_URL}/candidate/informations=${ids}`
+    const url = `${SERVER_URL}/candidate/jobId=${jobId}/informations=${ids}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
@@ -105,8 +105,6 @@ export const EmployerRecruitment: React.FC = () => {
       data: undefined,
       timeout: 20000
     }
-
-    console.log('ducnh4', config)
 
     axios(config)
       .then((response: AxiosResponse<ResponseListCandidate>) => {
@@ -122,21 +120,129 @@ export const EmployerRecruitment: React.FC = () => {
       })
   }
 
-  const onShowListCandidate = (listCandidate: string[]) => {
-    callApiListCandidate(listCandidate)
+  const callApiAcceptCandidate = (jobId: string, cvId: string) => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/employer/accept-candidate`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      headers,
+      url,
+      data: {
+        jobId,
+        cvId
+      },
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseDefault>) => {
+        const { success, error, message } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        showNotify.success(message)
+        modalAcceptCandidateRef.current?.hide()
+        modalListCandidateRef.current?.hide()
+        callApiListJob()
+      })
+      .catch((e) => {
+        modalAcceptCandidateRef.current?.hide()
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  const callApiRejectCandidate = (jobId: string, cvId: string) => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/employer/reject-candidate`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      headers,
+      url,
+      data: {
+        jobId,
+        cvId
+      },
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseDefault>) => {
+        const { success, error, message } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        showNotify.success(message)
+        modalRejectCandidateRef.current?.hide()
+        modalListCandidateRef.current?.hide()
+        callApiListJob()
+      })
+      .catch((e) => {
+        modalRejectCandidateRef.current?.hide()
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  const onShowListCandidate = (listCandidate: { cvId: string; accept: boolean }[], jobId: string) => {
+    let listCvId = ''
+    for (let i = 0; i < listCandidate.length; i++) {
+      listCvId += listCandidate[i].cvId + ','
+    }
+    listCvId = listCvId.substring(0, listCvId.length - 1)
+    callApiListCandidate(listCvId, jobId)
+    setCurrentJobId(jobId)
     modalListCandidateRef.current?.show()
   }
 
   const onHideNotify = () => {
-    modalNotify.current?.hide()
+    modalNotifyRef.current?.hide()
   }
 
   const onCreateJobPosting = () => {
     if (!employerInfo?.companyId) {
-      modalNotify.current?.show()
+      modalNotifyRef.current?.show()
       return
     }
     history.push('/employer/create-job-postings')
+  }
+
+  const onShowAcceptCandidate = (cvId: string) => {
+    setCurrentCandidateId(cvId)
+    modalAcceptCandidateRef.current?.show()
+  }
+
+  const onShowRejectCandidate = (cvId: string) => {
+    setCurrentCandidateId(cvId)
+    modalRejectCandidateRef.current?.show()
+  }
+
+  const onAcceptCandidate = () => {
+    callApiAcceptCandidate(currentJobId, currentCandidateId)
+  }
+
+  const onReJectCandidate = () => {
+    callApiRejectCandidate(currentJobId, currentCandidateId)
+  }
+
+  const onHideAcceptCandidate = () => {
+    setCurrentCandidateId('')
+    modalAcceptCandidateRef.current?.hide()
+  }
+
+  const onHideRejectCandidate = () => {
+    setCurrentCandidateId('')
+    modalRejectCandidateRef.current?.hide()
   }
 
   useEffect(() => {
@@ -188,7 +294,7 @@ export const EmployerRecruitment: React.FC = () => {
                         </div>
                         {candidateApplied && candidateApplied?.length > 0 && (
                           <span
-                            onClick={() => onShowListCandidate(candidateApplied || [])}
+                            onClick={() => onShowListCandidate(candidateApplied || [], _id || '')}
                             className="block font-semibold text-red-500 cursor-pointer"
                           >
                             Xem danh sách ứng viên
@@ -250,7 +356,7 @@ export const EmployerRecruitment: React.FC = () => {
         </div>
       </div>
 
-      <PrModal title="Thông báo" disableFooter onHide={onHideNotify} ref={modalNotify}>
+      <PrModal title="Thông báo" disableFooter onHide={onHideNotify} ref={modalNotifyRef}>
         <div className="px-10 py-16">
           <span className="block text-xl font-semibold text-center">
             Để đăng tin tuyển dụng, hãy cập nhật thông tin về công ty của bạn
@@ -268,38 +374,106 @@ export const EmployerRecruitment: React.FC = () => {
 
       <PrModal
         title="Thông báo"
+        size="lg"
         disableFooter
-        onHide={() => modalListCandidateRef.current?.hide()}
+        onHide={() => {
+          setCurrentJobId('')
+          modalListCandidateRef.current?.hide()
+        }}
         ref={modalListCandidateRef}
       >
         <div className="px-5 py-10">
           <span className="block text-xl font-semibold text-center">Danh sách ứng viên ứng tuyển</span>
-          <div className="flex justify-center mt-10">
+          <span className="block text-center">
+            Bạn có thể xem hồ sơ ứng viên (Xem CV) rồi sau đó quyết định Chấp nhận hoặc Từ chối ứng viên
+          </span>
+          <div className="mt-10">
             {candidateList &&
               candidateList.length > 0 &&
               candidateList.map((item) => {
                 const { fullname, cvId, gender, avatar } = item
                 return (
-                  <div key={`candidate_${cvId}`} className="grid grid-cols-5 gap-x-8">
-                    <div className="col-span-1 px-2">
-                      <img src={avatar} alt="avatar" />
+                  <div
+                    key={`candidate_${cvId}`}
+                    className="grid grid-cols-7 gap-x-8 border-dashed border py-3 px-4 rounded bg-gray-100 mb-10"
+                  >
+                    <div className="col-span-1 px-3">
+                      <img src={avatar || DefaultImage} alt="avatar" className="w-10 h-10" />
                     </div>
-                    <div className="col-span-2">
-                      {fullname} {gender}
+                    <div className="col-span-2 flex items-center font-semibold">
+                      {fullname}
+                      {gender === 'MALE' ? (
+                        <i className="text-blue-500 fas fa-mars ml-2" />
+                      ) : (
+                        <i className="text-pink-500 fas fa-venus ml-2" />
+                      )}
                     </div>
-                    <a
-                      href={`/cv-public/${slugURL(fullname)}.${cvId}`}
-                      className="block col-span-1"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <div className="col-span-1 flex items-center">
+                      <a
+                        href={`/cv-public/${slugURL(fullname)}.${cvId}`}
+                        className="flex items-center bg-indigo-600 px-4 py-2 rounded"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="text-white fas fa-eye mr-2" />
+                        <span className="text-white">Xem CV</span>
+                      </a>
+                    </div>
+                    <div
+                      className="col-span-1 flex items-center cursor-pointer"
+                      onClick={() => onShowAcceptCandidate(cvId)}
                     >
-                      Xem CV
-                    </a>
-                    <div className="col-span-1">Hành động</div>
+                      <i className="text-green-500 fas fa-check-circle mr-2" />
+                      <span>Chấp nhận</span>
+                    </div>
+                    <div
+                      className="col-span-1 flex items-center cursor-pointer"
+                      onClick={() => onShowRejectCandidate(cvId)}
+                    >
+                      <i className="text-red-500 fas fa-times-circle mr-2" />
+                      <span>Từ chối</span>
+                    </div>
                   </div>
                 )
               })}
           </div>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Chấp nhận ứng viên"
+        okTitle="Chấp nhận"
+        cancelTitle="Hủy"
+        onHide={onHideAcceptCandidate}
+        onChange={onAcceptCandidate}
+        ref={modalAcceptCandidateRef}
+      >
+        <div className="px-10 py-16">
+          <span className="block text-xl font-semibold text-center">
+            Xác nhận <span className="text-green-600 font-semibold">Chấp nhận</span> ứng viên này ứng tuyển ?
+          </span>
+          <span className="block mt-5">
+            - Sau khi xác nhận, một email sẽ được gửi tới ứng viên thông báo rằng họ đã được nhà tuyển dụng lựa chọn.
+            <br />- Thông tin ứng viên sẽ được chuyển tới mục Quản lý ứng viên trong Bảng điều khiển
+          </span>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Từ chối ứng viên"
+        okTitle="Từ chối"
+        cancelTitle="Hủy"
+        onChange={onReJectCandidate}
+        onHide={onHideRejectCandidate}
+        ref={modalRejectCandidateRef}
+      >
+        <div className="px-10 py-16">
+          <span className="block text-xl font-semibold text-center">
+            Xác nhận <span className="text-red-500 font-semibold">Từ chối</span> ứng viên này ứng tuyển ?
+          </span>
+          <span className="block mt-5">
+            - Sau khi xác nhận, ứng viên sẽ nhận được Email thông báo họ chưa đủ yêu cầu của nhà tuyển dụng
+          </span>
         </div>
       </PrModal>
     </div>
