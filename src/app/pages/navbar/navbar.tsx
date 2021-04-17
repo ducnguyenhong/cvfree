@@ -10,8 +10,16 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { languageState } from 'app/states/language-state'
 import { showNotify } from '../../partials/pr-notify/pr-notify'
 
+interface DialogListType {
+  route: string
+  title: string
+  icon: string
+  isActive: boolean
+}
+
 const NavbarHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
+  const userType = userInfo?.type || ''
   const intl = useIntl()
   const languageRef = useRef<HTMLDivElement>(null)
   const dialogUserRef = useRef<HTMLDivElement>(null)
@@ -20,6 +28,39 @@ const NavbarHome: React.FC = () => {
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
   const [language, setLanguage] = useRecoilState(languageState)
+
+  const DialogList: DialogListType[] = [
+    {
+      route: '/profile',
+      title: 'Thông tin cá nhân',
+      icon: 'fas fa-info-circle',
+      isActive: !!['ADMIN', 'EMPLOYER', 'USER'].includes(userType)
+    },
+    {
+      route: '/manage-cv',
+      title: 'Quản lý CV',
+      icon: 'fas fa-paste',
+      isActive: !!['USER'].includes(userType)
+    },
+    {
+      route: '/manage-apply',
+      title: 'Quản lý ứng tuyển',
+      icon: 'fas fa-briefcase',
+      isActive: !!['USER'].includes(userType)
+    },
+    {
+      route: '/employer',
+      title: 'Bảng điều khiển',
+      icon: 'fas fa-tasks',
+      isActive: !!['EMPLOYER'].includes(userType)
+    },
+    {
+      route: '/dashboard',
+      title: 'Bảng điều khiển',
+      icon: 'fas fa-tasks',
+      isActive: !!['ADMIN'].includes(userType)
+    }
+  ]
 
   const helloName = userInfo?.fullname
     ? userInfo.fullname.split(' ')[userInfo.fullname.split.length - 1]
@@ -255,21 +296,25 @@ const NavbarHome: React.FC = () => {
                             </div>
                           </div>
                         </div>
-                        <Link
-                          to="/profile"
-                          className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                        >
-                          <i className="fas fa-info-circle mr-2"></i>
-                          <span className="text-md">Your Profile</span>
-                        </Link>
-                        <Link
-                          to="/manage-cv"
-                          className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                          onClick={() => setShowUserDialog(false)}
-                        >
-                          <i className="fas fa-paste mr-2"></i>
-                          <span className="text-md">Quản lý CV</span>
-                        </Link>
+                        {DialogList &&
+                          DialogList.length > 0 &&
+                          DialogList.map((item) => {
+                            const { route, title, icon, isActive } = item
+                            if (!isActive) {
+                              return null
+                            }
+                            return (
+                              <Link
+                                onClick={() => setShowUserDialog(false)}
+                                key={route}
+                                to={route}
+                                className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                              >
+                                <i className={`${icon} mr-2`}></i>
+                                <span className="text-md">{title}</span>
+                              </Link>
+                            )
+                          })}
                         <div className="px-6 mb-4 mt-3">
                           <Button type="danger" onClick={onSignOut}>
                             <i className="fas fa-sign-out-alt mr-2"></i>

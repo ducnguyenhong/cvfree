@@ -5,21 +5,20 @@ import { Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
 import { languageState } from 'app/states/language-state'
-// import { LoadingPage } from 'app/partials/layout/loading'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
 const LoadingPage = lazy(() => import('app/partials/layout/loading'))
-const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 const PublicRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
-  const setUserInfoRecoil = useSetRecoilState(userInfoState)
+  const [userInfoRecoil, setUserInfoRecoil] = useRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
+  const userType = userInfoRecoil?.type || ''
 
   useEffect(() => {
     if (!token) {
@@ -31,7 +30,10 @@ const PublicRoute: React.FC = () => {
   return (
     <Switch>
       {PUBLIC_ROUTES.map((props, index) => {
-        const { path, component, exact } = props
+        const { path, component, exact, role } = props
+        if (!role.includes(userType)) {
+          return <Route path="/404" exact component={ErrorPage} />
+        }
         return <Route key={`public_${index}`} path={path} component={component} exact={exact} />
       })}
       {!token ? <Route path="/sign-in" exact component={SignInPage} /> : <Redirect to="/" />}
@@ -44,6 +46,8 @@ const PublicRoute: React.FC = () => {
 
 const PrivateRoute: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
+  const userInfoRecoil = useRecoilValue(userInfoState)
+  const userType = userInfoRecoil?.type || ''
 
   if (!token) {
     return <Redirect to="/sign-in" />
@@ -52,7 +56,10 @@ const PrivateRoute: React.FC = () => {
   return (
     <Switch>
       {PRIVATE_ROUTES.map((props, index) => {
-        const { path, component, exact } = props
+        const { path, component, exact, role } = props
+        if (!role.includes(userType)) {
+          return <Route path="/404" exact component={ErrorPage} />
+        }
         return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
       })}
       {/* <Redirect to="/" /> */}

@@ -17,7 +17,7 @@ export interface UserInfo {
   fullname?: string
   gender?: string
   id?: number
-  companyId?: number
+  companyId?: string
   phone?: string
   status: string
   type: string

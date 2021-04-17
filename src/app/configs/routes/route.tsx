@@ -11,6 +11,7 @@ const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
 
 const CandidateDetail = lazy(() => import('app/pages/candidate/candidate-detail'))
+const CandidateManageApply = lazy(() => import('app/pages/candidate/candidate-manage-apply'))
 
 const EmployerDashboard = lazy(() => import('app/pages/employer/employer-dashboard'))
 const EmployerIntro = lazy(() => import('app/pages/employer/employer-intro'))
@@ -216,6 +217,12 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: CandidateDetail,
     exact: true,
     role: ['ADMIN', 'EMPLOYER']
+  },
+  {
+    path: '/manage-apply',
+    component: CandidateManageApply,
+    exact: true,
+    role: ['ADMIN', 'USER']
   },
 
   // Jobs

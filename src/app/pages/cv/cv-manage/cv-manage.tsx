@@ -3,7 +3,6 @@ import { CvInfo } from 'models/cv-info'
 import moment from 'moment'
 import { slugURL, getDefaultAvatar } from 'utils/helper'
 import { Link } from 'react-router-dom'
-import { RadioButton } from 'app/partials/layout/radio-button'
 import { SERVER_URL } from 'constants/index'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ResponseListCV, ResponseDelete } from 'models/response-api'
@@ -239,19 +238,6 @@ export const CvManage: React.FC = () => {
                 <span className="bg-green-600 px-3 py-1 text-sm font-medium cursor-pointer rounded text-white">
                   Nâng cấp
                 </span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-16">
-            <span className="block uppercase text-xl font-semibold text-gray-700">Tùy chọn cho phép</span>
-            <div className="mt-5 px-4">
-              <div className="flex items-center">
-                <RadioButton />
-                <span className="block ml-3 font-medium">NTD xem CV của bạn</span>
-              </div>
-              <div className="flex items-center mt-4">
-                <RadioButton />
-                <span className="block ml-3 font-medium">Trạng thái tìm việc</span>
               </div>
             </div>
           </div>

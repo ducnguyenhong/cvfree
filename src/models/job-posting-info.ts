@@ -2,7 +2,7 @@ export interface JobPostingInfo {
   _id?: string
   name: string
   isApplied?: boolean
-  companyId?: number
+  companyId?: string
   companyName?: string
   companyLogo?: string
   candidateApplied?: {
