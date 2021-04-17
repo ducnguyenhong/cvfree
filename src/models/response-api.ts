@@ -30,6 +30,10 @@ export interface ResponseListJob {
   success: boolean
   data: {
     items: JobPostingInfo[]
+    page: number
+    size: number
+    totalItems: number
+    totalPages: number
   }
   code: number
   error?: { message: string }

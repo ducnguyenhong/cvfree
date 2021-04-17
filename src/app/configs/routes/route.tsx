@@ -15,7 +15,6 @@ const CandidateDetail = lazy(() => import('app/pages/candidate/candidate-detail'
 const EmployerDashboard = lazy(() => import('app/pages/employer/employer-dashboard'))
 const EmployerIntro = lazy(() => import('app/pages/employer/employer-intro'))
 const EmployerSignUp = lazy(() => import('app/pages/employer/employer-sign-up'))
-const EmployerSignIn = lazy(() => import('app/pages/employer/employer-sign-in'))
 const EmployerCompanyInfo = lazy(() => import('app/pages/employer/employer-company-info'))
 const EmployerLookingForCandidates = lazy(() => import('app/pages/employer/employer-looking-for-candidates'))
 const EmployerRecruitment = lazy(() => import('app/pages/employer/employer-recruitment'))
@@ -34,6 +33,7 @@ interface RouteType {
   path: string
   component: LazyExoticComponent<React.FC>
   exact: boolean
+  role: string[]
 }
 
 export const PUBLIC_ROUTES: RouteType[] = [
@@ -41,71 +41,85 @@ export const PUBLIC_ROUTES: RouteType[] = [
   {
     path: '/',
     component: Home,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
   // error
   {
     path: '/error',
     component: ErrorComponent,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
   // auth
   {
     path: '/sign-up',
     component: SignUp,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/verify-account/:id',
     component: VerifyAccount,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/forgot-password',
     component: ForgotPassword,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
   {
     path: '/template-cv',
     component: CvTemplateList,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/cv-public/:name.:id',
     component: CvDetail,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
   // Employer
   {
     path: '/employer/sign-up',
     component: EmployerSignUp,
-    exact: true
-  },
-  {
-    path: '/employer/sign-in',
-    component: EmployerSignIn,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer-intro',
     component: EmployerIntro,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
 
   // Job
   {
     path: '/jobs',
     component: JobsListGeneral,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
+  },
+
+  // Company
+  {
+    path: '/employer/company/:id',
+    component: EmployerCompanyInfo,
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   }
 ]
 
@@ -114,76 +128,94 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/',
     component: Home,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
+
+  // error
   {
     path: '/error',
     component: ErrorComponent,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
+
+  // cv
   {
     path: '/template-cv',
     component: CvTemplateList,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER']
   },
   {
     path: '/cv-public/:name.:id',
     component: CvDetail,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
   //employer
   {
     path: '/employer',
     component: EmployerDashboard,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/publish-recruitment',
     component: EmployerRecruitment,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/manage-candidate',
     component: EmployerManageCandidate,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/looking-for-candidates',
     component: EmployerLookingForCandidates,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
-    path: '/employer/company-info',
+    path: '/employer/company/:id',
     component: EmployerCompanyInfo,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/employer/create-job-postings',
     component: EmployerCreateJobPostings,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/payment',
     component: EmployerPayment,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/info',
     component: EmployerInfo,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
   {
     path: '/employer/register-company',
     component: EmployerRegisterCompany,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
 
   // candidate
   {
     path: '/candidate/:id',
     component: CandidateDetail,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   },
 
   // Jobs
@@ -191,28 +223,33 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/jobs',
     component: JobsListGeneral,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   //
 
   {
     path: '/create-cv',
     component: CvForm,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER']
   },
   {
     path: '/update-cv/:name.:id',
     component: CvForm,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER']
   },
   {
     path: '/manage-cv',
     component: CvManage,
-    exact: true
+    exact: true,
+    role: ['ADMIN', 'USER']
   }
 ]

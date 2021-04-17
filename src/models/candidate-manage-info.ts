@@ -4,4 +4,6 @@ export interface CandidateManageInfo {
   cvId: string
   candidateFullname: string
   isDone: boolean
+  createdAt: Date
+  candidateId: string
 }
