@@ -28,4 +28,6 @@ export interface UserInfo {
   typeAccount?: string
   numberOfPosting?: number
   numberOfCandidateOpening?: number
+  createdAt?: Date
+  updatedAt?: Date
 }

@@ -9,7 +9,7 @@ export const EmployerDashboard: React.FC = () => {
   return (
     <div className="py-32 w-2/3 mx-auto">
       <BreadCrumb title="Bảng điều khiển" />
-      <div className="grid grid-cols-4 gap-16 mt-10">
+      <div className="grid grid-cols-4 gap-16 mt-40">
         <Link
           to="employer/publish-recruitment"
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
@@ -31,20 +31,13 @@ export const EmployerDashboard: React.FC = () => {
           <span className="uppercase text-md font-bold block text-center text-gray-600">Quản lý CV ứng viên</span>
           <i className="fas fa-users text-5xl block text-center mt-10 text-gray-500"></i>
         </Link>
-        <Link
+        {/* <Link
           to="employer/payment"
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
         >
           <span className="uppercase text-md font-bold block text-center text-gray-600">Nạp thẻ/Thanh toán</span>
           <i className="fas fa-coins text-5xl block text-center mt-10 text-gray-500"></i>
-        </Link>
-        <Link
-          to="employer/info"
-          className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
-        >
-          <span className="uppercase text-md font-bold block text-center text-gray-600">Thông tin cá nhân</span>
-          <i className="fas fa-user-circle text-5xl block text-center mt-10 text-gray-500"></i>
-        </Link>
+        </Link> */}
 
         <Link
           to={`employer/company/${userInfo?.companyId}`}

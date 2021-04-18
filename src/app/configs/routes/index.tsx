@@ -7,8 +7,9 @@ import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
-import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
+import { DASHBOARD_ROUTES, PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
 import { languageState } from 'app/states/language-state'
+import { DashboardLayout } from 'app/pages/dashboard/layout/dashboard-layout'
 
 const ErrorPage = lazy(() => import('app/pages/error'))
 const SignInPage = lazy(() => import('app/pages/auth/sign-in'))
@@ -29,12 +30,12 @@ const PublicRoute: React.FC = () => {
 
   return (
     <Switch>
-      {PUBLIC_ROUTES.map((props, index) => {
-        const { path, component, exact, role } = props
+      {PUBLIC_ROUTES.map((item) => {
+        const { path, component, exact, role } = item
         if (!role.includes(userType)) {
           return <Route path="/404" exact component={ErrorPage} />
         }
-        return <Route key={`public_${index}`} path={path} component={component} exact={exact} />
+        return <Route key={`public_${path}`} path={path} component={component} exact={exact} />
       })}
       {!token ? <Route path="/sign-in" exact component={SignInPage} /> : <Redirect to="/" />}
       <Route path="/404" exact component={ErrorPage} />
@@ -55,12 +56,13 @@ const PrivateRoute: React.FC = () => {
 
   return (
     <Switch>
-      {PRIVATE_ROUTES.map((props, index) => {
-        const { path, component, exact, role } = props
+      {PRIVATE_ROUTES.map((item) => {
+        const { path, component, exact, role } = item
         if (!role.includes(userType)) {
           return <Route path="/404" exact component={ErrorPage} />
         }
-        return <Route key={`private_${index}`} path={path} component={component} exact={exact} />
+
+        return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
       })}
       {/* <Redirect to="/" /> */}
       <Route path="/404" exact component={ErrorPage} />
@@ -69,11 +71,48 @@ const PrivateRoute: React.FC = () => {
   )
 }
 
+const DashboardRoute: React.FC = () => {
+  const token = useRecoilValue(userTokenState)?.token
+  const userInfoRecoil = useRecoilValue(userInfoState)
+  const userType = userInfoRecoil?.type || ''
+
+  if (!token) {
+    return <Redirect to="/sign-in" />
+  }
+
+  return (
+    <DashboardLayout>
+      <Switch>
+        {DASHBOARD_ROUTES.map((item) => {
+          const { path, component, exact, role } = item
+          if (!role.includes(userType)) {
+            return <Route path="/404" exact component={ErrorPage} />
+          }
+          return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
+        })}
+        {/* <Redirect to="/" /> */}
+        <Route path="/404" exact component={ErrorPage} />
+        <Redirect to="/404" />
+      </Switch>
+    </DashboardLayout>
+  )
+}
+
 const SwitchRenderer: React.FC = () => {
   const token = useRecoilValue(userTokenState)?.token
+  const userInfoRecoil = useRecoilValue(userInfoState)
+  const userType = userInfoRecoil?.type || ''
+
+  const renderPrivateRoute = () => {
+    if (userType === 'ADMIN') {
+      return <DashboardRoute />
+    }
+    return <PrivateRoute />
+  }
+
   return (
     <MainRouteWrapper>
-      <Switch>{token ? <PrivateRoute /> : <PublicRoute />}</Switch>
+      <Switch>{token ? <>{renderPrivateRoute()}</> : <PublicRoute />}</Switch>
     </MainRouteWrapper>
   )
 }

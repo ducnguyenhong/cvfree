@@ -6,6 +6,7 @@ const VerifyAccount = lazy(() => import('app/pages/auth/verify'))
 
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
+const Profile = lazy(() => import('app/pages/profile'))
 
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
@@ -22,13 +23,15 @@ const EmployerRecruitment = lazy(() => import('app/pages/employer/employer-recru
 const EmployerCreateJobPostings = lazy(() => import('app/pages/employer/employer-create-job-postings'))
 const EmployerManageCandidate = lazy(() => import('app/pages/employer/employer-manage-candidate'))
 const EmployerPayment = lazy(() => import('app/pages/employer/employer-payment'))
-const EmployerInfo = lazy(() => import('app/pages/employer/employer-info'))
 const EmployerRegisterCompany = lazy(() => import('app/pages/employer/employer-register-company'))
 
 const CvForm = lazy(() => import('app/pages/cv/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
 const CvManage = lazy(() => import('app/pages/cv/cv-manage'))
 const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
+
+const Dashboard = lazy(() => import('app/pages/dashboard/pages/dashboard'))
+const AllUserList = lazy(() => import('app/pages/dashboard/pages/user/all-user'))
 
 interface RouteType {
   path: string
@@ -133,6 +136,14 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: ['ADMIN', 'USER', 'EMPLOYER']
   },
 
+  // profile
+  {
+    path: '/profile',
+    component: Profile,
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
+  },
+
   // error
   {
     path: '/error',
@@ -199,12 +210,6 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: ['ADMIN', 'EMPLOYER']
   },
   {
-    path: '/employer/info',
-    component: EmployerInfo,
-    exact: true,
-    role: ['ADMIN', 'EMPLOYER']
-  },
-  {
     path: '/employer/register-company',
     component: EmployerRegisterCompany,
     exact: true,
@@ -258,5 +263,20 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: CvManage,
     exact: true,
     role: ['ADMIN', 'USER']
+  }
+]
+
+export const DASHBOARD_ROUTES: RouteType[] = [
+  {
+    path: '/dashboard',
+    component: Dashboard,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/users',
+    component: AllUserList,
+    exact: true,
+    role: ['ADMIN']
   }
 ]

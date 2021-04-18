@@ -196,6 +196,9 @@ export const EmployerCompanyInfo: React.FC = () => {
           <span className="block uppercase text-xl font-bold mt-10">2. Việc làm tuyển dụng</span>
           <MemoJobList listJob={listJob} />
         </div>
+        <div className="text-center my-10">
+          <span className="px-4 py-2 rounded text-white bg-blue-500">Gửi yêu cầu chỉnh sửa thông tin</span>
+        </div>
       </div>
     </div>
   )
