@@ -32,6 +32,7 @@ const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 const Dashboard = lazy(() => import('app/pages/dashboard/pages/dashboard'))
 const AllUserList = lazy(() => import('app/pages/dashboard/pages/user/all-user'))
+const CandidateList = lazy(() => import('app/pages/dashboard/pages/user/candidate'))
 
 interface RouteType {
   path: string
@@ -278,5 +279,13 @@ export const DASHBOARD_ROUTES: RouteType[] = [
     component: AllUserList,
     exact: true,
     role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/candidates',
+    component: CandidateList,
+    exact: true,
+    role: ['ADMIN']
   }
+  // ...PRIVATE_ROUTES,
+  // ...PUBLIC_ROUTES
 ]

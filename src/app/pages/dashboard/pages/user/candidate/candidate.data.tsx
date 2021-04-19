@@ -4,7 +4,7 @@ import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './all-user.action'
+import { Action } from './candidate.action'
 import { UserInfo } from 'models/user-info'
 import { BasicUserInfo, Email, Phone, DateTime, Status, Active, TableLink } from 'app/partials/table-columns'
 
@@ -20,7 +20,6 @@ export const Columns: ColumnsProps[] = [
   { enable: true, field: 'birthday', title: 'Ngày sinh' },
   { enable: true, field: 'email', title: 'Email' },
   { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'type', title: 'Loại' },
   { enable: true, field: 'verify', title: 'Xác thực' },
   { enable: true, field: 'status', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày tạo' },
@@ -42,13 +41,12 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       params: {
         page: input.page,
         size: input.size,
-        ...input.filter
+        type: 'USER'
       }
     })
 
     const { success, data, error } = response.data
-    const { items, pagination } = data
-    const { page, size, totalItems, totalPages } = pagination
+    const { items, page, size, totalItems, totalPages } = data
 
     if (!success) {
       showNotify.error(error.message)
@@ -103,9 +101,6 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
       case 'phone':
         return phone ? <Phone phone={phone} /> : <span className="text-gray-300">N/A</span>
-
-      case 'type':
-        return <span>{type}</span>
 
       case 'verify':
         return <Active active={verify} />

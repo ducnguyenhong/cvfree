@@ -62,7 +62,7 @@ export const EmployerRecruitment: React.FC = () => {
 
   const callApiListJob = useCallback(() => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/jobs`
+    const url = `${SERVER_URL}/jobs/employer/${userInfo?._id}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`

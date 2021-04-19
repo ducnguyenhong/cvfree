@@ -105,7 +105,27 @@ const SwitchRenderer: React.FC = () => {
 
   const renderPrivateRoute = () => {
     if (userType === 'ADMIN') {
-      return <DashboardRoute />
+      return (
+        <Switch>
+          {PRIVATE_ROUTES.map((item) => {
+            const { path, component, exact, role } = item
+            if (!role.includes(userType)) {
+              return <Route path="/404" exact component={ErrorPage} />
+            }
+
+            return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
+          })}
+
+          {PUBLIC_ROUTES.map((item) => {
+            const { path, component, exact, role } = item
+            if (!role.includes(userType)) {
+              return <Route path="/404" exact component={ErrorPage} />
+            }
+            return <Route key={`public_${path}`} path={path} component={component} exact={exact} />
+          })}
+          <DashboardRoute />
+        </Switch>
+      )
     }
     return <PrivateRoute />
   }

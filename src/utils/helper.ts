@@ -203,3 +203,59 @@ export const getDefaultLabelDropdown = (DataDefault: DropdownProps[], dataValue:
   labelCareer = labelCareer.substring(0, labelCareer.length - 2)
   return labelCareer
 }
+
+export const getDefaultFilter = (
+  dataOption: OptionProps[],
+  paramKey: string,
+  isMulti?: boolean
+): OptionProps | OptionProps[] | undefined => {
+  let valueParsed = ''
+  let defaultLabel = ''
+  const parsed = queryString.parse(window.location.search)
+
+  for (const [key, value] of Object.entries(parsed)) {
+    if (key === paramKey) {
+      valueParsed = `${value}`
+    }
+  }
+
+  if (isMulti && valueParsed) {
+    const defaultFilter: OptionProps[] = []
+    const arrayValue = valueParsed.split(',')
+    for (let i = 0; i < dataOption.length; i++) {
+      for (let j = 0; j < dataOption.length; j++) {
+        if (arrayValue[i] === dataOption[j].value) {
+          defaultFilter.push(dataOption[i])
+        }
+      }
+    }
+    return defaultFilter.length === 0 ? undefined : defaultFilter
+  }
+
+  if (valueParsed) {
+    for (let i = 0; i < dataOption.length; i++) {
+      if (dataOption[i].value === valueParsed) {
+        defaultLabel = dataOption[i].label
+      }
+    }
+  }
+
+  return defaultLabel
+    ? {
+        value: valueParsed,
+        label: defaultLabel
+      }
+    : undefined
+}
+
+export const getDefaultSearch = (paramKey: string): string => {
+  let valueParsed = ''
+  const parsed = queryString.parse(window.location.search)
+
+  for (const [key, value] of Object.entries(parsed)) {
+    if (key === paramKey) {
+      valueParsed = `${value || ''}`
+    }
+  }
+  return valueParsed
+}

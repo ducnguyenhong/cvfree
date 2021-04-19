@@ -71,7 +71,8 @@ export const EmployerCompanyInfo: React.FC = () => {
     axios(config)
       .then((response: AxiosResponse<ResponseListJob>) => {
         const { success, data, error } = response.data
-        const { items, page, size, totalItems, totalPages } = data
+        const { items, pagination } = data
+        const { page, size, totalItems, totalPages } = pagination
 
         if (!success) {
           throw Error(error?.message)
