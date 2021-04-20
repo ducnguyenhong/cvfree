@@ -33,7 +33,7 @@ const PublicRoute: React.FC = () => {
       {PUBLIC_ROUTES.map((item) => {
         const { path, component, exact, role } = item
         if (!role.includes(userType)) {
-          return <Route path="/404" exact component={ErrorPage} />
+          return <Route path="/404" exact component={ErrorPage} key={`public_${path}`} />
         }
         return <Route key={`public_${path}`} path={path} component={component} exact={exact} />
       })}
@@ -59,7 +59,7 @@ const PrivateRoute: React.FC = () => {
       {PRIVATE_ROUTES.map((item) => {
         const { path, component, exact, role } = item
         if (!role.includes(userType)) {
-          return <Route path="/404" exact component={ErrorPage} />
+          return <Route key={`private_${path}`} path="/404" exact component={ErrorPage} />
         }
 
         return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
@@ -110,7 +110,7 @@ const SwitchRenderer: React.FC = () => {
           {PRIVATE_ROUTES.map((item) => {
             const { path, component, exact, role } = item
             if (!role.includes(userType)) {
-              return <Route path="/404" exact component={ErrorPage} />
+              return <Route path="/404" exact component={ErrorPage} key={`private_${path}`} />
             }
 
             return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
@@ -119,7 +119,7 @@ const SwitchRenderer: React.FC = () => {
           {PUBLIC_ROUTES.map((item) => {
             const { path, component, exact, role } = item
             if (!role.includes(userType)) {
-              return <Route path="/404" exact component={ErrorPage} />
+              return <Route key={`public_${path}`} path="/404" exact component={ErrorPage} />
             }
             return <Route key={`public_${path}`} path={path} component={component} exact={exact} />
           })}

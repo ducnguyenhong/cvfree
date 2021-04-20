@@ -35,7 +35,7 @@ export const CvManage: React.FC = () => {
 
   const callApiListCv = useCallback(() => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/cvs/my-cvs`
+    const url = `${SERVER_URL}/cvs/my-cvs/${userInfo?._id}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`

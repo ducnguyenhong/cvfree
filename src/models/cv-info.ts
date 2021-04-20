@@ -2,7 +2,7 @@ export interface CvInfo {
   _id?: string
   id?: number
   status?: string
-  userId: number
+  userId: string
   color: string
   template: string
   fontSize: string

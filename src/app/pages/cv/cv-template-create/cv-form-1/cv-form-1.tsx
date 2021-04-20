@@ -286,7 +286,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
     }
 
     const dataCV: CvInfo = {
-      userId: userInfo?.id || 0,
+      userId: userInfo?._id || '0',
       color,
       status: 'ACTIVE',
       template: '1',
