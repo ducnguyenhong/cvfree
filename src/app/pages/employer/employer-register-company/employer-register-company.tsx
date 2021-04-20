@@ -38,6 +38,7 @@ export const EmployerRegisterCompany: React.FC = () => {
   // ref
   const nameRef = useRef<PrInputRefProps>(null)
   const emailRef = useRef<PrInputRefProps>(null)
+  const phoneRef = useRef<PrInputRefProps>(null)
   const websiteRef = useRef<PrInputRefProps>(null)
   const taxCodeRef = useRef<PrInputRefProps>(null)
   const streetRef = useRef<PrInputRefProps>(null)
@@ -45,7 +46,7 @@ export const EmployerRegisterCompany: React.FC = () => {
   const introRef = useRef<PrInputRefProps>(null)
 
   const callApiRegister = (data: CompanyInfo) => {
-    const url = `${SERVER_URL}/company`
+    const url = `${SERVER_URL}/companies`
 
     const accessToken = Cookies.get('token')
     const headers = {
@@ -93,6 +94,7 @@ export const EmployerRegisterCompany: React.FC = () => {
       background: backgroundUrl,
       name: nameRef.current?.getValue() ?? '',
       email: emailRef.current?.getValue() ?? '',
+      phone: phoneRef.current?.getValue() ?? '',
       website: websiteRef.current?.getValue(),
       address: {
         value: {
@@ -134,7 +136,10 @@ export const EmployerRegisterCompany: React.FC = () => {
           <PrInput label="Mã số thuế" icon="fas fa-cog" ref={taxCodeRef} />
         </div>
         <div className="mt-8">
-          <PrInput label="Email tuyển dụng của công ty" icon="fas fa-envelope" required ref={emailRef} />
+          <PrInput label="Số điện thoại của công ty" icon="fas fa-envelope" required ref={phoneRef} />
+        </div>
+        <div className="mt-8">
+          <PrInput label="Email của công ty" icon="fas fa-envelope" required ref={emailRef} />
         </div>
         <div className="mt-8 grid grid-cols-5 gap-x-20">
           <div className="col-span-2">

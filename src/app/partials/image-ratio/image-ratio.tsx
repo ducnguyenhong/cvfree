@@ -1,8 +1,7 @@
-import DefaultImage from 'assets/images/img-default-job.png'
 import styled from 'styled-components'
 
 interface Props {
-  src?: string | null
+  src: string
   alt?: string
   style?: React.CSSProperties
   styleDiv?: React.CSSProperties
@@ -31,11 +30,11 @@ const StyleComponent = styled.div`
   }
 `
 
-export const ImageJob: React.FC<Props> = (props) => {
+export const ImageRatio: React.FC<Props> = (props) => {
   const { src, alt, style, className, styleDiv, classNameDiv } = props
   return (
     <StyleComponent style={{ ...styleDiv }} className={classNameDiv}>
-      <img className={className} src={src || DefaultImage} style={{ ...style }} alt={alt || 'image job'} />
+      <img className={className} src={src} style={{ ...style }} alt={alt || 'image job'} />
     </StyleComponent>
   )
 }

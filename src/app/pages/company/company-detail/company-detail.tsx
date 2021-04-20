@@ -23,7 +23,7 @@ export const CompanyDetail: React.FC = () => {
 
   const callApiCompanyInfo = () => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/company/${companyId}`
+    const url = `${SERVER_URL}/companies/${companyId}`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
@@ -53,7 +53,7 @@ export const CompanyDetail: React.FC = () => {
 
   const callApiListJob = (companyId: string) => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/company/${companyId}/jobs`
+    const url = `${SERVER_URL}/companies/${companyId}/jobs`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`

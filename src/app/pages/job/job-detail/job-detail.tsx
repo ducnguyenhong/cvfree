@@ -123,8 +123,7 @@ export const JobDetail: React.FC = () => {
     requirementForCandidate,
     benefitToEnjoy,
     isApplied,
-    companyName,
-    companyLogo
+    company
   } = jobInfo
 
   const onShowApplyJob = () => {
@@ -164,11 +163,11 @@ export const JobDetail: React.FC = () => {
       <div className="shadow bg-blue-50 px-8 py-10 mt-10">
         <div className="grid grid-cols-5 mt-10 gap-x-10">
           <div className="col-span-1 px-4">
-            <img src={companyLogo} alt="logo" />
+            <img src={company?.logo} alt="logo" />
           </div>
           <div className="col-span-4">
             <span className="font-semibold uppercase text-lg block">{name}</span>
-            <span className="block">{companyName}</span>
+            <span className="block">{company?.name}</span>
             <span className="block">{address?.label}</span>
           </div>
         </div>

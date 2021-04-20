@@ -4,11 +4,11 @@ import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './all-user.action'
-import { UserInfo } from 'models/user-info'
-import { BasicUserInfo, Email, Phone, DateTime, Status, Active, TableLink } from 'app/partials/table-columns'
+import { Action } from './company.action'
+import { CompanyInfo } from 'models/company-info'
+import { BasicCompanyInfo, Email, Phone, DateTime, Status, Active, TableLink } from 'app/partials/table-columns'
 
-export interface TableColumn extends UserInfo {
+export interface TableColumn extends CompanyInfo {
   action?: string
 }
 
@@ -16,12 +16,12 @@ export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
   { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'fullname', title: 'Họ và tên' },
-  { enable: true, field: 'birthday', title: 'Ngày sinh' },
+  { enable: true, field: 'name', title: 'Tên' },
+  { enable: true, field: 'taxCode', title: 'Mã số thuế' },
   { enable: true, field: 'email', title: 'Email' },
   { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'type', title: 'Loại' },
-  { enable: true, field: 'verify', title: 'Xác thực' },
+  { enable: true, field: 'address', title: 'Địa chỉ' },
+  { enable: true, field: 'personnelSize', title: 'Quy mô' },
   { enable: true, field: 'status', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày tạo' },
   { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
@@ -29,7 +29,7 @@ export const Columns: ColumnsProps[] = [
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/users`,
+  url: `${SERVER_URL}/companies`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -41,8 +41,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       url: input.url,
       params: {
         page: input.page,
-        size: input.size,
-        ...input.filter
+        size: input.size
       }
     })
 
@@ -55,7 +54,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       throw Error(error.message)
     }
 
-    const result: Pagination<UserInfo> = {
+    const result: Pagination<CompanyInfo> = {
       data: items,
       pagination: {
         currentPage: page,
@@ -74,41 +73,40 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     const {
       status,
-      fullname,
-      birthday,
-      gender,
+      name,
+      taxCode,
+      logo,
       email,
+      website,
       phone,
-      username,
+      personnelSize,
       id,
-      type,
       createdAt,
       updatedAt,
-      verify,
-      avatar
+      address
     } = data
 
     switch (field) {
       case 'id':
-        return <TableLink to={`/dashboard/users/${id}`} title={id} className="font-semibold" />
+        return <TableLink to={`/dashboard/companies/${id}`} title={id} className="font-semibold" />
 
-      case 'fullname':
-        return <BasicUserInfo id={id} avatar={avatar} name={fullname} username={username} gender={gender} />
+      case 'name':
+        return <BasicCompanyInfo id={id} logo={logo} name={name} website={website} />
 
-      case 'birthday':
-        return birthday ? <DateTime timestamp={birthday} /> : <span className="text-gray-300">N/A</span>
+      case 'taxCode':
+        return <span>{taxCode}</span>
 
       case 'email':
         return <Email email={email} />
 
       case 'phone':
-        return phone ? <Phone phone={phone} /> : <span className="text-gray-300">N/A</span>
+        return <Phone phone={phone} />
 
-      case 'type':
-        return <span>{type}</span>
+      case 'address':
+        return <span className="whitespace-nowrap">{address && address.label}</span>
 
-      case 'verify':
-        return <Active active={verify} />
+      case 'personnelSize':
+        return <span className="whitespace-nowrap">{personnelSize}</span>
 
       case 'status':
         return <Status status={status} />

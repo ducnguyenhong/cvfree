@@ -35,6 +35,10 @@ const CompanyDetail = lazy(() => import('app/pages/company/company-detail'))
 const Dashboard = lazy(() => import('app/pages/dashboard/pages/dashboard'))
 const AllUserList = lazy(() => import('app/pages/dashboard/pages/user/all-user'))
 const CandidateList = lazy(() => import('app/pages/dashboard/pages/user/candidate'))
+const EmployerList = lazy(() => import('app/pages/dashboard/pages/user/employer'))
+const CompanyList = lazy(() => import('app/pages/dashboard/pages/company'))
+const JobList = lazy(() => import('app/pages/dashboard/pages/job'))
+const CvList = lazy(() => import('app/pages/dashboard/pages/cv'))
 
 interface RouteType {
   path: string
@@ -299,6 +303,30 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/candidates',
     component: CandidateList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/employers',
+    component: EmployerList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/companies',
+    component: CompanyList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/jobs',
+    component: JobList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/cvs',
+    component: CvList,
     exact: true,
     role: ['ADMIN']
   }

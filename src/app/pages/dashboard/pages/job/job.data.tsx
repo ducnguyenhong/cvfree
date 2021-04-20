@@ -4,11 +4,11 @@ import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './all-user.action'
-import { UserInfo } from 'models/user-info'
-import { BasicUserInfo, Email, Phone, DateTime, Status, Active, TableLink } from 'app/partials/table-columns'
+import { Action } from './job.action'
+import { JobPostingInfo } from 'models/job-posting-info'
+import { Email, Phone, DateTime, Status, Active, TableLink, BasicCompanyInfo } from 'app/partials/table-columns'
 
-export interface TableColumn extends UserInfo {
+export interface TableColumn extends JobPostingInfo {
   action?: string
 }
 
@@ -16,20 +16,23 @@ export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
   { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'fullname', title: 'Họ và tên' },
-  { enable: true, field: 'birthday', title: 'Ngày sinh' },
-  { enable: true, field: 'email', title: 'Email' },
-  { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'type', title: 'Loại' },
-  { enable: true, field: 'verify', title: 'Xác thực' },
+  { enable: true, field: 'name', title: 'Tên công việc' },
+  { enable: true, field: 'formOfWork', title: 'Hình thức' },
+  { enable: true, field: 'numberRecruited', title: 'Số lượng cần tuyển' },
+  { enable: true, field: 'salary', title: 'Mức lương' },
+  { enable: true, field: 'recruitmentPosition', title: 'Vị trí tuyển dụng' },
+  { enable: true, field: 'career', title: 'Ngành nghề' },
+  { enable: true, field: 'company', title: 'Công ty' },
+  { enable: true, field: 'address', title: 'Địa chỉ' },
   { enable: true, field: 'status', title: 'Trạng thái' },
+  { enable: true, field: 'timeToApply', title: 'Thời hạn ứng tuyển' },
   { enable: true, field: 'createdAt', title: 'Ngày tạo' },
   { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
   { enable: true, field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/users`,
+  url: `${SERVER_URL}/jobs`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -41,8 +44,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       url: input.url,
       params: {
         page: input.page,
-        size: input.size,
-        ...input.filter
+        size: input.size
       }
     })
 
@@ -55,7 +57,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       throw Error(error.message)
     }
 
-    const result: Pagination<UserInfo> = {
+    const result: Pagination<JobPostingInfo> = {
       data: items,
       pagination: {
         currentPage: page,
@@ -74,41 +76,50 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     const {
       status,
-      fullname,
-      birthday,
-      gender,
-      email,
-      phone,
-      username,
+      name,
+      timeToApply,
+      formOfWork,
+      numberRecruited,
+      salary,
+      recruitmentPosition,
+      career,
+      company,
       id,
-      type,
       createdAt,
       updatedAt,
-      verify,
-      avatar
+      address
     } = data
 
     switch (field) {
       case 'id':
-        return <TableLink to={`/dashboard/users/${id}`} title={id} className="font-semibold" />
+        return <TableLink to={`/dashboard/jobs/${id}`} title={id} className="font-semibold" />
 
-      case 'fullname':
-        return <BasicUserInfo id={id} avatar={avatar} name={fullname} username={username} gender={gender} />
+      case 'name':
+        return <span className="whitespace-nowrap">{name}</span>
 
-      case 'birthday':
-        return birthday ? <DateTime timestamp={birthday} /> : <span className="text-gray-300">N/A</span>
+      case 'timeToApply':
+        return <DateTime timestamp={timeToApply} />
 
-      case 'email':
-        return <Email email={email} />
+      case 'formOfWork':
+        return <span>{formOfWork}</span>
 
-      case 'phone':
-        return phone ? <Phone phone={phone} /> : <span className="text-gray-300">N/A</span>
+      case 'numberRecruited':
+        return <span>{numberRecruited}</span>
 
-      case 'type':
-        return <span>{type}</span>
+      case 'salary':
+        return <span>{salary.salaryType}</span>
 
-      case 'verify':
-        return <Active active={verify} />
+      case 'recruitmentPosition':
+        return <span>{recruitmentPosition}</span>
+
+      case 'career':
+        return <span>{career}</span>
+
+      case 'company':
+        return <BasicCompanyInfo name={company?.name} id={company?.id} logo={company?.logo} />
+
+      case 'address':
+        return <span className="whitespace-nowrap">{address && address.label}</span>
 
       case 'status':
         return <Status status={status} />

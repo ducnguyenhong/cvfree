@@ -16,7 +16,7 @@ export const EmployerCompanyInfo: React.FC = () => {
 
   const callApiCompanyInfo = () => {
     const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/company/employer`
+    const url = `${SERVER_URL}/companies/employer`
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
@@ -74,7 +74,7 @@ export const EmployerCompanyInfo: React.FC = () => {
             <div>
               <DropdownAsync
                 label="Danh sách công ty đã có trong hệ thống"
-                urlApi={`/company/suggest`}
+                urlApi={`/companies/suggest`}
                 onChange={(e) => {
                   console.log(e)
                 }}

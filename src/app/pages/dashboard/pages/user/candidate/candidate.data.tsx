@@ -46,7 +46,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
     })
 
     const { success, data, error } = response.data
-    const { items, page, size, totalItems, totalPages } = data
+    const { items, pagination } = data
+    const { page, size, totalItems, totalPages } = pagination
 
     if (!success) {
       showNotify.error(error.message)
@@ -79,7 +80,6 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       phone,
       username,
       id,
-      type,
       createdAt,
       updatedAt,
       verify,
@@ -88,10 +88,10 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     switch (field) {
       case 'id':
-        return <TableLink to={`/users/${id}`} title={id} className="font-semibold" />
+        return <TableLink to={`/dashboard/users/${id}`} title={id} className="font-semibold" />
 
       case 'fullname':
-        return <BasicUserInfo id={id} avatar={avatar} name={fullname} username={username} />
+        return <BasicUserInfo id={id} avatar={avatar} name={fullname} username={username} gender={gender} />
 
       case 'birthday':
         return birthday ? <DateTime timestamp={birthday} /> : <span className="text-gray-300">N/A</span>
