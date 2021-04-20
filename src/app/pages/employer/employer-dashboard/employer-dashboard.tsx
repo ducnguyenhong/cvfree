@@ -40,7 +40,7 @@ export const EmployerDashboard: React.FC = () => {
         </Link> */}
 
         <Link
-          to={`employer/company${userInfo?.companyId ? `/${userInfo.companyId}` : ''}`}
+          to={`employer/company-info`}
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-200 px-6 py-16 block duration-300 hover:shadow-xl "
         >
           <span className="uppercase text-md font-bold block text-center text-gray-600">Thông tin công ty</span>

@@ -30,6 +30,8 @@ const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
 const CvManage = lazy(() => import('app/pages/cv/cv-manage'))
 const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
+const CompanyDetail = lazy(() => import('app/pages/company/company-detail'))
+
 const Dashboard = lazy(() => import('app/pages/dashboard/pages/dashboard'))
 const AllUserList = lazy(() => import('app/pages/dashboard/pages/user/all-user'))
 const CandidateList = lazy(() => import('app/pages/dashboard/pages/user/candidate'))
@@ -121,8 +123,8 @@ export const PUBLIC_ROUTES: RouteType[] = [
 
   // Company
   {
-    path: '/employer/company/:id',
-    component: EmployerCompanyInfo,
+    path: '/companies/:id',
+    component: CompanyDetail,
     exact: true,
     role: ['ADMIN', 'USER', 'EMPLOYER']
   }
@@ -264,6 +266,20 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: CvManage,
     exact: true,
     role: ['ADMIN', 'USER']
+  },
+
+  // Company
+  {
+    path: '/employer/company-info',
+    component: EmployerCompanyInfo,
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
+  },
+  {
+    path: '/companies/:id',
+    component: CompanyDetail,
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   }
 ]
 

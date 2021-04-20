@@ -40,7 +40,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
     })
 
     const { success, data, error } = response.data
-    const { items, page, size, totalItems, totalPages } = data
+    const { items, pagination } = data
+    const { page, size, totalItems, totalPages } = pagination
 
     if (!success) {
       showNotify.error(error.message)

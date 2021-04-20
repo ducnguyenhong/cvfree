@@ -54,9 +54,9 @@ export const EmployerLookingForCandidates: React.FC = () => {
         if (!success) {
           throw Error(error?.message)
         }
-        const { items, page, size, totalPages, totalItems } = data
+        const { items, pagination } = data
         setCandidateList(items)
-        setPagination({ page, size, totalItems, totalPages })
+        setPagination(pagination)
       })
       .catch((e) => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')

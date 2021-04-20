@@ -74,10 +74,12 @@ export interface ResponseListCandidate {
   success: boolean
   data: {
     items: CandidateInfo[]
-    page: number
-    size: number
-    totalItems: number
-    totalPages: number
+    pagination: {
+      page: number
+      size: number
+      totalItems: number
+      totalPages: number
+    }
   }
   code: number
   error?: { message: string }
