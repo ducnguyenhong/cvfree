@@ -1,14 +1,22 @@
 export interface CvInfo {
   _id?: string
   id?: number
-  status?: string
-  userId: string
+  status: string
+  creator?: {
+    id: string
+    fullname?: string
+    avatar?: string
+    username: string
+  }
   color: string
   template: string
   fontSize: string
   fontFamily: string
   name?: string
-  career?: string[]
+  career?: {
+    value: string
+    label: string
+  }
   formOfWork?: string[]
   isPrimary?: boolean
   categoryInfo: {

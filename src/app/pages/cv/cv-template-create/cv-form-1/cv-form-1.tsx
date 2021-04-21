@@ -252,7 +252,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
 
     const name = cvNameRef.current?.getValue() ?? ''
     const formOfWork = getValueDropdown(formOfWorkRef.current?.getValue())
-    const career = getValueDropdown(careerRef.current?.getValue())
+    const career = careerRef.current?.getValue()[0]
 
     const fullname = fullnameRef.current?.getValue() ?? ''
     const applyPosition = applyPositionRef.current?.getValue()
@@ -286,7 +286,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
     }
 
     const dataCV: CvInfo = {
-      userId: userInfo?._id || '0',
       color,
       status: 'ACTIVE',
       template: '1',

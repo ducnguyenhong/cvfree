@@ -1,17 +1,17 @@
-import { AvatarUser } from 'app/partials/image-ratio/user-avatar'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { AvatarUser } from 'app/partials/image-ratio/user-avatar'
 
-interface UserInfoProps {
-  avatar?: string | null
-  name?: string | null
-  username?: string | null
+interface CvInfoProps {
+  fullname: string
   id?: string | number | null
   gender?: string
+  avatar?: string
+  cvName?: string
 }
 
-export const BasicUserInfo: React.FC<UserInfoProps> = (props) => {
-  const { avatar, name, username, id, gender } = props
+export const BasicCvInfo: React.FC<CvInfoProps> = (props) => {
+  const { id, fullname, gender, avatar, cvName } = props
 
   if (!id && id !== 0) {
     return null
@@ -35,21 +35,17 @@ export const BasicUserInfo: React.FC<UserInfoProps> = (props) => {
         </Link>
       </div>
       <div className="ml-3">
-        <Link to={`/dashboard/users/${id}`}>
-          {name ? (
-            <span
-              className={`display-name flex-nowrap block hover:text-blue-800 ${
-                avatar ? 'font-bold' : 'font-extrabold'
-              }`}
-            >
-              {name}
+        <Link to={`/users/${id}`}>
+          {fullname ? (
+            <span className={`display-name flex-nowrap block hover:text-blue-800 font-bold'`}>
+              {fullname}
               {renderGender(gender)}
             </span>
           ) : (
             <span className="text-gray-300 block">N/A</span>
           )}
         </Link>
-        <span className="opacity-50 text-sm">{username}</span>
+        <span className="opacity-50 text-sm">{cvName}</span>
       </div>
     </div>
   )
