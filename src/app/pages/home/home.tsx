@@ -3,7 +3,7 @@ import EnterpriseHome from './home-enterprise'
 import FeatureHome from './home-feature'
 import JobHome from './home-job'
 import TopHome from './home-top'
-import FooterHome from './homt-footer'
+import { HomeStyle } from './home.style'
 
 interface HomeProps {}
 
@@ -13,13 +13,13 @@ const HomeLayout: React.FC<HomeProps> = () => {
   }, [])
 
   return (
-    <div>
+    <HomeStyle className="bg-white">
       <TopHome />
-      <JobHome />
       <FeatureHome />
+      <JobHome />
+
       <EnterpriseHome />
-      <FooterHome />
-    </div>
+    </HomeStyle>
   )
 }
 

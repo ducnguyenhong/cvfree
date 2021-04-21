@@ -5,7 +5,7 @@ import packageJson from '../../../../package.json'
 const HomeIntro: React.FC = () => {
   const intl = useIntl()
   return (
-    <div>
+    <div className="pt-10 home-intro">
       <div>
         <span className="bg-green-500 text-white font-semibold px-4 py-2 rounded-xl mr-3">
           {intl.formatMessage({ id: 'HOME.NEW' })}
@@ -28,10 +28,18 @@ const HomeIntro: React.FC = () => {
         </div>
       </div>
       <div className="mt-20">
-        <Link to="/template-cv" className="px-4 py-3 bg-green-600 mr-8 text-white rounded-md font-semibold">
+        <Link
+          to="/template-cv"
+          className="group rotate-parent px-4 py-3 bg-green-600 mr-8 text-white rounded-md font-semibold duration-300 hover:bg-green-700"
+        >
+          <i className="fas fa-plus mr-2 duration-300" />
           {intl.formatMessage({ id: 'HOME.CREATE_CV_NOW' })}
         </Link>
-        <Link to="/jobs" className="px-4 py-3 bg-purple-700 text-white rounded-md font-semibold">
+        <Link
+          to="/jobs"
+          className="rotate-parent px-4 py-3 bg-purple-700 text-white rounded-md font-semibold duration-300 hover:bg-purple-800"
+        >
+          <i className="fas fa-search mr-2 duration-300" />
           {intl.formatMessage({ id: 'HOME.FIND_JOB' })}
         </Link>
       </div>

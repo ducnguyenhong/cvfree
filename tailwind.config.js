@@ -5,9 +5,7 @@ module.exports = {
     extend: {},
     backgroundColor: (theme) => ({
       ...theme('colors'),
-      // cvfree: '#A4CF51',
-      cvfree: '#F9FFFA'
-      // edffed
+      cvfree: '#EEF0F8'
     })
   },
   variants: {

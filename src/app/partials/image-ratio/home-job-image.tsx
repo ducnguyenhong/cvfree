@@ -1,4 +1,4 @@
-import DefaultImage from 'assets/images/img-default-job.png'
+// import DefaultImage from 'assets/images/img-default-job.png'
 import styled from 'styled-components'
 
 interface Props {
@@ -35,7 +35,7 @@ export const ImageJob: React.FC<Props> = (props) => {
   const { src, alt, style, className, styleDiv, classNameDiv } = props
   return (
     <StyleComponent style={{ ...styleDiv }} className={classNameDiv}>
-      <img className={className} src={src || DefaultImage} style={{ ...style }} alt={alt || 'image job'} />
+      <img className={`${className} rounded-md`} src={src || ''} style={{ ...style }} alt={alt || 'image job'} />
     </StyleComponent>
   )
 }

@@ -7,6 +7,7 @@ const VerifyAccount = lazy(() => import('app/pages/auth/verify'))
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
 const Profile = lazy(() => import('app/pages/profile'))
+const AboutUs = lazy(() => import('app/pages/about-us'))
 
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
@@ -52,6 +53,12 @@ export const PUBLIC_ROUTES: RouteType[] = [
   {
     path: '/',
     component: Home,
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
+  },
+  {
+    path: '/about-us',
+    component: AboutUs,
     exact: true,
     role: ['ADMIN', 'USER', 'EMPLOYER']
   },
@@ -135,10 +142,16 @@ export const PUBLIC_ROUTES: RouteType[] = [
 ]
 
 export const PRIVATE_ROUTES: RouteType[] = [
-  // auth
+  // home
   {
     path: '/',
     component: Home,
+    exact: true,
+    role: ['ADMIN', 'USER', 'EMPLOYER']
+  },
+  {
+    path: '/about-us',
+    component: AboutUs,
     exact: true,
     role: ['ADMIN', 'USER', 'EMPLOYER']
   },

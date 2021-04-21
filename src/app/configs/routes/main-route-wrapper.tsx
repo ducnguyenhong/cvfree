@@ -1,5 +1,6 @@
 import Navbar from 'app/pages/navbar'
 import { useEffect, useState } from 'react'
+import { Footer } from 'app/pages/footer'
 
 export const MainRouteWrapper: React.FC = (props) => {
   const [needNavbar, setNeedNavbar] = useState<boolean>(true)
@@ -14,6 +15,7 @@ export const MainRouteWrapper: React.FC = (props) => {
     <div>
       {needNavbar && <Navbar />}
       {props.children}
+      <Footer />
     </div>
   )
 }
