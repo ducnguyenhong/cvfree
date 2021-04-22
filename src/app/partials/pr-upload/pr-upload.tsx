@@ -21,11 +21,12 @@ interface CVFUploadProps {
   getImage?: (img: File) => void
   defaultURL?: string
   shape?: 'circle' | 'rectangle' | 'square'
+  className?: string
 }
 
 const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   const intl = useIntl()
-  const { ratio, getImage, defaultURL, shape } = props
+  const { ratio, getImage, defaultURL, shape, className } = props
   const [defaultImage, setDefaultImage] = useState<string>('')
   const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
   const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
@@ -120,7 +121,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   }, [completedCrop])
 
   return (
-    <UploadStyle>
+    <UploadStyle className={className}>
       <div className={`relative w-full bg-white overflow-hidden ${shape || 'circle'}`} style={{ paddingTop: '100%' }}>
         <div className="absolute inset-0 flex justify-center items-center">
           <label className="inline-block cursor-pointer" title="Chọn ảnh từ thiết bị">

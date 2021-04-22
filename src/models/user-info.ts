@@ -12,7 +12,7 @@ export interface UserInfo {
       district: string
     }
   }
-  birthday?: number
+  birthday?: Date
   coin?: number
   country?: string
   fullname?: string

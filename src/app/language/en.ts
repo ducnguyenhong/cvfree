@@ -16,7 +16,9 @@ export default {
     EMPLOYER: 'Employer',
     SIGN_IN: 'Sign in',
     SIGN_UP: 'Sign up',
-    HELLO: 'Hello'
+    HELLO: 'Hello',
+    DASHBOARD: 'Dashboard',
+    MANAGE_CV: 'Manage CV'
   },
   PR_UPLOAD_CROP: {
     OK: 'Crop',

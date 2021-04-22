@@ -30,16 +30,17 @@ const PublicRoute: React.FC = () => {
 
   return (
     <Switch>
+      <Route path="/sign-in" exact component={SignInPage} />
+      <Route path="/404" exact component={ErrorPage} />
+
       {PUBLIC_ROUTES.map((item) => {
         const { path, component, exact, role } = item
-        if (!role.includes(userType)) {
+        if (role && userType && role.length > 0 && !role.includes(userType)) {
           return <Route path="/404" exact component={ErrorPage} key={`public_${path}`} />
         }
         return <Route key={`public_${path}`} path={path} component={component} exact={exact} />
       })}
-      {!token ? <Route path="/sign-in" exact component={SignInPage} /> : <Redirect to="/" />}
-      <Route path="/404" exact component={ErrorPage} />
-      <Redirect to="/sign-in" />
+
       <Redirect to="/404" />
     </Switch>
   )
@@ -58,7 +59,7 @@ const PrivateRoute: React.FC = () => {
     <Switch>
       {PRIVATE_ROUTES.map((item) => {
         const { path, component, exact, role } = item
-        if (!role.includes(userType)) {
+        if (role && userType && role.length > 0 && !role.includes(userType)) {
           return <Route key={`private_${path}`} path="/404" exact component={ErrorPage} />
         }
 
@@ -76,6 +77,8 @@ const DashboardRoute: React.FC = () => {
   const userInfoRecoil = useRecoilValue(userInfoState)
   const userType = userInfoRecoil?.type || ''
 
+  console.log('ducnh3')
+
   if (!token) {
     return <Redirect to="/sign-in" />
   }
@@ -85,7 +88,7 @@ const DashboardRoute: React.FC = () => {
       <Switch>
         {DASHBOARD_ROUTES.map((item) => {
           const { path, component, exact, role } = item
-          if (!role.includes(userType)) {
+          if (role && userType && role.length > 0 && !role.includes(userType)) {
             return <Route path="/404" exact component={ErrorPage} />
           }
           return <Route key={`private_${path}`} path={path} component={component} exact={exact} />
@@ -109,7 +112,7 @@ const SwitchRenderer: React.FC = () => {
         <Switch>
           {PRIVATE_ROUTES.map((item) => {
             const { path, component, exact, role } = item
-            if (!role.includes(userType)) {
+            if (role && role.length > 0 && !role.includes(userType)) {
               return <Route path="/404" exact component={ErrorPage} key={`private_${path}`} />
             }
 
@@ -118,7 +121,7 @@ const SwitchRenderer: React.FC = () => {
 
           {PUBLIC_ROUTES.map((item) => {
             const { path, component, exact, role } = item
-            if (!role.includes(userType)) {
+            if (role && role.length > 0 && !role.includes(userType)) {
               return <Route key={`public_${path}`} path="/404" exact component={ErrorPage} />
             }
             return <Route key={`public_${path}`} path={path} component={component} exact={exact} />

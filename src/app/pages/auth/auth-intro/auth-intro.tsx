@@ -10,7 +10,7 @@ interface AuthIntroProps {
 const AuthIntro: React.FC<AuthIntroProps> = (props) => {
   const { title, bgLogo } = props
   return (
-    <div className="h-screen fixed top-48 w-2/5">
+    <div className="pt-52 pb-32 bg-blue-50">
       <div className="flex justify-center items-center">
         <div className="text-center">
           <span className="text-3xl uppercase block font-extrabold text-green-700">
@@ -20,15 +20,6 @@ const AuthIntro: React.FC<AuthIntroProps> = (props) => {
       </div>
       <div className="flex justify-center items-center mt-16">
         <img src={bgLogo || BgLogoDefault} className="h-full w-1/2" alt="bg-login" />
-      </div>
-      <div className="h-1/6 flex justify-center items-center">
-        <span className="text-green-700 font-semibold">2021© CVFREE</span>
-        <Link to="/terms-of-use" className="mx-10 text-green-700 font-semibold">
-          Điều khoản sử dụng
-        </Link>
-        <Link to="/contact" className="text-green-700 font-semibold">
-          Liên hệ
-        </Link>
       </div>
     </div>
   )

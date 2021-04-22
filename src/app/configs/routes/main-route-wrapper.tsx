@@ -15,7 +15,7 @@ export const MainRouteWrapper: React.FC = (props) => {
     <div>
       {needNavbar && <Navbar />}
       {props.children}
-      <Footer />
+      {needNavbar && <Footer />}
     </div>
   )
 }

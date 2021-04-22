@@ -10,15 +10,15 @@ interface LanguageProps {
 
 export const languageList: LanguageProps[] = [
   {
-    icon: IconFlagUK,
-    title: 'EN',
-    value: 'en',
-    titleSelect: 'English'
-  },
-  {
     icon: IconFlagVN,
     title: 'VN',
     value: 'vi',
     titleSelect: 'Tiếng Việt'
+  },
+  {
+    icon: IconFlagUK,
+    title: 'EN',
+    value: 'en',
+    titleSelect: 'English'
   }
 ]

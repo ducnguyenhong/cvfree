@@ -16,7 +16,9 @@ export default {
     EMPLOYER: 'Nhà tuyển dụng',
     SIGN_IN: 'Đăng nhập',
     SIGN_UP: 'Đăng ký',
-    HELLO: 'Xin chào'
+    HELLO: 'Xin chào',
+    DASHBOARD: 'Bảng điều khiển',
+    MANAGE_CV: 'Quản lý CV'
   },
   PR_UPLOAD_CROP: {
     OK: 'Cắt ảnh',

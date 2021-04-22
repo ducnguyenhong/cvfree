@@ -7,6 +7,7 @@ const VerifyAccount = lazy(() => import('app/pages/auth/verify'))
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
 const Profile = lazy(() => import('app/pages/profile'))
+const ProfileUpdate = lazy(() => import('app/pages/profile-update'))
 const AboutUs = lazy(() => import('app/pages/about-us'))
 
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
@@ -54,13 +55,13 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/',
     component: Home,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/about-us',
     component: AboutUs,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // error
@@ -68,7 +69,7 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/error',
     component: ErrorComponent,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // auth
@@ -76,32 +77,32 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/sign-up',
     component: SignUp,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/verify-account/:id',
     component: VerifyAccount,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/forgot-password',
     component: ForgotPassword,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   {
     path: '/template-cv',
     component: CvTemplateList,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/cv-public/:name.:id',
     component: CvDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // Employer
@@ -123,13 +124,13 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/jobs',
     component: JobsListGeneral,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // Company
@@ -137,7 +138,7 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/companies/:id',
     component: CompanyDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   }
 ]
 
@@ -147,13 +148,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/',
     component: Home,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/about-us',
     component: AboutUs,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // profile
@@ -161,7 +162,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/profile',
     component: Profile,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
+  },
+  {
+    path: '/profile/update',
+    component: ProfileUpdate,
+    exact: true,
+    role: []
   },
 
   // error
@@ -169,7 +176,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/error',
     component: ErrorComponent,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   // cv
@@ -183,7 +190,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/cv-public/:name.:id',
     component: CvDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
 
   //employer
@@ -215,7 +222,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/employer/company/:id',
     component: EmployerCompanyInfo,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/employer/create-job-postings',
@@ -256,13 +263,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/jobs',
     component: JobsListGeneral,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   },
   //
 
@@ -296,7 +303,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/companies/:id',
     component: CompanyDetail,
     exact: true,
-    role: ['ADMIN', 'USER', 'EMPLOYER']
+    role: []
   }
 ]
 

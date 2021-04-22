@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import EnterpriseHome from './home-enterprise'
 import FeatureHome from './home-feature'
-import JobHome from './home-job'
 import TopHome from './home-top'
 import { HomeStyle } from './home.style'
 
@@ -16,8 +15,6 @@ const HomeLayout: React.FC<HomeProps> = () => {
     <HomeStyle className="bg-white">
       <TopHome />
       <FeatureHome />
-      <JobHome />
-
       <EnterpriseHome />
     </HomeStyle>
   )

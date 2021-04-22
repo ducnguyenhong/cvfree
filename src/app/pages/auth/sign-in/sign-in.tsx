@@ -114,17 +114,17 @@ const SignIn: React.FC<SignInProps> = () => {
   }, [])
 
   return (
-    <div className="w-full h-screen overflow-hidden">
-      <div className="grid grid-cols-5 gap-4 h-full w-full pt-16">
-        <div className="col-span-2 bg-blue-50 h-full pt-20">
+    <div className="w-full bg-white h-full">
+      <div className="grid grid-cols-5 gap-4 h-full w-full">
+        <div className="col-span-2">
           <AuthIntro title="Đăng nhập tài khoản" />
         </div>
 
-        <div className="col-span-3 h-full">
+        <div className="col-span-3">
           <div>
             <div className="mx-auto">
               <div className="flex items-center justify-center">
-                <div className="w-2/5 mt-24">
+                <div className="w-2/5 pt-48">
                   <div className="mt-16">
                     <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>

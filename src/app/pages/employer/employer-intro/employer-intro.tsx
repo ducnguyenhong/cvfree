@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export const EmployerIntro: React.FC = () => {
   return (
-    <div className="pt-12 max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 grid grid-cols-2 gap-20 bg-cvfree h-screen">
+    <div className="pt-12 max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 grid grid-cols-2 gap-20 bg-white h-screen">
       <div className="col-span-1 flex items-center">
         <img src={ImgIntro} alt="intro" className="block mx-auto" />
       </div>

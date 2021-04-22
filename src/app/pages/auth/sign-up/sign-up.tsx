@@ -142,17 +142,17 @@ const SignUp: React.FC<SignUpProps> = () => {
   }, [])
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full bg-white">
       <SignInStyle>
         <div className="grid grid-cols-5 gap-4 h-full w-full">
-          <div className="col-span-2 bg-blue-50 h-screen">
+          <div className="col-span-2">
             <AuthIntro title="Đăng ký tài khoản" />
           </div>
 
-          <div className="col-span-3 h-full">
+          <div className="col-span-3">
             <div className="h-full">
               <div className="h-5/6 flex items-center justify-center">
-                <div className="w-2/5 mt-20">
+                <div className="w-2/5 mt-40">
                   <div className="mt-20">
                     <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>
@@ -173,13 +173,13 @@ const SignUp: React.FC<SignUpProps> = () => {
                         onChange={() => setCheckPolicy(!checkPolicy)}
                         checked={checkPolicy}
                       />
-                      <span className="ml-2 text-gray-700">
-                        Tôi đồng ý với{' '}
-                        <Link to="/" className="text-green-600">
-                          Điều khoản dịch vụ
+                      <span className="ml-2 text-gray-700 font-medium">
+                        Tôi đồng ý với
+                        <Link to="/terms-of-use" className="ml-1.5 text-green-600">
+                          Điều khoản sử dụng
                         </Link>{' '}
                         và{' '}
-                        <Link to="/" className="text-green-600">
+                        <Link to="/privacy-policy" className="text-green-600">
                           Chính sách bảo mật
                         </Link>{' '}
                         của CVFREE

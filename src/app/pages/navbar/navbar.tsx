@@ -109,6 +109,32 @@ const NavbarHome: React.FC = () => {
   useOutsideLanguage(languageRef)
   useOutsideDialog(dialogUserRef)
 
+  const renderSpecialButton = () => {
+    let title = 'NAVBAR.EMPLOYER'
+    let route = 'employer-intro'
+
+    if (userInfo?.type === 'USER') {
+      title = 'NAVBAR.MANAGE_CV'
+      route = 'manage-cv'
+    }
+    if (userInfo?.type === 'EMPLOYER') {
+      title = 'NAVBAR.DASHBOARD'
+      route = '/employer'
+    }
+    if (userInfo?.type === 'ADMIN') {
+      title = 'NAVBAR.DASHBOARD'
+      route = '/dashboard'
+    }
+    return (
+      <Link
+        to={route}
+        className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-purple-700 hover:text-white duration-300"
+      >
+        {intl.formatMessage({ id: title })}
+      </Link>
+    )
+  }
+
   return (
     <div className="w-full py-2 z-50 shadow-md fixed top-0 left-0 bg-white">
       <nav>
@@ -189,14 +215,8 @@ const NavbarHome: React.FC = () => {
                   >
                     {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
-                  {userInfo?.type !== 'USER' && userInfo?.type !== 'ADMIN' && (
-                    <Link
-                      to={userInfo?.type === 'EMPLOYER' ? '/employer' : '/employer-intro'}
-                      className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-green-200 duration-300"
-                    >
-                      {intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}
-                    </Link>
-                  )}
+
+                  {renderSpecialButton()}
                 </div>
               </div>
             </div>
@@ -221,7 +241,7 @@ const NavbarHome: React.FC = () => {
                         >
                           <img src={icon} className="block mr-3 w-5 h-5 rounded overflow-hidden" alt="lang" />
 
-                          <span className="whitespace-nowrap">{title}</span>
+                          <span className="whitespace-nowrap font-medium text-gray-600">{title}</span>
                         </div>
                       )
                     }
@@ -243,7 +263,7 @@ const NavbarHome: React.FC = () => {
                             onClick={() => onChangeLanguage(value)}
                           >
                             <img src={icon} className="block mr-3 w-5 h-5 rounded overflow-hidden" alt="lang" />
-                            <span className="whitespace-nowrap">{titleSelect}</span>
+                            <span className="whitespace-nowrap font-medium text-gray-600">{titleSelect}</span>
                           </div>
                         )
                       })}
@@ -326,28 +346,6 @@ const NavbarHome: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-          {/*
-    Mobile menu, toggle classes based on menu state.
-
-    Menu open: "block", Menu closed: "hidden"
-  */}
-          <div className="hidden sm:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {/* Current: "bg-gray-900 text-white", Default: "text-gray-300  hover:text-white" */}
-              <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                Dashboard
-              </a>
-              <a href="#" className="text-gray-300  hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                Team
-              </a>
-              <a href="#" className="text-gray-300  hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                Projects
-              </a>
-              <a href="#" className="text-gray-300  hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                Calendar
-              </a>
             </div>
           </div>
         </div>
