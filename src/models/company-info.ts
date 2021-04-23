@@ -3,6 +3,7 @@ export interface CompanyInfo {
   name: string
   taxCode?: string
   background?: string
+  backgroundId?: string
   website?: string
   personnelSize: string
   email: string
@@ -15,6 +16,7 @@ export interface CompanyInfo {
   }
   intro?: string
   logo?: string
+  logoId?: string
   status: string
   createdAt?: number
   updatedAt?: number

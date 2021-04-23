@@ -25,5 +25,9 @@ export default {
     CANCEL: 'Cancel',
     CROP_IMAGE: 'Crop photo',
     NOTE: 'Cropping photos in 1 : 1 ratio will help your CV look better'
+  },
+  AUTH: {
+    LOGIN_SUCCESS: 'Logged in successfully',
+    LOGOUT_SUCCESS: 'Logged out successfully'
   }
 }

@@ -25,5 +25,9 @@ export default {
     CANCEL: 'Hủy',
     CROP_IMAGE: 'Cắt ảnh',
     NOTE: 'Cắt ảnh theo tỷ lệ 1 : 1 sẽ giúp CV của bạn đẹp hơn'
+  },
+  AUTH: {
+    LOGIN_SUCCESS: 'Đăng nhập thành công',
+    LOGOUT_SUCCESS: 'Đăng xuất thành công'
   }
 }

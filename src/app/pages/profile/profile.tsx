@@ -39,7 +39,7 @@ export const Profile: React.FC = () => {
               {fullname || <span className="opacity-50">Chưa cập nhật</span>}
             </span>
             <div className="mt-2">
-              <i className="fas fa-user-circle mr-2" />
+              <i className="fas fa-user-circle mr-2 text-gray-500" />
               <span>{username}</span>
             </div>
           </div>
@@ -47,7 +47,9 @@ export const Profile: React.FC = () => {
 
         <div className="flex items-center justify-between mt-10">
           <span className="font-semibold">Giới tính:</span>
-          <span className="font-medium">{gender || <span className="opacity-50">Chưa cập nhật</span>}</span>
+          <span className="font-medium">
+            {gender ? gender === 'FEMALE' ? 'Nữ' : 'Nam' : <span className="opacity-50">Chưa cập nhật</span>}
+          </span>
         </div>
 
         <div className="flex items-center justify-between mt-3">

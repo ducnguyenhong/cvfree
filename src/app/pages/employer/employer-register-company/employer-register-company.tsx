@@ -1,31 +1,20 @@
-import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
-import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import {
-  DataFormOfWork,
-  DataRecruitmentPosition,
-  DataGender,
-  DataCareer,
-  DataCurrency,
-  DataPersonnelSize
-} from 'constants/data-employer'
-import DatePicker from 'react-datepicker'
-import { useRef, useState } from 'react'
-import { Editor } from '@tinymce/tinymce-react'
 import { BreadCrumb } from 'app/pages/bread-crumb'
-import vi from 'date-fns/locale/vi'
 import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
-import { JobPostingInfo } from 'models/job-posting-info'
-import { getValueDropdown, uploadServer } from 'utils/helper'
-import moment from 'moment'
-import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig } from 'axios'
-import Cookies from 'js-cookie'
+import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { showNotify } from 'app/partials/pr-notify'
-import { get } from 'lodash'
 import PrUpload from 'app/partials/pr-upload'
-import { CompanyInfo } from '../../../../models/company-info'
-import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
+import axios, { AxiosRequestConfig } from 'axios'
+import { DataPersonnelSize } from 'constants/data-employer'
+import { SERVER_URL } from 'constants/index'
+import Cookies from 'js-cookie'
+import { get } from 'lodash'
+import { useRef, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { getValueDropdown, uploadServer } from 'utils/helper'
+import { CompanyInfo } from 'models/company-info'
+import { v4 as uuid } from 'uuid'
 
 export const EmployerRegisterCompany: React.FC = () => {
   const [city, setCity] = useState<OptionProps | null>(null)
@@ -79,17 +68,21 @@ export const EmployerRegisterCompany: React.FC = () => {
   }
 
   const onRegisterCompany = async () => {
+    const logoId = uuid()
+    const backgroundId = uuid()
     let logoUrl = ''
     let backgroundUrl = ''
     if (logo) {
-      logoUrl = await uploadServer(logo, 'company')
+      logoUrl = await uploadServer(logo, logoId)
     }
     if (background) {
-      backgroundUrl = await uploadServer(background, 'company')
+      backgroundUrl = await uploadServer(background, backgroundId)
     }
 
     const data: CompanyInfo = {
       logo: logoUrl,
+      logoId,
+      backgroundId,
       staffList: [userInfo?.id || 0],
       background: backgroundUrl,
       name: nameRef.current?.getValue() ?? '',

@@ -10,8 +10,18 @@ import { OptionsType } from 'react-select'
 import queryString from 'query-string'
 import { DropdownProps } from 'constants/data-employer'
 
-export const checkEmail = (email: string) => {
+export const checkEmail = (email?: string | null) => {
+  if (!email) {
+    return false
+  }
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,10})+$/g.test(email)
+}
+
+export const checkPhone = (phone?: string | null) => {
+  if (!phone) {
+    return false
+  }
+  return /^([0-9+() ]){9,15}$/.test(phone)
 }
 
 export const checkUsername = (username: string) => {
@@ -106,12 +116,12 @@ export const getDefaultAvatar = (gender?: string) => {
   return DefaultImage
 }
 
-export const uploadServer = async (img: File, folderServer?: string) => {
+export const uploadServer = async (img: File, id: string, folderServer?: string) => {
   const formData = new FormData()
   formData.append('image', img)
   const accessToken = Cookies.get('token')
   return axios
-    .post(`${SERVER_URL}/media/upload/${folderServer ?? 'common'}`, formData, {
+    .post(`${SERVER_URL}/media/upload/${folderServer ?? 'image'}/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${accessToken}`
@@ -202,6 +212,22 @@ export const getDefaultLabelDropdown = (DataDefault: DropdownProps[], dataValue:
   }
   labelCareer = labelCareer.substring(0, labelCareer.length - 2)
   return labelCareer
+}
+
+export const getDefaultDataDropdown = (
+  DataDefault: DropdownProps[],
+  dataValue: string[]
+): { value: string; label: string }[] => {
+  const array: DropdownProps[] = []
+
+  for (let i = 0; i < DataDefault.length; i++) {
+    for (let j = 0; j < dataValue.length; j++) {
+      if (DataDefault[i].value === dataValue[j]) {
+        array.push(DataDefault[i])
+      }
+    }
+  }
+  return array
 }
 
 export const getDefaultFilter = (

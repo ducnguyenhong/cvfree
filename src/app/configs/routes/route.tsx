@@ -110,13 +110,13 @@ export const PUBLIC_ROUTES: RouteType[] = [
     path: '/employer/sign-up',
     component: EmployerSignUp,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer-intro',
     component: EmployerIntro,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
 
   // Job
@@ -198,25 +198,25 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/employer',
     component: EmployerDashboard,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/publish-recruitment',
     component: EmployerRecruitment,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/manage-candidate',
     component: EmployerManageCandidate,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/looking-for-candidates',
     component: EmployerLookingForCandidates,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/company/:id',
@@ -228,19 +228,19 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/employer/create-job-postings',
     component: EmployerCreateJobPostings,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/payment',
     component: EmployerPayment,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/employer/register-company',
     component: EmployerRegisterCompany,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
 
   // candidate
@@ -248,13 +248,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/candidate/:id',
     component: CandidateDetail,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/manage-apply',
     component: CandidateManageApply,
     exact: true,
-    role: ['ADMIN', 'USER']
+    role: ['USER']
   },
 
   // Jobs
@@ -297,7 +297,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/employer/company-info',
     component: EmployerCompanyInfo,
     exact: true,
-    role: ['ADMIN', 'EMPLOYER']
+    role: ['EMPLOYER']
   },
   {
     path: '/companies/:id',

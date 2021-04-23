@@ -52,6 +52,7 @@ import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
 import moment from 'moment'
 import PrDropdown from 'app/partials/pr-dropdown/pr-dropdown'
 import { DataCareer, DataFormOfWork } from 'constants/data-employer'
+import { v4 as uuid } from 'uuid'
 
 import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
 import { getValueDropdown } from '../../../../../utils/helper'
@@ -245,9 +246,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       setLoadingAction(false)
       return
     }
+    const avatarId = cvInfo?.detail.avatarId || uuid()
     let avatarURL = cvInfo?.detail.avatar ?? ''
     if (avatarFile) {
-      avatarURL = await uploadServer(avatarFile, 'cv')
+      avatarURL = await uploadServer(avatarFile, avatarId)
     }
 
     const name = cvNameRef.current?.getValue() ?? ''
@@ -299,6 +301,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       detail: {
         fullname,
         avatar: avatarURL,
+        avatarId,
         applyPosition,
         birthday: birthdayValue,
         gender,

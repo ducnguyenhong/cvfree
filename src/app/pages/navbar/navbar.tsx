@@ -63,11 +63,11 @@ const NavbarHome: React.FC = () => {
   ]
 
   const helloName = userInfo?.fullname
-    ? userInfo.fullname.split(' ')[userInfo.fullname.split.length - 1]
+    ? userInfo.fullname.split(' ')[userInfo.fullname.split(' ').length - 1]
     : userInfo?.username
 
   const onSignOut = useCallback(() => {
-    showNotify.success('Đăng xuất tài khoản thành công')
+    showNotify.success(intl.formatMessage({ id: 'AUTH.LOGOUT_SUCCESS' }))
     setShowUserDialog(false)
     setUserInfoRecoil(undefined)
     setUserTokenRecoil(undefined)

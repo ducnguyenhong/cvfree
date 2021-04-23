@@ -11,6 +11,7 @@ import { UserInfo } from 'models/user-info'
 import { useCallback, useEffect, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
+import { useIntl } from 'react-intl'
 
 interface SignInProps {}
 
@@ -38,6 +39,7 @@ const SignIn: React.FC<SignInProps> = () => {
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
   const history = useHistory()
+  const intl = useIntl()
 
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
@@ -79,7 +81,7 @@ const SignIn: React.FC<SignInProps> = () => {
 
         const { auth, userInfo } = data
 
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `AUTH.${message}` }))
         setUserInfoRecoil(userInfo)
         setUserTokenRecoil({ token: auth.token, expiredAt: auth.expiredAt })
 

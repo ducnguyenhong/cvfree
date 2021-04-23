@@ -28,6 +28,7 @@ export interface CvInfo {
   detail: {
     fullname: string
     avatar?: string
+    avatarId?: string
     applyPosition?: string
     birthday: number
     gender: string

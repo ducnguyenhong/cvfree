@@ -23,6 +23,7 @@ export interface UserInfo {
   status: string
   type: string
   avatar?: string
+  avatarId?: string
   verify?: boolean
   seeCV?: boolean
   findJob?: boolean
