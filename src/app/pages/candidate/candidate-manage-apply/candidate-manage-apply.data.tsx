@@ -6,6 +6,8 @@ import { get } from 'lodash'
 import { ApplyManageInfo } from 'models/apply-manage-info'
 import { showNotify } from 'app/partials/pr-notify'
 import moment from 'moment'
+import { slugURL } from 'utils/helper'
+import { DataStatusApply } from './candidate-manage-apply'
 
 export interface TableColumn extends ApplyManageInfo {
   action?: string
@@ -13,9 +15,20 @@ export interface TableColumn extends ApplyManageInfo {
 
 export interface TableFilter {}
 
+const renderStatusApply = (status?: string) => {
+  const dataStatus = DataStatusApply.find((item) => item.status === status)
+  return (
+    <span
+      className={`${dataStatus?.textColor} ${dataStatus?.bgColor} text-sm uppercase px-3 py-1.5 rounded font-semibold w-32 block text-center`}
+    >
+      {dataStatus?.title}
+    </span>
+  )
+}
+
 export const Columns: ColumnsProps[] = [
   { enable: true, field: 'jobId', title: 'Mã việc làm' },
-  { enable: true, field: 'jobName', title: 'Việc làm' },
+  { enable: true, field: 'jobName', title: 'Tên việc làm' },
   { enable: true, field: 'cvName', title: 'Hồ sơ ứng tuyển' },
   { enable: true, field: 'status', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày ứng tuyển' }
@@ -68,20 +81,44 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     switch (field) {
       case 'jobId':
-        return <span>{jobId.slice(jobId.length - 5, jobId.length)}</span>
+        return (
+          <a
+            href={`/jobs/${slugURL(jobName)}.${jobId}`}
+            target="_blank"
+            className="font-medium"
+            rel="noopener noreferrer"
+          >
+            {jobId.slice(jobId.length - 5, jobId.length)}
+          </a>
+        )
 
       case 'jobName':
-        return <span>{jobName}</span>
+        return (
+          <a
+            href={`/jobs/${slugURL(jobName)}.${jobId}`}
+            target="_blank"
+            className="font-medium"
+            rel="noopener noreferrer"
+          >
+            {jobName}
+          </a>
+        )
 
       case 'cvName':
         return (
-          <span>
-            {cvName} - {cvFullname}
-          </span>
+          <a
+            href={`/cv-public/${slugURL(cvFullname)}.${cvId}`}
+            target="_blank"
+            className="font-medium"
+            rel="noopener noreferrer"
+          >
+            {cvFullname.toUpperCase()}
+            <span className="block opacity-50">{cvName}</span>
+          </a>
         )
 
       case 'status':
-        return <span>{status}</span>
+        return <>{renderStatusApply(status)}</>
 
       case 'createdAt':
         return <span>{moment(createdAt).format('DD/MM/YYYY')}</span>

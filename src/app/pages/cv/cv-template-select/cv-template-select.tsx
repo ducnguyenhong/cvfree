@@ -11,11 +11,15 @@ export const TemplateSelectCV: React.FC = () => {
   const setCvTemplate = useSetRecoilState(selectedCVTemplateState)
   const userInfo = useRecoilValue(userInfoState)
   const modalNotifyRef = useRef<PrModalRefProps>(null)
+  const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
 
   const onOpenCreateCVPage = useCallback((value: string) => {
     setCvTemplate(value)
+
     if (!userInfo) {
       modalNotifyRef.current?.show()
+    } else if (userInfo && userInfo.numberOfCreateCv === 0) {
+      modalOutOfTurnRef.current?.show()
     } else {
       history.push('/create-cv')
     }
@@ -77,6 +81,20 @@ export const TemplateSelectCV: React.FC = () => {
               className="px-6 py-2.5 rounded-md text-white bg-blue-600 text-md font-semibold duration-300 hover:bg-blue-700"
             >
               Đăng nhập
+            </Link>
+          </div>
+        </div>
+      </PrModal>
+
+      <PrModal title="Thông báo" ref={modalOutOfTurnRef} disableFooter onHide={() => modalOutOfTurnRef.current?.hide()}>
+        <div className="py-20 px-10">
+          <span className="block text-center font-semibold text-lg">Bạn đã sử dụng hết số lượt tạo CV (3 lượt)</span>
+          <div className="mt-16 text-center flex items-center justify-center">
+            <Link
+              to="/manage-cv"
+              className="px-6 py-2.5 rounded-md text-white bg-green-600 text-md font-semibold duration-300 hover:bg-green-700"
+            >
+              Xem danh sách hồ sơ đã tạo
             </Link>
           </div>
         </div>

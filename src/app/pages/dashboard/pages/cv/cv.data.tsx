@@ -89,7 +89,20 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { status, _id, name, detail, creator, template, formOfWork, career, id, createdAt, updatedAt } = data
+    const {
+      status,
+      _id,
+      name,
+      detail,
+      creator,
+      template,
+      formOfWork,
+      career,
+      id,
+      createdAt,
+      updatedAt,
+      creatorId
+    } = data
 
     const { fullname, avatar, birthday, gender, phone, address } = detail
 
@@ -101,7 +114,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <BasicCvInfo id={id} avatar={avatar} fullname={fullname} cvName={name} gender={gender} />
 
       case 'creator':
-        return <BasicUserInfo id={creator?.id} name={creator?.fullname || creator?.username} avatar={creator?.avatar} />
+        return <BasicUserInfo id={creatorId} name={creator?.fullname || creator?.username} avatar={creator?.avatar} />
 
       case 'template':
         return <span>{template}</span>

@@ -2,8 +2,8 @@ export interface CvInfo {
   _id?: string
   id?: number
   status: string
+  creatorId?: string
   creator?: {
-    id: string
     fullname?: string
     avatar?: string
     username: string

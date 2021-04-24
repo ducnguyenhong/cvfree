@@ -42,7 +42,7 @@ export const AvatarUser: React.FC<Props> = (props) => {
         className={className}
         src={src || (gender === 'FEMALE' ? DefaultImageFemale : DefaultImage)}
         style={{ ...style }}
-        alt={alt || 'avatar user'}
+        alt={alt || 'ava'}
       />
     </StyleComponent>
   )

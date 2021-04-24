@@ -3,15 +3,12 @@ export interface JobPostingInfo {
   id?: number
   name: string
   isApplied?: boolean
+  creatorId?: string
   company?: {
-    id: string
     name: string
     logo: string
   }
-  candidateApplied?: {
-    cvId: string
-    accept: boolean
-  }[]
+  candidateApplied?: string[]
   address: {
     value: { district: string; city: string }
     label: string

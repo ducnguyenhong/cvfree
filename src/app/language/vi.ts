@@ -28,6 +28,7 @@ export default {
   },
   AUTH: {
     LOGIN_SUCCESS: 'Đăng nhập thành công',
-    LOGOUT_SUCCESS: 'Đăng xuất thành công'
+    LOGOUT_SUCCESS: 'Đăng xuất thành công',
+    LOGOUT: 'Đăng xuất'
   }
 }

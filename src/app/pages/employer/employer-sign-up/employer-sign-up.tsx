@@ -31,10 +31,6 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   const emailRef = useRef<PrInputRefProps>(null)
   const phonelRef = useRef<PrInputRefProps>(null)
   const genderRef = useRef<PrDropdownRefProps>(null)
-  // const companyNameRef = useRef<PrInputRefProps>(null)
-  // const companyPositionRef = useRef<PrInputRefProps>(null)
-  // const companyAddressRef = useRef<PrInputRefProps>(null)
-  // const recruitmentRefRef = useRef<PrDropdownRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
 
   const validateInput = () => {
@@ -168,7 +164,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   }, [])
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-white">
       <SignInStyle>
         <div className="grid grid-cols-5 gap-4 h-full w-full pt-16">
           <div className="col-span-2 bg-blue-50 h-full">
@@ -214,31 +210,6 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                       labelClassName="text-green-700 font-semibold mb-3"
                     />
                   </div>
-                  {/* <span className="block uppercase font-bold text-lg mt-12">3. Thông tin tuyển dụng</span>
-                  <div className="mt-5">
-                    <PrInput
-                      label="Công ty"
-                      ref={companyNameRef}
-                      placeholder="Tên công ty"
-                      required
-                      icon="fas fa-building"
-                    />
-                  </div>
-                  <div className="mt-5">
-                    <PrInput label="Địa chỉ công ty" ref={companyAddressRef} required icon="fas fa-map-marker-alt" />
-                  </div>
-                  <div className="mt-5">
-                    <PrInput label="Vị trí công tác" required icon="fas fa-briefcase" ref={companyPositionRef} />
-                  </div>
-                  <div className="mt-5">
-                    <PrDropdown
-                      required
-                      ref={recruitmentRefRef}
-                      options={DataCareer}
-                      label="Ngành nghề tuyển dụng"
-                      labelClassName="text-green-700 font-semibold mb-3"
-                    />
-                  </div>*/}
 
                   <div className="mt-5">
                     <label className="inline-flex mt-3 items-start">
@@ -248,13 +219,13 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                         onChange={() => setCheckPolicy(!checkPolicy)}
                         checked={checkPolicy}
                       />
-                      <span className="ml-2 text-gray-700">
-                        Tôi đồng ý với{' '}
-                        <Link to="/" className="text-green-600">
-                          Điều khoản dịch vụ
+                      <span className="ml-2 text-gray-700 font-medium">
+                        Tôi đồng ý với
+                        <Link to="/terms-of-use" className="ml-1.5 text-green-600">
+                          Điều khoản sử dụng
                         </Link>{' '}
                         và{' '}
-                        <Link to="/" className="text-green-600">
+                        <Link to="/privacy-policy" className="text-green-600">
                           Chính sách bảo mật
                         </Link>{' '}
                         của CVFREE

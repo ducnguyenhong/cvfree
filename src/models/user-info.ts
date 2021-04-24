@@ -29,6 +29,7 @@ export interface UserInfo {
   findJob?: boolean
   typeAccount?: string
   numberOfPosting?: number
+  numberOfCreateCv?: number
   numberOfCandidateOpening?: number
   createdAt?: Date
   updatedAt?: Date

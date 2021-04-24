@@ -338,7 +338,7 @@ const NavbarHome: React.FC = () => {
                         <div className="px-6 mb-4 mt-3">
                           <Button type="danger" onClick={onSignOut}>
                             <i className="fas fa-sign-out-alt mr-2"></i>
-                            <span className="text-white text-md">Logout</span>
+                            <span className="text-white text-md">{intl.formatMessage({ id: 'AUTH.LOGOUT' })}</span>
                           </Button>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
-import React from 'react'
 import { AvatarUser } from 'app/partials/image-ratio/user-avatar'
+import React from 'react'
 import { slugURL } from 'utils/helper'
 
 interface CvInfoProps {
@@ -10,7 +10,7 @@ interface CvInfoProps {
   cvName?: string
 }
 
-export const BasicCvInfo: React.FC<CvInfoProps> = (props) => {
+export const BasicCvPublicInfo: React.FC<CvInfoProps> = (props) => {
   const { id, fullname, gender, avatar, cvName } = props
 
   if (!id && id !== 0) {
@@ -31,9 +31,9 @@ export const BasicCvInfo: React.FC<CvInfoProps> = (props) => {
     <div className="flex whitespace-nowrap">
       <div className="w-12 h-12">
         <a
-          href={`/cv-public/${slugURL(fullname)}.${id}`}
+          href={`/cv-public/${slugURL(fullname)}.${id.toString()}`}
           target="_blank"
-          className="font-medium"
+          className="font-semibold"
           rel="noopener noreferrer"
         >
           <AvatarUser src={avatar} gender={gender} />
@@ -41,14 +41,14 @@ export const BasicCvInfo: React.FC<CvInfoProps> = (props) => {
       </div>
       <div className="ml-3">
         <a
-          href={`/cv-public/${slugURL(fullname)}.${id}`}
+          href={`/cv-public/${slugURL(fullname)}.${id.toString()}`}
           target="_blank"
-          className="font-medium"
+          className="font-semibold"
           rel="noopener noreferrer"
         >
           {fullname ? (
             <span className={`display-name flex-nowrap block hover:text-blue-800 font-bold'`}>
-              {fullname}
+              {fullname.toUpperCase()}
               {renderGender(gender)}
             </span>
           ) : (

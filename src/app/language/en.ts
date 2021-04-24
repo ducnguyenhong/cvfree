@@ -28,6 +28,7 @@ export default {
   },
   AUTH: {
     LOGIN_SUCCESS: 'Logged in successfully',
-    LOGOUT_SUCCESS: 'Logged out successfully'
+    LOGOUT_SUCCESS: 'Logged out successfully',
+    LOGOUT: 'Logout'
   }
 }

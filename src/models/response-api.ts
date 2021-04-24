@@ -64,7 +64,9 @@ export interface ResponseUpload {
 
 export interface ResponseDelete {
   success: boolean
-  data: undefined | null
+  data: {
+    userInfo: UserInfo
+  }
   code: number
   error?: { message: string }
   message?: string

@@ -17,7 +17,7 @@ export const Profile: React.FC = () => {
   const {
     fullname,
     email,
-    typeAccount,
+    numberOfCreateCv,
     gender,
     username,
     numberOfCandidateOpening,
@@ -73,6 +73,13 @@ export const Profile: React.FC = () => {
           <span className="font-semibold">Địa chỉ:</span>
           <span className="font-medium">{address?.label || <span className="opacity-50">Chưa cập nhật</span>}</span>
         </div>
+
+        {type === 'USER' && (
+          <div className="flex items-center justify-between mt-3">
+            <span className="font-semibold">Số lượt tạo CV còn lại:</span>
+            <span className="font-medium">{numberOfCreateCv || 0}</span>
+          </div>
+        )}
 
         {type === 'EMPLOYER' && (
           <>

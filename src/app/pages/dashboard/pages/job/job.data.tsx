@@ -87,7 +87,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       id,
       createdAt,
       updatedAt,
-      address
+      address,
+      creatorId
     } = data
 
     switch (field) {
@@ -116,7 +117,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{career}</span>
 
       case 'company':
-        return <BasicCompanyInfo name={company?.name} id={company?.id} logo={company?.logo} />
+        return <BasicCompanyInfo name={company?.name} id={creatorId} logo={company?.logo} />
 
       case 'address':
         return <span className="whitespace-nowrap">{address && address.label}</span>

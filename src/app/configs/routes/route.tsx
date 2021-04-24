@@ -15,13 +15,14 @@ const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
 
 const CandidateDetail = lazy(() => import('app/pages/candidate/candidate-detail'))
 const CandidateManageApply = lazy(() => import('app/pages/candidate/candidate-manage-apply'))
+const CandidateManageCv = lazy(() => import('app/pages/candidate/candidate-manage-cv'))
 
 const EmployerDashboard = lazy(() => import('app/pages/employer/employer-dashboard'))
 const EmployerIntro = lazy(() => import('app/pages/employer/employer-intro'))
 const EmployerSignUp = lazy(() => import('app/pages/employer/employer-sign-up'))
 const EmployerCompanyInfo = lazy(() => import('app/pages/employer/employer-company-info'))
 const EmployerLookingForCandidates = lazy(() => import('app/pages/employer/employer-looking-for-candidates'))
-const EmployerRecruitment = lazy(() => import('app/pages/employer/employer-recruitment'))
+const EmployerManageJob = lazy(() => import('app/pages/employer/employer-manage-job'))
 const EmployerCreateJobPostings = lazy(() => import('app/pages/employer/employer-create-job-postings'))
 const EmployerManageCandidate = lazy(() => import('app/pages/employer/employer-manage-candidate'))
 const EmployerPayment = lazy(() => import('app/pages/employer/employer-payment'))
@@ -29,7 +30,6 @@ const EmployerRegisterCompany = lazy(() => import('app/pages/employer/employer-r
 
 const CvForm = lazy(() => import('app/pages/cv/cv-create'))
 const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
-const CvManage = lazy(() => import('app/pages/cv/cv-manage'))
 const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 const CompanyDetail = lazy(() => import('app/pages/company/company-detail'))
@@ -201,8 +201,8 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: ['EMPLOYER']
   },
   {
-    path: '/employer/publish-recruitment',
-    component: EmployerRecruitment,
+    path: '/employer/manage-job',
+    component: EmployerManageJob,
     exact: true,
     role: ['EMPLOYER']
   },
@@ -277,19 +277,19 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/create-cv',
     component: CvForm,
     exact: true,
-    role: ['ADMIN', 'USER']
+    role: ['USER']
   },
   {
     path: '/update-cv/:name.:id',
     component: CvForm,
     exact: true,
-    role: ['ADMIN', 'USER']
+    role: ['USER']
   },
   {
     path: '/manage-cv',
-    component: CvManage,
+    component: CandidateManageCv,
     exact: true,
-    role: ['ADMIN', 'USER']
+    role: ['USER']
   },
 
   // Company

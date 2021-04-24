@@ -92,7 +92,7 @@ export const getCategoryWhenRemove = (category: CategoryProps[], name: string) =
   return newCategory
 }
 
-export const slugURL = (str: string) => {
+export const slugURL = (str?: string) => {
   if (!str) return 'cvfree'
   str = str.toLowerCase()
   str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a')
