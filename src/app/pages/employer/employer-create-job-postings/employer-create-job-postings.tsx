@@ -1,31 +1,56 @@
-import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
-import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import { DataFormOfWork, DataRecruitmentPosition, DataGender, DataCareer, DataCurrency } from 'constants/data-employer'
-import DatePicker from 'react-datepicker'
-import { useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { BreadCrumb } from 'app/pages/bread-crumb'
-import vi from 'date-fns/locale/vi'
 import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
-import { JobPostingInfo } from 'models/job-posting-info'
-import { getValueDropdown } from 'utils/helper'
-import moment from 'moment'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import {
+  DataCareer,
+  DataCurrency,
+  DataFormOfWork,
+  DataGender,
+  DataRecruitmentPosition,
+  DataSalaryType
+} from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig } from 'axios'
+import vi from 'date-fns/locale/vi'
 import Cookies from 'js-cookie'
-import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
+import { JobPostingInfo } from 'models/job-posting-info'
+import moment from 'moment'
+import { useEffect, useRef, useState } from 'react'
+import DatePicker from 'react-datepicker'
+import { Link, useRouteMatch } from 'react-router-dom'
+import { getValueDropdown, getDefaultDataDropdown } from 'utils/helper'
+import { useRecoilState } from 'recoil'
+import { userInfoState } from 'app/states/user-info-state'
+import { ResponseJobDetail } from 'models/response-api'
+import { showNotify } from 'app/partials/pr-notify'
 
 export const EmployerCreateJobPostings: React.FC = () => {
+  const match = useRouteMatch()
+  const jobId = get(match.params, 'id')
+  const [jobDetail, setJobDetail] = useState<JobPostingInfo | null>(null)
   const [timeToApply, setTimeToApply] = useState<any>(new Date())
   const [city, setCity] = useState<OptionProps | null>(null)
-  const [address, setAddress] = useState<{ value: { district: string; city: string }; label: string } | null>(null)
+  const [district, setDistrict] = useState<OptionProps | null>(null)
+  const [addressInput, setAddressInput] = useState<
+    { value: { district: string; city: string }; label: string } | undefined
+  >(undefined)
+  const addressRef = useRef<PrInputRefProps>(null)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [jobDescription, setJobDescription] = useState<string>('')
   const [requirementForCandidate, setRequirementForCandidate] = useState<string>('')
   const [benefitToEnjoy, setBenefitToEnjoy] = useState<string>('')
+  const [disableSalary, setDisableSalary] = useState<boolean>(true)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
 
   // ref
+  const modalNotifySuccessRef = useRef<PrModalRefProps>(null)
+  const modalNotifyErrorRef = useRef<PrModalRefProps>(null)
+  const modalAddressRef = useRef<PrModalRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
   const careerRef = useRef<PrDropdownRefProps>(null)
   const recruitmentPositionRef = useRef<PrDropdownRefProps>(null)
@@ -33,12 +58,33 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const numberRecruitedRef = useRef<PrInputRefProps>(null)
   const genderRequirementRef = useRef<PrDropdownRefProps>(null)
   const salaryFromRef = useRef<PrInputRefProps>(null)
+  const salaryTypeRef = useRef<PrDropdownRefProps>(null)
   const salaryToRef = useRef<PrInputRefProps>(null)
   const salaryCurrencyRef = useRef<PrDropdownRefProps>(null)
 
-  const callApiCreate = (data: JobPostingInfo) => {
-    const url = `${SERVER_URL}/jobs`
+  const resetInput = () => {
+    nameRef.current?.reset()
+    addressRef.current?.reset()
+    setCity(null)
+    numberRecruitedRef.current?.reset()
+    genderRequirementRef.current?.reset()
+    setDisableDistrict(true)
+    careerRef.current?.reset()
+    formOfWorkRef.current?.reset()
+    recruitmentPositionRef.current?.reset()
+    setTimeToApply(new Date())
+    setDisableSalary(true)
+    salaryFromRef.current?.reset()
+    salaryToRef.current?.reset()
+    salaryCurrencyRef.current?.reset()
+    salaryTypeRef.current?.reset()
+    setJobDescription('')
+    setRequirementForCandidate('')
+    setBenefitToEnjoy('')
+  }
 
+  const callApiCreate = (data: JobPostingInfo) => {
+    const url = jobId ? `${SERVER_URL}/jobs/${jobId}` : `${SERVER_URL}/jobs`
     const accessToken = Cookies.get('token')
     const headers = {
       'Content-Type': 'application/json',
@@ -46,7 +92,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
     }
 
     const config: AxiosRequestConfig = {
-      method: 'POST',
+      method: jobId ? 'PUT' : 'POST',
       headers,
       url,
       data
@@ -54,25 +100,72 @@ export const EmployerCreateJobPostings: React.FC = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error } = response.data
+        const { success, error, message } = response.data
         if (!success) {
           throw Error(error)
         }
 
-        showNotify.success(message)
-        // setLoading(false)
-        // resetInput()
+        if (jobId) {
+          showNotify.success(message)
+          callApiJobDetail()
+        } else {
+          modalNotifySuccessRef.current?.show()
+          if (userInfo && userInfo.numberOfPosting) {
+            setUserInfo({ ...userInfo, numberOfPosting: userInfo.numberOfPosting - 1 })
+          }
+          resetInput()
+        }
       })
       .catch((e) => {
         // setLoading(false)
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        if (jobId) {
+          showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        } else {
+          setErrorMessage(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        }
       })
   }
 
+  const validate = () => {
+    if (!nameRef.current?.checkRequired()) {
+      return false
+    }
+    if (!addressRef.current?.checkRequired()) {
+      return false
+    }
+    if (!careerRef.current?.checkRequired()) {
+      return false
+    }
+    if (!recruitmentPositionRef.current?.checkRequired()) {
+      return false
+    }
+    if (!formOfWorkRef.current?.checkRequired()) {
+      return false
+    }
+    if (!salaryTypeRef.current?.checkRequired()) {
+      return false
+    }
+    if (salaryTypeRef.current.getValue()[0].value === 'FROM_TO') {
+      if (!salaryFromRef.current?.checkRequired()) {
+        return false
+      }
+      if (!salaryToRef.current?.checkRequired()) {
+        return false
+      }
+      if (!salaryCurrencyRef.current?.checkRequired()) {
+        return false
+      }
+    }
+    return true
+  }
+
   const onCreateJobPosting = () => {
+    if (!validate()) {
+      return
+    }
     const data: JobPostingInfo = {
       name: nameRef.current?.getValue() ?? '',
-      address,
+      address: addressInput,
       career: getValueDropdown(careerRef.current?.getValue()),
       recruitmentPosition: getValueDropdown(recruitmentPositionRef.current?.getValue()),
       timeToApply: moment(timeToApply).valueOf(),
@@ -80,7 +173,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
       numberRecruited: parseInt(numberRecruitedRef.current?.getValue() ?? '1'),
       genderRequirement: getValueDropdown(genderRequirementRef.current?.getValue()),
       salary: {
-        salaryType: 'FROM_TO', // AGREE
+        salaryType: salaryTypeRef.current?.getValue()[0].value || '',
         salaryFrom: parseInt(salaryFromRef.current?.getValue() ?? '0'),
         salaryTo: parseInt(salaryToRef.current?.getValue() ?? '0'),
         salaryCurrency: getValueDropdown(salaryCurrencyRef.current?.getValue())[0]
@@ -91,46 +184,114 @@ export const EmployerCreateJobPostings: React.FC = () => {
       status: 'ACTIVE'
     }
 
-    console.log('ducnh2', data)
     callApiCreate(data)
   }
 
+  const onHideAddress = () => {
+    setAddressInput(addressInput)
+  }
+
+  const onChangeAddress = () => {
+    setAddressInput({
+      label: `${district?.label}, ${city?.label}`,
+      value: {
+        city: city?.value ?? '',
+        district: district?.value ?? ''
+      }
+    })
+    addressRef.current?.setValue(`${district?.label}, ${city?.label}`)
+    modalAddressRef.current?.hide()
+  }
+
+  const callApiJobDetail = () => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/jobs/${jobId}`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      headers,
+      url,
+      data: undefined,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseJobDetail>) => {
+        const { success, error, data } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        setJobDetail(data.jobDetail)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  useEffect(() => {
+    if (jobId) {
+      callApiJobDetail()
+    }
+  }, [jobId])
+
+  useEffect(() => {
+    if (jobDetail) {
+      const {
+        name,
+        address,
+        career,
+        recruitmentPosition,
+        timeToApply,
+        formOfWork,
+        numberRecruited,
+        genderRequirement,
+        salary,
+        jobDescription,
+        requirementForCandidate,
+        benefitToEnjoy
+      } = jobDetail
+
+      nameRef.current?.setValue(name)
+      addressRef.current?.setValue(address?.label || '')
+      careerRef.current?.setValue(getDefaultDataDropdown(DataCareer, career))
+      recruitmentPositionRef.current?.setValue(getDefaultDataDropdown(DataRecruitmentPosition, recruitmentPosition))
+      setTimeToApply(timeToApply)
+      formOfWorkRef.current?.setValue(getDefaultDataDropdown(DataFormOfWork, formOfWork))
+      numberRecruitedRef.current?.setValue(`${numberRecruited}`)
+      genderRequirementRef.current?.setValue(getDefaultDataDropdown(DataGender, genderRequirement))
+      salaryTypeRef.current?.setValue(getDefaultDataDropdown(DataSalaryType, [salary.salaryType]))
+      if (salary.salaryType === 'FROM_TO') {
+        setDisableSalary(false)
+        salaryFromRef.current?.setValue(`${salary.salaryFrom}`)
+        salaryToRef.current?.setValue(`${salary.salaryTo}`)
+        salaryCurrencyRef.current?.setValue(getDefaultDataDropdown(DataCurrency, [salary.salaryCurrency || '']))
+      }
+      setJobDescription(jobDescription)
+      setRequirementForCandidate(requirementForCandidate)
+      setBenefitToEnjoy(benefitToEnjoy)
+    }
+  }, [jobDetail])
+
   return (
-    <div className="w-2/3 py-32 mx-auto">
-      <BreadCrumb title="Đăng tin tuyển dụng mới" />
-      <div className="mt-10 bg-blue-50 px-16 py-10 shadow rounded">
+    <WrapperPage title={jobId ? 'Cập nhật tin tuyển dụng' : 'Đăng tin tuyển dụng'}>
+      <div className="mt-20 px-10">
         <span className="block text-lg font-semibold uppercase">1. Thông tin cơ bản</span>
         <div className="mt-8">
-          <PrInput label="Tên công việc" icon="fas fa-address-card" required ref={nameRef} />
+          <PrInput label="Tên việc làm" icon="fas fa-address-card" required ref={nameRef} />
         </div>
         <div className="mt-8">
-          <span className="block text-green-700 font-semibold">
-            Địa chỉ làm việc<span className="text-red-500 ml-1">*</span>
-          </span>
-          <div className="grid-cols-2 grid gap-x-12 pl-10 mt-2">
-            <DropdownAsync
-              label="Tỉnh/Thành phố"
-              urlApi="/locations/cities"
-              onChange={(e) => {
-                setCity(e[0])
-                setDisableDistrict(false)
-              }}
-            />
-            <DropdownAsync
-              label="Quận/Huyện"
-              isDisabled={disableDistrict}
-              urlApi={`/locations/cities/${city?.value}`}
-              onChange={(e) => {
-                setAddress({
-                  label: `${e[0].label}, ${city?.label}`,
-                  value: {
-                    district: `${e[0].value}`,
-                    city: `${city?.value}`
-                  }
-                })
-              }}
-            />
-          </div>
+          <PrInput
+            label="Địa chỉ làm việc"
+            icon="fas fa-map-marker-alt"
+            ref={addressRef}
+            required
+            onFocus={() => modalAddressRef.current?.show()}
+          />
         </div>
         <div className="mt-8">
           <PrDropdown
@@ -158,6 +319,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
             <div className="border border-gray-300 rounded overflow-hidden">
               <DatePicker
                 wrapperClassName="w-full"
+                dateFormat="dd/MM/yyyy"
                 className="w-full h-9 px-4"
                 selected={timeToApply}
                 onChange={(e) => setTimeToApply(e)}
@@ -180,7 +342,13 @@ export const EmployerCreateJobPostings: React.FC = () => {
             />
           </div>
           <div className="col-span-1">
-            <PrInput label="Số lượng cần tuyển (người)" icon="fas fa-users" required ref={numberRecruitedRef} />
+            <PrInput
+              label="Số lượng cần tuyển (người)"
+              icon="fas fa-users"
+              required
+              ref={numberRecruitedRef}
+              type="number"
+            />
           </div>
         </div>
         <div className="mt-8 grid-cols-2 grid gap-x-20">
@@ -197,25 +365,32 @@ export const EmployerCreateJobPostings: React.FC = () => {
           <span className="block text-green-700 font-semibold">
             Mức lương<span className="text-red-500 ml-1">*</span>
           </span>
-          <div className="grid grid-cols-7 gap-x-10 mt-2 pl-10">
+          <div className="grid grid-cols-7 gap-x-10 mt-2">
             <div className="col-span-2">
-              <PrInput label="Từ" icon="fas fa-coins" ref={salaryFromRef} />
+              <PrDropdown
+                ref={salaryTypeRef}
+                options={DataSalaryType}
+                isClearable={false}
+                label="Hình thức"
+                labelClassName="text-green-700 font-semibold"
+                onChange={(e: any) => setDisableSalary(!(e && e.value === 'FROM_TO'))}
+              />
             </div>
             <div className="col-span-2">
-              <PrInput label="Đến" icon="fas fa-coins" ref={salaryToRef} />
+              <PrInput label="Từ" icon="fas fa-coins" ref={salaryFromRef} type="number" disabled={disableSalary} />
+            </div>
+            <div className="col-span-2">
+              <PrInput label="Đến" icon="fas fa-coins" ref={salaryToRef} type="number" disabled={disableSalary} />
             </div>
             <div className="col-span-1">
               <PrDropdown
                 ref={salaryCurrencyRef}
+                isClearable={false}
                 options={DataCurrency}
                 label="Đơn vị"
+                isDisabled={disableSalary}
                 labelClassName="text-green-700 font-semibold"
               />
-            </div>
-            <div className="col-span-2">
-              <span>hoặc</span>
-              <input type="radio" />
-              thỏa thuận
             </div>
           </div>
         </div>
@@ -224,7 +399,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <div className="mt-8">
           <Editor
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue="<p>M&ocirc; tả c&ocirc;ng việc l&agrave;m a</p>"
+            initialValue={jobDescription || '<p>Mô tả chi tiết về công việc đang tuyển dụng</p>'}
             init={{
               height: 500,
               menubar: false,
@@ -248,7 +423,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <div className="mt-8">
           <Editor
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue="<p>Mô tả công việc</p>"
+            initialValue={requirementForCandidate || '<p>Đưa ra các yêu cầu về ứng viên cần tuyển dụng</p>'}
             init={{
               height: 500,
               menubar: false,
@@ -272,7 +447,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <div className="mt-8">
           <Editor
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue="<p>Mô tả công việc</p>"
+            initialValue={benefitToEnjoy || '<p>Nêu các quyền lợi mà ứng viên sẽ được hưởng</p>'}
             init={{
               height: 500,
               menubar: false,
@@ -292,15 +467,69 @@ export const EmployerCreateJobPostings: React.FC = () => {
           />
         </div>
 
-        <div className="mt-20 text-center">
+        <div className="mt-20 text-center pb-20">
           <span
             onClick={onCreateJobPosting}
-            className="bg-blue-500 text-white rounded px-6 py-3 uppercase text-lg font-semibold cursor-pointer"
+            className="bg-blue-500 text-white rounded px-6 py-3 uppercase text-lg font-semibold cursor-pointer hover:bg-blue-600 duration-300"
           >
-            Đăng tin ngay
+            <i className="fas fa-paper-plane mr-3"></i>
+            {jobId ? 'Cập nhật' : 'Đăng tin'}
           </span>
         </div>
       </div>
-    </div>
+
+      <PrModal ref={modalNotifySuccessRef} title="Thông báo" disableFooter>
+        <div className="py-16 px-10">
+          <span className="text-green-600 block text-center font-semibold text-xl">
+            <i className="fas fa-check-circle mr-2" /> Đăng tin tuyển dụng thành công
+          </span>
+          <span className="block text-center mt-10 font-medium text-lg">
+            Bạn có thể theo dõi trong
+            <Link to="/employer/manage-job" className="text-red-500 ml-3">
+              Quản lý tin tuyển dụng
+            </Link>
+          </span>
+        </div>
+      </PrModal>
+
+      <PrModal ref={modalNotifyErrorRef} title="Thông báo" disableFooter>
+        <div className="py-16 px-10">
+          <span className="text-red-500 block text-center font-semibold text-xl">
+            <i className="fas fa-times-circle mr-2" /> Đăng tin tuyển dụng không thành công
+          </span>
+          <span className="block text-center mt-10 font-medium text-lg">
+            Lỗi: <span>{errorMessage}</span>
+          </span>
+        </div>
+      </PrModal>
+
+      <PrModal
+        ref={modalAddressRef}
+        title={'Chọn địa chỉ'}
+        cancelTitle="Đóng"
+        okTitle="Xác nhận"
+        onChange={onChangeAddress}
+        onHide={onHideAddress}
+      >
+        <div className="grid-cols-2 grid gap-x-12 p-8">
+          <DropdownAsync
+            label="Tỉnh/Thành phố"
+            urlApi="/locations/cities"
+            onChange={(e) => {
+              setCity(e[0])
+              setDisableDistrict(false)
+            }}
+          />
+          <DropdownAsync
+            label="Quận/Huyện"
+            isDisabled={disableDistrict}
+            urlApi={`/locations/cities/${city?.value}`}
+            onChange={(e) => {
+              setDistrict(e[0])
+            }}
+          />
+        </div>
+      </PrModal>
+    </WrapperPage>
   )
 }

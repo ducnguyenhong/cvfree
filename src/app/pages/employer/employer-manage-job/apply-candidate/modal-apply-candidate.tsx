@@ -5,6 +5,8 @@ import { Columns, TableLoader } from './apply-candidate.data'
 import { SERVER_URL } from 'constants/index'
 import { useRecoilState } from 'recoil'
 import { showApplyCandidateState } from 'app/states/show-modal/apply-candidate-state'
+import { PopupAcceptCandidate } from './popup-accept-candidate'
+import { PopupRejectCandidate } from './popup-reject-candidate'
 
 export const prefix = 'applyCandidateList'
 
@@ -72,6 +74,8 @@ export const ModalApplyCandidate: React.FC = () => {
           </span>
         </div>
         <Table columns={Columns} loader={loader.current} prefix={prefix} />
+        <PopupAcceptCandidate />
+        <PopupRejectCandidate />
       </div>
     </PrModal>
   )

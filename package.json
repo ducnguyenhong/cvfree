@@ -1,6 +1,6 @@
 {
   "name": "cvfree",
-  "version": "210425.03.50",
+  "version": "210426.02.45",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",

@@ -56,7 +56,7 @@ export const DataGender: DropdownProps[] = [
   },
   {
     value: 'NO',
-    label: 'Không'
+    label: 'Không yêu cầu'
   }
 ]
 
@@ -201,6 +201,17 @@ export const DataCurrency: DropdownProps[] = [
   {
     value: 'USD',
     label: 'USD'
+  }
+]
+
+export const DataSalaryType: DropdownProps[] = [
+  {
+    value: 'FROM_TO',
+    label: 'Chi tiết'
+  },
+  {
+    value: 'AGREE',
+    label: 'Thỏa thuận'
   }
 ]
 

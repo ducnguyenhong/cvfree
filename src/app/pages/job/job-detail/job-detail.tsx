@@ -18,6 +18,7 @@ import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { DropdownAsync, DropdownAsyncRef } from 'app/partials/dropdown-async'
 import Cookies from 'js-cookie'
 import PrInput from 'app/partials/pr-input'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
 
 export const JobDetail: React.FC = () => {
   const [jobInfo, setJobInfo] = useState<JobPostingInfo | undefined | null>(undefined)
@@ -157,34 +158,50 @@ export const JobDetail: React.FC = () => {
     modalConfirmApplyRef.current?.hide()
   }
 
+  const renderSalary = () => {
+    if (salary.salaryType === 'AGREE') {
+      return 'Thỏa thuận'
+    }
+    if (salary.salaryType === 'FROM_TO') {
+      return `${salary.salaryFrom} đến ${salary.salaryTo} (${salary.salaryCurrency})`
+    }
+  }
+
   return (
-    <div className="py-32 w-2/3 mx-auto">
-      <BreadCrumb title="Chi tiết việc làm" />
-      <div className="shadow bg-blue-50 px-8 py-10 mt-10">
-        <div className="grid grid-cols-5 mt-10 gap-x-10">
+    <WrapperPage title="Chi tiết việc làm">
+      <div className="px-8 py-10 mt-5">
+        <div className="grid grid-cols-5 gap-x-10">
           <div className="col-span-1 px-4">
             <img src={company?.logo} alt="logo" />
           </div>
           <div className="col-span-4">
-            <span className="font-semibold uppercase text-lg block">{name}</span>
-            <span className="block">{company?.name}</span>
-            <span className="block">{address?.label}</span>
+            <span className="font-semibold uppercase text-xl mb-2 block">{name}</span>
+            <span className="block font-medium mb-1">
+              <i className="fas fa-building mr-2 text-gray-600" />
+              {company?.name}
+            </span>
+            <span className="block font-medium">
+              <i className="fas fa-map-marker-alt mr-2 text-gray-600" />
+              {address?.label}
+            </span>
           </div>
         </div>
         <div className="mt-20">
-          <span className="font-semibold block text-xl uppercase">1. Thông tin tuyển dụng</span>
-          <div>
-            <span className="block">Ngành nghề: {getDefaultLabelDropdown(DataCareer, career)}</span>
-            <span className="block">Thời hạn nộp hồ sơ: {moment(timeToApply).format('DD/MM/YYYY')}</span>
-            <span className="block">
-              Mức lương: {salary.salaryFrom} đến {salary.salaryTo} {salary.salaryCurrency}
+          <span className="font-semibold block text-xl uppercase mb-3">1. Thông tin tuyển dụng</span>
+          <div className="px-4 font-medium">
+            <span className="block mb-1">- Ngành nghề: {getDefaultLabelDropdown(DataCareer, career)}</span>
+            <span className="block mb-1">- Thời hạn nộp hồ sơ: {moment(timeToApply).format('DD/MM/YYYY')}</span>
+            <span className="block mb-1">- Mức lương: {renderSalary()}</span>
+            <span className="block mb-1">
+              - Hình thức làm việc: {getDefaultLabelDropdown(DataFormOfWork, formOfWork)}
             </span>
-            <span className="block">Hình thức làm việc: {getDefaultLabelDropdown(DataFormOfWork, formOfWork)}</span>
-            <span className="block">Số lượng cần tuyển: {numberRecruited} người</span>
-            <span className="block">
-              Vị trí cần tuyển dụng: {getDefaultLabelDropdown(DataRecruitmentPosition, recruitmentPosition)}
+            <span className="block mb-1">- Số lượng cần tuyển: {numberRecruited} người</span>
+            <span className="block mb-1">
+              - Vị trí cần tuyển dụng: {getDefaultLabelDropdown(DataRecruitmentPosition, recruitmentPosition)}
             </span>
-            <span className="block">Yêu cầu giới tính: {getDefaultLabelDropdown(DataGender, genderRequirement)}</span>
+            <span className="block mb-1">
+              - Yêu cầu giới tính: {getDefaultLabelDropdown(DataGender, genderRequirement)}
+            </span>
           </div>
           <span className="font-semibold block text-xl uppercase mt-16">2. Mô tả công việc</span>
           <div>
@@ -300,6 +317,6 @@ export const JobDetail: React.FC = () => {
           </div>
         </div>
       </PrModal>
-    </div>
+    </WrapperPage>
   )
 }

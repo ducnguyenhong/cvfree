@@ -20,6 +20,7 @@ import { WrapperTable } from 'app/partials/table/wrapper-table'
 import { Table } from '@ekidpro/table'
 import { Columns, TableLoader } from './employer-manage-job.data'
 import { ModalApplyCandidate } from './apply-candidate/modal-apply-candidate'
+import { PopupDeactive } from './popup-deactive-job'
 
 export const prefix = 'employerManageJob'
 
@@ -220,7 +221,7 @@ export const EmployerManageJob: React.FC = () => {
   //     modalNotifyRef.current?.show()
   //     return
   //   }
-  //   history.push('/employer/create-job-postings')
+  //   history.push('/employer/jobs/create')
   // }
 
   // const onShowAcceptCandidate = (cvId: string) => {
@@ -268,7 +269,7 @@ export const EmployerManageJob: React.FC = () => {
   //         <span className="block uppercase text-xl font-bold text-gray-700">Danh sách tin tuyển dụng đã đăng</span>
   //         <span
   //           onClick={onCreateJobPosting}
-  //           // to="/employer/create-job-postings"
+  //           // to="/employer/jobs/create"
   //           className="px-4 py-1.5 block bg-green-500 rounded-md duration-300 hover:bg-green-600"
   //         >
   //           <i className="fas fa-plus mr-3 text-white" />
@@ -422,7 +423,7 @@ export const EmployerManageJob: React.FC = () => {
   const Toolbar: React.FC = () => {
     return (
       <Link
-        to="/template-cv"
+        to="/employer/jobs/create"
         className="flex items-center rotate-parent bg-green-600 rounded-md px-4 py-3 sm:py-2 hover:bg-green-700 duration-300"
       >
         <i className="fas fa-plus sm:mr-3 mr-2 duration-500 text-white"></i>
@@ -449,6 +450,7 @@ export const EmployerManageJob: React.FC = () => {
     <div className="pt-28 pb-10 w-2/3 mx-auto" style={{ minHeight: 'calc(100vh - 100px)' }}>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
       <ModalApplyCandidate />
+      <PopupDeactive />
     </div>
   )
 }

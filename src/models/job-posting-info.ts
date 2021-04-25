@@ -9,10 +9,13 @@ export interface JobPostingInfo {
     logo: string
   }
   candidateApplied?: string[]
-  address: {
-    value: { district: string; city: string }
+  address?: {
     label: string
-  } | null
+    value: {
+      city: string
+      district: string
+    }
+  }
   career: string[]
   recruitmentPosition: string[]
   timeToApply: number

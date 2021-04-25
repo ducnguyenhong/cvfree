@@ -225,7 +225,13 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: []
   },
   {
-    path: '/employer/create-job-postings',
+    path: '/employer/jobs/create',
+    component: EmployerCreateJobPostings,
+    exact: true,
+    role: ['EMPLOYER']
+  },
+  {
+    path: '/employer/jobs/update/:id',
     component: EmployerCreateJobPostings,
     exact: true,
     role: ['EMPLOYER']

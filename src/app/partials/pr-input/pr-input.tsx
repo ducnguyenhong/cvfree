@@ -1,5 +1,6 @@
 import { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { PrInputProps, PrInputRefProps } from './pr-input.type'
+import { InputStyle } from './pr-input.style'
 
 const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>) => {
   const {
@@ -17,7 +18,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     icon,
     errorMessage,
     required,
-    divClassName
+    divClassName,
+    disabled
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -75,8 +77,6 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
 
   useEffect(() => {
     if (errorMessage) {
-      console.log('ducnh3', errorMessage)
-
       setError(errorMessage)
       setFocus(inputRef)
     }
@@ -92,11 +92,14 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
           maxLength={maxLength}
           onFocus={onFocus}
           ref={inputRef}
+          disabled={disabled}
           onBlur={onBlur}
           rows={6}
           placeholder={placeholder}
           style={style}
-          className={`pl-4 block border pr-4 py-2 rounded-md absolute top-0 left-0 w-full h-full border-gray-300 focus:outline-none ${
+          className={`${
+            disabled ? 'bg-gray-100' : ''
+          } pl-4 block border pr-4 py-2 rounded-md absolute top-0 left-0 w-full h-full border-gray-300 focus:outline-none ${
             validateRequired ? 'focus:border-red-600' : 'focus:border-b-2'
           } ${className}`}
         />
@@ -110,12 +113,13 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
         minLength={minLength}
         maxLength={maxLength || 255}
         type={typeInput}
+        disabled={disabled}
         onFocus={onFocus}
         ref={inputRef}
         onBlur={onBlur}
         placeholder={placeholder}
         style={style}
-        className={`${className} ${
+        className={`${disabled ? 'bg-gray-100' : ''} ${className} ${
           icon ? 'pl-10' : 'pl-4'
         } block pr-10 py-5 rounded-md absolute top-0 left-0 w-full h-full border border-gray-300 bg-white  focus:outline-none ${
           validateRequired || error ? 'focus:border-red-600' : 'focus:border-green-600'
@@ -125,7 +129,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
   }
 
   return (
-    <div>
+    <InputStyle>
       {label && (
         <span className="block font-semibold text-green-800 mb-1">
           {label}
@@ -153,7 +157,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
       </div>
       {validateRequired && <span className="text-red-500 font-medium block text-base mt-1">* Bắt buộc!</span>}
       {!validateRequired && error && <span className="text-red-500 font-medium block text-base mt-1">{error}</span>}
-    </div>
+    </InputStyle>
   )
 })
 

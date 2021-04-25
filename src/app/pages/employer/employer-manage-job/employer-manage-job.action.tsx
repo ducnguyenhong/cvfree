@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { slugURL } from 'utils/helper'
-import { showDeactiveCvState } from 'app/states/show-popup/deactive-cv-state'
+import { showDeactiveJobState } from 'app/states/show-popup/deactive-job-state'
 
 interface ActionProps {
   id?: number | string
@@ -11,7 +11,7 @@ interface ActionProps {
 
 export const Action: React.FC<ActionProps> = (props) => {
   const { id, name } = props
-  const setShowDeactive = useSetRecoilState(showDeactiveCvState)
+  const setShowDeactive = useSetRecoilState(showDeactiveJobState)
 
   const onShowDeactiveJob = () => {
     setShowDeactive({ showPopup: true, id })
@@ -32,7 +32,7 @@ export const Action: React.FC<ActionProps> = (props) => {
           className="flex rounded-md items-center justify-center bg-gray-100 hover:bg-indigo-500 mr-4 duration-300"
           style={{ width: 32, height: 32 }}
         >
-          <Link to={`/update-jobs/${slugURL(name)}.${id}`}>
+          <Link to={`/employer/jobs/update/${id}`}>
             <i className="fas fa-edit text-gray-500 px-3 py-4 hover:text-white"></i>
           </Link>
         </div>

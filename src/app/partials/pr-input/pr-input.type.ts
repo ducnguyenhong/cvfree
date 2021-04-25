@@ -11,10 +11,11 @@ export interface PrInputProps {
   maxLength?: number
   minLength?: number
   label?: string | React.ReactElement
-  type?: 'password' | 'text' | 'textarea'
+  type?: 'password' | 'text' | 'textarea' | 'number'
   icon?: string
   errorMessage?: string
   divClassName?: string
+  disabled?: boolean
 }
 
 export interface PrInputRefProps {

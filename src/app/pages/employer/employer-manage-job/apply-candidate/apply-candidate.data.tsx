@@ -10,6 +10,7 @@ import { Action } from './apply-candidate.action'
 
 export interface TableColumn extends CandidateInfo {
   appliedAt?: Date
+  jobId?: string
   action?: string
 }
 
@@ -65,7 +66,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { cvId, avatar, fullname, gender, appliedAt } = data
+    const { cvId, avatar, fullname, gender, appliedAt, jobId } = data
 
     switch (field) {
       case 'cvId':
@@ -87,7 +88,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <DateTime timestamp={appliedAt} format="DD/MM/YYYY" />
 
       case 'action':
-        return <Action id={cvId} name={fullname} />
+        return <Action cvId={cvId} name={fullname} jobId={jobId} />
 
       default:
         return <span>{get(data, 'field')}</span>
