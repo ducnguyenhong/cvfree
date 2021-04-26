@@ -221,8 +221,8 @@ export const JobDetail: React.FC = () => {
             <span
               onClick={onShowApplyJob}
               className={`${
-                isApplied ? '' : 'cursor-pointer'
-              } inline-block bg-green-600 text-white px-5 py-3 rounded-md uppercase font-semibold duration-300 hover:bg-green-500`}
+                isApplied ? 'bg-purple-600' : 'cursor-pointer bg-green-600 hover:bg-green-500'
+              } inline-block text-white px-5 py-3 rounded-md uppercase font-semibold duration-300`}
             >
               {isApplied ? 'Đã ứng tuyển' : 'Ứng tuyển ngay'}
             </span>
@@ -230,7 +230,7 @@ export const JobDetail: React.FC = () => {
           {isApplied && (
             <span className="block mt-2">
               Xem chi tiết tại{' '}
-              <Link to="/manage-job-applied" className="text-green-600 font-semibold">
+              <Link to="/manage-apply" className="text-green-600 font-semibold">
                 Quản lý ứng tuyển
               </Link>
             </span>
