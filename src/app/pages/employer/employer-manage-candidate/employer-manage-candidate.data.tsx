@@ -8,22 +8,24 @@ import { showNotify } from 'app/partials/pr-notify'
 import moment from 'moment'
 import { BasicCvInfo } from 'app/partials/table-columns/table-column-cv-info'
 import { slugURL } from 'utils/helper'
+import { Action } from './employer-manage-candidate.action'
 
 export interface TableColumn extends CandidateManageInfo {
   contact?: string
   action?: string
+  candidateId?: string
 }
 
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'candidateId', title: 'Mã ứng viên' },
+  { enable: true, field: '_id', title: 'Mã' },
   { enable: true, field: 'candidate', title: 'Hồ sơ ứng viên' },
   { enable: true, field: 'contact', title: 'Thông tin liên hệ' },
   { enable: true, field: 'jobId', title: 'Việc làm' },
   { enable: true, field: 'isDone', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày duyệt ứng viên' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { enable: true, field: 'action', title: 'Cập nhật trạng thái' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
@@ -69,13 +71,13 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { cvId, jobId, jobName, isDone, createdAt, candidate } = data
+    const { cvId, jobId, jobName, isDone, createdAt, candidate, _id } = data
 
-    const { fullname, avatar, gender, candidateId, phone, email, address } = candidate
+    const { fullname, avatar, gender, phone, email, address } = candidate
 
     switch (field) {
-      case 'candidateId':
-        return <span>{candidateId.slice(candidateId.length - 5, candidateId.length)}</span>
+      case '_id':
+        return <span>{_id.slice(_id.length - 5, _id.length)}</span>
 
       case 'candidate':
         return <BasicCvInfo id={cvId} fullname={fullname} avatar={avatar} gender={gender} />
@@ -133,7 +135,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{moment(createdAt).format('DD/MM/YYYY')}</span>
 
       case 'action':
-        return <span>ducnh</span>
+        return <Action id={_id} isDone={isDone} />
 
       default:
         return <span>{get(data, 'field')}</span>

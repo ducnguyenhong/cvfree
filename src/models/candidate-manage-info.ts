@@ -1,6 +1,7 @@
 export interface CandidateManageInfo {
   jobId: string
   jobName: string
+  _id: string
   cvId: string
   candidate: {
     candidateId: string
@@ -19,5 +20,5 @@ export interface CandidateManageInfo {
   }
   isDone: boolean
   createdAt: Date
-  candidateId: string
+  status: string
 }
