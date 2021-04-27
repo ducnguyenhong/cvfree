@@ -13,6 +13,7 @@ import { DropdownAsync } from 'app/partials/dropdown-async'
 import { JobPostingInfo } from 'models/job-posting-info'
 import moment from 'moment'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
 
 export const CompanyDetail: React.FC = () => {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | undefined | null>(undefined)
@@ -146,9 +147,8 @@ export const CompanyDetail: React.FC = () => {
   const { name, website, background, personnelSize, address, intro, logo } = companyInfo
 
   return (
-    <div className="w-2/3 mx-auto py-32">
-      <BreadCrumb title="Thông tin công ty" />
-      <div className="bg-blue-50 shadow px-8 py-10 mt-10">
+    <WrapperPage title="Thông tin công ty">
+      <div className="px-8 py-10 mt-10">
         <div style={{ aspectRatio: '5/2' }} className="relative">
           <img src={background} alt="background" className="w-full h-full" />
           <img
@@ -161,20 +161,32 @@ export const CompanyDetail: React.FC = () => {
           <span className="block text-center font-semibold text-3xl">{name}</span>
         </div>
         <div className="px-10 mt-10">
-          <span className="block uppercase text-xl font-bold">1. Thông tin công ty</span>
-          <span className="block">Website: {website}</span>
-          <span className="block">Quy mô nhân sự: {personnelSize} người</span>
-          <span className="block">
-            Địa chỉ: {address.street}, {address.label}
+          <span className="block uppercase text-xl font-bold mb-5">1. Thông tin công ty</span>
+          <span className="block font-semibold mb-3">
+            - Website:{' '}
+            <a href={website} target="_blank" rel="noopener noreferrer" className="font-normal ml-3">
+              {website}
+            </a>
           </span>
-          <span className="block">{intro}</span>
-          <span className="block uppercase text-xl font-bold mt-10">2. Việc làm tuyển dụng</span>
+
+          <span className="block font-semibold mb-3">
+            - Quy mô nhân sự: <span className="font-normal ml-3">{personnelSize} người</span>
+          </span>
+
+          <span className="block font-semibold mb-3">
+            - Địa chỉ:{' '}
+            <span className="font-normal ml-3">
+              {address.street}, {address.label}
+            </span>
+          </span>
+
+          <span className="block font-semibold mb-3 text-justify">
+            - Giới thiệu: <span className="font-normal ml-3">{intro}</span>
+          </span>
+          <span className="block uppercase text-xl font-bold mt-20">2. Việc làm tuyển dụng</span>
           <MemoJobList listJob={listJob} />
         </div>
-        <div className="text-center my-10">
-          <span className="px-4 py-2 rounded text-white bg-blue-500">Gửi yêu cầu chỉnh sửa thông tin</span>
-        </div>
       </div>
-    </div>
+    </WrapperPage>
   )
 }

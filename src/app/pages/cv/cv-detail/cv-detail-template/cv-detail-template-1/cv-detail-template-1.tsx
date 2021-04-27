@@ -20,6 +20,9 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { getGenderMultiLanguage } from 'utils/helper'
+import { useRecoilValue } from 'recoil'
+import { languageState } from 'app/states/language-state'
 
 interface CvDetailProps {
   data: CvInfo
@@ -29,6 +32,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
   const { data } = props
   const [cvHeight, setCvHeight] = useState<number>(0)
   const cvRef = useRef<HTMLDivElement>(null)
+  const language = useRecoilValue(languageState)
 
   const { color, fontSize, fontFamily, categoryInfo, categoryCV, detail } = data
   const {
@@ -185,7 +189,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
 
         {/* CV Main */}
         <div
-          style={{ width: '210mm', height: 'auto', fontFamily: fontFamily, fontSize: fontSize }}
+          style={{ width: '210mm', minHeight: '297mm', fontFamily: fontFamily, fontSize: fontSize }}
           className="mx-auto relative shadow-2xl mt-10"
           ref={cvRef}
           id="cv-detail"
@@ -200,7 +204,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
               <span className="text-white font-semibold">Trang 3</span>
             </div>
           )}
-          <div className="grid grid-cols-3 h-full">
+          <div className="grid grid-cols-3" style={{ minHeight: '297mm' }}>
             {/* CV Left */}
             <div className="col-span-1 bg-gray-100 relative overflow-hidden">
               <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
@@ -230,7 +234,9 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                 </div>
                 <div className="flex items-center">
                   <GenderIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{gender}</span>
+                  <span className="block py-1 ml-4 font-medium text-gray-600">
+                    {getGenderMultiLanguage(gender, language)}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <PhoneIcon />

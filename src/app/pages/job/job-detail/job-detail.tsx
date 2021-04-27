@@ -8,7 +8,6 @@ import { ResponseDefault, ResponseJobDetail } from 'models/response-api'
 import { JobPostingInfo } from 'models/job-posting-info'
 import { showNotify } from 'app/partials/pr-notify'
 import { List } from 'react-content-loader'
-import { BreadCrumb } from 'app/pages/bread-crumb'
 import moment from 'moment'
 import { getDefaultLabelDropdown } from 'utils/helper'
 
@@ -17,7 +16,7 @@ import { userInfoState } from 'app/states/user-info-state'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { DropdownAsync, DropdownAsyncRef } from 'app/partials/dropdown-async'
 import Cookies from 'js-cookie'
-import PrInput from 'app/partials/pr-input'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 
 export const JobDetail: React.FC = () => {
@@ -27,10 +26,16 @@ export const JobDetail: React.FC = () => {
   const jobId = get(match.params, 'id')
   const modalNeedLoginRef = useRef<PrModalRefProps>(null)
   const modalConfirmApplyRef = useRef<PrModalRefProps>(null)
+  const modalNotifyReportRef = useRef<PrModalRefProps>(null)
   const modalReportJobRef = useRef<PrModalRefProps>(null)
   const history = useHistory()
   const cvSelectedRef = useRef<DropdownAsyncRef>(null)
   const [errMessageApply, setErrMessageApply] = useState<string>('')
+
+  const reporterFullname = useRef<PrInputRefProps>(null)
+  const reporterContent = useRef<PrInputRefProps>(null)
+  const reporterPhone = useRef<PrInputRefProps>(null)
+  const reporterEmail = useRef<PrInputRefProps>(null)
 
   const callApiJobDetail = (jobId: string) => {
     const accessToken = Cookies.get('token')
@@ -96,6 +101,38 @@ export const JobDetail: React.FC = () => {
       })
   }
 
+  const callApiReportJob = (data: any) => {
+    const accessToken = Cookies.get('token')
+    const url = `${SERVER_URL}/report-job`
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      headers,
+      url,
+      data,
+      timeout: 20000
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseDefault>) => {
+        const { success, error } = response.data
+
+        if (!success) {
+          throw Error(error?.message)
+        }
+        modalReportJobRef.current?.hide()
+        modalNotifyReportRef.current?.show()
+      })
+      .catch((e) => {
+        modalReportJobRef.current?.hide()
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
   useEffect(() => {
     if (jobId) {
       callApiJobDetail(jobId)
@@ -128,7 +165,7 @@ export const JobDetail: React.FC = () => {
   } = jobInfo
 
   const onShowApplyJob = () => {
-    if (isApplied) {
+    if (isApplied || moment(timeToApply).valueOf() < moment().valueOf()) {
       return
     }
     if (!userInfo) {
@@ -167,6 +204,54 @@ export const JobDetail: React.FC = () => {
     }
   }
 
+  const renderClassNameApply = () => {
+    if (timeToApply.valueOf() < moment().valueOf()) {
+      return 'bg-gray-600'
+    } else {
+      return isApplied ? 'bg-purple-600' : 'cursor-pointer bg-green-600 hover:bg-green-500'
+    }
+  }
+
+  const renderTitleApply = () => {
+    if (timeToApply.valueOf() < moment().valueOf()) {
+      return 'Đã hết hạn'
+    } else {
+      return isApplied ? 'Đã ứng tuyển' : 'Ứng tuyển ngay'
+    }
+  }
+
+  const validateReport = () => {
+    if (!reporterFullname.current?.checkRequired()) {
+      return false
+    }
+    if (!reporterPhone.current?.checkRequired()) {
+      return false
+    }
+    if (!reporterEmail.current?.checkRequired()) {
+      return false
+    }
+    if (!reporterContent.current?.checkRequired()) {
+      return false
+    }
+    return true
+  }
+
+  const onSendReport = () => {
+    if (!validateReport()) {
+      return
+    }
+    const fullname = reporterFullname.current?.getValue()
+    const email = reporterEmail.current?.getValue()
+    const phone = reporterPhone.current?.getValue()
+    const content = reporterContent.current?.getValue()
+    const data = {
+      reporter: { fullname, email, phone, content },
+      job: { id: jobId }
+    }
+
+    callApiReportJob(data)
+  }
+
   return (
     <WrapperPage title="Chi tiết việc làm">
       <div className="px-8 py-10 mt-5">
@@ -176,10 +261,15 @@ export const JobDetail: React.FC = () => {
           </div>
           <div className="col-span-4">
             <span className="font-semibold uppercase text-xl mb-2 block">{name}</span>
-            <span className="block font-medium mb-1">
+            <a
+              href={`/companies/${company?.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block font-medium mb-1"
+            >
               <i className="fas fa-building mr-2 text-gray-600" />
               {company?.name}
-            </span>
+            </a>
             <span className="block font-medium">
               <i className="fas fa-map-marker-alt mr-2 text-gray-600" />
               {address?.label}
@@ -220,11 +310,9 @@ export const JobDetail: React.FC = () => {
           {userInfo?.type !== 'EMPLOYER' && userInfo?.type !== 'ADMIN' && (
             <span
               onClick={onShowApplyJob}
-              className={`${
-                isApplied ? 'bg-purple-600' : 'cursor-pointer bg-green-600 hover:bg-green-500'
-              } inline-block text-white px-5 py-3 rounded-md uppercase font-semibold duration-300`}
+              className={`${renderClassNameApply()} inline-block text-white px-5 py-3 rounded-md uppercase font-semibold duration-300`}
             >
-              {isApplied ? 'Đã ứng tuyển' : 'Ứng tuyển ngay'}
+              {renderTitleApply()}
             </span>
           )}
           {isApplied && (
@@ -286,35 +374,55 @@ export const JobDetail: React.FC = () => {
       </PrModal>
 
       <PrModal
-        title="Báo cáo tin tuyển dụng giả mạo"
+        title="Báo cáo tin tuyển dụng này là giả mạo"
         disableFooter
         onHide={() => modalReportJobRef.current?.hide()}
         ref={modalReportJobRef}
       >
         <div className="py-10 px-10">
           <div>
-            <PrInput label="Tên của bạn" required className="h-9" />
+            <PrInput label="Họ và tên của bạn" required className="h-9" ref={reporterFullname} />
           </div>
           <div className="mt-5">
-            <PrInput label="Địa chỉ email" required className="h-9" />
+            <PrInput label="Số điện thoại" required className="h-9" ref={reporterPhone} />
+          </div>
+          <div className="mt-5">
+            <PrInput label="Địa chỉ email" required className="h-9" ref={reporterEmail} />
           </div>
           <div className="mt-5">
             <PrInput
               label="Nội dung giả mạo"
               placeholder="Ví dụ: giả mạo công ty ABC, mức lương không đúng..."
               required
+              ref={reporterContent}
               type="textarea"
               divClassName="h-40"
             />
           </div>
           <div className="text-center">
             <span
-              // onClick={onGoToSignIn}
-              className="inline-block bg-red-500 px-4 py-2 mt-8 rounded cursor-pointer font-semibold text-white"
+              onClick={onSendReport}
+              className="inline-block bg-red-500 px-4 py-2 mt-8 rounded cursor-pointer font-semibold text-white duration-300 hover:bg-red-600"
             >
               Gửi báo cáo
             </span>
           </div>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Thông báo"
+        disableFooter
+        onHide={() => modalNotifyReportRef.current?.hide()}
+        ref={modalNotifyReportRef}
+      >
+        <div className="py-10 px-10">
+          <span className="block text-center font-semibold text-xl text-green-600">
+            Báo cáo đã được gửi thành công!
+          </span>
+          <span className="block text-center mt-10 font-medium">
+            Chúng tôi sẽ tiến hành xác thực thông tin và sẽ sớm phản hồi kết quả qua email của bạn.
+          </span>
         </div>
       </PrModal>
     </WrapperPage>

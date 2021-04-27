@@ -7,6 +7,7 @@ export interface JobPostingInfo {
   company?: {
     name: string
     logo: string
+    id: string
   }
   candidateApplied?: string[]
   address?: {

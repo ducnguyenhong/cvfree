@@ -15,6 +15,7 @@ export interface PrInputProps {
   type?: 'password' | 'text' | 'textarea'
   icon?: string
   errorMessage?: string
+  noScrollOnFocus?: boolean
 }
 
 export interface PrInputRefProps {

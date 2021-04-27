@@ -285,3 +285,29 @@ export const getDefaultSearch = (paramKey: string): string => {
   }
   return valueParsed
 }
+
+export const getGenderFromInput = (data: string) => {
+  const arrayMale = ['MALE', 'NAM']
+  const arrayFemale = ['FEMALE', 'NỮ', 'NU']
+  const arrayAnother = ['KHÁC', 'KHAC', 'ANOTHER']
+  if (arrayMale.includes(data.toUpperCase())) {
+    return 'MALE'
+  }
+  if (arrayFemale.includes(data.toUpperCase())) {
+    return 'FEMALE'
+  }
+  if (arrayAnother.includes(data.toUpperCase())) {
+    return 'ANOTHER'
+  }
+  return 'UNKNOWN'
+}
+
+export const getGenderMultiLanguage = (gender: string, language: string) => {
+  if (gender === 'MALE') {
+    return language === 'vi' ? 'Nam' : 'Male'
+  }
+  if (gender === 'FEMALE') {
+    return language === 'vi' ? 'Nữ' : 'Female'
+  }
+  return ''
+}

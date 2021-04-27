@@ -18,7 +18,6 @@ export const Columns: ColumnsProps[] = [
   { enable: true, field: '_id', title: 'Mã CV' },
   { enable: true, field: 'name', title: 'Thông tin' },
   { enable: true, field: 'template', title: 'Mẫu CV' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày tạo' },
   { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
   { enable: true, field: 'action', title: 'Hành động' }
@@ -88,9 +87,6 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
       case 'template':
         return <span>{template}</span>
-
-      case 'status':
-        return <Status status={status} />
 
       case 'createdAt':
         return <DateTime timestamp={createdAt} />

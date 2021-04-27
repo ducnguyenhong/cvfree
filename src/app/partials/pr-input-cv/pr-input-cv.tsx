@@ -16,7 +16,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     type,
     icon,
     errorMessage,
-    divClassName
+    divClassName,
+    noScrollOnFocus
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -28,7 +29,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
 
   const setFocus = (control: any) => {
     if (control) {
-      control.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      !noScrollOnFocus && control.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
       setTimeout(() => {
         control.current.focus()
       }, 500)

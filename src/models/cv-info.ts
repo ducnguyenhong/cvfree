@@ -12,7 +12,7 @@ export interface CvInfo {
   template: string
   fontSize: string
   fontFamily: string
-  name?: string
+  name: string
   career?: {
     value: string
     label: string

@@ -1,4 +1,5 @@
 export interface CompanyInfo {
+  _id?: string
   id?: number
   name: string
   taxCode?: string
@@ -8,6 +9,15 @@ export interface CompanyInfo {
   personnelSize: string
   email: string
   phone: string
+  creatorId?: string
+  creator?: {
+    employeeIdCard: string
+    employeeIdCardId: string
+    position?: {
+      value: string
+      label: string
+    }
+  }
   staffList: number[]
   address: {
     value: { district: string; city: string }

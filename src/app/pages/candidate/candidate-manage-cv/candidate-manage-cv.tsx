@@ -37,6 +37,11 @@ export const CandidateManageCv: React.FC = () => {
         title="Danh sách hồ sơ cá nhân"
         toolbar={userInfo?.numberOfCreateCv && userInfo?.numberOfCreateCv > 0 ? <MemoToolbar /> : undefined}
       >
+        <div className="mb-10">
+          <span className="font-semibold">
+            Số lượt tạo CV còn lại: <span className="text-red-500 ml-3 mr-2">{userInfo?.numberOfCreateCv}</span> lượt
+          </span>
+        </div>
         {props.children}
       </WrapperTable>
     )

@@ -5,6 +5,11 @@ const arrowRecommend = keyframes`
   100%{transform: translateX(-5px); opacity: 1;}
 `
 
+const arrowSubInfo = keyframes`
+  0%{transform: translateX(-5px); opacity: 0.3;};
+  100%{transform: translateX(5px); opacity: 1;}
+`
+
 export const CVFormStyle = styled.div`
   .div-triangle-top-right {
     transform: rotate(20deg);
@@ -47,6 +52,10 @@ export const CVFormStyle = styled.div`
 
   .arrow-recommend {
     animation: ${arrowRecommend} 2s infinite;
+  }
+
+  .arrow-sub-info {
+    animation: ${arrowSubInfo} 2s infinite;
   }
 
   .cv-page-2 {

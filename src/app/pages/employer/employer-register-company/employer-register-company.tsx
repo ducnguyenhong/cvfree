@@ -1,19 +1,19 @@
-import { BreadCrumb } from 'app/pages/bread-crumb'
 import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { showNotify } from 'app/partials/pr-notify'
 import PrUpload from 'app/partials/pr-upload'
 import { userInfoState } from 'app/states/user-info-state'
 import axios, { AxiosRequestConfig } from 'axios'
-import { DataPersonnelSize } from 'constants/data-employer'
+import { DataPersonnelSize, DataRecruitmentPosition } from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
-import { useRef, useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import { getValueDropdown, uploadServer } from 'utils/helper'
 import { CompanyInfo } from 'models/company-info'
+import { useRef, useState } from 'react'
+import { useRecoilState } from 'recoil'
+import { getValueDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
 
 export const EmployerRegisterCompany: React.FC = () => {
@@ -22,7 +22,9 @@ export const EmployerRegisterCompany: React.FC = () => {
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [logo, setLogo] = useState<File | null>(null)
   const [background, setBackground] = useState<File | null>(null)
-  const userInfo = useRecoilValue(userInfoState)
+  const [employeeIdCard, setEmployeeIdCard] = useState<File | null>(null)
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   // ref
   const nameRef = useRef<PrInputRefProps>(null)
@@ -31,7 +33,10 @@ export const EmployerRegisterCompany: React.FC = () => {
   const websiteRef = useRef<PrInputRefProps>(null)
   const taxCodeRef = useRef<PrInputRefProps>(null)
   const streetRef = useRef<PrInputRefProps>(null)
+  const cityRef = useRef<PrDropdownRefProps>(null)
+  const districtRef = useRef<PrDropdownRefProps>(null)
   const personnelSizeRef = useRef<PrDropdownRefProps>(null)
+  const positionRef = useRef<PrDropdownRefProps>(null)
   const introRef = useRef<PrInputRefProps>(null)
 
   const callApiRegister = (data: CompanyInfo) => {
@@ -52,31 +57,74 @@ export const EmployerRegisterCompany: React.FC = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error } = response.data
+        const { success, message, error, data } = response.data
         if (!success) {
           throw Error(error)
         }
-
+        const { userDetail } = data
+        if (userInfo) {
+          setUserInfo({ ...userInfo, companyId: userDetail.companyId })
+        }
         showNotify.success(message)
-        // setLoading(false)
-        // resetInput()
       })
       .catch((e) => {
-        // setLoading(false)
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
 
+  const validate = () => {
+    if (!nameRef.current?.checkRequired()) {
+      return false
+    }
+    if (!phoneRef.current?.checkRequired()) {
+      return false
+    }
+    if (!emailRef.current?.checkRequired()) {
+      return false
+    }
+    if (!cityRef.current?.checkRequired()) {
+      return false
+    }
+    if (!districtRef.current?.checkRequired()) {
+      return false
+    }
+    if (!streetRef.current?.checkRequired()) {
+      return false
+    }
+    if (!cityRef.current?.checkRequired()) {
+      return false
+    }
+    if (!personnelSizeRef.current?.checkRequired()) {
+      return false
+    }
+    if (!employeeIdCard) {
+      setErrorMessage('Bạn cần cung cấp ảnh thẻ nhân viên của mình')
+      return false
+    }
+    if (!positionRef.current?.checkRequired()) {
+      return false
+    }
+    return true
+  }
+
   const onRegisterCompany = async () => {
+    if (!validate()) {
+      return
+    }
     const logoId = uuid()
     const backgroundId = uuid()
+    const employeeIdCardId = uuid()
     let logoUrl = ''
     let backgroundUrl = ''
+    let emplyeeIdCardUrl = ''
     if (logo) {
       logoUrl = await uploadServer(logo, logoId)
     }
     if (background) {
       backgroundUrl = await uploadServer(background, backgroundId)
+    }
+    if (employeeIdCard) {
+      emplyeeIdCardUrl = await uploadServer(employeeIdCard, employeeIdCardId)
     }
 
     const data: CompanyInfo = {
@@ -89,6 +137,11 @@ export const EmployerRegisterCompany: React.FC = () => {
       email: emailRef.current?.getValue() ?? '',
       phone: phoneRef.current?.getValue() ?? '',
       website: websiteRef.current?.getValue(),
+      creator: {
+        employeeIdCard: emplyeeIdCardUrl,
+        employeeIdCardId,
+        position: positionRef.current?.getValue()[0]
+      },
       address: {
         value: {
           district: address?.value.district ?? '',
@@ -115,10 +168,14 @@ export const EmployerRegisterCompany: React.FC = () => {
     setLogo(e)
   }
 
+  const getEmployeeIdCard = (e: File) => {
+    setEmployeeIdCard(e)
+  }
+
   return (
-    <div className="w-2/3 py-32 mx-auto">
-      <BreadCrumb title="Đăng ký công ty" />
-      <div className="mt-10 bg-blue-50 px-16 pt-5 pb-20 shadow rounded">
+    <WrapperPage title="Đăng ký công ty">
+      <div className="mt-10 px-16 pt-5 pb-20">
+        <span className="block uppercase font-semibold text-xl">1. Thông tin công ty</span>
         <div className="mt-8">
           <PrInput label="Tên công ty" icon="fas fa-building" required ref={nameRef} />
         </div>
@@ -137,14 +194,14 @@ export const EmployerRegisterCompany: React.FC = () => {
         <div className="mt-8 grid grid-cols-5 gap-x-20">
           <div className="col-span-2">
             <span className="block text-green-700 font-semibold mb-2">Logo công ty</span>
-            <div className="w-1/2 mx-auto">
-              <PrUpload getImage={getLogo} shape="square" />
+            <div className="w-1/2 mx-auto border">
+              <PrUpload getImage={getLogo} shape="square" className="w-full" />
             </div>
           </div>
           <div className="col-span-3">
             <span className="block text-green-700 font-semibold mb-2">Ảnh nền công ty</span>
-            <div className="w-1/3 mx-auto">
-              <PrUpload getImage={getBackground} shape="rectangle" ratio={{ x: 2, y: 1 }} />
+            <div className="w-1/3 mx-auto border">
+              <PrUpload getImage={getBackground} shape="square" className="w-full" ratio={{ x: 2, y: 1 }} />
             </div>
           </div>
         </div>
@@ -154,6 +211,8 @@ export const EmployerRegisterCompany: React.FC = () => {
           </span>
           <div className="grid-cols-2 grid gap-x-12 pl-10 mt-2">
             <DropdownAsync
+              required
+              ref={cityRef}
               label="Tỉnh/Thành phố"
               urlApi="/locations/cities"
               onChange={(e) => {
@@ -162,7 +221,9 @@ export const EmployerRegisterCompany: React.FC = () => {
               }}
             />
             <DropdownAsync
+              required
               label="Quận/Huyện"
+              ref={districtRef}
               isDisabled={disableDistrict}
               urlApi={`/locations/cities/${city?.value}`}
               onChange={(e) => {
@@ -177,7 +238,7 @@ export const EmployerRegisterCompany: React.FC = () => {
             />
           </div>
           <div className="mt-4 px-10">
-            <PrInput label="Tên đường/phố" icon="fas fa-map-marker-alt" ref={streetRef} />
+            <PrInput label="Tên đường/phố" icon="fas fa-map-marker-alt" ref={streetRef} required />
           </div>
         </div>
         <div className="mt-8">
@@ -187,15 +248,37 @@ export const EmployerRegisterCompany: React.FC = () => {
           <PrInput label="Giới thiệu" type="textarea" ref={introRef} divClassName="h-44" />
         </div>
 
-        <div className="mt-20 text-center">
+        <span className="block mt-20 uppercase font-semibold text-xl">2. Thông tin của bạn trong công ty</span>
+
+        <div className="mt-8 grid grid-cols-5 gap-x-20">
+          <div className="col-span-2">
+            <span className="block font-medium mb-2">
+              Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
+            </span>
+            <div className="w-1/2 mx-auto border">
+              <PrUpload getImage={getEmployeeIdCard} shape="square" ratio={{ x: 3, y: 2 }} className="w-full" />
+            </div>
+          </div>
+          <div className="col-span-2 h-12">
+            <PrDropdown label="Chức vụ/Vị trí" required options={DataRecruitmentPosition} ref={positionRef} />
+          </div>
+        </div>
+
+        {errorMessage && (
+          <div className="mt-10">
+            <span className="text-red-500 font-medium">Lỗi: {errorMessage}</span>
+          </div>
+        )}
+
+        <div className="mt-24 text-center">
           <span
             onClick={onRegisterCompany}
-            className="bg-blue-500 text-white rounded px-6 py-3 uppercase text-lg font-semibold cursor-pointer"
+            className="bg-blue-500 text-white rounded px-6 py-3 uppercase text-lg font-semibold cursor-pointer hover:bg-blue-600 duration-300"
           >
             Đăng ký công ty
           </span>
         </div>
       </div>
-    </div>
+    </WrapperPage>
   )
 }
