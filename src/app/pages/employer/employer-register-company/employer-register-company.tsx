@@ -5,28 +5,47 @@ import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { showNotify } from 'app/partials/pr-notify'
 import PrUpload from 'app/partials/pr-upload'
 import { userInfoState } from 'app/states/user-info-state'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { DataPersonnelSize, DataRecruitmentPosition } from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { CompanyInfo } from 'models/company-info'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { getValueDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
+import { useLocation } from 'react-router-dom'
+import { ResponseCompanyDetail } from 'models/response-api'
+
+import { List } from 'react-content-loader'
+import { getDefaultDataDropdown } from '../../../../utils/helper'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { RequestUpdateCompanyInfo } from '../../../../models/request-update-company-info'
 
 export const EmployerRegisterCompany: React.FC = () => {
+  const location = useLocation()
+  const isUpdate = !!(location.pathname === '/employer/update-company')
   const [city, setCity] = useState<OptionProps | null>(null)
-  const [address, setAddress] = useState<{ value: { district: string; city: string }; label: string } | null>(null)
+  const [addressInput, setAddressInput] = useState<{
+    value: {
+      city?: { value: string; label: string }
+      district?: { value: string; label: string }
+      street?: string
+    }
+    label: string
+  } | null>(null)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
-  const [logo, setLogo] = useState<File | null>(null)
-  const [background, setBackground] = useState<File | null>(null)
-  const [employeeIdCard, setEmployeeIdCard] = useState<File | null>(null)
+  const [logoFile, setLogoFile] = useState<File | null>(null)
+  const [backgroundFile, setBackgroundFile] = useState<File | null>(null)
+  const [employeeIdCardFile, setEmployeeIdCardFile] = useState<File | null>(null)
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [companyDetail, setCompanyDetail] = useState<CompanyInfo | null>(null)
+  const isAdmin = !!(companyDetail?.creatorId === userInfo?._id)
 
   // ref
+  const modalNotifyRequestRef = useRef<PrModalRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
   const emailRef = useRef<PrInputRefProps>(null)
   const phoneRef = useRef<PrInputRefProps>(null)
@@ -39,9 +58,8 @@ export const EmployerRegisterCompany: React.FC = () => {
   const positionRef = useRef<PrDropdownRefProps>(null)
   const introRef = useRef<PrInputRefProps>(null)
 
-  const callApiRegister = (data: CompanyInfo) => {
-    const url = `${SERVER_URL}/companies`
-
+  const callApiCompanyDetail = () => {
+    const url = `${SERVER_URL}/companies/employer`
     const accessToken = Cookies.get('token')
     const headers = {
       'Content-Type': 'application/json',
@@ -49,7 +67,34 @@ export const EmployerRegisterCompany: React.FC = () => {
     }
 
     const config: AxiosRequestConfig = {
-      method: 'POST',
+      method: 'GET',
+      headers,
+      url,
+      data: undefined
+    }
+
+    axios(config)
+      .then((response: AxiosResponse<ResponseCompanyDetail>) => {
+        const { success, error, data } = response.data
+        if (!success) {
+          throw Error(error?.message)
+        }
+
+        setCompanyDetail(data.companyDetail)
+      })
+      .catch((e) => showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!'))
+  }
+
+  const callApiRegister = (data: CompanyInfo) => {
+    const url = isUpdate ? `${SERVER_URL}/companies/employer` : `${SERVER_URL}/companies`
+    const accessToken = Cookies.get('token')
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: isUpdate ? 'PUT' : 'POST',
       headers,
       url,
       data
@@ -61,10 +106,43 @@ export const EmployerRegisterCompany: React.FC = () => {
         if (!success) {
           throw Error(error)
         }
-        const { userDetail } = data
-        if (userInfo) {
-          setUserInfo({ ...userInfo, companyId: userDetail.companyId })
+        if (!isUpdate) {
+          const { userDetail } = data
+          if (userInfo) {
+            setUserInfo({ ...userInfo, companyId: userDetail.companyId })
+          }
+        } else {
+          callApiCompanyDetail()
         }
+        showNotify.success(message)
+      })
+      .catch((e) => {
+        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+      })
+  }
+
+  const callApiRequestUpdate = (data: RequestUpdateCompanyInfo) => {
+    const url = `${SERVER_URL}/companies/employer`
+    const accessToken = Cookies.get('token')
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      headers,
+      url,
+      data
+    }
+
+    axios(config)
+      .then((response) => {
+        const { success, message, error, data } = response.data
+        if (!success) {
+          throw Error(error)
+        }
+        modalNotifyRequestRef.current?.show()
         showNotify.success(message)
       })
       .catch((e) => {
@@ -97,11 +175,14 @@ export const EmployerRegisterCompany: React.FC = () => {
     if (!personnelSizeRef.current?.checkRequired()) {
       return false
     }
-    if (!employeeIdCard) {
+    if (
+      (!isUpdate && !employeeIdCardFile && isAdmin) ||
+      (isUpdate && !companyDetail?.creator.employeeIdCard && !employeeIdCardFile && isAdmin)
+    ) {
       setErrorMessage('Bạn cần cung cấp ảnh thẻ nhân viên của mình')
       return false
     }
-    if (!positionRef.current?.checkRequired()) {
+    if (isAdmin && !positionRef.current?.checkRequired()) {
       return false
     }
     return true
@@ -117,38 +198,38 @@ export const EmployerRegisterCompany: React.FC = () => {
     let logoUrl = ''
     let backgroundUrl = ''
     let emplyeeIdCardUrl = ''
-    if (logo) {
-      logoUrl = await uploadServer(logo, logoId)
+    if (logoFile) {
+      logoUrl = await uploadServer(logoFile, logoId)
     }
-    if (background) {
-      backgroundUrl = await uploadServer(background, backgroundId)
+    if (backgroundFile) {
+      backgroundUrl = await uploadServer(backgroundFile, backgroundId)
     }
-    if (employeeIdCard) {
-      emplyeeIdCardUrl = await uploadServer(employeeIdCard, employeeIdCardId)
+    if (employeeIdCardFile) {
+      emplyeeIdCardUrl = await uploadServer(employeeIdCardFile, employeeIdCardId)
     }
 
     const data: CompanyInfo = {
-      logo: logoUrl,
+      logo: companyDetail?.logo || logoUrl,
       logoId,
       backgroundId,
       staffList: [userInfo?.id || 0],
-      background: backgroundUrl,
+      background: companyDetail?.background || backgroundUrl,
       name: nameRef.current?.getValue() ?? '',
       email: emailRef.current?.getValue() ?? '',
       phone: phoneRef.current?.getValue() ?? '',
       website: websiteRef.current?.getValue(),
       creator: {
-        employeeIdCard: emplyeeIdCardUrl,
+        employeeIdCard: companyDetail?.creator.employeeIdCard || emplyeeIdCardUrl,
         employeeIdCardId,
         position: positionRef.current?.getValue()[0]
       },
-      address: {
+      address: companyDetail?.address || {
         value: {
-          district: address?.value.district ?? '',
-          city: address?.value.city ?? ''
+          district: addressInput?.value.district,
+          city: addressInput?.value.city,
+          street: addressInput?.value.street || ''
         },
-        label: address?.label ?? '',
-        street: streetRef.current?.getValue() ?? ''
+        label: addressInput?.label ?? ''
       },
       taxCode: taxCodeRef.current?.getValue(),
       intro: introRef.current?.getValue(),
@@ -156,24 +237,109 @@ export const EmployerRegisterCompany: React.FC = () => {
       status: 'ACTIVE'
     }
 
-    console.log('ducnh3', data)
-    callApiRegister(data)
+    const dataRequest: RequestUpdateCompanyInfo = {
+      userRequest: {
+        id: userInfo?._id,
+        fullname: userInfo?.fullname,
+        avatar: userInfo?.avatar
+      },
+      content: {
+        logo: companyDetail?.logo || logoUrl,
+        logoId,
+        backgroundId,
+        background: companyDetail?.background || backgroundUrl,
+        name: nameRef.current?.getValue() ?? '',
+        email: emailRef.current?.getValue() ?? '',
+        phone: phoneRef.current?.getValue() ?? '',
+        website: websiteRef.current?.getValue(),
+        address: companyDetail?.address || {
+          value: {
+            district: addressInput?.value.district,
+            city: addressInput?.value.city,
+            street: addressInput?.value.street || ''
+          },
+          label: addressInput?.label ?? ''
+        },
+        taxCode: taxCodeRef.current?.getValue(),
+        intro: introRef.current?.getValue(),
+        personnelSize: getValueDropdown(personnelSizeRef.current?.getValue())[0]
+      }
+    }
+
+    if (isAdmin) {
+      callApiRegister(data)
+    } else {
+      callApiRequestUpdate(dataRequest)
+    }
   }
 
   const getBackground = (e: File) => {
-    setBackground(e)
+    setBackgroundFile(e)
   }
 
   const getLogo = (e: File) => {
-    setLogo(e)
+    setLogoFile(e)
   }
 
   const getEmployeeIdCard = (e: File) => {
-    setEmployeeIdCard(e)
+    setEmployeeIdCardFile(e)
+  }
+
+  useEffect(() => {
+    if (isUpdate) {
+      callApiCompanyDetail()
+    }
+  }, [isUpdate])
+
+  useEffect(() => {
+    if (companyDetail) {
+      const { name, phone, email, taxCode, website, personnelSize, creator, address, intro } = companyDetail
+      const { position } = creator
+      if (address.value.district) {
+        setDisableDistrict(false)
+      }
+
+      nameRef.current?.setValue(name)
+      cityRef.current?.setValue(address.value.city || null)
+      districtRef.current?.setValue(address.value.district || null)
+      streetRef.current?.setValue(address.value.street || '')
+      phoneRef.current?.setValue(phone)
+      emailRef.current?.setValue(email)
+      taxCodeRef.current?.setValue(taxCode || '')
+      websiteRef.current?.setValue(website || '')
+      introRef.current?.setValue(intro || '')
+      personnelSizeRef.current?.setValue(getDefaultDataDropdown(DataPersonnelSize, [personnelSize]))
+      positionRef.current?.setValue(position || null)
+    }
+  }, [companyDetail])
+
+  if (!companyDetail) {
+    return <List />
+  }
+
+  const { logo, background, creator } = companyDetail
+  const { employeeIdCard } = creator
+
+  const renderTitleButton = () => {
+    if (!isUpdate) {
+      return 'Đăng ký công ty'
+    } else {
+      return companyDetail.creatorId === userInfo?._id ? 'Cập nhật công ty' : 'Gửi yêu cầu chỉnh sửa'
+    }
+  }
+
+  const renderTitleWrapper = () => {
+    if (!isUpdate) {
+      return 'Đăng ký công ty'
+    } else {
+      return companyDetail.creatorId === userInfo?._id
+        ? 'Cập nhật thông tin công ty'
+        : 'Gửi yêu cầu chỉnh sửa thông tin'
+    }
   }
 
   return (
-    <WrapperPage title="Đăng ký công ty">
+    <WrapperPage title={renderTitleWrapper()}>
       <div className="mt-10 px-16 pt-5 pb-20">
         <span className="block uppercase font-semibold text-xl">1. Thông tin công ty</span>
         <div className="mt-8">
@@ -195,13 +361,19 @@ export const EmployerRegisterCompany: React.FC = () => {
           <div className="col-span-2">
             <span className="block text-green-700 font-semibold mb-2">Logo công ty</span>
             <div className="w-1/2 mx-auto border">
-              <PrUpload getImage={getLogo} shape="square" className="w-full" />
+              <PrUpload getImage={getLogo} shape="square" className="w-full" defaultURL={logo} />
             </div>
           </div>
           <div className="col-span-3">
             <span className="block text-green-700 font-semibold mb-2">Ảnh nền công ty</span>
             <div className="w-1/3 mx-auto border">
-              <PrUpload getImage={getBackground} shape="square" className="w-full" ratio={{ x: 2, y: 1 }} />
+              <PrUpload
+                getImage={getBackground}
+                shape="square"
+                className="w-full"
+                ratio={{ x: 2, y: 1 }}
+                defaultURL={background}
+              />
             </div>
           </div>
         </div>
@@ -227,11 +399,11 @@ export const EmployerRegisterCompany: React.FC = () => {
               isDisabled={disableDistrict}
               urlApi={`/locations/cities/${city?.value}`}
               onChange={(e) => {
-                setAddress({
+                setAddressInput({
                   label: `${e[0].label}, ${city?.label}`,
                   value: {
-                    district: `${e[0].value}`,
-                    city: `${city?.value}`
+                    district: { value: `${e[0].value}`, label: `${e[0].label}` },
+                    city: { value: `${city?.value}`, label: `${city?.label}` }
                   }
                 })
               }}
@@ -242,27 +414,49 @@ export const EmployerRegisterCompany: React.FC = () => {
           </div>
         </div>
         <div className="mt-8">
-          <PrDropdown label="Quy mô nhân sự (người)" required options={DataPersonnelSize} ref={personnelSizeRef} />
+          <PrDropdown
+            label="Quy mô nhân sự (người)"
+            required
+            options={DataPersonnelSize}
+            ref={personnelSizeRef}
+            isClearable={false}
+          />
         </div>
         <div className="mt-8">
           <PrInput label="Giới thiệu" type="textarea" ref={introRef} divClassName="h-44" />
         </div>
 
-        <span className="block mt-20 uppercase font-semibold text-xl">2. Thông tin của bạn trong công ty</span>
+        {isAdmin && (
+          <>
+            <span className="block mt-20 uppercase font-semibold text-xl">2. Thông tin của bạn trong công ty</span>
 
-        <div className="mt-8 grid grid-cols-5 gap-x-20">
-          <div className="col-span-2">
-            <span className="block font-medium mb-2">
-              Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
-            </span>
-            <div className="w-1/2 mx-auto border">
-              <PrUpload getImage={getEmployeeIdCard} shape="square" ratio={{ x: 3, y: 2 }} className="w-full" />
+            <div className="mt-8 grid grid-cols-5 gap-x-20">
+              <div className="col-span-2">
+                <span className="block font-medium mb-2">
+                  Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
+                </span>
+                <div className="w-1/2 mx-auto border">
+                  <PrUpload
+                    getImage={getEmployeeIdCard}
+                    shape="square"
+                    ratio={{ x: 3, y: 2 }}
+                    className="w-full"
+                    defaultURL={employeeIdCard}
+                  />
+                </div>
+              </div>
+              <div className="col-span-2 h-12">
+                <PrDropdown
+                  label="Chức vụ/Vị trí"
+                  required
+                  options={DataRecruitmentPosition}
+                  ref={positionRef}
+                  isClearable={false}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-span-2 h-12">
-            <PrDropdown label="Chức vụ/Vị trí" required options={DataRecruitmentPosition} ref={positionRef} />
-          </div>
-        </div>
+          </>
+        )}
 
         {errorMessage && (
           <div className="mt-10">
@@ -275,10 +469,30 @@ export const EmployerRegisterCompany: React.FC = () => {
             onClick={onRegisterCompany}
             className="bg-blue-500 text-white rounded px-6 py-3 uppercase text-lg font-semibold cursor-pointer hover:bg-blue-600 duration-300"
           >
-            Đăng ký công ty
+            {renderTitleButton()}
           </span>
         </div>
       </div>
+      <PrModal
+        title="Thông báo"
+        disableFooter
+        ref={modalNotifyRequestRef}
+        onHide={() => modalNotifyRequestRef.current?.hide()}
+      >
+        <div className="py-10 px-16">
+          <span className="block text-center text-xl font-semibold">Yêu cầu của bạn đã được tiếp nhận</span>
+          <span className="block text-center mt-10 font-medium">
+            Chúng tôi sẽ liên hệ, thông báo với người đã tạo công ty về yêu cầu của bạn và chờ phản hồi từ họ
+          </span>
+          <span className="block text-center mt-10 font-medium">
+            Chúng tôi sẽ sớm phản hồi yêu cầu này qua địa chỉ email của bạn
+          </span>
+          <span className="block text-center mt-10 font-medium">
+            <span className="text-red-500">* Chú ý:</span> Trong trường hợp xảy ra tranh chấp, khiếu nại, CVFREE sẽ xem
+            xét chính xác thông tin đúng và quyết định của CVFREE là quyết định cuối cùng
+          </span>
+        </div>
+      </PrModal>
     </WrapperPage>
   )
 }

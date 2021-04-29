@@ -10,7 +10,7 @@ export interface CompanyInfo {
   email: string
   phone: string
   creatorId?: string
-  creator?: {
+  creator: {
     employeeIdCard: string
     employeeIdCardId: string
     position?: {
@@ -20,9 +20,12 @@ export interface CompanyInfo {
   }
   staffList: number[]
   address: {
-    value: { district: string; city: string }
+    value: {
+      city?: { value: string; label: string }
+      district?: { value: string; label: string }
+      street?: string
+    }
     label: string
-    street: string
   }
   intro?: string
   logo?: string

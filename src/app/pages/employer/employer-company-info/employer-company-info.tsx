@@ -185,10 +185,7 @@ export const EmployerCompanyInfo: React.FC = () => {
           </span>
 
           <span className="block font-semibold mb-3">
-            - Địa chỉ:{' '}
-            <span className="font-normal ml-3">
-              {address.street}, {address.label}
-            </span>
+            - Địa chỉ: <span className="font-normal ml-3">{address.label}</span>
           </span>
 
           <span className="block font-semibold mb-3 text-justify">
@@ -196,9 +193,12 @@ export const EmployerCompanyInfo: React.FC = () => {
           </span>
         </div>
         <div className="text-center my-20">
-          <span className="px-4 py-3 rounded text-white bg-blue-500 font-semibold cursor-pointer duration-300 hover:bg-blue-600">
+          <Link
+            to="/employer/update-company"
+            className="px-4 py-3 rounded text-white bg-blue-500 font-semibold cursor-pointer duration-300 hover:bg-blue-600"
+          >
             {userInfo?._id === companyInfo.creatorId ? 'Chỉnh sửa thông tin' : 'Gửi yêu cầu chỉnh sửa thông tin'}
-          </span>
+          </Link>
         </div>
       </div>
     </WrapperPage>

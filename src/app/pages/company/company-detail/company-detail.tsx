@@ -174,10 +174,7 @@ export const CompanyDetail: React.FC = () => {
           </span>
 
           <span className="block font-semibold mb-3">
-            - Địa chỉ:{' '}
-            <span className="font-normal ml-3">
-              {address.street}, {address.label}
-            </span>
+            - Địa chỉ: <span className="font-normal ml-3">{address.label}</span>
           </span>
 
           <span className="block font-semibold mb-3 text-justify">

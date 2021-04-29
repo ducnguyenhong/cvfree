@@ -67,6 +67,28 @@ const ListMenu: MenuType[] = [
     title: 'Nhà tuyển dụng',
     icon: 'fas fa-user-tag',
     type: 'menu'
+  },
+  {
+    title: 'Yêu cầu/Khiếu nại',
+    type: 'section'
+  },
+  {
+    route: '/dashboard',
+    title: 'Thông tin công ty',
+    icon: 'fas fa-users',
+    type: 'menu'
+  },
+  {
+    route: '/dashboard',
+    title: 'Tin tuyển dụng',
+    icon: 'fas fa-users',
+    type: 'menu'
+  },
+  {
+    route: '/dashboard',
+    title: 'Góp ý',
+    icon: 'fas fa-users',
+    type: 'menu'
   }
 ]
 

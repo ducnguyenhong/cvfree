@@ -248,6 +248,12 @@ export const PRIVATE_ROUTES: RouteType[] = [
     exact: true,
     role: ['EMPLOYER']
   },
+  {
+    path: '/employer/update-company',
+    component: EmployerRegisterCompany,
+    exact: true,
+    role: ['EMPLOYER']
+  },
 
   // candidate
   {
