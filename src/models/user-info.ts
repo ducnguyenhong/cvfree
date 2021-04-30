@@ -19,6 +19,8 @@ export interface UserInfo {
   gender?: string
   id?: number
   companyId?: string
+  isAdminOfCompany?: boolean
+  beWarned?: boolean
   phone?: string
   status: string
   type: string
@@ -31,6 +33,7 @@ export interface UserInfo {
   numberOfPosting?: number
   numberOfCreateCv?: number
   numberOfCandidateOpening?: number
+  numberOfRequestUpdateCompany?: number
   createdAt?: Date
   updatedAt?: Date
 }

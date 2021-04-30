@@ -46,6 +46,7 @@ export const EmployerRegisterCompany: React.FC = () => {
 
   // ref
   const modalNotifyRequestRef = useRef<PrModalRefProps>(null)
+  const modalNotifyCantRequestRef = useRef<PrModalRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
   const emailRef = useRef<PrInputRefProps>(null)
   const phoneRef = useRef<PrInputRefProps>(null)
@@ -138,9 +139,12 @@ export const EmployerRegisterCompany: React.FC = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error, data } = response.data
+        const { success, message, error } = response.data
         if (!success) {
           throw Error(error)
+        }
+        if (userInfo && userInfo.numberOfRequestUpdateCompany) {
+          setUserInfo({ ...userInfo, numberOfRequestUpdateCompany: userInfo.numberOfRequestUpdateCompany - 1 })
         }
         modalNotifyRequestRef.current?.show()
         showNotify.success(message)
@@ -176,13 +180,14 @@ export const EmployerRegisterCompany: React.FC = () => {
       return false
     }
     if (
-      (!isUpdate && !employeeIdCardFile && isAdmin) ||
-      (isUpdate && !companyDetail?.creator.employeeIdCard && !employeeIdCardFile && isAdmin)
+      (!isUpdate && !employeeIdCardFile) ||
+      (isUpdate && isAdmin && !companyDetail?.creator.employeeIdCard && !employeeIdCardFile) ||
+      (!isAdmin && !employeeIdCardFile)
     ) {
       setErrorMessage('Bạn cần cung cấp ảnh thẻ nhân viên của mình')
       return false
     }
-    if (isAdmin && !positionRef.current?.checkRequired()) {
+    if (!positionRef.current?.checkRequired()) {
       return false
     }
     return true
@@ -190,6 +195,10 @@ export const EmployerRegisterCompany: React.FC = () => {
 
   const onRegisterCompany = async () => {
     if (!validate()) {
+      return
+    }
+    if (!userInfo?.numberOfRequestUpdateCompany) {
+      modalNotifyCantRequestRef.current?.show()
       return
     }
     const logoId = uuid()
@@ -221,7 +230,7 @@ export const EmployerRegisterCompany: React.FC = () => {
       creator: {
         employeeIdCard: companyDetail?.creator.employeeIdCard || emplyeeIdCardUrl,
         employeeIdCardId,
-        position: positionRef.current?.getValue()[0]
+        position: companyDetail?.creator.position || positionRef.current?.getValue()[0]
       },
       address: companyDetail?.address || {
         value: {
@@ -241,7 +250,9 @@ export const EmployerRegisterCompany: React.FC = () => {
       userRequest: {
         id: userInfo?._id,
         fullname: userInfo?.fullname,
-        avatar: userInfo?.avatar
+        avatar: userInfo?.avatar,
+        position: positionRef.current?.getValue()[0],
+        employeeIdCard: emplyeeIdCardUrl
       },
       content: {
         logo: companyDetail?.logo || logoUrl,
@@ -309,7 +320,7 @@ export const EmployerRegisterCompany: React.FC = () => {
       websiteRef.current?.setValue(website || '')
       introRef.current?.setValue(intro || '')
       personnelSizeRef.current?.setValue(getDefaultDataDropdown(DataPersonnelSize, [personnelSize]))
-      positionRef.current?.setValue(position || null)
+      isAdmin && positionRef.current?.setValue(position || null)
     }
   }, [companyDetail])
 
@@ -426,37 +437,33 @@ export const EmployerRegisterCompany: React.FC = () => {
           <PrInput label="Giới thiệu" type="textarea" ref={introRef} divClassName="h-44" />
         </div>
 
-        {isAdmin && (
-          <>
-            <span className="block mt-20 uppercase font-semibold text-xl">2. Thông tin của bạn trong công ty</span>
+        <span className="block mt-20 uppercase font-semibold text-xl">2. Thông tin của bạn trong công ty</span>
 
-            <div className="mt-8 grid grid-cols-5 gap-x-20">
-              <div className="col-span-2">
-                <span className="block font-medium mb-2">
-                  Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
-                </span>
-                <div className="w-1/2 mx-auto border">
-                  <PrUpload
-                    getImage={getEmployeeIdCard}
-                    shape="square"
-                    ratio={{ x: 3, y: 2 }}
-                    className="w-full"
-                    defaultURL={employeeIdCard}
-                  />
-                </div>
-              </div>
-              <div className="col-span-2 h-12">
-                <PrDropdown
-                  label="Chức vụ/Vị trí"
-                  required
-                  options={DataRecruitmentPosition}
-                  ref={positionRef}
-                  isClearable={false}
-                />
-              </div>
+        <div className="mt-8 grid grid-cols-5 gap-x-20">
+          <div className="col-span-2">
+            <span className="block font-medium mb-2">
+              Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
+            </span>
+            <div className="w-1/2 mx-auto border">
+              <PrUpload
+                getImage={getEmployeeIdCard}
+                shape="square"
+                ratio={{ x: 3, y: 2 }}
+                className="w-full"
+                defaultURL={isAdmin ? employeeIdCard : undefined}
+              />
             </div>
-          </>
-        )}
+          </div>
+          <div className="col-span-2 h-12">
+            <PrDropdown
+              label="Chức vụ/Vị trí"
+              required
+              options={DataRecruitmentPosition}
+              ref={positionRef}
+              isClearable={false}
+            />
+          </div>
+        </div>
 
         {errorMessage && (
           <div className="mt-10">
@@ -490,6 +497,21 @@ export const EmployerRegisterCompany: React.FC = () => {
           <span className="block text-center mt-10 font-medium">
             <span className="text-red-500">* Chú ý:</span> Trong trường hợp xảy ra tranh chấp, khiếu nại, CVFREE sẽ xem
             xét chính xác thông tin đúng và quyết định của CVFREE là quyết định cuối cùng
+          </span>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Thông báo"
+        disableFooter
+        ref={modalNotifyCantRequestRef}
+        onHide={() => modalNotifyCantRequestRef.current?.hide()}
+      >
+        <div className="py-10 px-16">
+          <span className="block text-center text-xl font-semibold">Không thể gửi yêu cầu</span>
+          <span className="block text-center mt-10 font-medium">Bạn đã gửi 1 yêu cầu trước đó cho chúng tôi</span>
+          <span className="block text-center mt-10 font-medium">
+            Hãy đợi kết quả phản hồi và sau đó bạn có thể gửi yêu cầu mới
           </span>
         </div>
       </PrModal>

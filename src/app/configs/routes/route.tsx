@@ -41,6 +41,8 @@ const EmployerList = lazy(() => import('app/pages/dashboard/pages/user/employer'
 const CompanyList = lazy(() => import('app/pages/dashboard/pages/company'))
 const JobList = lazy(() => import('app/pages/dashboard/pages/job'))
 const CvList = lazy(() => import('app/pages/dashboard/pages/cv'))
+const RequestUpdateCompanyList = lazy(() => import('app/pages/dashboard/pages/request-update-company'))
+const SendEmail = lazy(() => import('app/pages/dashboard/pages/send-email'))
 
 interface RouteType {
   path: string
@@ -359,6 +361,18 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/cvs',
     component: CvList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/request-update-company',
+    component: RequestUpdateCompanyList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/send-email',
+    component: SendEmail,
     exact: true,
     role: ['ADMIN']
   }

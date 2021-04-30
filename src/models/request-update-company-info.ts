@@ -1,9 +1,26 @@
 export interface RequestUpdateCompanyInfo {
-  userRequest: {
+  _id?: string
+  userRequest?: {
     id?: string
     fullname?: string
     avatar?: string
+    employeeIdCard?: string
+    position?: { value: string; label: string }
+    email?: string
   }
+  rootInfo?: {
+    id: string
+    name: string
+    logo: string
+  }
+  userAdmin?: {
+    id: string
+    fullname: string
+    avatar: string
+    email: string
+  }
+  processStatus?: string // WAITING => APPROVED/REJECTED => DONE,
+  reasonRejectOfAdminCompany?: string
   content: {
     name: string
     taxCode?: string
@@ -26,4 +43,5 @@ export interface RequestUpdateCompanyInfo {
     logo?: string
   }
   status?: string
+  createdAt?: Date
 }

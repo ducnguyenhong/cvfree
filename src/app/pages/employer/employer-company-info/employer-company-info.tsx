@@ -145,7 +145,7 @@ export const EmployerCompanyInfo: React.FC = () => {
     )
   }
 
-  const { name, website, background, personnelSize, address, intro, logo, _id } = companyInfo
+  const { name, website, background, personnelSize, address, intro, logo, _id, phone, email } = companyInfo
 
   return (
     <WrapperPage title="Thông tin công ty">
@@ -178,6 +178,14 @@ export const EmployerCompanyInfo: React.FC = () => {
             <a href={website} target="_blank" rel="noopener noreferrer" className="font-normal ml-3">
               {website}
             </a>
+          </span>
+
+          <span className="block font-semibold mb-3">
+            - Số điện thoại: <span className="font-normal ml-3">{phone}</span>
+          </span>
+
+          <span className="block font-semibold mb-3">
+            - Email: <span className="font-normal ml-3">{email}</span>
           </span>
 
           <span className="block font-semibold mb-3">

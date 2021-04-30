@@ -69,25 +69,35 @@ const ListMenu: MenuType[] = [
     type: 'menu'
   },
   {
+    title: 'EMAIL',
+    type: 'section'
+  },
+  {
+    route: '/dashboard/send-email',
+    title: 'Gửi email',
+    icon: 'fas fa-envelope',
+    type: 'menu'
+  },
+  {
     title: 'Yêu cầu/Khiếu nại',
     type: 'section'
   },
   {
-    route: '/dashboard',
+    route: '/dashboard/request-update-company',
     title: 'Thông tin công ty',
-    icon: 'fas fa-users',
+    icon: 'fas fa-align-left',
     type: 'menu'
   },
   {
-    route: '/dashboard',
+    route: '/dashboard/report-job',
     title: 'Tin tuyển dụng',
-    icon: 'fas fa-users',
+    icon: 'fas fa-exclamation-triangle',
     type: 'menu'
   },
   {
-    route: '/dashboard',
+    route: '/dashboard/feedbacks',
     title: 'Góp ý',
-    icon: 'fas fa-users',
+    icon: 'fas fa-comment',
     type: 'menu'
   }
 ]
@@ -97,7 +107,11 @@ export const Sidebar: React.FC = () => {
   const currentRoute = location.pathname
 
   return (
-    <SidebarStyle className="h-screen bg-gray-800 fixed left-0 duration-300" style={{ width: 270 }}>
+    <SidebarStyle
+      className="h-screen bg-gray-800 fixed overflow-y-auto pb-20 left-0 duration-300"
+      style={{ width: 270 }}
+      id="scrollbar"
+    >
       <div className="sidebar-content py-5">
         {ListMenu &&
           ListMenu.length > 0 &&
@@ -105,7 +119,7 @@ export const Sidebar: React.FC = () => {
             const { route, title, type, icon } = item
             if (type === 'section') {
               return (
-                <div key={title} className="flex items-center mt-8 px-5">
+                <div key={title} className="flex items-center mt-9 px-5">
                   <span className="text-gray-500 uppercase text-sm">{title}</span>
                 </div>
               )
