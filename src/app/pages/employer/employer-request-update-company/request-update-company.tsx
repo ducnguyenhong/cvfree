@@ -6,10 +6,8 @@ import { useRecoilValue } from 'recoil'
 import { Columns, TableLoader } from './request-update-company.data'
 import { userInfoState } from 'app/states/user-info-state'
 import { getDataFilter } from './request-update-company.filter'
-import { ModalSendEmail } from './modal-send-email-request-update-company'
-import { ModalBanRequest } from './modal-ban-request-update-company'
-import { PopupDeactive } from './popup-deactive-request-update-company'
-import { PopupDone } from './popup-done-request-update-company'
+import { ModalAcceptRequest } from './modal-accept-request-update-company'
+import { ModalRejectRequest } from './modal-reject-request-update-company.tsx'
 
 export const prefix = 'requestUpdateCompanyList'
 
@@ -43,12 +41,10 @@ export const RequestUpdateCompanyList: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="pt-28 pb-10 w-2/3 mx-auto" style={{ minHeight: 'calc(100vh - 100px)' }}>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
-      <ModalSendEmail />
-      <ModalBanRequest />
-      <PopupDeactive />
-      <PopupDone />
+      <ModalAcceptRequest />
+      <ModalRejectRequest />
     </div>
   )
 }

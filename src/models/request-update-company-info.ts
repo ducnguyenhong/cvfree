@@ -8,6 +8,7 @@ export interface RequestUpdateCompanyInfo {
     position?: { value: string; label: string }
     email?: string
   }
+  expiredAt?: Date
   companyId?: string
   rootInfo?: {
     id: string

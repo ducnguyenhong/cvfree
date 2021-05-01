@@ -64,6 +64,7 @@ export const CompanyRequestUpdate: React.FC = () => {
   }
 
   const { name, website, background, personnelSize, address, intro, logo, phone, email } = requestInfo.content
+  const { reasonRejectOfAdminCompany } = requestInfo
 
   return (
     <WrapperPage title="Yêu cầu cập nhật thông tin công ty">
@@ -107,6 +108,14 @@ export const CompanyRequestUpdate: React.FC = () => {
             - Giới thiệu: <span className="font-normal ml-3">{intro}</span>
           </span>
         </div>
+
+        {reasonRejectOfAdminCompany && (
+          <div className="mt-10">
+            <span className="text-red-500">
+              * Đã bị từ chối bởi admin của công ty với lý do: {reasonRejectOfAdminCompany}
+            </span>
+          </div>
+        )}
       </div>
     </WrapperPage>
   )

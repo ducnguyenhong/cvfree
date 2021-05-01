@@ -7,7 +7,6 @@ import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { RequestUpdateCompanyInfo } from 'models/request-update-company-info'
 import { Action } from './request-update-company.action'
-import moment from 'moment'
 
 export interface TableColumn extends RequestUpdateCompanyInfo {
   action?: string
@@ -17,19 +16,15 @@ export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
   { enable: true, field: '_id', title: 'ID' },
-  { enable: true, field: 'rootInfo', title: 'Công ty' },
   { enable: true, field: 'userRequest', title: 'Người gửi yêu cầu' },
-  { enable: true, field: 'userAdmin', title: 'Admin của công ty' },
   { enable: true, field: 'content', title: 'Yêu cầu chỉnh sửa' },
   { enable: true, field: 'processStatus', title: 'Trạng thái xử lý' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
   { enable: true, field: 'createdAt', title: 'Ngày yêu cầu' },
-  { enable: true, field: 'expiredAt', title: 'Ngày hết hạn' },
   { enable: true, field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/request-update-company`,
+  url: `${SERVER_URL}/request-update-company/one-company`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -71,18 +66,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { status, userRequest, userAdmin, rootInfo, _id, createdAt, processStatus, expiredAt } = data
-
-    const renderExpiredAt = () => {
-      if (!expiredAt) {
-        return <></>
-      }
-      return moment(expiredAt).valueOf() > moment().valueOf() ? (
-        <DateTime timestamp={expiredAt} />
-      ) : (
-        <span>Đã hết hạn</span>
-      )
-    }
+    const { userRequest, _id, createdAt, processStatus } = data
 
     switch (field) {
       case '_id':
@@ -100,54 +84,22 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
           </a>
         )
 
-      case 'rootInfo':
-        return <BasicCompanyInfo id={rootInfo?.id} logo={rootInfo?.logo} name={rootInfo?.name} />
-
       case 'userRequest':
         return (
-          <BasicUserInfo
-            id={userRequest?.id}
-            avatar={userRequest?.avatar}
-            name={userRequest?.fullname}
-            username={userRequest?.email}
-          />
-        )
-
-      case 'userAdmin':
-        return (
-          <BasicUserInfo
-            id={userAdmin?.id}
-            avatar={userAdmin?.avatar}
-            name={userAdmin?.fullname}
-            username={userAdmin?.email}
-          />
+          <div>
+            <span className="block font-semibold mb-0.5">{userRequest?.fullname}</span>
+            <span className="block opacity-50 text-sm">{userRequest?.email}</span>
+          </div>
         )
 
       case 'processStatus':
         return <span>{processStatus}</span>
 
-      case 'status':
-        return <Status status={status || ''} />
-
       case 'createdAt':
         return <DateTime timestamp={createdAt} />
 
-      case 'expiredAt':
-        return renderExpiredAt()
-
       case 'action':
-        return (
-          <Action
-            id={_id}
-            expiredAt={expiredAt}
-            status={status}
-            emailRequest={userRequest?.email}
-            emailTo={userAdmin?.email}
-            helloName={userAdmin?.fullname}
-            isLoginNow
-            employerRequestedId={userRequest?.id}
-          />
-        )
+        return <Action id={_id} processStatus={processStatus} />
 
       default:
         return <span>{get(data, 'field')}</span>

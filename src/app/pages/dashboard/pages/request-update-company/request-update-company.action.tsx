@@ -3,6 +3,8 @@ import { showSendEmailRequestUpdateCompanyState } from 'app/states/show-modal/se
 import React from 'react'
 import { useSetRecoilState } from 'recoil'
 import { showDeactiveRequestUpdateCompanyState } from 'app/states/show-popup/deactive-request-update-company-state'
+import { showDoneRequestUpdateCompanyState } from 'app/states/show-popup/done-request-update-company-state'
+import moment from 'moment'
 
 interface ActionProps {
   id?: string
@@ -12,13 +14,17 @@ interface ActionProps {
   isLoginNow?: boolean
   status?: string
   employerRequestedId?: string
+  expiredAt?: Date
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { id, status, emailTo, emailRequest, helloName, isLoginNow, employerRequestedId } = props
+  const { id, status, emailTo, emailRequest, helloName, isLoginNow, employerRequestedId, expiredAt } = props
   const setShowSendEmail = useSetRecoilState(showSendEmailRequestUpdateCompanyState)
   const setShowBanRequest = useSetRecoilState(showBanRequestUpdateCompanyState)
   const setDeactiveRequest = useSetRecoilState(showDeactiveRequestUpdateCompanyState)
+  const setDoneRequest = useSetRecoilState(showDoneRequestUpdateCompanyState)
+
+  const isDisableDone = !!(expiredAt && moment(expiredAt).valueOf() > moment().valueOf())
 
   const onShowSendEmail = () => {
     const content = `Một nhà tuyển dụng khác cùng công ty với bạn (có địa chỉ email là ${emailRequest}) vừa gửi một yêu cầu cập nhật thông tin công ty của bạn.`
@@ -31,6 +37,10 @@ export const Action: React.FC<ActionProps> = (props) => {
 
   const onDeactiveRequest = () => {
     setDeactiveRequest({ showPopup: true, id })
+  }
+
+  const onDoneRequest = () => {
+    setDoneRequest({ showPopup: true, id })
   }
 
   return (
@@ -55,6 +65,18 @@ export const Action: React.FC<ActionProps> = (props) => {
         >
           <span>
             <i className="fas fa-ban text-gray-500 px-3 py-4 hover:text-white"></i>
+          </span>
+        </div>
+
+        <div
+          onClick={isDisableDone ? undefined : onDoneRequest}
+          className={`${
+            isDisableDone ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-blue-500'
+          } flex rounded-md items-center justify-center duration-300 bg-gray-100 mr-4`}
+          style={{ width: 32, height: 32 }}
+        >
+          <span>
+            <i className="fas fa-check text-gray-500 px-3 py-4 hover:text-white"></i>
           </span>
         </div>
 
