@@ -8,6 +8,7 @@ export interface RequestUpdateCompanyInfo {
     position?: { value: string; label: string }
     email?: string
   }
+  companyId?: string
   rootInfo?: {
     id: string
     name: string

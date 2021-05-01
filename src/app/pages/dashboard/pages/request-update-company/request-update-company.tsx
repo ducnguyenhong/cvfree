@@ -7,6 +7,8 @@ import { Columns, TableLoader } from './request-update-company.data'
 import { userInfoState } from 'app/states/user-info-state'
 import { getDataFilter } from './request-update-company.filter'
 import { ModalSendEmail } from './modal-send-email-request-update-company'
+import { ModalBanRequest } from './modal-ban-request-update-company'
+import { PopupDeactive } from './popup-deactive-request-update-company'
 
 export const prefix = 'requestUpdateCompanyList'
 
@@ -43,6 +45,8 @@ export const RequestUpdateCompanyList: React.FC = () => {
     <div>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
       <ModalSendEmail />
+      <ModalBanRequest />
+      <PopupDeactive />
     </div>
   )
 }

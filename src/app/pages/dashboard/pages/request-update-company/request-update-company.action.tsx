@@ -1,6 +1,8 @@
+import { showBanRequestUpdateCompanyState } from 'app/states/show-modal/ban-request-update-company-state'
 import { showSendEmailRequestUpdateCompanyState } from 'app/states/show-modal/send-email-request-update-company-state'
 import React from 'react'
 import { useSetRecoilState } from 'recoil'
+import { showDeactiveRequestUpdateCompanyState } from 'app/states/show-popup/deactive-request-update-company-state'
 
 interface ActionProps {
   id?: string
@@ -9,18 +11,27 @@ interface ActionProps {
   helloName?: string
   isLoginNow?: boolean
   status?: string
+  employerRequestedId?: string
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { id, status, emailTo, emailRequest, helloName, isLoginNow } = props
+  const { id, status, emailTo, emailRequest, helloName, isLoginNow, employerRequestedId } = props
   const setShowSendEmail = useSetRecoilState(showSendEmailRequestUpdateCompanyState)
+  const setShowBanRequest = useSetRecoilState(showBanRequestUpdateCompanyState)
+  const setDeactiveRequest = useSetRecoilState(showDeactiveRequestUpdateCompanyState)
 
   const onShowSendEmail = () => {
     const content = `Một nhà tuyển dụng khác cùng công ty với bạn (có địa chỉ email là ${emailRequest}) vừa gửi một yêu cầu cập nhật thông tin công ty của bạn.`
     setShowSendEmail({ showModal: true, emailTo: emailTo || '', helloName, isLoginNow, content, id })
   }
 
-  const onBanRequest = () => {}
+  const onBanRequest = () => {
+    setShowBanRequest({ showModal: true, id, employerRequestedId })
+  }
+
+  const onDeactiveRequest = () => {
+    setDeactiveRequest({ showPopup: true, id })
+  }
 
   return (
     <>
@@ -52,7 +63,7 @@ export const Action: React.FC<ActionProps> = (props) => {
             status === 'INACTIVE' ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-red-400'
           } flex rounded-md items-center justify-center duration-300 bg-gray-100`}
           style={{ width: 32, height: 32 }}
-          onClick={status === 'ACTIVE' ? onShowSendEmail : undefined}
+          onClick={status === 'ACTIVE' ? onDeactiveRequest : undefined}
         >
           <span>
             <i

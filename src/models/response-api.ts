@@ -5,6 +5,7 @@ import { EmployerInfo } from './employer-info'
 import { JobPostingInfo } from './job-posting-info'
 import { CompanyInfo } from './company-info'
 import { CandidateManageInfo } from './candidate-manage-info'
+import { RequestUpdateCompanyInfo } from './request-update-company-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -136,6 +137,16 @@ export interface ResponseCompanyDetail {
   success: boolean
   data: {
     companyDetail: CompanyInfo | null
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseRequestUpdateCompanyDetail {
+  success: boolean
+  data: {
+    requestDetail: RequestUpdateCompanyInfo | null
   }
   code: number
   error?: { message: string }

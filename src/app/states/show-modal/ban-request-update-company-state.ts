@@ -2,8 +2,8 @@ import { atom, DefaultValue, selector } from 'recoil'
 
 interface DeactiveState {
   showModal: boolean
-  cvId?: number | string
-  jobId?: string
+  id?: string
+  employerRequestedId?: string
 }
 
 export const MODAL_BAN_REQUEST_UPDATE_COMPANY_ATOM_KEY = 'MODAL_BAN_REQUEST_UPDATE_COMPANY_ATOM_KEY'
@@ -12,9 +12,7 @@ export const MODAL_BAN_REQUEST_UPDATE_COMPANY_STATE_KEY = 'MODAL_BAN_REQUEST_UPD
 export const showBanRequestUpdateCompanyAtom = atom<DeactiveState>({
   key: MODAL_BAN_REQUEST_UPDATE_COMPANY_ATOM_KEY,
   default: {
-    showModal: false,
-    jobId: undefined,
-    cvId: undefined
+    showModal: false
   }
 })
 

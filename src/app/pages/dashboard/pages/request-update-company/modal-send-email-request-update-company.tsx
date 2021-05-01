@@ -106,10 +106,6 @@ CVFREE`
     })
   }
 
-  const onShowModal = () => {
-    titleRef.current?.setValue('CVFREE - ')
-  }
-
   const validate = () => {
     if (!titleRef.current?.checkRequired()) {
       return false
@@ -137,40 +133,6 @@ CVFREE`
     callApiSendEmail(data)
   }
 
-  // const onDeactiveCv = () => {
-  //   const accessToken = Cookies.get('token')
-  //   const url = `${SERVER_URL}/cvs/${id}`
-  //   const headers = {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${accessToken}`
-  //   }
-
-  //   const config: AxiosRequestConfig = {
-  //     method: 'DELETE',
-  //     headers,
-  //     url,
-  //     data: undefined,
-  //     timeout: 20000
-  //   }
-
-  //   axios(config)
-  //     .then((response: AxiosResponse<ResponseDelete>) => {
-  //       const { success, message, error, data } = response.data
-
-  //       if (!success) {
-  //         throw Error(error?.message)
-  //       }
-  //       setRecoilState({ id: undefined, showPopup: false })
-  //       showNotify.success(message)
-  //       setUserInfo(data.userInfo)
-  //       refreshTable()
-  //     })
-  //     .catch((e) => {
-  //       setRecoilState({ id: undefined, showPopup: false })
-  //       showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
-  //     })
-  // }
-
   useEffect(() => {
     showModal ? modalRef.current?.show() : modalRef.current?.hide()
   }, [showModal])
@@ -180,7 +142,6 @@ CVFREE`
       title="Gửi email đến người quản trị công ty"
       size="lg"
       okTitle="Gửi email"
-      onShow={onShowModal}
       onChange={onSendEmail}
       cancelTitle="Hủy"
       onHide={onHideModal}

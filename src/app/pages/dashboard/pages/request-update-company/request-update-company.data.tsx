@@ -1,21 +1,12 @@
-import { Loader, Pagination, ColumnsProps } from '@ekidpro/table'
+import { ColumnsProps, Loader, Pagination } from '@ekidpro/table'
+import { showNotify } from 'app/partials/pr-notify'
+import { BasicCompanyInfo, BasicUserInfo, DateTime, Status } from 'app/partials/table-columns'
 import axios from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
-import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './request-update-company.action'
-import {
-  BasicCompanyInfo,
-  Email,
-  Phone,
-  DateTime,
-  Status,
-  Active,
-  TableLink,
-  BasicUserInfo
-} from 'app/partials/table-columns'
 import { RequestUpdateCompanyInfo } from 'models/request-update-company-info'
+import { Action } from './request-update-company.action'
 
 export interface TableColumn extends RequestUpdateCompanyInfo {
   action?: string
@@ -87,7 +78,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       case 'content':
         return (
           <a
-            href=""
+            href={`/request-update-company/${_id}`}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-blue-500 whitespace-nowrap font-medium px-4 py-2 rounded text-white duration-300 hover:bg-blue-600"
@@ -137,6 +128,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
             emailTo={userAdmin?.email}
             helloName={userAdmin?.fullname}
             isLoginNow
+            employerRequestedId={userRequest?.id}
           />
         )
 

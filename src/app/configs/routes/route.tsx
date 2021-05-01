@@ -33,6 +33,7 @@ const CvDetail = lazy(() => import('app/pages/cv/cv-detail'))
 const CvTemplateList = lazy(() => import('app/pages/cv/cv-template-select'))
 
 const CompanyDetail = lazy(() => import('app/pages/company/company-detail'))
+const CompanyRequestUpdate = lazy(() => import('app/pages/company/company-request-update'))
 
 const Dashboard = lazy(() => import('app/pages/dashboard/pages/dashboard'))
 const AllUserList = lazy(() => import('app/pages/dashboard/pages/user/all-user'))
@@ -318,6 +319,12 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: CompanyDetail,
     exact: true,
     role: []
+  },
+  {
+    path: '/request-update-company/:id',
+    component: CompanyRequestUpdate,
+    exact: true,
+    role: ['ADMIN', 'EMPLOYER']
   }
 ]
 
