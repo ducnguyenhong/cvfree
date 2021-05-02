@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface Props {
-  src: string
+  src?: string
   alt?: string
   style?: React.CSSProperties
   styleDiv?: React.CSSProperties
@@ -27,6 +27,7 @@ const StyleComponent = styled.div`
     height: 100%;
     object-fit: cover;
     object-position: center;
+    border-radius: 50%;
   }
 `
 

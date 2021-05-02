@@ -3,15 +3,13 @@ import { WrapperTable } from 'app/partials/table/wrapper-table'
 import React, { useRef, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { Columns, TableLoader } from './request-update-company.data'
+import { Columns, TableLoader } from './report-job.data'
 import { userInfoState } from 'app/states/user-info-state'
-import { getDataFilter } from './request-update-company.filter'
-import { ModalAcceptRequest } from './modal-accept-request-update-company'
-import { ModalRejectRequest } from './modal-reject-request-update-company.tsx'
+import { getDataFilter } from './report-job.filter'
 
-export const prefix = 'requestUpdateCompanyListEmployer'
+export const prefix = 'reportJobListAdmin'
 
-export const RequestUpdateCompanyList: React.FC = () => {
+export const ReportJobList: React.FC = () => {
   const loader = useRef<typeof TableLoader>(TableLoader)
   const userInfo = useRecoilValue(userInfoState)
   const dataFilter = getDataFilter(prefix)
@@ -41,10 +39,8 @@ export const RequestUpdateCompanyList: React.FC = () => {
   }
 
   return (
-    <div className="pt-28 pb-10 w-2/3 mx-auto" style={{ minHeight: 'calc(100vh - 100px)' }}>
+    <div>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
-      <ModalAcceptRequest />
-      <ModalRejectRequest />
     </div>
   )
 }

@@ -73,6 +73,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
     }
 
     const {
+      _id,
       status,
       fullname,
       birthday,
@@ -90,13 +91,17 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     switch (field) {
       case 'id':
-        return <TableLink to={`/dashboard/users/${id}`} title={id} className="font-semibold" />
+        return <TableLink to={`/dashboard/users/${_id}`} title={id} className="font-semibold" />
 
       case 'fullname':
-        return <BasicUserInfo id={id} avatar={avatar} name={fullname} username={username} gender={gender} />
+        return <BasicUserInfo id={_id} avatar={avatar} name={fullname} username={username} gender={gender} />
 
       case 'birthday':
-        return birthday ? <DateTime timestamp={birthday} /> : <span className="text-gray-300">N/A</span>
+        return birthday ? (
+          <DateTime timestamp={birthday} format="DD/MM/YYYY" isAge />
+        ) : (
+          <span className="text-gray-300">N/A</span>
+        )
 
       case 'email':
         return <Email email={email} />
@@ -120,7 +125,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <DateTime timestamp={updatedAt} />
 
       case 'action':
-        return <Action id={id} status={status} />
+        return <Action id={_id} status={status} />
 
       default:
         return <span>{get(data, 'field')}</span>

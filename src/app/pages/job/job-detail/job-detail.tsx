@@ -27,6 +27,7 @@ export const JobDetail: React.FC = () => {
   const modalNeedLoginRef = useRef<PrModalRefProps>(null)
   const modalConfirmApplyRef = useRef<PrModalRefProps>(null)
   const modalNotifyReportRef = useRef<PrModalRefProps>(null)
+  const modalNotifyOutOfTurnReportRef = useRef<PrModalRefProps>(null)
   const modalReportJobRef = useRef<PrModalRefProps>(null)
   const history = useHistory()
   const cvSelectedRef = useRef<DropdownAsyncRef>(null)
@@ -35,7 +36,6 @@ export const JobDetail: React.FC = () => {
   const reporterFullname = useRef<PrInputRefProps>(null)
   const reporterContent = useRef<PrInputRefProps>(null)
   const reporterPhone = useRef<PrInputRefProps>(null)
-  const reporterEmail = useRef<PrInputRefProps>(null)
 
   const callApiJobDetail = (jobId: string) => {
     const accessToken = Cookies.get('token')
@@ -164,6 +164,16 @@ export const JobDetail: React.FC = () => {
     company
   } = jobInfo
 
+  const onReportJob = () => {
+    if (!userInfo) {
+      modalNeedLoginRef.current?.show()
+    } else {
+      userInfo.numberOfReportJob && userInfo.numberOfReportJob > 0
+        ? modalReportJobRef.current?.show()
+        : modalNotifyOutOfTurnReportRef.current?.show()
+    }
+  }
+
   const onShowApplyJob = () => {
     if (isApplied || moment(timeToApply).valueOf() < moment().valueOf()) {
       return
@@ -227,9 +237,6 @@ export const JobDetail: React.FC = () => {
     if (!reporterPhone.current?.checkRequired()) {
       return false
     }
-    if (!reporterEmail.current?.checkRequired()) {
-      return false
-    }
     if (!reporterContent.current?.checkRequired()) {
       return false
     }
@@ -241,12 +248,12 @@ export const JobDetail: React.FC = () => {
       return
     }
     const fullname = reporterFullname.current?.getValue()
-    const email = reporterEmail.current?.getValue()
     const phone = reporterPhone.current?.getValue()
     const content = reporterContent.current?.getValue()
     const data = {
-      reporter: { fullname, email, phone, content },
-      job: { id: jobId }
+      reporter: { fullname, phone },
+      job: { id: jobId },
+      content
     }
 
     callApiReportJob(data)
@@ -325,14 +332,16 @@ export const JobDetail: React.FC = () => {
           )}
           <span className="block mt-3">(Hạn nộp hồ sơ: {moment(timeToApply).format('DD/MM/YYYY')})</span>
         </div>
-        <div className="mt-10 flex justify-end">
-          <span
-            className="block cursor-pointer text-red-500 font-semibold underline"
-            onClick={() => modalReportJobRef.current?.show()}
-          >
-            Báo cáo tin giả
-          </span>
-        </div>
+        {userInfo?._id !== jobInfo.creatorId && (
+          <div className="mt-10 flex justify-end">
+            <span
+              className="block cursor-pointer text-gray-400 font-medium duration-300 hover:text-gray-600"
+              onClick={onReportJob}
+            >
+              <i className="fas fa-exclamation-triangle mr-1"></i> Báo cáo tin giả
+            </span>
+          </div>
+        )}
       </div>
 
       <PrModal
@@ -342,13 +351,24 @@ export const JobDetail: React.FC = () => {
         ref={modalNeedLoginRef}
       >
         <div className="py-10 px-10 text-center">
-          <span className="block text-center font-semibold text-xl">Bạn chưa đăng nhập để ứng tuyển</span>
-          <span
-            onClick={onGoToSignIn}
-            className="inline-block bg-blue-500 px-4 py-2 mt-8 rounded cursor-pointer font-semibld text-white"
-          >
-            Đăng nhập ngay
+          <span className="block text-center font-semibold text-xl">
+            Để có thể sử dụng tính năng này, bạn cần đăng nhập vào hệ thống
           </span>
+          <div>
+            <span
+              onClick={onGoToSignIn}
+              className="inline-block bg-blue-500 px-4 py-2 mt-8 rounded cursor-pointer font-semibold text-white duration-300 hover:bg-blue-600"
+            >
+              Đăng nhập ngay
+            </span>
+            <span className="mx-8 font-medium">hoặc</span>
+            <Link
+              to="/sign-up"
+              className="inline-block bg-green-500 px-4 py-2 mt-8 rounded cursor-pointer font-semibold text-white duration-300 hover:bg-green-600"
+            >
+              Đăng ký
+            </Link>
+          </div>
         </div>
       </PrModal>
 
@@ -374,7 +394,22 @@ export const JobDetail: React.FC = () => {
       </PrModal>
 
       <PrModal
-        title="Báo cáo tin tuyển dụng này là giả mạo"
+        title="Không thể báo cáo"
+        onHide={() => modalNotifyOutOfTurnReportRef.current?.hide()}
+        disableFooter
+        ref={modalNotifyOutOfTurnReportRef}
+      >
+        <div className="py-16 px-10">
+          <span className="block text-center font-semibold text-xl">Bạn đã gửi một báo cáo trước đó</span>
+          <span className="block font-medium mt-10">
+            Báo cáo trước đó của bạn đang được chúng tôi xem xét. Bạn chỉ có thể gửi thêm báo cáo mới cho đến khi báo
+            cáo trước được xử lý xong.
+          </span>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Báo cáo tin tuyển dụng này"
         disableFooter
         onHide={() => modalReportJobRef.current?.hide()}
         ref={modalReportJobRef}
@@ -387,16 +422,13 @@ export const JobDetail: React.FC = () => {
             <PrInput label="Số điện thoại" required className="h-9" ref={reporterPhone} />
           </div>
           <div className="mt-5">
-            <PrInput label="Địa chỉ email" required className="h-9" ref={reporterEmail} />
-          </div>
-          <div className="mt-5">
             <PrInput
-              label="Nội dung giả mạo"
+              label="Nội dung"
               placeholder="Ví dụ: giả mạo công ty ABC, mức lương không đúng..."
               required
               ref={reporterContent}
               type="textarea"
-              divClassName="h-40"
+              divClassName="h-48"
             />
           </div>
           <div className="text-center">
@@ -422,6 +454,12 @@ export const JobDetail: React.FC = () => {
           </span>
           <span className="block text-center mt-10 font-medium">
             Chúng tôi sẽ tiến hành xác thực thông tin và sẽ sớm phản hồi kết quả qua email của bạn.
+          </span>
+          <span className="italic font-medium block text-center mt-10">
+            <span className="text-red-500">* Chú ý: </span>Trong trường hợp xảy ra tranh chấp khiếu nại, CVFREE sẽ tiến
+            hành thu thập thông tin và đưa ra quyết định chính xác để đảm bảo quyền lợi cho tất cả người dùng.
+            <br />
+            Quyết định của CVFREE sẽ là quyết định cuối cùng.
           </span>
         </div>
       </PrModal>

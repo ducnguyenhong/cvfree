@@ -1,4 +1,7 @@
 export default {
+  COMMON: {
+    AGE: 'years old'
+  },
   HOME: {
     TEST_VERSION: 'Test version',
     CVFREE: 'Free online Curriculum Vitae',

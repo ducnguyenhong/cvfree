@@ -34,6 +34,7 @@ export interface UserInfo {
   numberOfCreateCv?: number
   numberOfCandidateOpening?: number
   numberOfRequestUpdateCompany?: number
+  numberOfReportJob?: number
   createdAt?: Date
   updatedAt?: Date
 }

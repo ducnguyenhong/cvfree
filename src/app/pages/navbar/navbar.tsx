@@ -5,10 +5,10 @@ import Logo from 'assets/images/logo.png'
 import { languageList } from 'constants/data-language'
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { useIntl } from 'react-intl'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { languageState } from 'app/states/language-state'
-import { showNotify } from '../../partials/pr-notify/pr-notify'
+import { showNotify } from 'app/partials/pr-notify'
 
 interface DialogListType {
   route: string
@@ -21,6 +21,7 @@ const NavbarHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
   const userType = userInfo?.type || ''
   const intl = useIntl()
+  const history = useHistory()
   const languageRef = useRef<HTMLDivElement>(null)
   const dialogUserRef = useRef<HTMLDivElement>(null)
   const [showUserDialog, setShowUserDialog] = useState(false)
@@ -67,6 +68,7 @@ const NavbarHome: React.FC = () => {
     : userInfo?.username
 
   const onSignOut = useCallback(() => {
+    history.push('/')
     showNotify.success(intl.formatMessage({ id: 'AUTH.LOGOUT_SUCCESS' }))
     setShowUserDialog(false)
     setUserInfoRecoil(undefined)

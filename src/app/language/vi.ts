@@ -1,4 +1,7 @@
 export default {
+  COMMON: {
+    AGE: 'tuổi'
+  },
   HOME: {
     TEST_VERSION: 'Phiên bản thử nghiệm',
     CVFREE: 'Hồ sơ trực tuyến miễn phí',

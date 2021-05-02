@@ -9,6 +9,7 @@ import { OptionProps } from 'app/partials/pr-dropdown'
 import { OptionsType } from 'react-select'
 import queryString from 'query-string'
 import { DropdownProps } from 'constants/data-employer'
+import moment from 'moment'
 
 export const checkEmail = (email?: string | null) => {
   if (!email) {
@@ -310,4 +311,11 @@ export const getGenderMultiLanguage = (gender: string, language: string) => {
     return language === 'vi' ? 'Nữ' : 'Female'
   }
   return ''
+}
+
+export const getAge = (timestamp?: number | Date) => {
+  if (!timestamp) {
+    return 0
+  }
+  return Math.floor((moment().valueOf() - moment(timestamp).valueOf()) / 1000 / 60 / 60 / 24 / 365.25)
 }

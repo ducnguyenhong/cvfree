@@ -494,9 +494,11 @@ export const EmployerRegisterCompany: React.FC = () => {
           <span className="block text-center mt-10 font-medium">
             Chúng tôi sẽ sớm phản hồi yêu cầu này qua địa chỉ email của bạn
           </span>
-          <span className="block text-center mt-10 font-medium">
-            <span className="text-red-500">* Chú ý:</span> Trong trường hợp xảy ra tranh chấp, khiếu nại, CVFREE sẽ xem
-            xét chính xác thông tin đúng và quyết định của CVFREE là quyết định cuối cùng
+          <span className="italic font-medium block text-center mt-10">
+            <span className="text-red-500">* Chú ý: </span>Trong trường hợp xảy ra tranh chấp khiếu nại, CVFREE sẽ tiến
+            hành thu thập thông tin và đưa ra quyết định chính xác để đảm bảo quyền lợi cho tất cả người dùng.
+            <br />
+            Quyết định của CVFREE sẽ là quyết định cuối cùng.
           </span>
         </div>
       </PrModal>

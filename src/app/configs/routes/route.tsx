@@ -45,6 +45,8 @@ const JobList = lazy(() => import('app/pages/dashboard/pages/job'))
 const CvList = lazy(() => import('app/pages/dashboard/pages/cv'))
 const RequestUpdateCompanyList = lazy(() => import('app/pages/dashboard/pages/request-update-company'))
 const SendEmail = lazy(() => import('app/pages/dashboard/pages/send-email'))
+const ReportJobList = lazy(() => import('app/pages/dashboard/pages/report-job'))
+const UserDetail = lazy(() => import('app/pages/dashboard/pages/user/user-detail'))
 
 interface RouteType {
   path: string
@@ -188,7 +190,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/template-cv',
     component: CvTemplateList,
     exact: true,
-    role: ['ADMIN', 'USER']
+    role: ['ADMIN', 'USER', 'EMPLOYER']
   },
   {
     path: '/cv-public/:name.:id',
@@ -387,6 +389,12 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/send-email',
     component: SendEmail,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/users/:id',
+    component: UserDetail,
     exact: true,
     role: ['ADMIN']
   }
