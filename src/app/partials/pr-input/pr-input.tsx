@@ -19,7 +19,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     errorMessage,
     required,
     divClassName,
-    disabled
+    disabled,
+    isCurrency
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -41,7 +42,15 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     validateRequired && setValidateRequired(false)
     error && setError('')
-    setValueInput(e.target.value)
+    if (isCurrency) {
+      const nf = new Intl.NumberFormat()
+      const value = e.target.value.replaceAll('.', '')
+      const numberValue = Number(value)
+      const format = nf.format(numberValue)
+      setValueInput(format)
+    } else {
+      setValueInput(e.target.value)
+    }
     onChange && onChange(e.target.value)
   }
 

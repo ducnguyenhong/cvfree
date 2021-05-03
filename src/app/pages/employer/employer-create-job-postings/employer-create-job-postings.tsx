@@ -45,6 +45,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const [benefitToEnjoy, setBenefitToEnjoy] = useState<string>('')
   const [disableSalary, setDisableSalary] = useState<boolean>(true)
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [salaryFrom, setSalaryFrom] = useState<string>('')
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
 
   // ref
@@ -174,8 +175,8 @@ export const EmployerCreateJobPostings: React.FC = () => {
       genderRequirement: getValueDropdown(genderRequirementRef.current?.getValue()),
       salary: {
         salaryType: salaryTypeRef.current?.getValue()[0].value || '',
-        salaryFrom: parseInt(salaryFromRef.current?.getValue() ?? '0'),
-        salaryTo: parseInt(salaryToRef.current?.getValue() ?? '0'),
+        salaryFrom: salaryFromRef.current?.getValue() ?? '0',
+        salaryTo: salaryToRef.current?.getValue() ?? '0',
         salaryCurrency: getValueDropdown(salaryCurrencyRef.current?.getValue())[0]
       },
       jobDescription,
@@ -377,15 +378,16 @@ export const EmployerCreateJobPostings: React.FC = () => {
               />
             </div>
             <div className="col-span-2">
-              <PrInput label="Từ" icon="fas fa-coins" ref={salaryFromRef} type="number" disabled={disableSalary} />
+              <PrInput label="Từ" icon="fas fa-coins" isCurrency ref={salaryFromRef} disabled={disableSalary} />
             </div>
             <div className="col-span-2">
-              <PrInput label="Đến" icon="fas fa-coins" ref={salaryToRef} type="number" disabled={disableSalary} />
+              <PrInput label="Đến" icon="fas fa-coins" isCurrency ref={salaryToRef} disabled={disableSalary} />
             </div>
             <div className="col-span-1">
               <PrDropdown
                 ref={salaryCurrencyRef}
                 isClearable={false}
+                defaultValue={DataCurrency[0]}
                 options={DataCurrency}
                 label="Đơn vị"
                 isDisabled={disableSalary}

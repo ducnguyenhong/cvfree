@@ -25,8 +25,8 @@ export interface JobPostingInfo {
   genderRequirement: string[]
   salary: {
     salaryType: string
-    salaryFrom?: number
-    salaryTo?: number
+    salaryFrom?: string
+    salaryTo?: string
     salaryCurrency?: string
   }
   jobDescription: string

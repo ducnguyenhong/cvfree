@@ -16,6 +16,7 @@ export interface PrInputProps {
   errorMessage?: string
   divClassName?: string
   disabled?: boolean
+  isCurrency?: boolean
 }
 
 export interface PrInputRefProps {

@@ -161,15 +161,17 @@ export const EmployerCompanyInfo: React.FC = () => {
             <span className="text-gray-700">Thông tin công ty ở chế độ công khai</span>
           </a>
         </div>
-        <div className="text-right mb-10">
-          <Link
-            to={`/employer/request-update-company`}
-            className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
-          >
-            <i className="fas fa-eye mr-3 text-gray-600" />
-            <span className="text-gray-700">Yêu cầu cập nhật thông tin</span>
-          </Link>
-        </div>
+        {userInfo?.isAdminOfCompany && (
+          <div className="text-right mb-10">
+            <Link
+              to={`/employer/request-update-company`}
+              className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
+            >
+              <i className="fas fa-eye mr-3 text-gray-600" />
+              <span className="text-gray-700">Yêu cầu cập nhật thông tin</span>
+            </Link>
+          </div>
+        )}
         <div style={{ aspectRatio: '5/2' }} className="relative">
           <img src={background || BackgroundDefault} alt="background" className="w-full h-full" />
           <img

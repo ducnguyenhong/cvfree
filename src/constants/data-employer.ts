@@ -196,7 +196,7 @@ export const DataAnother: DropdownProps[] = [
 export const DataCurrency: DropdownProps[] = [
   {
     value: 'VND',
-    label: 'VNĐ'
+    label: 'VND'
   },
   {
     value: 'USD',
