@@ -286,7 +286,7 @@ const JobListGeneral: React.FC = () => {
                 <i className="fas fa-user-graduate mr-3" />
                 Tuyển dụng thực tập sinh
               </span>
-              <Link to="/jobs/interns" className="text-white font-medium">
+              <Link to="/jobs/intern" className="text-white font-medium">
                 <i className="fas fa-angle-double-right mr-2" />
                 Xem thêm
               </Link>

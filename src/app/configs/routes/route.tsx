@@ -12,6 +12,9 @@ const AboutUs = lazy(() => import('app/pages/about-us'))
 
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
+const JobListNew = lazy(() => import('app/pages/job/job-list-new'))
+const JobListHighSalary = lazy(() => import('app/pages/job/job-list-high-salary'))
+const JobListIntern = lazy(() => import('app/pages/job/job-list-intern'))
 
 const CandidateDetail = lazy(() => import('app/pages/candidate/candidate-detail'))
 const CandidateManageApply = lazy(() => import('app/pages/candidate/candidate-manage-apply'))
@@ -135,6 +138,24 @@ export const PUBLIC_ROUTES: RouteType[] = [
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/newest',
+    component: JobListNew,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/high-salary',
+    component: JobListHighSalary,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/intern',
+    component: JobListIntern,
     exact: true,
     role: []
   },
@@ -292,6 +313,24 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/jobs/:slug.:id',
     component: JobsDetail,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/newest',
+    component: JobListNew,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/high-salary',
+    component: JobListHighSalary,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/jobs/intern',
+    component: JobListIntern,
     exact: true,
     role: []
   },

@@ -10,10 +10,13 @@ export interface PaginationType {
 }
 
 interface PaginationProps {
-  pagination: PaginationType
+  pagination?: PaginationType | null
 }
 
 export const Pagination: React.FC<PaginationProps> = (props) => {
+  if (!props.pagination) {
+    return null
+  }
   const { page, size, totalItems, totalPages } = props.pagination
   const history = useHistory()
 
