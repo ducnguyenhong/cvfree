@@ -155,6 +155,10 @@ export const DataCareer: DropdownProps[] = [
   },
   {
     value: '24',
+    label: 'Kinh doanh'
+  },
+  {
+    value: '25',
     label: 'Ngành nghề khác'
   }
 ]

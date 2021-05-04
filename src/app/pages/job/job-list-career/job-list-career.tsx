@@ -1,22 +1,26 @@
-import { WrapperPage } from 'app/partials/layout/wrapper-page'
-import { JobPostingInfo } from 'models/job-posting-info'
-import React, { useEffect, useState } from 'react'
-import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ResponseListJob } from 'models/response-api'
-import { showNotify } from 'app/partials/pr-notify'
-import { get } from 'lodash'
-import { slugURL } from 'utils/helper'
-import { Link } from 'react-router-dom'
-import { List } from 'react-content-loader'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { showNotify } from 'app/partials/pr-notify'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { CityType, DataCareer } from 'constants/data-job'
+import { SERVER_URL } from 'constants/index'
+import { get } from 'lodash'
+import { JobPostingInfo } from 'models/job-posting-info'
+import { ResponseListJob } from 'models/response-api'
+import React, { useEffect, useState } from 'react'
+import { List } from 'react-content-loader'
+import { Link, useRouteMatch } from 'react-router-dom'
+import { slugURL } from 'utils/helper'
 
-export const JobListIntern: React.FC = () => {
+export const JobListCareer: React.FC = () => {
+  const match = useRouteMatch()
+  const careerRoute = get(match.params, 'careerRoute')
+  const career = DataCareer.find((item) => item.route === careerRoute)
   const [listJob, setListJob] = useState<JobPostingInfo[] | undefined | null>(undefined)
   const [pagination, setPagination] = useState<PaginationType | undefined>(undefined)
 
-  const callApiJobNew = () => {
-    const url = `${SERVER_URL}/jobs/intern`
+  const callApiJobList = (career: CityType) => {
+    const url = `${SERVER_URL}/jobs/career/${career.value}`
     const headers = {
       'Content-Type': 'application/json'
     }
@@ -46,20 +50,34 @@ export const JobListIntern: React.FC = () => {
   }
 
   useEffect(() => {
-    callApiJobNew()
-  }, [])
+    career && callApiJobList(career)
+  }, [career])
+
+  if (!listJob) {
+    return <List />
+  }
+
+  if (listJob.length === 0) {
+    return (
+      <WrapperPage title={`Việc làm ngành ${career?.label}`}>
+        <div className="py-20">
+          <span className="block text-center font-medium text-xl">Chưa có việc làm</span>
+        </div>
+      </WrapperPage>
+    )
+  }
 
   return (
-    <WrapperPage title="Việc làm thực tập sinh">
+    <WrapperPage title={`Việc làm ngành ${career?.label}`}>
       <div className="py-20">
         <div className="px-10 grid-cols-2 grid gap-x-8 gap-y-4">
           <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
             <span className="block text-white uppercase font-semibold">
-              <i className="fas fa-user-graduate mr-3" />
-              Việc làm thực tập sinh
+              <i className="fas fa-map-marker-alt mr-3" />
+              {`Việc làm ngành ${career?.label}`}
             </span>
           </div>
-          {(!listJob || listJob.length === 0) && <List />}
+
           {listJob &&
             listJob.length > 0 &&
             listJob.map((item) => {

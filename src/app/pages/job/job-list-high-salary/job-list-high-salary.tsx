@@ -50,13 +50,13 @@ export const JobListHighSalary: React.FC = () => {
   }, [])
 
   return (
-    <WrapperPage title="Việc làm mới nhất">
+    <WrapperPage title="Việc làm lương cao">
       <div className="py-20">
         <div className="px-10 grid-cols-2 grid gap-x-8 gap-y-4">
           <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
             <span className="block text-white uppercase font-semibold">
-              <i className="fas fa-star mr-3" />
-              Việc làm mới nhất
+              <i className="fas fa-coins mr-3" />
+              Việc làm lương cao
             </span>
           </div>
           {(!listJob || listJob.length === 0) && <List />}

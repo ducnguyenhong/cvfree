@@ -7,16 +7,20 @@ import { ResponseListJob } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
 import { slugURL } from 'utils/helper'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { List } from 'react-content-loader'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
+import { DataCity, CityType } from 'constants/data-job'
 
-export const JobListIntern: React.FC = () => {
+export const JobListLocation: React.FC = () => {
+  const match = useRouteMatch()
+  const cityRoute = get(match.params, 'cityRoute')
+  const city = DataCity.find((item) => item.route === cityRoute)
   const [listJob, setListJob] = useState<JobPostingInfo[] | undefined | null>(undefined)
   const [pagination, setPagination] = useState<PaginationType | undefined>(undefined)
 
-  const callApiJobNew = () => {
-    const url = `${SERVER_URL}/jobs/intern`
+  const callApiJobList = (city: CityType) => {
+    const url = `${SERVER_URL}/jobs/city/${city.value}`
     const headers = {
       'Content-Type': 'application/json'
     }
@@ -46,20 +50,34 @@ export const JobListIntern: React.FC = () => {
   }
 
   useEffect(() => {
-    callApiJobNew()
-  }, [])
+    city && callApiJobList(city)
+  }, [city])
+
+  if (!listJob) {
+    return <List />
+  }
+
+  if (listJob.length === 0) {
+    return (
+      <WrapperPage title={`Việc làm tại ${city?.label}`}>
+        <div className="py-20">
+          <span className="block text-center font-medium text-xl">Chưa có việc làm</span>
+        </div>
+      </WrapperPage>
+    )
+  }
 
   return (
-    <WrapperPage title="Việc làm thực tập sinh">
+    <WrapperPage title={`Việc làm tại ${city?.label}`}>
       <div className="py-20">
         <div className="px-10 grid-cols-2 grid gap-x-8 gap-y-4">
           <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
             <span className="block text-white uppercase font-semibold">
-              <i className="fas fa-user-graduate mr-3" />
-              Việc làm thực tập sinh
+              <i className="fas fa-map-marker-alt mr-3" />
+              {`Việc làm tại ${city?.label}`}
             </span>
           </div>
-          {(!listJob || listJob.length === 0) && <List />}
+
           {listJob &&
             listJob.length > 0 &&
             listJob.map((item) => {
