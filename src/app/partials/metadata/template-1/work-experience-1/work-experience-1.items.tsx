@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { WorkExperienceItemRef, WorkExperienceValue } from 'app/partials/metadata/metadata.type'
+import { WorkExperienceItemRef, WorkExperienceValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const WorkExperienceItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<WorkExperienceItemRef>) => {
+interface WorkExperienceProps extends FocusBlurType {}
+
+export const WorkExperienceItem1 = forwardRef((props: WorkExperienceProps, ref: Ref<WorkExperienceItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const positionRef = useRef<PrInputRefProps>(null)
   const companyNameRef = useRef<PrInputRefProps>(null)
@@ -51,24 +54,32 @@ export const WorkExperienceItem1 = forwardRef((props: Record<string, unknown>, r
           <PrInputCV
             placeholder="- Công ty"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full py-2 uppercase font-semibold text-gray-600"
             ref={companyNameRef}
           />
           <PrInputCV
             ref={positionRef}
             placeholder=" + Vị trí"
+            onFocus={onFocus}
+            onBlur={onBlur}
             divClassName="h-8 w-full"
             className="bg-transparent w-full pl-8 text-gray-600"
           />
           <PrInputCV
             ref={timeRef}
             placeholder=" + Thời gian"
+            onFocus={onFocus}
+            onBlur={onBlur}
             divClassName="h-8 w-full"
             className="bg-transparent w-full pl-8 text-gray-600"
           />
           <PrInputCV
             ref={descriptionRef}
             placeholder=" + Mô tả công việc"
+            onFocus={onFocus}
+            onBlur={onBlur}
             divClassName="h-16 w-full"
             type="textarea"
             className="bg-transparent w-full pl-8 pt-1 resize-none text-gray-600"

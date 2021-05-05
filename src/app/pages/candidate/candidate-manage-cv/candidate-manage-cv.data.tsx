@@ -86,7 +86,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <BasicCvPublicInfo id={_id} avatar={avatar} fullname={fullname} cvName={name} gender={gender} />
 
       case 'template':
-        return <span>{template}</span>
+        return <span>{template.label}</span>
 
       case 'createdAt':
         return <DateTime timestamp={createdAt} />

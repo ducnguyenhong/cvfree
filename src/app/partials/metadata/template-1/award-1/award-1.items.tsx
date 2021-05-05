@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { AwardItemRef, AwardValue } from 'app/partials/metadata/metadata.type'
+import { AwardItemRef, AwardValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const AwardItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<AwardItemRef>) => {
+interface AwardProps extends FocusBlurType {}
+
+export const AwardItem1 = forwardRef((props: AwardProps, ref: Ref<AwardItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const nameRef = useRef<PrInputRefProps>(null)
 
@@ -43,6 +46,8 @@ export const AwardItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<A
             placeholder="- Giải thưởng"
             ref={nameRef}
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full py-1.5 text-gray-600"
           />
         </div>

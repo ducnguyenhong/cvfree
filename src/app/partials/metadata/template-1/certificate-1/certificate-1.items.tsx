@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { CertificateItemRef, CertificateValue } from 'app/partials/metadata/metadata.type'
+import { CertificateItemRef, CertificateValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const CertificateItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<CertificateItemRef>) => {
+interface CertificateProps extends FocusBlurType {}
+
+export const CertificateItem1 = forwardRef((props: CertificateProps, ref: Ref<CertificateItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const nameRef = useRef<PrInputRefProps>(null)
 
@@ -42,6 +45,8 @@ export const CertificateItem1 = forwardRef((props: Record<string, unknown>, ref:
           <PrInputCV
             placeholder="- Chứng chỉ"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             ref={nameRef}
             className="bg-transparent w-full py-1.5 text-gray-600"
           />

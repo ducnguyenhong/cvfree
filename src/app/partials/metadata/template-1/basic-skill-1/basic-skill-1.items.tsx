@@ -3,9 +3,12 @@ import PrInputCV from 'app/partials/pr-input-cv'
 import { PrRate, PrRateRefProps } from 'app/partials/pr-rate'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { BasicSkillValue, BasicSkillItemRef } from 'app/partials/metadata/metadata.type'
+import { BasicSkillValue, BasicSkillItemRef, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const BasicSkillItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<BasicSkillItemRef>) => {
+interface BasicSkillProps extends FocusBlurType {}
+
+export const BasicSkillItem1 = forwardRef((props: BasicSkillProps, ref: Ref<BasicSkillItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const starRef = useRef<PrRateRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
@@ -46,6 +49,8 @@ export const BasicSkillItem1 = forwardRef((props: Record<string, unknown>, ref: 
           <PrInputCV
             ref={nameRef}
             placeholder="Tên kỹ năng"
+            onFocus={onFocus}
+            onBlur={onBlur}
             divClassName="h-9 w-full"
             className="bg-transparent w-full text-gray-600 uppercase font-medium"
           />

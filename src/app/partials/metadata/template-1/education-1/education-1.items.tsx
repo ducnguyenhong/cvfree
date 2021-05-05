@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { EducationItemRef, EducationValue } from 'app/partials/metadata/metadata.type'
+import { EducationItemRef, EducationValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const EducationItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<EducationItemRef>) => {
+interface EducationProps extends FocusBlurType {}
+
+export const EducationItem1 = forwardRef((props: EducationProps, ref: Ref<EducationItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const majorRef = useRef<PrInputRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
@@ -45,6 +48,8 @@ export const EducationItem1 = forwardRef((props: Record<string, unknown>, ref: R
           <PrInputCV
             placeholder="- Trường học/Trung tâm"
             divClassName="h-8 w-full mt-0.5"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full uppercase font-semibold text-gray-600"
             ref={nameRef}
           />
@@ -52,6 +57,8 @@ export const EducationItem1 = forwardRef((props: Record<string, unknown>, ref: R
             placeholder=" + Chuyên ngành"
             divClassName="h-8 w-full"
             ref={majorRef}
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full pl-8 text-gray-600"
           />
         </div>

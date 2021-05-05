@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { AdvancedSkillItem1 } from './advanced-skill-1.items'
-import { AdvancedSkillMetaDataType, AdvancedSkillValue } from 'app/partials/metadata/metadata.type'
+import { AdvancedSkillMetaDataType, AdvancedSkillValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const AdvancedSkill1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface AdvancedSkillItemProps extends FocusBlurType {}
+
+export const AdvancedSkill1 = forwardRef((props: AdvancedSkillItemProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<AdvancedSkillMetaDataType[]>([
     { ref: null, name: '', description: '' }
   ])
@@ -67,7 +70,12 @@ export const AdvancedSkill1 = forwardRef((props: Record<string, unknown>, ref) =
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <AdvancedSkillItem1 ref={(ref) => (item.ref = ref)} key={`ad_skill_${index}`} />
+        <AdvancedSkillItem1
+          ref={(ref) => (item.ref = ref)}
+          key={`ad_skill_${index}`}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       ))}
     </div>
   )

@@ -88,7 +88,7 @@ export const TemplateSelectCV: React.FC = () => {
 
       <PrModal title="Thông báo" ref={modalOutOfTurnRef} disableFooter onHide={() => modalOutOfTurnRef.current?.hide()}>
         <div className="py-20 px-10">
-          <span className="block text-center font-semibold text-lg">Bạn đã sử dụng hết số lượt tạo CV (3 lượt)</span>
+          <span className="block text-center font-semibold text-lg">Bạn đã sử dụng hết số lượt tạo CV</span>
           <div className="mt-16 text-center flex items-center justify-center">
             <Link
               to="/manage-cv"

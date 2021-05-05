@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { ActivityItemRef, ActivityValue } from 'app/partials/metadata/metadata.type'
+import { ActivityItemRef, ActivityValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const ActivityItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<ActivityItemRef>) => {
+interface ActivityProps extends FocusBlurType {}
+
+export const ActivityItem1 = forwardRef((props: ActivityProps, ref: Ref<ActivityItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const timeRef = useRef<PrInputRefProps>(null)
   const nameRef = useRef<PrInputRefProps>(null)
@@ -46,11 +49,15 @@ export const ActivityItem1 = forwardRef((props: Record<string, unknown>, ref: Re
             placeholder="- Hoạt động"
             divClassName="h-8 w-full"
             ref={nameRef}
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full pt-1.5 pb-0.5 text-gray-600 font-medium uppercase"
           />
           <PrInputCV
             placeholder=" + Thời gian"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             ref={timeRef}
             className="bg-transparent w-full pl-8 pb-2 text-gray-600"
           />

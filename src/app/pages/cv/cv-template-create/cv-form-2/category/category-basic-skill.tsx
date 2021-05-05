@@ -4,7 +4,7 @@ import BasicSkillIcon from 'assets/icons/basic-skill.svg'
 import { BasicSkill1 } from 'app/partials/metadata/template-1'
 
 export const BasicSkills: React.FC<CategoryComponentProps> = (props) => {
-  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, categoryRef, onFocus, onBlur } = props
+  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, categoryRef } = props
   return (
     <div className="div-one-category-left relative px-2 my-2 pb-1 pt-3 duration-300 rounded group">
       <div className="flex items-center mb-2">
@@ -18,7 +18,7 @@ export const BasicSkills: React.FC<CategoryComponentProps> = (props) => {
         onDownCategoryLeft={onDownCategoryLeft}
         onRemoveCategoryLeft={onRemoveCategoryLeft}
       />
-      <BasicSkill1 ref={categoryRef} onFocus={onFocus} onBlur={onBlur} />
+      <BasicSkill1 ref={categoryRef} />
     </div>
   )
 }

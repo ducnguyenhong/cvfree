@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { AwardItem1 } from './award-1.items'
-import { AwardMetaDataType, AwardValue } from 'app/partials/metadata/metadata.type'
+import { AwardMetaDataType, AwardValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const Award1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface AwardProps extends FocusBlurType {}
+
+export const Award1 = forwardRef((props: AwardProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<AwardMetaDataType[]>([{ ref: null, name: '' }])
 
   const onCreateFine = () => {
@@ -61,7 +64,7 @@ export const Award1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <AwardItem1 ref={(ref) => (item.ref = ref)} key={`award_${index}`} />
+        <AwardItem1 ref={(ref) => (item.ref = ref)} key={`award_${index}`} onFocus={onFocus} onBlur={onBlur} />
       ))}
     </div>
   )

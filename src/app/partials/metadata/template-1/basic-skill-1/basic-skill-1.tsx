@@ -1,8 +1,11 @@
-import { BasicSkillMetaDataType, BasicSkillValue } from 'app/partials/metadata/metadata.type'
+import { BasicSkillMetaDataType, BasicSkillValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { BasicSkillItem1 } from './basic-skill-1.items'
 
-export const BasicSkill1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface BasicSkillProps extends FocusBlurType {}
+
+export const BasicSkill1 = forwardRef((props: BasicSkillProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<BasicSkillMetaDataType[]>([
     { ref: null, name: '', star: 0 },
     { ref: null, name: '', star: 0 }
@@ -64,7 +67,12 @@ export const BasicSkill1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <BasicSkillItem1 ref={(ref) => (item.ref = ref)} key={`basic_skill_${index}`} />
+        <BasicSkillItem1
+          ref={(ref) => (item.ref = ref)}
+          key={`basic_skill_${index}`}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       ))}
     </div>
   )

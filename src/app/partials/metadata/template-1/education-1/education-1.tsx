@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { EducationItem1 } from './education-1.items'
-import { EducationMetaDataType, EducationValue } from 'app/partials/metadata/metadata.type'
+import { EducationMetaDataType, EducationValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const Education1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface EducationProps extends FocusBlurType {}
+
+export const Education1 = forwardRef((props: EducationProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<EducationMetaDataType[]>([{ ref: null, name: '', major: '' }])
 
   const onCreateFine = () => {
@@ -61,7 +64,7 @@ export const Education1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <EducationItem1 ref={(ref) => (item.ref = ref)} key={`education_${index}`} />
+        <EducationItem1 ref={(ref) => (item.ref = ref)} key={`education_${index}`} onBlur={onBlur} onFocus={onFocus} />
       ))}
     </div>
   )

@@ -117,7 +117,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <BasicUserInfo id={creatorId} name={creator?.fullname || creator?.username} avatar={creator?.avatar} />
 
       case 'template':
-        return <span>{template}</span>
+        return <span>{template.label}</span>
 
       case 'formOfWork':
         return <span>{formOfWork}</span>

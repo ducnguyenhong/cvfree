@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { CertificateItem1 } from './certificate-1.items'
-import { CertificateMetaDataType, CertificateValue } from 'app/partials/metadata/metadata.type'
+import { CertificateMetaDataType, CertificateValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const Certificate1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface CertificateProps extends FocusBlurType {}
+
+export const Certificate1 = forwardRef((props: CertificateProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<CertificateMetaDataType[]>([{ ref: null, name: '' }])
 
   const onCreateFine = () => {
@@ -61,7 +64,12 @@ export const Certificate1 = forwardRef((props: Record<string, unknown>, ref) => 
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <CertificateItem1 ref={(ref) => (item.ref = ref)} key={`certificate_${index}`} />
+        <CertificateItem1
+          ref={(ref) => (item.ref = ref)}
+          key={`certificate_${index}`}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       ))}
     </div>
   )

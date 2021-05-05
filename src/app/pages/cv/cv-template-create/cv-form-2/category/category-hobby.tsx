@@ -4,7 +4,7 @@ import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 
 export const Hobbies: React.FC<CategoryComponentProps> = (props) => {
-  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, inputRef, onFocus, onBlur } = props
+  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, inputRef } = props
   return (
     <div className="div-one-category-left relative px-2 pb-3 my-2 duration-300 pt-1 rounded group">
       <div className="flex items-center mb-2">
@@ -21,8 +21,6 @@ export const Hobbies: React.FC<CategoryComponentProps> = (props) => {
       />
       <PrInputCV
         ref={inputRef}
-        onFocus={onFocus}
-        onBlur={onBlur}
         divClassName="h-16"
         placeholder="- Đọc sách, nghe nhạc..."
         type="textarea"

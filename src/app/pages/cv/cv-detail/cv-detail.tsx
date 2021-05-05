@@ -59,7 +59,7 @@ const CvDetail: React.FC = () => {
 
   const { template } = cvInfo
 
-  if (template === '1') {
+  if (template.value === '1') {
     return <CvDetailTemplate1 data={cvInfo} />
   }
 

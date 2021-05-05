@@ -4,7 +4,7 @@ import { Education1 } from 'app/partials/metadata/template-1'
 import EducationsIcon from 'assets/icons/education.svg'
 
 export const Educations: React.FC<CategoryComponentProps> = (props) => {
-  const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef, onBlur, onFocus } = props
+  const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
   return (
     <div className="div-one-category relative px-2 py-1 duration-300 mb-3 rounded group">
       <div className="flex items-center mb-2">
@@ -18,7 +18,7 @@ export const Educations: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <Education1 ref={categoryRef} onBlur={onBlur} onFocus={onFocus} />
+      <Education1 ref={categoryRef} />
     </div>
   )
 }

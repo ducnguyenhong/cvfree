@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { PresenterItemRef, PresenterValue } from 'app/partials/metadata/metadata.type'
+import { PresenterItemRef, PresenterValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const PresenterItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<PresenterItemRef>) => {
+interface PresenterProps extends FocusBlurType {}
+
+export const PresenterItem1 = forwardRef((props: PresenterProps, ref: Ref<PresenterItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const positionRef = useRef<PrInputRefProps>(null)
   const companyRef = useRef<PrInputRefProps>(null)
@@ -52,23 +55,31 @@ export const PresenterItem1 = forwardRef((props: Record<string, unknown>, ref: R
             ref={nameRef}
             placeholder="- Họ và tên"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full py-2 uppercase font-semibold  text-gray-600"
           />
           <PrInputCV
             ref={companyRef}
             placeholder=" + Công ty"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full pl-8 text-gray-600"
           />
           <PrInputCV
             ref={positionRef}
             placeholder=" + Chức vụ"
             divClassName="h-8 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             className="bg-transparent w-full pl-8 text-gray-600"
           />
           <PrInputCV
             ref={phoneRef}
             placeholder=" + Số điện thoại"
+            onFocus={onFocus}
+            onBlur={onBlur}
             divClassName="h-8 w-full"
             className="bg-transparent w-full pl-8 mt-0.5"
           />

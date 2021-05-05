@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { WorkExperienceItem1 } from './work-experience-1.items'
-import { WorkExperienceMetaDataType, WorkExperienceValue } from 'app/partials/metadata/metadata.type'
+import { WorkExperienceMetaDataType, WorkExperienceValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const WorkExperience1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface WorkExperienceProps extends FocusBlurType {}
+
+export const WorkExperience1 = forwardRef((props: WorkExperienceProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<WorkExperienceMetaDataType[]>([
     { ref: null, companyName: '', position: '', time: '', description: '' }
   ])
@@ -69,7 +72,12 @@ export const WorkExperience1 = forwardRef((props: Record<string, unknown>, ref) 
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <WorkExperienceItem1 ref={(ref) => (item.ref = ref)} key={`work_exp_${index}`} />
+        <WorkExperienceItem1
+          ref={(ref) => (item.ref = ref)}
+          key={`work_exp_${index}`}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       ))}
     </div>
   )

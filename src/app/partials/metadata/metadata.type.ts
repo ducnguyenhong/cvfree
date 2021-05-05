@@ -1,3 +1,8 @@
+export interface FocusBlurType {
+  onFocus?: () => void
+  onBlur?: () => void
+}
+
 // Basic skill
 export interface BasicSkillValue {
   name: string

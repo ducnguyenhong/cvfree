@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { ActivityItem1 } from './activity-1.items'
-import { ActivityMetaDataType, ActivityValue } from 'app/partials/metadata/metadata.type'
+import { ActivityMetaDataType, ActivityValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface ActivityProps extends FocusBlurType {}
+
+export const Activity1 = forwardRef((props: ActivityProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<ActivityMetaDataType[]>([{ ref: null, name: '', time: '' }])
 
   const onCreateFine = () => {
@@ -61,7 +64,7 @@ export const Activity1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <ActivityItem1 ref={(ref) => (item.ref = ref)} key={`activity_${index}`} />
+        <ActivityItem1 ref={(ref) => (item.ref = ref)} key={`activity_${index}`} onFocus={onFocus} onBlur={onBlur} />
       ))}
     </div>
   )

@@ -4,7 +4,7 @@ import AwardIcon from 'assets/icons/award.svg'
 import { Award1 } from 'app/partials/metadata/template-1'
 
 export const Awards: React.FC<CategoryComponentProps> = (props) => {
-  const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef, onFocus, onBlur } = props
+  const { onDownCategory, onUpCategory, onRemoveCategory, categoryRef } = props
   return (
     <div className="div-one-category relative px-2 py-1 mb-3 duration-300 rounded group">
       <div className="flex items-center mb-2">
@@ -18,7 +18,7 @@ export const Awards: React.FC<CategoryComponentProps> = (props) => {
         onDownCategory={onDownCategory}
         onRemoveCategory={onRemoveCategory}
       />
-      <Award1 ref={categoryRef} onFocus={onFocus} onBlur={onBlur} />
+      <Award1 ref={categoryRef} />
     </div>
   )
 }

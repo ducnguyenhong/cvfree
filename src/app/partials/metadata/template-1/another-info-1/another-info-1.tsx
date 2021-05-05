@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { AnotherInfoItem1 } from './another-info-1.items'
-import { AnotherInfoMetaDataType, AnotherInfoValue } from 'app/partials/metadata/metadata.type'
+import { AnotherInfoMetaDataType, AnotherInfoValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const AnotherInfo1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface AnotherInfoProps extends FocusBlurType {}
+
+export const AnotherInfo1 = forwardRef((props: AnotherInfoProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<AnotherInfoMetaDataType[]>([{ ref: null, info: '' }])
 
   const onCreateFine = () => {
@@ -61,7 +64,12 @@ export const AnotherInfo1 = forwardRef((props: Record<string, unknown>, ref) => 
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <AnotherInfoItem1 ref={(ref) => (item.ref = ref)} key={`another_info_${index}`} />
+        <AnotherInfoItem1
+          ref={(ref) => (item.ref = ref)}
+          key={`another_info_${index}`}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       ))}
     </div>
   )

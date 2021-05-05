@@ -30,7 +30,9 @@ import {
   getCategoryWhenDown,
   getCategoryWhenRemove,
   uploadServer,
-  getGenderFromInput
+  getGenderFromInput,
+  getValueDropdown,
+  getDefaultDataDropdown
 } from 'utils/helper'
 import { CvInfo } from 'models/cv-info'
 import { useRecoilValue } from 'recoil'
@@ -61,19 +63,16 @@ import { DataCareer, DataFormOfWork } from 'constants/data-employer'
 import { v4 as uuid } from 'uuid'
 
 import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import { getValueDropdown, getDefaultDataDropdown } from '../../../../../utils/helper'
-import { DataDemoCV } from 'constants/data-demo-cv'
-import { DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
-export const CvFormLayout1: React.FC<CvFormProps> = () => {
+export const CvFormLayout2: React.FC<CvFormProps> = () => {
   const match = useRouteMatch()
   const cvId = get(match.params, 'id')
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [defaultAvatar, setDefaultAvatar] = useState<string>('')
-  const [color, setColor] = useState<string>('#176F9B')
+  const [color, setColor] = useState<string>('#9B1724')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
@@ -84,7 +83,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const [showRecommend, setShowRecommend] = useState<boolean>(false)
   const [showSubInfo, setShowSubInfo] = useState<boolean>(true)
   const [cvInfo, setCvInfo] = useState<CvInfo | null>(null)
-  const [recommend, setRecommend] = useState<DataRecommendCvType | undefined>(undefined)
 
   const cvNameRef = useRef<PrInputRefProps>(null)
   const careerRef = useRef<PrDropdownRefProps>(null)
@@ -104,7 +102,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
 
   const modalListCategoryRef = useRef<PrModalRefProps>(null)
   const modalAddressRef = useRef<PrModalRefProps>(null)
-  const modalChangeTemplateRef = useRef<PrModalRefProps>(null)
   const educationRef = useRef<EducationRef>(null)
   const awardRef = useRef<AwardRef>(null)
   const presenterRef = useRef<PresenterRef>(null)
@@ -118,108 +115,61 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const careerGoalRef = useRef<PrInputCVRefProps>(null)
   const cvRef = useRef<HTMLDivElement>(null)
 
-  const onChangeRecommend = (field: string | null) => {
-    console.log('ducnh3', showRecommend, field)
-
-    // if (!showRecommend) {
-    //   return
-    // }
-    if (!field) {
-      setRecommend(undefined)
-    }
-    const data = DataRecommendCv.find((item) => item.field === field)
-    console.log('ducnh4', data)
-
-    setRecommend(data)
-  }
-
   const defaultCategory: CategoryProps[] = [
     {
       title: 'Học vấn',
       enable: true,
       name: 'education',
-      component: (props) => (
-        <Educations {...props} onFocus={() => onChangeRecommend('schoolName')} onBlur={() => onChangeRecommend(null)} />
-      ),
+      component: (props) => <Educations {...props} />,
       categoryRef: educationRef
     },
     {
       title: 'Kinh nghiệm làm việc',
       enable: true,
       name: 'workExperience',
-      component: (props) => (
-        <WorkExperiences
-          {...props}
-          onFocus={() => onChangeRecommend('workExperience')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <WorkExperiences {...props} />,
       categoryRef: workExperienceRef
     },
     {
       title: 'Kỹ năng chuyên môn',
       enable: true,
       name: 'advancedSkill',
-      component: (props) => (
-        <AdvancedSkills
-          {...props}
-          onFocus={() => onChangeRecommend('advancedSkill')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <AdvancedSkills {...props} />,
       categoryRef: advancedSkillRef
     },
     {
       title: 'Hoạt động',
       enable: true,
       name: 'activity',
-      component: (props) => (
-        <Activities {...props} onFocus={() => onChangeRecommend('activity')} onBlur={() => onChangeRecommend(null)} />
-      ),
+      component: (props) => <Activities {...props} />,
       categoryRef: activityRef
     },
     {
       title: 'Chứng chỉ',
       enable: true,
       name: 'certificate',
-      component: (props) => (
-        <Certificates
-          {...props}
-          onFocus={() => onChangeRecommend('certificate')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <Certificates {...props} />,
       categoryRef: certificateRef
     },
     {
       title: 'Giải thưởng',
       enable: true,
       name: 'award',
-      component: (props) => (
-        <Awards {...props} onFocus={() => onChangeRecommend('award')} onBlur={() => onChangeRecommend(null)} />
-      ),
+      component: (props) => <Awards {...props} />,
       categoryRef: awardRef
     },
     {
       title: 'Người giới thiệu',
       enable: false,
       name: 'presenter',
-      component: (props) => (
-        <Presenters {...props} onFocus={() => onChangeRecommend('presenter')} onBlur={() => onChangeRecommend(null)} />
-      ),
+      component: (props) => <Presenters {...props} />,
       categoryRef: presenterRef
     },
     {
       title: 'Thông tin khác',
       enable: false,
       name: 'anotherInfo',
-      component: (props) => (
-        <AnotherInfos
-          {...props}
-          onFocus={() => onChangeRecommend('anotherInfo')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <AnotherInfos {...props} />,
       categoryRef: anotherInfoRef
     }
   ]
@@ -229,35 +179,21 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       title: 'Kỹ năng cá nhân',
       enable: true,
       name: 'basicSkill',
-      component: (props) => (
-        <BasicSkills
-          {...props}
-          onFocus={() => onChangeRecommend('basicSkill')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <BasicSkills {...props} />,
       categoryRef: basicSkillRef
     },
     {
       title: 'Sở thích',
       enable: false,
       name: 'hobby',
-      component: (props) => (
-        <Hobbies {...props} onFocus={() => onChangeRecommend('hobby')} onBlur={() => onChangeRecommend(null)} />
-      ),
+      component: (props) => <Hobbies {...props} />,
       inputRef: hobbiesRef
     },
     {
       title: 'Mục tiêu nghề nghiệp',
       enable: true,
       name: 'careerGoals',
-      component: (props) => (
-        <CareerGoals
-          {...props}
-          onFocus={() => onChangeRecommend('careerGoals')}
-          onBlur={() => onChangeRecommend(null)}
-        />
-      ),
+      component: (props) => <CareerGoals {...props} />,
       inputRef: careerGoalRef
     }
   ]
@@ -269,38 +205,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
 
   const onChangColorCV = (colorInput: string) => {
     setColor(colorInput)
-  }
-
-  const onChangeTemplate = (template: { value: string; label: string }) => {
-    const accessToken = Cookies.get('token')
-    const url = `${SERVER_URL}/cvs/${cvId}/update-template`
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`
-    }
-
-    const config: AxiosRequestConfig = {
-      method: 'PUT',
-      headers,
-      url,
-      data: { template },
-      timeout: 20000
-    }
-
-    axios(config)
-      .then((response: AxiosResponse<ResponseCVDetail>) => {
-        const { success, message, error } = response.data
-
-        if (!success) {
-          throw Error(error?.message)
-        }
-        showNotify.success(message)
-        modalChangeTemplateRef.current?.hide()
-        callApiCvDetail()
-      })
-      .catch((e) => {
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
-      })
   }
 
   const getImage = (img: File) => {
@@ -623,7 +527,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   }, [])
 
   useEffect(() => {
-    document.title = `CVFREE | ${cvId ? 'Chỉnh sửa' : 'Tạo'} hồ sơ`
+    document.title = 'CVFREE | Tạo hồ sơ'
   }, [])
 
   useEffect(() => {
@@ -681,25 +585,8 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       presenterRef.current?.setValue(presenter || null)
       anotherInfoRef.current?.setValue(anotherInfo || null)
 
-      const dataCategory: CategoryProps[] = []
-      for (let i = 0; i < categoryCV.length; i++) {
-        for (let j = 0; j < defaultCategory.length; j++) {
-          if (categoryCV[i].name === defaultCategory[j].name) {
-            dataCategory.push(defaultCategory[j])
-          }
-        }
-      }
-
-      const dataCategoryLeft: CategoryProps[] = []
-      for (let i = 0; i < categoryInfo.length; i++) {
-        for (let j = 0; j < defaultCategoryLeft.length; j++) {
-          if (categoryInfo[i].name === defaultCategoryLeft[j].name) {
-            dataCategoryLeft.push(defaultCategoryLeft[j])
-          }
-        }
-      }
-      setCategory(dataCategory)
-      setCategoryLeft(dataCategoryLeft)
+      // setCategory(categoryCV)
+      // setCategoryLeft(categoryInfo)
     }
   }, [cvInfo, showSubInfo])
 
@@ -776,15 +663,21 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
               </div>
               <div className="px-2 mt-10">
                 <span className="block font-semibold text-green-600 mb-2">Gợi ý</span>
-                <div className={`${recommend ? '' : 'h-20'} border border-dashed border-gray-300 px-4 py-2 rounded`}>
-                  <span className="break-words whitespace-pre-wrap">{recommend?.recommend}</span>
+                <div className="border border-dashed border-gray-300 px-3 py-2 rounded">
+                  <span>
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkwscnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                  </span>
                 </div>
               </div>
 
               <div className="px-2 mt-5">
                 <span className="block font-semibold text-green-600 mb-2">Ví dụ</span>
-                <div className={`${recommend ? '' : 'h-20'} border border-dashed border-gray-300 px-4 py-2 rounded`}>
-                  <span className="break-words whitespace-pre-wrap">{recommend?.example}</span>
+                <div className="border border-dashed border-gray-300 px-3 py-2 rounded">
+                  <span>
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                    scnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkwscnisbviw infiwnifn ồ ojwfoqwofpqkp ượp lpwfkw
+                  </span>
                 </div>
               </div>
             </div>
@@ -811,53 +704,44 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
           </div>
 
           <hr />
-
-          <div
-            className="px-5"
-            style={{
-              width: showSubInfo ? '100%' : 0,
-              opacity: showSubInfo ? '100%' : '0',
-              position: showSubInfo ? 'relative' : 'absolute',
-              visibility: showSubInfo ? 'visible' : 'hidden'
-            }}
-          >
-            <div className="mt-5">
-              <PrInput
-                label="Tên CV"
-                divClassName="h-9"
-                required
-                ref={cvNameRef}
-                placeholder="Ví dụ: CV 1, CV chính..."
-              />
+          {showSubInfo ? (
+            <div className="px-5">
+              <div className="mt-5">
+                <PrInput
+                  label="Tên CV"
+                  divClassName="h-9"
+                  required
+                  ref={cvNameRef}
+                  placeholder="Ví dụ: CV 1, CV chính..."
+                />
+              </div>
+              <div className="mt-5">
+                <PrDropdown
+                  label="Ngành nghề muốn ứng tuyển"
+                  options={DataCareer}
+                  isClearable={false}
+                  required
+                  ref={careerRef}
+                />
+              </div>
+              <div className="mt-5">
+                <PrDropdown
+                  label="Hình thức làm việc muốn ứng tuyển"
+                  options={DataFormOfWork}
+                  required
+                  isMulti
+                  ref={formOfWorkRef}
+                />
+                <span className="text-sm">(Có thể chọn nhiều)</span>
+              </div>
+              <div className="mt-10">
+                <span className="block italic font-medium text-justify">
+                  <span className="text-red-500 font-semibold">Lưu ý:</span> Những thông tin tại đây sẽ không hiển thị
+                  trong CV. Nhưng sẽ giúp CV của bạn tiếp cận đến nhiều nhà tuyển dụng hơn.
+                </span>
+              </div>
             </div>
-            <div className="mt-5">
-              <PrDropdown
-                label="Ngành nghề muốn ứng tuyển"
-                options={DataCareer}
-                isClearable={false}
-                required
-                ref={careerRef}
-              />
-            </div>
-            <div className="mt-5">
-              <PrDropdown
-                label="Hình thức làm việc muốn ứng tuyển"
-                options={DataFormOfWork}
-                required
-                isMulti
-                ref={formOfWorkRef}
-              />
-              <span className="text-sm">(Có thể chọn nhiều)</span>
-            </div>
-            <div className="mt-10">
-              <span className="block italic font-medium text-justify">
-                <span className="text-red-500 font-semibold">Lưu ý:</span> Những thông tin tại đây sẽ không hiển thị
-                trong CV. Nhưng sẽ giúp CV của bạn tiếp cận đến nhiều nhà tuyển dụng hơn.
-              </span>
-            </div>
-          </div>
-
-          {!showSubInfo && (
+          ) : (
             <div
               className="cursor-pointer flex items-center justify-center"
               style={{ height: '75%' }}
@@ -881,6 +765,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
         {/* CV */}
         <div style={{ width: '210mm', right: showRecommend ? '10%' : '0' }} className="duration-300 relative mx-auto">
           {/* Control */}
+
           <div
             style={{
               width: '210mm',
@@ -892,14 +777,12 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
             }`}
           >
             {/* Màu CV */}
-            <PrInputColor onChange={onChangColorCV} defaultColor="#176F9B" />
+            <PrInputColor onChange={onChangColorCV} defaultColor="#9B1724" />
             {/* Đổi mẫu */}
-            {cvId && (
-              <div className="mx-4 text-center" onClick={() => modalChangeTemplateRef.current?.show()}>
-                <span className="block text-sm font-medium">Đổi mẫu CV</span>
-                <i className="fas fa-copy text-gray-600 cursor-pointer text-2xl"></i>
-              </div>
-            )}
+            <div className="mx-4 text-center">
+              <span className="block text-sm font-medium">Đổi mẫu CV</span>
+              <i className="fas fa-copy text-gray-600 cursor-pointer text-2xl"></i>
+            </div>
             {/* Cỡ chữ */}
             <div className="w-24 mx-4 text-center">
               <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
@@ -969,8 +852,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <PrInputCV
                       ref={fullnameRef}
                       placeholder="Họ và tên"
-                      onFocus={() => onChangeRecommend('fullname')}
-                      onBlur={() => onChangeRecommend(null)}
                       divClassName="h-8"
                       className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
                     />
@@ -982,8 +863,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <PrInputCV
                       ref={applyPositionRef}
                       noScrollOnFocus
-                      onFocus={() => onChangeRecommend('applyPosition')}
-                      onBlur={() => onChangeRecommend(null)}
                       placeholder="Vị trí ứng tuyển"
                       divClassName="h-8"
                       className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
@@ -999,8 +878,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <DatePicker
                       dateFormat="dd/MM/yyyy"
                       placeholderText="Ngày sinh"
-                      onFocus={() => onChangeRecommend('birthday')}
-                      onBlur={() => onChangeRecommend(null)}
                       // value={}
                       selected={birthday}
                       autoFocus={focusBirthday}
@@ -1019,14 +896,18 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                       onChange={(e: Date | null) => setBirthday(e)}
                       className="h-8 w-full py-2 ml-4 bg-transparent focus:outline-none"
                     />
+                    {/* <PrInputCV
+                      ref={birthdayRef}
+                      placeholder="Ngày sinh"
+                      divClassName="h-8 w-full"
+                      className="bg-transparent w-full py-2"
+                    /> */}
                   </div>
                   <div className="flex items-center">
                     <GenderIcon />
                     <PrInputCV
                       ref={genderRef}
                       placeholder="Giới tính"
-                      onFocus={() => onChangeRecommend('gender')}
-                      onBlur={() => onChangeRecommend(null)}
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
                     />
@@ -1035,8 +916,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <PhoneIcon />
                     <PrInputCV
                       ref={phoneRef}
-                      onFocus={() => onChangeRecommend('phone')}
-                      onBlur={() => onChangeRecommend(null)}
                       placeholder="Điện thoại"
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
@@ -1047,8 +926,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <PrInputCV
                       ref={emailRef}
                       placeholder="Email"
-                      onFocus={() => onChangeRecommend('email')}
-                      onBlur={() => onChangeRecommend(null)}
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
                     />
@@ -1068,8 +945,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                     <PrInputCV
                       ref={facebookRef}
                       placeholder="Facebook"
-                      onFocus={() => onChangeRecommend('facebook')}
-                      onBlur={() => onChangeRecommend(null)}
                       divClassName="h-8 w-full"
                       className="bg-transparent w-full py-2"
                     />
@@ -1227,49 +1102,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
                 setDistrict(e[0])
               }}
             />
-          </div>
-        </PrModal>
-
-        {/* Đổi mẫu CV */}
-        <PrModal
-          ref={modalChangeTemplateRef}
-          title={'Đổi mẫu CV'}
-          cancelTitle="Đóng"
-          okTitle="Xác nhận"
-          size="lg"
-          disableFooter
-          onHide={() => modalChangeTemplateRef.current?.hide()}
-        >
-          <div className="grid-cols-3 grid gap-x-32 p-16">
-            {DataDemoCV.map((item) => {
-              const { value, image, label } = item
-              return (
-                <div key={`demo_${value}`}>
-                  <div
-                    className="relative col-span-1 group shadow-md hover:shadow-xl duration-300 overflow-hidden"
-                    style={{ aspectRatio: '3/4' }}
-                  >
-                    <img src={image} alt="sample cv" className="top-0 left-0 w-full" style={{ zIndex: 5 }} />
-                    <div className="w-full h-full bg-gray-700 absolute top-0 left-0 opacity-0 duration-300 group-hover:opacity-50"></div>
-                    <div
-                      className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 duration-300 mx-auto group-hover:opacity-100"
-                      style={{ zIndex: 6 }}
-                    >
-                      <div
-                        className="text-green-600 bg-gray-50 px-6 py-3 cursor-pointer rounded-md uppercase font-bold flex items-center"
-                        onClick={() => onChangeTemplate({ value, label })}
-                      >
-                        <i className="fas fa-check-circle mr-3" />
-                        <span>Sử dụng</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-5">
-                    <span className="block text-center font-semibold text-lg">{label}</span>
-                  </div>
-                </div>
-              )
-            })}
           </div>
         </PrModal>
       </CVFormStyle>

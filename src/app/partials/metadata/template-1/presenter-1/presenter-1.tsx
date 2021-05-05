@@ -1,8 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { PresenterItem1 } from './presenter-1.items'
-import { PresenterMetaDataType, PresenterValue } from 'app/partials/metadata/metadata.type'
+import { PresenterMetaDataType, PresenterValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const Presenter1 = forwardRef((props: Record<string, unknown>, ref) => {
+interface PresenterProps extends FocusBlurType {}
+
+export const Presenter1 = forwardRef((props: PresenterProps, ref) => {
+  const { onFocus, onBlur } = props
   const [metaDataList, setMetaDataList] = useState<PresenterMetaDataType[]>([
     { ref: null, company: '', name: '', position: '', phone: '' }
   ])
@@ -69,7 +72,7 @@ export const Presenter1 = forwardRef((props: Record<string, unknown>, ref) => {
   return (
     <div>
       {metaDataList.map((item, index) => (
-        <PresenterItem1 ref={(ref) => (item.ref = ref)} key={`work_exp_${index}`} />
+        <PresenterItem1 ref={(ref) => (item.ref = ref)} key={`work_exp_${index}`} onFocus={onFocus} onBlur={onBlur} />
       ))}
     </div>
   )

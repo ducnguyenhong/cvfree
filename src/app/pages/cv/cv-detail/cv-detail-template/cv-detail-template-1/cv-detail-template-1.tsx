@@ -148,7 +148,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
           pdf.addImage(imgData, image.type, margin[1], margin[0], innerPageWidth, pageHeight)
         }
 
-        pdf.save(`CVFREE - ${fullname}.pdf`)
+        pdf.save(`CVFREE - ${fullname.toUpperCase()}.pdf`)
       })
   }
 

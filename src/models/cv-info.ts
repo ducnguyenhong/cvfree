@@ -9,7 +9,10 @@ export interface CvInfo {
     username: string
   }
   color: string
-  template: string
+  template: {
+    value: string
+    label: string
+  }
   fontSize: string
   fontFamily: string
   name: string

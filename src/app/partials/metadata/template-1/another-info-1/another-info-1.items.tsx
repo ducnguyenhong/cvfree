@@ -2,9 +2,12 @@ import { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputCV from 'app/partials/pr-input-cv'
 import { forwardRef, Ref, useImperativeHandle, useRef, useState } from 'react'
 import { MetaDataStyle } from '../template-1.style'
-import { AnotherInfoItemRef, AnotherInfoValue } from 'app/partials/metadata/metadata.type'
+import { AnotherInfoItemRef, AnotherInfoValue, FocusBlurType } from 'app/partials/metadata/metadata.type'
 
-export const AnotherInfoItem1 = forwardRef((props: Record<string, unknown>, ref: Ref<AnotherInfoItemRef>) => {
+interface AnotherInfoProps extends FocusBlurType {}
+
+export const AnotherInfoItem1 = forwardRef((props: AnotherInfoProps, ref: Ref<AnotherInfoItemRef>) => {
+  const { onFocus, onBlur } = props
   const [status, setStatus] = useState<boolean>(true)
   const infoRef = useRef<PrInputRefProps>(null)
 
@@ -43,6 +46,8 @@ export const AnotherInfoItem1 = forwardRef((props: Record<string, unknown>, ref:
             ref={infoRef}
             placeholder=" - Thông tin khác"
             divClassName="h-16 w-full"
+            onFocus={onFocus}
+            onBlur={onBlur}
             type="textarea"
             className="bg-transparent w-full mt-1.5 resize-none text-gray-600"
           />
