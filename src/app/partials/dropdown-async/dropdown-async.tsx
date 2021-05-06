@@ -20,7 +20,8 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
     isMulti,
     onChange,
     isDisabled,
-    isSearchable
+    isSearchable,
+    isClearable
   } = props
   const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue ?? null)
 
@@ -100,6 +101,7 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
         isSearchable={isSearchable}
         placeholder="Chọn..."
         isDisabled={isDisabled}
+        isClearable={isClearable}
         isMulti={isMulti}
         onChange={(e) => {
           const data = getDataDropdown(e)

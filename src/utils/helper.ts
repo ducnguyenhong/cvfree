@@ -143,7 +143,7 @@ const isSingleElement = (data: OptionsType<OptionProps> | OptionProps | null): d
 }
 
 export const getDataDropdown = (data: OptionsType<OptionProps> | OptionProps | null): OptionProps[] => {
-  if (data === null) {
+  if (!data) {
     return []
   }
 

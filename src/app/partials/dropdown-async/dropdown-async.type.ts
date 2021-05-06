@@ -9,6 +9,7 @@ export interface DropdownAsyncProps {
   onChange?: (data: OptionProps[]) => void
   isDisabled?: boolean
   isSearchable?: boolean
+  isClearable?: boolean
 }
 
 export interface DropdownAsyncRef {

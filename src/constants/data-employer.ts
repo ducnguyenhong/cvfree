@@ -1,3 +1,4 @@
+import moment from 'moment'
 export interface DropdownProps {
   label: string
   value: string
@@ -245,3 +246,14 @@ export const DataPersonnelSize: DropdownProps[] = [
     label: '> 1000'
   }
 ]
+
+export const DataYearOfBirth = (): DropdownProps[] => {
+  const data: DropdownProps[] = []
+  for (let i = 1970; i <= Number(moment().format('YYYY')) - 10; i++) {
+    data.push({
+      value: `${i}`,
+      label: `${i}`
+    })
+  }
+  return data
+}
