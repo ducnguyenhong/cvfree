@@ -15,9 +15,11 @@ export const CertificateItem1 = forwardRef((props: CertificateProps, ref: Ref<Ce
     if (!status) {
       return null
     }
-    return {
-      name: nameRef.current?.getValue().trim() || ''
+    const name = nameRef.current?.getValue().trim() || ''
+    if (!name) {
+      return null
     }
+    return { name }
   }
 
   useImperativeHandle(ref, () => ({

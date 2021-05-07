@@ -16,10 +16,12 @@ export const ActivityItem1 = forwardRef((props: ActivityProps, ref: Ref<Activity
     if (!status) {
       return null
     }
-    return {
-      time: timeRef.current?.getValue() || '',
-      name: nameRef.current?.getValue().trim() || ''
+    const time = timeRef.current?.getValue() || ''
+    const name = nameRef.current?.getValue() || ''
+    if (!time && !name) {
+      return null
     }
+    return { time, name }
   }
 
   useImperativeHandle(ref, () => ({

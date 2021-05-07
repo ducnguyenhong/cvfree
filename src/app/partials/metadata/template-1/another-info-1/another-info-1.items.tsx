@@ -15,9 +15,11 @@ export const AnotherInfoItem1 = forwardRef((props: AnotherInfoProps, ref: Ref<An
     if (!status) {
       return null
     }
-    return {
-      info: infoRef.current?.getValue().trim() || ''
+    const info = infoRef.current?.getValue().trim() || ''
+    if (!info) {
+      return null
     }
+    return { info }
   }
 
   useImperativeHandle(ref, () => ({

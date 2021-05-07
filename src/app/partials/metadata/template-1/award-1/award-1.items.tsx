@@ -15,9 +15,11 @@ export const AwardItem1 = forwardRef((props: AwardProps, ref: Ref<AwardItemRef>)
     if (!status) {
       return null
     }
-    return {
-      name: nameRef.current?.getValue().trim() || ''
+    const name = nameRef.current?.getValue().trim() || ''
+    if (!name) {
+      return null
     }
+    return { name }
   }
 
   useImperativeHandle(ref, () => ({

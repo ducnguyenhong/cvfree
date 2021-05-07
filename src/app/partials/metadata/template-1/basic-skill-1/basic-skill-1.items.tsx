@@ -17,10 +17,12 @@ export const BasicSkillItem1 = forwardRef((props: BasicSkillProps, ref: Ref<Basi
     if (!status) {
       return null
     }
-    return {
-      star: starRef.current?.getValue() || 0,
-      name: nameRef.current?.getValue().trim() || ''
+    const star = starRef.current?.getValue() || 0
+    const name = nameRef.current?.getValue().trim() || ''
+    if (!star && !name) {
+      return null
     }
+    return { star, name }
   }
 
   useImperativeHandle(ref, () => ({

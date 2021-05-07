@@ -1,4 +1,4 @@
-import { DropdownAsync } from 'app/partials/dropdown-async'
+import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import PrSearch from 'app/partials/pr-component/pr-search'
@@ -9,7 +9,7 @@ import DefaultAvatarCandidate from 'assets/images/default-avatar-candidate.png'
 import ImgNoData from 'assets/images/no-data.png'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { DataGender } from 'constants/data-common'
-import { DataAnother, DataExperience, DataFormOfWork, DataYearOfBirth } from 'constants/data-employer'
+import { DataAnother, DataCareer, DataExperience, DataFormOfWork, DataYearOfBirth } from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
@@ -21,16 +21,19 @@ import { useEffect, useState } from 'react'
 import { List } from 'react-content-loader'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { getDefaultDataDropdown, getParamURL, pushParamURL } from 'utils/helper'
-import { DataCareer } from '../../../../constants/data-employer'
+import { getDefaultDataDropdown, getMultiValueDropdown, getParamURL, pushParamURL } from 'utils/helper'
 
 export const EmployerLookingForCandidates: React.FC = () => {
   const [candidateList, setCandidateList] = useState<CandidateInfo[] | null>(null)
   const [pagination, setPagination] = useState<PaginationType | null>(null)
   const language = useRecoilValue(languageState)
   const paramsURL = getParamURL()
-  const { applyPosition, gender, yearOfBirth, formOfWork, career, workExperience, other } = paramsURL
+  const { applyPosition, gender, yearOfBirth, formOfWork, career, workExperience, other, city } = paramsURL
   const location = useLocation()
+  const filterCityStorage = localStorage.getItem('filter-city')
+  const filterCity = filterCityStorage ? JSON.parse(filterCityStorage) : undefined
+  const defaultCity: OptionProps | undefined = city === filterCity.value ? filterCity : undefined
+
   const history = useHistory()
 
   const callApiGetListCandidate = () => {
@@ -138,17 +141,25 @@ export const EmployerLookingForCandidates: React.FC = () => {
         <div className="col-span-1">
           <DropdownAsync
             label="Tỉnh/Thành phố"
+            defaultValue={defaultCity}
             urlApi="/locations/cities"
             isClearable
-            onChange={(e) => pushParamURL(history, { city: e && e.length > 0 ? e[0].value : '' })}
+            onChange={(e) => {
+              pushParamURL(history, { city: e && e.length > 0 ? e[0].value : '' })
+              localStorage.setItem(
+                'filter-city',
+                JSON.stringify(e && e.length > 0 ? { value: e[0].value, label: e[0].label } : '')
+              )
+            }}
           />
         </div>
         <div className="col-span-1">
           <PrDropdown
             label="Bộ lọc khác"
-            defaultValue={getDefaultDataDropdown(DataAnother, other ? [`${other}`] : [])}
+            isMulti
+            defaultValue={getDefaultDataDropdown(DataAnother, other ? `${other}`.split(',') : [])}
             options={DataAnother}
-            onChange={(e: any) => pushParamURL(history, { other: e ? e.value : '' })}
+            onChange={(e: any) => pushParamURL(history, { other: getMultiValueDropdown(e) })}
           />
         </div>
       </div>

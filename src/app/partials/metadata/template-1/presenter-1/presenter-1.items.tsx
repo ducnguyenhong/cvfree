@@ -18,12 +18,14 @@ export const PresenterItem1 = forwardRef((props: PresenterProps, ref: Ref<Presen
     if (!status) {
       return null
     }
-    return {
-      company: companyRef.current?.getValue().trim() || '',
-      name: nameRef.current?.getValue().trim() || '',
-      position: positionRef.current?.getValue().trim() || '',
-      phone: phoneRef.current?.getValue().trim() || ''
+    const company = companyRef.current?.getValue().trim() || ''
+    const name = nameRef.current?.getValue().trim() || ''
+    const position = positionRef.current?.getValue().trim() || ''
+    const phone = phoneRef.current?.getValue().trim() || ''
+    if (!company && !name && !position && !phone) {
+      return null
     }
+    return { company, name, position, phone }
   }
 
   useImperativeHandle(ref, () => ({

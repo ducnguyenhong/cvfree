@@ -178,6 +178,23 @@ export const getValueDropdown = (data: OptionsType<OptionProps> | OptionProps | 
   return []
 }
 
+export const getMultiValueDropdown = (data: OptionsType<OptionProps[]> | undefined | null): string => {
+  if (data === null || typeof data === 'undefined') {
+    return ''
+  }
+
+  if (Array.isArray(data)) {
+    let value = ''
+    for (let i = 0; i < data.length; i++) {
+      value += data[i].value + ','
+    }
+    value = value.substring(0, value.length - 1)
+    return value
+  }
+
+  return ''
+}
+
 export const checkSpecialCharacter = (data: string) => {
   const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/
   if (data.match(format)) {

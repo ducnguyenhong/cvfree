@@ -16,10 +16,12 @@ export const EducationItem1 = forwardRef((props: EducationProps, ref: Ref<Educat
     if (!status) {
       return null
     }
-    return {
-      major: majorRef.current?.getValue() || '',
-      name: nameRef.current?.getValue().trim() || ''
+    const major = majorRef.current?.getValue() || ''
+    const name = nameRef.current?.getValue().trim() || ''
+    if (!major && !name) {
+      return null
     }
+    return { major, name }
   }
 
   useImperativeHandle(ref, () => ({

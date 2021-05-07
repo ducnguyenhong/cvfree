@@ -16,10 +16,12 @@ export const AdvancedSkillItem1 = forwardRef((props: AdvancedSkillItemProps, ref
     if (!status) {
       return null
     }
-    return {
-      name: nameRef.current?.getValue().trim() || '',
-      description: descriptionRef.current?.getValue().trim() || ''
+    const name = nameRef.current?.getValue().trim() || ''
+    const description = descriptionRef.current?.getValue().trim() || ''
+    if (!name && !description) {
+      return null
     }
+    return { name, description }
   }
 
   useImperativeHandle(ref, () => ({

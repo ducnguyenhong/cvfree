@@ -18,12 +18,14 @@ export const WorkExperienceItem1 = forwardRef((props: WorkExperienceProps, ref: 
     if (!status) {
       return null
     }
-    return {
-      companyName: companyNameRef.current?.getValue().trim() || '',
-      time: timeRef.current?.getValue().trim() || '',
-      position: positionRef.current?.getValue().trim() || '',
-      description: descriptionRef.current?.getValue().trim() || ''
+    const companyName = companyNameRef.current?.getValue().trim() || ''
+    const time = timeRef.current?.getValue().trim() || ''
+    const position = positionRef.current?.getValue().trim() || ''
+    const description = descriptionRef.current?.getValue().trim() || ''
+    if (!companyName && !time && !position && !description) {
+      return null
     }
+    return { companyName, time, position, description }
   }
 
   useImperativeHandle(ref, () => ({
