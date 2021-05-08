@@ -6,6 +6,7 @@ import { JobPostingInfo } from './job-posting-info'
 import { CompanyInfo } from './company-info'
 import { CandidateManageInfo } from './candidate-manage-info'
 import { RequestUpdateCompanyInfo } from './request-update-company-info'
+import { DashboardInfo } from './dashboard-info'
 
 export interface ResponseUserDetail {
   success: boolean
@@ -107,6 +108,16 @@ export interface ResponseCandidateDetail {
   success: boolean
   data: {
     candidateDetail: CandidateInfo
+  }
+  code: number
+  error?: { message: string }
+  message?: string
+}
+
+export interface ResponseDataDashboard {
+  success: boolean
+  data: {
+    dataDashboard: DashboardInfo
   }
   code: number
   error?: { message: string }
