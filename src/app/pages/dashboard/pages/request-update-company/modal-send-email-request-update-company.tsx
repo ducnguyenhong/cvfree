@@ -26,7 +26,7 @@ export const ModalSendEmail: React.FC = () => {
 
 ${content}
 
-${isLoginNow ? `Hãy đăng nhập vào CVFREE để xem chi tiết thông tin. (${CLIENT_URL}/sign-in)` : ''}
+${isLoginNow ? `Hãy truy cập vào CVFREE để xem chi tiết thông tin. (${CLIENT_URL})` : ''}
   
 Trân trọng,
 CVFREE`

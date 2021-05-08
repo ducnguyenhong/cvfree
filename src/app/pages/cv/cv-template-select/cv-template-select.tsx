@@ -41,18 +41,22 @@ export const TemplateSelectCV: React.FC = () => {
                   style={{ aspectRatio: '3/4' }}
                 >
                   <img src={image} alt="sample cv" className="top-0 left-0 w-full" style={{ zIndex: 5 }} />
-                  <div className="w-full h-full bg-gray-700 absolute top-0 left-0 opacity-0 duration-300 group-hover:opacity-50"></div>
+                  {(!userInfo || userInfo?.type === 'USER') && (
+                    <div className="w-full h-full bg-gray-700 absolute top-0 left-0 opacity-0 duration-300 group-hover:opacity-50"></div>
+                  )}
                   <div
                     className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 duration-300 mx-auto group-hover:opacity-100"
                     style={{ zIndex: 6 }}
                   >
-                    <div
-                      className="text-green-600 bg-gray-50 px-6 py-3 cursor-pointer rounded-md uppercase font-bold flex items-center"
-                      onClick={() => onOpenCreateCVPage(value)}
-                    >
-                      <i className="fas fa-check-circle mr-3" />
-                      <span>Sử dụng</span>
-                    </div>
+                    {(!userInfo || userInfo?.type === 'USER') && (
+                      <div
+                        className="text-green-600 bg-gray-50 px-6 py-3 cursor-pointer rounded-md uppercase font-bold flex items-center"
+                        onClick={() => onOpenCreateCVPage(value)}
+                      >
+                        <i className="fas fa-check-circle mr-3" />
+                        <span>Sử dụng</span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="mt-5">

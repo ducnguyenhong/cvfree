@@ -4,7 +4,19 @@ import { PrModalProps, PrModalRefProps } from './data/type'
 
 const PrModal = forwardRef((props: PrModalProps, ref: Ref<PrModalRefProps>) => {
   const [visible, setVisible] = useState<boolean>(false)
-  const { okTitle, cancelTitle, onChange, size, title, onShow, onHide, children, disableFooter, disableHeader } = props
+  const {
+    okTitle,
+    cancelTitle,
+    onChange,
+    size,
+    title,
+    onShow,
+    onHide,
+    children,
+    disableFooter,
+    disableHeader,
+    disableX
+  } = props
 
   useImperativeHandle(ref, () => ({
     hide() {
@@ -32,6 +44,7 @@ const PrModal = forwardRef((props: PrModalProps, ref: Ref<PrModalRefProps>) => {
       cancelTitle={cancelTitle}
       disableFooter={disableFooter}
       disableHeader={disableHeader}
+      disableX={disableX}
     >
       {children}
     </ModalLib>

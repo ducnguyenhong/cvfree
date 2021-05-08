@@ -19,17 +19,17 @@ export const Footer: React.FC = () => {
               </Link>
             </div>
             <div className="text-center mt-0.5">
-              <Link to="/jobs/ha-noi" className="font-medium text-gray-400 duration-300 hover:text-white ">
+              <Link to="/jobs/city/ha-noi" className="font-medium text-gray-400 duration-300 hover:text-white ">
                 Việc làm tại Hà Nội
               </Link>
             </div>
             <div className="text-center mt-0.5">
-              <Link to="/jobs/da-nang" className="font-medium text-gray-400 duration-300 hover:text-white ">
+              <Link to="/jobs/city/da-nang" className="font-medium text-gray-400 duration-300 hover:text-white ">
                 Việc làm tại Đà Nẵng
               </Link>
             </div>
             <div className="text-center mt-0.5">
-              <Link to="/jobs/ho-chi-minh" className="font-medium text-gray-400 duration-300 hover:text-white ">
+              <Link to="/jobs/city/tphcm" className="font-medium text-gray-400 duration-300 hover:text-white ">
                 Việc làm tại TP.HCM
               </Link>
             </div>

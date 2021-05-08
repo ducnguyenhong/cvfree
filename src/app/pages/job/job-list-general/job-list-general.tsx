@@ -360,7 +360,7 @@ const JobListGeneral: React.FC = () => {
                     <div className="ml-8">
                       <div>
                         <Link to={route} className="font-semibold text-lg">
-                          {`Việc làm tại ${title}`}
+                          {`Việc làm ngành ${title}`}
                         </Link>
                       </div>
                     </div>

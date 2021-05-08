@@ -10,6 +10,7 @@ export interface ModalLibProps {
   cancelTitle?: string | React.ReactElement
   disableFooter?: boolean
   disableHeader?: boolean
+  disableX?: boolean
 }
 
 export interface PrModalProps {
@@ -23,6 +24,7 @@ export interface PrModalProps {
   cancelTitle?: string | React.ReactElement
   disableFooter?: boolean
   disableHeader?: boolean
+  disableX?: boolean
 }
 
 export interface PrModalRefProps {

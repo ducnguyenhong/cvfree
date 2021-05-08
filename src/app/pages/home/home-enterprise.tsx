@@ -1,7 +1,43 @@
 import { Link } from 'react-router-dom'
 import ImageBackground from 'assets/images/bg-bottom-home.png'
+import { useRecoilValue } from 'recoil'
+import { userInfoState } from 'app/states/user-info-state'
+import { memo } from 'react'
 
 const EnterpriseHome: React.FC = () => {
+  const userInfo = useRecoilValue(userInfoState)
+
+  const ExpRecruitment: React.FC = () => {
+    return (
+      <>
+        <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
+        <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
+          <div className="cursor-pointer">
+            <i className="fas fa-briefcase block text-center text-gray-50 text-2xl" />
+            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tuyển dụng</span>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  const ExpCreateCV: React.FC = () => {
+    return (
+      <>
+        <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
+        <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
+          <div className="cursor-pointer">
+            <i className="fas fa-address-card block text-center text-gray-50 text-2xl" />
+            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tạo hồ sơ</span>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  const MemoExpRecruitment = memo(ExpRecruitment)
+  const MemoExpCreateCV = memo(ExpCreateCV)
+
   return (
     <div
       className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 mt-16 pt-32 pb-32 home-enterprise"
@@ -31,15 +67,15 @@ const EnterpriseHome: React.FC = () => {
           <span className="font-bold text-3xl uppercase">Trải nghiệm ngay</span>
         </div>
 
-        <Link to="/template-cv" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
-          <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
-          <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
-            <div className="cursor-pointer">
-              <i className="fas fa-address-card block text-center text-gray-50 text-2xl" />
-              <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tạo hồ sơ</span>
-            </div>
+        {userInfo?.type === 'EMPLOYER' ? (
+          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+            <MemoExpCreateCV />
           </div>
-        </Link>
+        ) : (
+          <Link to="/template-cv" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
+            <MemoExpCreateCV />
+          </Link>
+        )}
 
         <Link to="/jobs" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
           <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
@@ -51,15 +87,23 @@ const EnterpriseHome: React.FC = () => {
           </div>
         </Link>
 
-        <Link to="/employer-intro" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
-          <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
-          <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
-            <div className="cursor-pointer">
-              <i className="fas fa-briefcase block text-center text-gray-50 text-2xl" />
-              <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tuyển dụng</span>
-            </div>
+        {userInfo?.type === 'USER' && (
+          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+            <MemoExpRecruitment />
           </div>
-        </Link>
+        )}
+
+        {userInfo?.type === 'EMPLOYER' && (
+          <Link to="/employer" className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+            <MemoExpRecruitment />
+          </Link>
+        )}
+
+        {!userInfo && (
+          <Link to="/employer-intro" className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+            <MemoExpRecruitment />
+          </Link>
+        )}
       </div>
     </div>
   )

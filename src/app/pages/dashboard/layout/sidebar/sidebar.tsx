@@ -69,16 +69,6 @@ const ListMenu: MenuType[] = [
     type: 'menu'
   },
   {
-    title: 'EMAIL',
-    type: 'section'
-  },
-  {
-    route: '/dashboard/send-email',
-    title: 'Gửi email',
-    icon: 'fas fa-envelope',
-    type: 'menu'
-  },
-  {
     title: 'Yêu cầu/Khiếu nại',
     type: 'section'
   },
@@ -92,6 +82,17 @@ const ListMenu: MenuType[] = [
     route: '/dashboard/report-job',
     title: 'Tin tuyển dụng',
     icon: 'fas fa-exclamation-triangle',
+    type: 'menu'
+  },
+
+  {
+    title: 'Cài đặt',
+    type: 'section'
+  },
+  {
+    route: '/dashboard/send-email',
+    title: 'Gửi email',
+    icon: 'fas fa-envelope',
     type: 'menu'
   },
   {

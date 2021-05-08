@@ -15,7 +15,8 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
     onHide,
     children,
     disableFooter,
-    disableHeader
+    disableHeader,
+    disableX
   } = props
 
   const modalSize = getModalSize(size)
@@ -60,7 +61,7 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
             {(ref: RefObject<HTMLDivElement> | null | undefined) => (
               <div
                 ref={ref}
-                className={`z-50 fixed top-24 left-0 right-0 mx-auto inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
+                className={`z-50 overflow-hidden fixed top-24 left-0 right-0 mx-auto inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-headline"
@@ -69,16 +70,18 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                   <>
                     <div className="px-5 py-4 flex justify-between">
                       {title && <span className="font-semibold text-lg">{title}</span>}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        onClick={onHide}
-                        className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100 duration-300"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
+                      {!disableX && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          onClick={onHide}
+                          className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100 duration-300"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      )}
                     </div>
                     <hr />
                   </>

@@ -45,10 +45,10 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const [benefitToEnjoy, setBenefitToEnjoy] = useState<string>('')
   const [disableSalary, setDisableSalary] = useState<boolean>(true)
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [salaryFrom, setSalaryFrom] = useState<string>('')
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
 
   // ref
+  const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
   const modalNotifySuccessRef = useRef<PrModalRefProps>(null)
   const modalNotifyErrorRef = useRef<PrModalRefProps>(null)
   const modalAddressRef = useRef<PrModalRefProps>(null)
@@ -278,6 +278,12 @@ export const EmployerCreateJobPostings: React.FC = () => {
     }
   }, [jobDetail])
 
+  useEffect(() => {
+    if (userInfo && Number(userInfo?.numberOfPosting) < 1) {
+      modalOutOfTurnRef.current?.show()
+    }
+  }, [userInfo])
+
   return (
     <WrapperPage title={jobId ? 'Cập nhật tin tuyển dụng' : 'Đăng tin tuyển dụng'}>
       <div className="mt-20 px-10">
@@ -502,6 +508,26 @@ export const EmployerCreateJobPostings: React.FC = () => {
           <span className="block text-center mt-10 font-medium text-lg">
             Lỗi: <span>{errorMessage}</span>
           </span>
+        </div>
+      </PrModal>
+
+      <PrModal
+        title="Thông báo"
+        disableX
+        ref={modalOutOfTurnRef}
+        disableFooter
+        onHide={() => modalOutOfTurnRef.current?.hide()}
+      >
+        <div className="py-20 px-10">
+          <span className="block text-center font-semibold text-lg">Bạn đã sử dụng hết số lượt đăng tin</span>
+          <div className="mt-16 text-center flex items-center justify-center">
+            <Link
+              to="/employer/manage-job"
+              className="px-6 py-2.5 rounded-md text-white bg-green-600 text-md font-semibold duration-300 hover:bg-green-700"
+            >
+              Xem danh sách tin tuyển dụng đã đăng
+            </Link>
+          </div>
         </div>
       </PrModal>
 

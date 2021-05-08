@@ -9,6 +9,9 @@ const Home = lazy(() => import('app/pages/home'))
 const Profile = lazy(() => import('app/pages/profile'))
 const ProfileUpdate = lazy(() => import('app/pages/profile-update'))
 const AboutUs = lazy(() => import('app/pages/about-us'))
+const Feedback = lazy(() => import('app/pages/feedback'))
+const TermsOfUse = lazy(() => import('app/pages/terms-of-use'))
+const PrivacyPolicy = lazy(() => import('app/pages/privacy-policy'))
 
 const JobsListGeneral = lazy(() => import('app/pages/job/job-list-general'))
 const JobsDetail = lazy(() => import('app/pages/job/job-detail'))
@@ -50,8 +53,8 @@ const JobList = lazy(() => import('app/pages/dashboard/pages/job'))
 const CvList = lazy(() => import('app/pages/dashboard/pages/cv'))
 const RequestUpdateCompanyList = lazy(() => import('app/pages/dashboard/pages/request-update-company'))
 const SendEmail = lazy(() => import('app/pages/dashboard/pages/send-email'))
-const ReportJobList = lazy(() => import('app/pages/dashboard/pages/report-job'))
 const UserDetail = lazy(() => import('app/pages/dashboard/pages/user/user-detail'))
+const FeedbackList = lazy(() => import('app/pages/dashboard/pages/feedback'))
 
 interface RouteType {
   path: string
@@ -178,6 +181,26 @@ export const PUBLIC_ROUTES: RouteType[] = [
   {
     path: '/companies/:id',
     component: CompanyDetail,
+    exact: true,
+    role: []
+  },
+
+  // Other
+  {
+    path: '/feedback',
+    component: Feedback,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/terms-of-use',
+    component: TermsOfUse,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/privacy-policy',
+    component: PrivacyPolicy,
     exact: true,
     role: []
   }
@@ -399,6 +422,26 @@ export const PRIVATE_ROUTES: RouteType[] = [
     component: CompanyRequestUpdate,
     exact: true,
     role: ['ADMIN', 'EMPLOYER']
+  },
+
+  // Other
+  {
+    path: '/feedback',
+    component: Feedback,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/terms-of-use',
+    component: TermsOfUse,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/privacy-policy',
+    component: PrivacyPolicy,
+    exact: true,
+    role: []
   }
 ]
 
@@ -460,6 +503,12 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/users/:id',
     component: UserDetail,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/feedbacks',
+    component: FeedbackList,
     exact: true,
     role: ['ADMIN']
   }
