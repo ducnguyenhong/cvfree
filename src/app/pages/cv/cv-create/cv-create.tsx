@@ -1,14 +1,12 @@
-import { selectedCVTemplateState } from 'app/states/selected-cv-template-state'
-import { useRecoilValue } from 'recoil'
 import { CvFormLayout1, CvFormLayout2 } from 'app/pages/cv/cv-template-create'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
-import { useEffect, useRef } from 'react'
-
-import { Link } from 'react-router-dom'
 import { userInfoState } from 'app/states/user-info-state'
+import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
 export const CvCreate: React.FC = () => {
-  const selectedCvTemplate = useRecoilValue(selectedCVTemplateState)
+  const selectedCvTemplate = localStorage.getItem('cv-template-create')
   const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
   const userInfo = useRecoilValue(userInfoState)
 

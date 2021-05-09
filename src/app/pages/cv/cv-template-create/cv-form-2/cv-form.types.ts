@@ -22,6 +22,8 @@ export interface CategoryComponentProps {
   onUpCategoryLeft?: (name: string) => void
   onRemoveCategoryLeft?: (name: string) => void
   inputRef?: RefObject<PrInputCVRefProps>
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 export interface CategoryProps {

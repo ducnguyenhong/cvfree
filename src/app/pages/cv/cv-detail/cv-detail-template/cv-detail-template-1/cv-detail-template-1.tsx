@@ -228,31 +228,27 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
               <div className="div-middle-left mx-4">
                 <div className="flex items-center">
                   <BirthdayIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">
-                    {moment(birthday).format('DD/MM/YYYY')}
-                  </span>
+                  <span className="block py-1 ml-4 text-gray-600">{moment(birthday).format('DD/MM/YYYY')}</span>
                 </div>
                 <div className="flex items-center">
                   <GenderIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">
-                    {getGenderMultiLanguage(gender, language)}
-                  </span>
+                  <span className="block py-1 ml-4 text-gray-600">{getGenderMultiLanguage(gender, language)}</span>
                 </div>
                 <div className="flex items-center">
                   <PhoneIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{phone}</span>
+                  <span className="block py-1 ml-4 text-gray-600">{phone}</span>
                 </div>
                 <div className="flex items-center">
                   <EmailIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{email}</span>
+                  <span className="block py-1 ml-4 text-gray-600">{email}</span>
                 </div>
                 <div className="flex items-center">
                   <MapIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{address?.label}</span>
+                  <span className="block py-1 ml-4 text-gray-600">{address?.label}</span>
                 </div>
                 <div className="flex items-center mb-3">
                   <FacebookIcon />
-                  <span className="block py-1 ml-4 font-medium text-gray-600">{facebook}</span>
+                  <span className="block py-1 ml-4 text-gray-600">{facebook}</span>
                 </div>
                 <hr />
               </div>
@@ -267,7 +263,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
                 </div>
 
                 <div
-                  className="div-triangle-bottom-left absolute -bottom-20 -left-7 w-48 h-28"
+                  className="div-triangle-bottom-left-1 absolute -bottom-20 -left-7 w-48 h-28"
                   style={{ backgroundColor: color }}
                 ></div>
               </div>
@@ -276,7 +272,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
             {/* CV Right */}
             <div className="col-span-2 relative p-4 overflow-hidden bg-white">
               <div
-                className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
+                className="div-triangle-top-right-1 absolute -top-12 z-20 -right-12 w-48 h-20"
                 style={{ backgroundColor: color }}
               ></div>
 

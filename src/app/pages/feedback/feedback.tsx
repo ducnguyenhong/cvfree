@@ -57,10 +57,6 @@ export const Feedback: React.FC = () => {
     return true
   }
 
-  useEffect(() => {
-    modalNotifyRef.current?.show()
-  }, [])
-
   const onSendFeedback = () => {
     if (!validate()) {
       return

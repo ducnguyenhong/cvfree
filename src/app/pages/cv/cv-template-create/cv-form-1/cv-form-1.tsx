@@ -119,17 +119,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
   const cvRef = useRef<HTMLDivElement>(null)
 
   const onChangeRecommend = (field: string | null) => {
-    console.log('ducnh3', showRecommend, field)
-
-    // if (!showRecommend) {
-    //   return
-    // }
     if (!field) {
       setRecommend(undefined)
     }
     const data = DataRecommendCv.find((item) => item.field === field)
-    console.log('ducnh4', data)
-
     setRecommend(data)
   }
 

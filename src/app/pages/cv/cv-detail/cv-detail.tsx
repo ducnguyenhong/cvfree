@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
-import { CvDetailTemplate1 } from './cv-detail-template'
+import { CvDetailTemplate1, CvDetailTemplate2 } from './cv-detail-template'
 import { CvInfo } from 'models/cv-info'
 import { useRouteMatch } from 'react-router-dom'
 import { get } from 'lodash'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-
 import { ResponseCVDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
+import { List } from 'react-content-loader'
 
 const CvDetail: React.FC = () => {
   const [cvInfo, setCvInfo] = useState<CvInfo | null>(null)
@@ -47,20 +47,22 @@ const CvDetail: React.FC = () => {
 
   useEffect(() => {
     if (cvId) {
-      console.log('ducnh3')
-
       callApiCvDetail()
     }
   }, [cvId])
 
   if (!cvInfo) {
-    return <div>Loading</div>
+    return <List />
   }
 
   const { template } = cvInfo
 
   if (template.value === '1') {
     return <CvDetailTemplate1 data={cvInfo} />
+  }
+
+  if (template.value === '2') {
+    return <CvDetailTemplate2 data={cvInfo} />
   }
 
   return <div>a</div>

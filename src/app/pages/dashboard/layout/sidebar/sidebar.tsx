@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
+import './sidebar.css'
 import { Link, useLocation } from 'react-router-dom'
-import { SidebarStyle } from './sidebar.style'
 
 interface MenuType {
   route?: string
@@ -108,7 +107,7 @@ export const Sidebar: React.FC = () => {
   const currentRoute = location.pathname
 
   return (
-    <SidebarStyle
+    <div
       className="h-screen bg-gray-800 fixed overflow-y-auto pb-20 left-0 duration-300"
       style={{ width: 270 }}
       id="scrollbar"
@@ -139,6 +138,6 @@ export const Sidebar: React.FC = () => {
             )
           })}
       </div>
-    </SidebarStyle>
+    </div>
   )
 }

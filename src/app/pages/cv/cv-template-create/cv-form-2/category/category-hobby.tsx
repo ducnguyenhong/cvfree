@@ -1,15 +1,15 @@
 import PrInputCV from 'app/partials/pr-input-cv'
-import HobbyIcon from 'assets/icons/hobby.svg'
 import { CategoryComponentProps } from '../cv-form.types'
 import { CategoryControl } from './category-control'
 
 export const Hobbies: React.FC<CategoryComponentProps> = (props) => {
-  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, inputRef } = props
+  const { onDownCategoryLeft, onUpCategoryLeft, onRemoveCategoryLeft, inputRef, onFocus, onBlur } = props
   return (
     <div className="div-one-category-left relative px-2 pb-3 my-2 duration-300 pt-1 rounded group">
-      <div className="flex items-center mb-2">
-        <img src={HobbyIcon} alt="icon" className="w-8 h-8 mr-3" />
-        <span className="uppercase font-bold">Sở thích</span>
+      <div className="flex items-center mb-2 border-gray-300 border border-t-0 border-r-0 border-l-0">
+        <span className="uppercase font-bold border-gray-500 border-2 border-t-0 border-r-0 border-l-0 bg-white text-base relative top-px">
+          Sở thích
+        </span>
       </div>
       <CategoryControl
         name="hobby"
@@ -21,6 +21,8 @@ export const Hobbies: React.FC<CategoryComponentProps> = (props) => {
       />
       <PrInputCV
         ref={inputRef}
+        onFocus={onFocus}
+        onBlur={onBlur}
         divClassName="h-16"
         placeholder="- Đọc sách, nghe nhạc..."
         type="textarea"

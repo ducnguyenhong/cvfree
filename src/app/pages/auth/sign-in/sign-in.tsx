@@ -44,7 +44,8 @@ const SignIn: React.FC<SignInProps> = () => {
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
 
-  const onSignIn = useCallback(() => {
+  const onSignIn = (e: any) => {
+    e.preventDefault()
     const username = usernameRef.current?.getValue() || ''
     const password = passwordRef.current?.getValue() || ''
 
@@ -54,7 +55,7 @@ const SignIn: React.FC<SignInProps> = () => {
     }
 
     callApi(data)
-  }, [])
+  }
 
   const callApi = (data: DataSignIn) => {
     const url = `${SERVER_URL}/auth/sign-in`
@@ -126,7 +127,7 @@ const SignIn: React.FC<SignInProps> = () => {
           <div>
             <div className="mx-auto">
               <div className="flex items-center justify-center">
-                <div className="w-2/5 pt-48">
+                <form onSubmit={onSignIn} className="block w-2/5 pt-48">
                   <div className="mt-16">
                     <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
                   </div>
@@ -134,7 +135,10 @@ const SignIn: React.FC<SignInProps> = () => {
                     <PrInput label="Mật khẩu" type="password" icon="fas fa-lock" ref={passwordRef} />
                   </div>
                   <div className="flex justify-center mt-12">
-                    <Button type="success" className="flex items-center" onClick={onSignIn}>
+                    <button
+                      type="submit"
+                      className="flex items-center text-white bg-green-600 px-4 py-2 rounded focus:outline-none duration-300 hover:bg-green-700"
+                    >
                       {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                       </svg> */}
@@ -143,7 +147,7 @@ const SignIn: React.FC<SignInProps> = () => {
                       {/* <LoginIcon className="ml-2" /> */}
                       {/* <img src={LoginIcon} className="w-5 mr-2"/>Đăng nhập  */}
                       {/* <img src={LoadingIcon} className="w-5 mr-2"/>Đăng nhập */}
-                    </Button>
+                    </button>
                   </div>
                   <div className="mt-12">
                     <span className="block text-center">
@@ -159,7 +163,7 @@ const SignIn: React.FC<SignInProps> = () => {
                       </span>
                     </span>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>

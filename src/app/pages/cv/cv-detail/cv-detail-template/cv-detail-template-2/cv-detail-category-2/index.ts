@@ -1,0 +1,12 @@
+export { BasicSkillInfo } from './category-info-basic-skill'
+export { CareerGoalsInfo } from './category-info-career-goals'
+export { HobbyInfo } from './category-info-hobby'
+
+export { EducationInfo } from './category-info-education'
+export { WorkExperienceInfo } from './category-info-work-experience'
+export { AdvancedSkillInfo } from './category-info-advanced-skill'
+export { ActivityInfo } from './category-info-activity'
+export { CertificateInfo } from './category-info-certificate'
+export { AwardInfo } from './category-info-award'
+export { PresenterInfo } from './category-info-presenter'
+export { AnotherInfo } from './category-info-another-info'

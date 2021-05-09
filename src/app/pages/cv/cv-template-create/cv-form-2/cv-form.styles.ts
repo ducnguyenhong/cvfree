@@ -15,7 +15,17 @@ export const CVFormStyle = styled.div`
     transform: rotate(20deg);
   }
   .div-triangle-bottom-left {
-    transform: rotate(20deg);
+    transform: rotate(-20deg);
+  }
+  .div-triagle-top-left {
+    transform: rotate(-40deg);
+    width: 500px;
+    height: 300px;
+    top: 100px;
+    left: 0px;
+  }
+  .div-top-left {
+    min-height: 300px;
   }
 
   .div-one-category {

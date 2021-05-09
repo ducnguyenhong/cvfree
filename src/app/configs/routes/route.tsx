@@ -55,6 +55,7 @@ const RequestUpdateCompanyList = lazy(() => import('app/pages/dashboard/pages/re
 const SendEmail = lazy(() => import('app/pages/dashboard/pages/send-email'))
 const UserDetail = lazy(() => import('app/pages/dashboard/pages/user/user-detail'))
 const FeedbackList = lazy(() => import('app/pages/dashboard/pages/feedback'))
+const ReportJobList = lazy(() => import('app/pages/dashboard/pages/report-job'))
 
 interface RouteType {
   path: string
@@ -509,6 +510,12 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/feedbacks',
     component: FeedbackList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/report-job',
+    component: ReportJobList,
     exact: true,
     role: ['ADMIN']
   }

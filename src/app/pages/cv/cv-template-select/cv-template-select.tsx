@@ -1,20 +1,18 @@
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { userInfoState } from 'app/states/user-info-state'
 import { DataDemoCV } from 'constants/data-demo-cv'
 import { useCallback, useRef } from 'react'
-import { useHistory, Link } from 'react-router-dom'
-import { selectedCVTemplateState } from 'app/states/selected-cv-template-state'
-import { useSetRecoilState, useRecoilValue } from 'recoil'
-import { userInfoState } from 'app/states/user-info-state'
-import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { Link, useHistory } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
 export const TemplateSelectCV: React.FC = () => {
   const history = useHistory()
-  const setCvTemplate = useSetRecoilState(selectedCVTemplateState)
   const userInfo = useRecoilValue(userInfoState)
   const modalNotifyRef = useRef<PrModalRefProps>(null)
   const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
 
   const onOpenCreateCVPage = useCallback((value: string) => {
-    setCvTemplate(value)
+    localStorage.setItem('cv-template-create', value)
 
     if (!userInfo) {
       modalNotifyRef.current?.show()
