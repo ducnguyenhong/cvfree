@@ -3,9 +3,11 @@ import ImageBackground from 'assets/images/bg-bottom-home.png'
 import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import { memo } from 'react'
+import { useIntl } from 'react-intl'
 
 const EnterpriseHome: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
+  const intl = useIntl()
 
   const ExpRecruitment: React.FC = () => {
     return (
@@ -14,7 +16,9 @@ const EnterpriseHome: React.FC = () => {
         <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
           <div className="cursor-pointer">
             <i className="fas fa-briefcase block text-center text-gray-50 text-2xl" />
-            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tuyển dụng</span>
+            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">
+              {intl.formatMessage({ id: 'HOME.RECRUITMENT' })}
+            </span>
           </div>
         </div>
       </>
@@ -28,7 +32,9 @@ const EnterpriseHome: React.FC = () => {
         <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
           <div className="cursor-pointer">
             <i className="fas fa-address-card block text-center text-gray-50 text-2xl" />
-            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tạo hồ sơ</span>
+            <span className="block text-center text-gray-50 text-lg font-semibold mt-2">
+              {intl.formatMessage({ id: 'HOME.CREATE_CV' })}
+            </span>
           </div>
         </div>
       </>
@@ -46,15 +52,21 @@ const EnterpriseHome: React.FC = () => {
       <div className="grid grid-cols-3">
         <div className="col-span-1">
           <span className="block text-center font-bold text-5xl text-gray-800">10+</span>
-          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">Hồ sơ ứng viên</span>
+          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">
+            {intl.formatMessage({ id: 'HOME.CANDIDATE_PROFILE' })}
+          </span>
         </div>
         <div className="col-span-1">
           <span className="block text-center font-bold text-5xl text-gray-800">20+</span>
-          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">Việc làm HOT</span>
+          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">
+            {intl.formatMessage({ id: 'HOME.HOT_JOBS' })}
+          </span>
         </div>
         <div className="col-span-1">
           <span className="block text-center font-bold text-5xl text-gray-800">10+</span>
-          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">Doanh nghiệp tuyển dụng</span>
+          <span className="block text-center mt-3 font-semibold text-2xl text-gray-600">
+            {intl.formatMessage({ id: 'HOME.RECRUITMENT_BUSINESSES' })}
+          </span>
         </div>
       </div>
 
@@ -64,7 +76,7 @@ const EnterpriseHome: React.FC = () => {
 
       <div className="grid grid-cols-3 mt-28 pb-32 px-20">
         <div className="col-span-3 text-center mb-32">
-          <span className="font-bold text-3xl uppercase">Trải nghiệm ngay</span>
+          <span className="font-bold text-3xl uppercase">{intl.formatMessage({ id: 'HOME.EXPERIENCE_NOW' })}</span>
         </div>
 
         {userInfo?.type === 'EMPLOYER' ? (
@@ -82,7 +94,9 @@ const EnterpriseHome: React.FC = () => {
           <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
             <div className="cursor-pointer">
               <i className="fas fa-search block text-center text-gray-50 text-2xl" />
-              <span className="block text-center text-gray-50 text-lg font-semibold mt-2">Tìm việc làm</span>
+              <span className="block text-center text-gray-50 text-lg font-semibold mt-2">
+                {intl.formatMessage({ id: 'HOME.FIND_A_JOB' })}
+              </span>
             </div>
           </div>
         </Link>

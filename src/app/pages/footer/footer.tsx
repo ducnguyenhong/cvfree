@@ -1,71 +1,82 @@
 import Logo from 'assets/images/logo.png'
 import { Link } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 
 export const Footer: React.FC = () => {
+  const intl = useIntl()
+
   return (
     <div className="bg-gray-700 pt-12 pb-7 px-40">
       <div className="grid grid-cols-4">
         <div className="col-span-1">
           <img src={Logo} alt="logo" className="w-16 h-16 block mx-auto" />
           <span className="block text-center mt-4 text-gray-300 font-semibold">CVFREE</span>
-          <span className="block text-center mt-1 text-gray-300 font-medium">Hồ sơ trực tuyến miễn phí</span>
+          <span className="block text-center mt-1 text-gray-300 font-medium">
+            {intl.formatMessage({ id: 'FOOTER.CVFREE' })}
+          </span>
         </div>
         <div className="col-span-1">
-          <span className="block text-center text-white uppercase font-semibold">Liên kết nhanh</span>
+          <span className="block text-center text-white uppercase font-semibold">
+            {intl.formatMessage({ id: 'FOOTER.QUICK_LINKS' })}
+          </span>
           <div className="mt-5">
             <div className="text-center">
               <Link to="/template-cv" className="font-medium text-gray-400 duration-300 hover:text-white">
-                Tạo CV
+                {intl.formatMessage({ id: 'FOOTER.CREATE_CV' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/jobs/city/ha-noi" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Việc làm tại Hà Nội
+                {intl.formatMessage({ id: 'FOOTER.JOBS_IN_HA_NOI' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/jobs/city/da-nang" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Việc làm tại Đà Nẵng
+                {intl.formatMessage({ id: 'FOOTER.JOBS_IN_DA_NANG' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/jobs/city/tphcm" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Việc làm tại TP.HCM
+                {intl.formatMessage({ id: 'FOOTER.JOBS_IN_TPHCM' })}
               </Link>
             </div>
           </div>
         </div>
         <div className="col-span-1">
-          <span className="block text-center text-white uppercase font-semibold">Thông tin</span>
+          <span className="block text-center text-white uppercase font-semibold">
+            {intl.formatMessage({ id: 'FOOTER.INFORMATION' })}
+          </span>
           <div className="mt-5">
             <div className="text-center">
               <Link to="/about-us" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Giới thiệu
+                {intl.formatMessage({ id: 'FOOTER.INTRODUCE' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/feedback" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Ý kiến đóng góp
+                {intl.formatMessage({ id: 'FOOTER.COMMENTS' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/terms-of-use" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Điều khoản sử dụng
+                {intl.formatMessage({ id: 'FOOTER.TERMS_OF_USE' })}
               </Link>
             </div>
             <div className="text-center mt-0.5">
               <Link to="/privacy-policy" className="font-medium text-gray-400 duration-300 hover:text-white ">
-                Chính sách bảo mật
+                {intl.formatMessage({ id: 'FOOTER.PRIVACY_POLICY' })}
               </Link>
             </div>
           </div>
         </div>
         <div className="col-span-1">
-          <span className="block text-right text-white uppercase font-semibold">Kết nốt với chúng tôi</span>
+          <span className="block text-right text-white uppercase font-semibold">
+            {intl.formatMessage({ id: 'FOOTER.CONNECT_WITH_US' })}
+          </span>
           <div className="mt-5">
             <div className="flex items-center justify-end">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/cvfreevn"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-gray-400 duration-300 hover:text-white mt-0.5"
@@ -96,7 +107,7 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Ngọc Khánh, Ba Đình, Hà Nội
+                {intl.formatMessage({ id: 'FOOTER.ADDRESS' })}
               </a>
               <i className="fas fa-map-marker-alt text-gray-300 ml-3" />
             </div>
@@ -106,7 +117,7 @@ export const Footer: React.FC = () => {
       <div className="mt-10 w-1/3 bg-gray-500 mx-auto h-px"></div>
       <div className="mt-5">
         <span className="text-gray-200 block text-center font-medium">
-          © Copyright 2021 - Bản quyền thuộc về CVFREE
+          {intl.formatMessage({ id: 'FOOTER.COPYRIGHT' })}
         </span>
       </div>
     </div>
