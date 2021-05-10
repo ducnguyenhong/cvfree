@@ -13,13 +13,14 @@ import { Link } from 'react-router-dom'
 import { checkEmail, checkUsername } from 'utils/helper'
 import { UserInfo } from 'models/user-info'
 import { SignInStyle } from './styles'
+import { useIntl } from 'react-intl'
 
 interface SignUpProps {}
 
 const SignUp: React.FC<SignUpProps> = () => {
   const [checkPolicy, setCheckPolicy] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
-
+  const intl = useIntl()
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
   const confPasswordRef = useRef<PrInputRefProps>(null)
@@ -138,7 +139,7 @@ const SignUp: React.FC<SignUpProps> = () => {
   }
 
   useEffect(() => {
-    document.title = 'CVFREE | Đăng ký'
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'AUTH.SIGN_UP' })}`
   }, [])
 
   return (
@@ -146,7 +147,7 @@ const SignUp: React.FC<SignUpProps> = () => {
       <SignInStyle>
         <div className="grid grid-cols-5 gap-4 h-full w-full">
           <div className="col-span-2">
-            <AuthIntro title="Đăng ký tài khoản" />
+            <AuthIntro title={intl.formatMessage({ id: 'AUTH.SIGN_UP_ACCOUNT' })} />
           </div>
 
           <div className="col-span-3">
@@ -154,13 +155,23 @@ const SignUp: React.FC<SignUpProps> = () => {
               <div className="h-5/6 flex items-center justify-center">
                 <div className="w-2/5 mt-40">
                   <div className="mt-20">
-                    <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
+                    <PrInput label={intl.formatMessage({ id: 'AUTH.USERNAME' })} icon="fas fa-user" ref={usernameRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Mật khẩu" type="password" icon="fas fa-lock" ref={passwordRef} />
+                    <PrInput
+                      label={intl.formatMessage({ id: 'AUTH.PASSWORD' })}
+                      type="password"
+                      icon="fas fa-lock"
+                      ref={passwordRef}
+                    />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Xác nhận mật khẩu" type="password" icon="fas fa-lock" ref={confPasswordRef} />
+                    <PrInput
+                      label={intl.formatMessage({ id: 'AUTH.CONFIRM_PASSWORD' })}
+                      type="password"
+                      icon="fas fa-lock"
+                      ref={confPasswordRef}
+                    />
                   </div>
                   <div className="mt-5">
                     <PrInput label="Email" icon="fas fa-envelope" ref={emailRef} />
@@ -174,21 +185,21 @@ const SignUp: React.FC<SignUpProps> = () => {
                         checked={checkPolicy}
                       />
                       <span className="ml-2 text-gray-700 font-medium">
-                        Tôi đồng ý với
+                        {intl.formatMessage({ id: 'AUTH.AGREE_TO' })}
                         <Link to="/terms-of-use" className="ml-1.5 text-green-600">
-                          Điều khoản sử dụng
+                          {intl.formatMessage({ id: 'FOOTER.TERMS_OF_USE' })}
                         </Link>{' '}
-                        và{' '}
+                        {intl.formatMessage({ id: 'AUTH.AND' })}{' '}
                         <Link to="/privacy-policy" className="text-green-600">
-                          Chính sách bảo mật
+                          {intl.formatMessage({ id: 'FOOTER.PRIVACY_POLICY' })}
                         </Link>{' '}
-                        của CVFREE
+                        {intl.formatMessage({ id: 'AUTH.OF' })} CVFREE
                       </span>
                     </label>
                   </div>
                   <div className="flex justify-center mt-10">
                     <Button type="success" className="flex items-center" onClick={onSignUp}>
-                      <span className="font-semibold">Đăng ký tài khoản</span>
+                      <span className="font-semibold">{intl.formatMessage({ id: 'AUTH.SIGN_UP' })}</span>
                       {loading ? (
                         <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />
                       ) : (
@@ -198,9 +209,9 @@ const SignUp: React.FC<SignUpProps> = () => {
                   </div>
                   <div className="mt-10">
                     <span className="block text-center">
-                      Bạn đã có tài khoản?{' '}
+                      {intl.formatMessage({ id: 'AUTH.HAD_ACCOUNT' })}{' '}
                       <Link to="/sign-in" className="text-green-600 font-semibold">
-                        Đăng nhập
+                        {intl.formatMessage({ id: 'AUTH.SIGN_IN' })}
                       </Link>
                     </span>
                   </div>

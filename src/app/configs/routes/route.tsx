@@ -148,7 +148,7 @@ export const PUBLIC_ROUTES: RouteType[] = [
     role: []
   },
   {
-    path: '/jobs/newest',
+    path: '/jobs/new',
     component: JobListNew,
     exact: true,
     role: []
@@ -355,7 +355,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: []
   },
   {
-    path: '/jobs/newest',
+    path: '/jobs/new',
     component: JobListNew,
     exact: true,
     role: []

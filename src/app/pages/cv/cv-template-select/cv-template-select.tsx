@@ -1,15 +1,17 @@
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { userInfoState } from 'app/states/user-info-state'
-import { DataDemoCV } from 'constants/data-demo-cv'
-import { useCallback, useRef } from 'react'
+import { DataDemoCV } from 'constants/data-cv'
+import { useCallback, useEffect, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
+import { useIntl } from 'react-intl'
 
 export const TemplateSelectCV: React.FC = () => {
   const history = useHistory()
   const userInfo = useRecoilValue(userInfoState)
   const modalNotifyRef = useRef<PrModalRefProps>(null)
   const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
+  const intl = useIntl()
 
   const onOpenCreateCVPage = useCallback((value: string) => {
     localStorage.setItem('cv-template-create', value)
@@ -23,11 +25,17 @@ export const TemplateSelectCV: React.FC = () => {
     }
   }, [])
 
+  useEffect(() => {
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'CV_TEMPLATE_LIST.LIST_TEMPLATE' })}`
+  }, [])
+
   return (
     <div className="bg-white">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 py-40">
         <div className="text-center mb-20">
-          <span className="uppercase text-3xl font-bold text-green-600">Danh sách các mẫu CV</span>
+          <span className="uppercase text-3xl font-bold text-green-600">
+            {intl.formatMessage({ id: 'CV_TEMPLATE_LIST.LIST_TEMPLATE' })}
+          </span>
         </div>
         <div className="grid grid-cols-3 gap-28 px-40">
           {DataDemoCV.map((item) => {
@@ -52,13 +60,15 @@ export const TemplateSelectCV: React.FC = () => {
                         onClick={() => onOpenCreateCVPage(value)}
                       >
                         <i className="fas fa-check-circle mr-3" />
-                        <span>Sử dụng</span>
+                        <span>{intl.formatMessage({ id: 'CV_TEMPLATE_LIST.USE' })}</span>
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="mt-5">
-                  <span className="block text-center font-semibold text-lg">{label}</span>
+                  <span className="block text-center font-semibold text-lg">
+                    {intl.formatMessage({ id: `CV_TEMPLATE_LIST.${label}` })}
+                  </span>
                 </div>
               </div>
             )

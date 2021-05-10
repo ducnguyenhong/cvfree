@@ -10,6 +10,7 @@ import { JobPostingInfo } from 'models/job-posting-info'
 import { List } from 'react-content-loader'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import Logo from 'assets/images/job-default.png'
+import { useIntl } from 'react-intl'
 
 interface AddressJobType {
   route: string
@@ -24,46 +25,46 @@ interface CareerJobType {
 const ListAdressJob: AddressJobType[] = [
   {
     route: '/jobs/city/ha-noi',
-    title: 'Hà Nội'
+    title: 'HA_NOI'
   },
   {
     route: '/jobs/city/da-nang',
-    title: 'Đà Nẵng'
+    title: 'DA_NANG'
   },
   {
     route: '/jobs/city/tphcm',
-    title: 'TP.HCM'
+    title: 'HO_CHI_MINH'
   },
   {
     route: '/jobs/city/hai-phong',
-    title: 'Hải Phòng'
+    title: 'HAI_PHONG'
   },
   {
     route: '/jobs/city/can-tho',
-    title: 'Cần Thơ'
+    title: 'CAN_THO'
   }
 ]
 
 const ListCareerJob: CareerJobType[] = [
   {
     route: '/jobs/career/kinh-doanh',
-    title: 'Kinh doanh'
+    title: 'BUSINESS_JOBS'
   },
   {
     route: '/jobs/career/cong-nghe-thong-tin',
-    title: 'Công nghệ thông tin'
+    title: 'IT_JOBS'
   },
   {
     route: '/jobs/career/bao-chi',
-    title: 'Báo chí'
+    title: 'JOURNALISM_JOBS'
   },
   {
     route: '/jobs/career/marketing',
-    title: 'Marketing'
+    title: 'MARKETING_JOBS'
   },
   {
     route: '/jobs/career/bat-dong-san',
-    title: 'Bất động sản'
+    title: 'REAL_ESTATE_INDUSTRY_JOBS'
   }
 ]
 
@@ -71,6 +72,7 @@ const JobListGeneral: React.FC = () => {
   const [listJobNew, setListJobNew] = useState<JobPostingInfo[] | undefined | null>(undefined)
   const [listJobIntern, setListJobIntern] = useState<JobPostingInfo[] | undefined | null>(undefined)
   const [listJobHighSalary, setListHighSalary] = useState<JobPostingInfo[] | undefined | null>(undefined)
+  const intl = useIntl()
 
   const callApiJobNew = () => {
     const url = `${SERVER_URL}/jobs/newest`
@@ -157,13 +159,14 @@ const JobListGeneral: React.FC = () => {
   }
 
   useEffect(() => {
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'JOBS.EMPLOYMENT_AND_RECRUITMENT' })}`
     callApiJobNew()
     callApiJobIntern()
     callApiJobHighSalary()
   }, [])
 
   return (
-    <WrapperPage title="Việc làm & Tuyển dụng">
+    <WrapperPage title={intl.formatMessage({ id: 'JOBS.EMPLOYMENT_AND_RECRUITMENT' })}>
       <div className="bg-white mt-10 py-10 grid-cols-2 grid gap-y-20 pb-40">
         {/* New */}
         <div className="col-span-2">
@@ -171,11 +174,11 @@ const JobListGeneral: React.FC = () => {
             <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
               <span className="block text-white uppercase font-semibold">
                 <i className="fas fa-star mr-3" />
-                Việc làm mới nhất
+                {intl.formatMessage({ id: 'JOBS.NEW_JOBS' })}
               </span>
-              <Link to="/jobs/newest" className="text-white font-medium">
+              <Link to="/jobs/new" className="text-white font-medium">
                 <i className="fas fa-angle-double-right mr-2" />
-                Xem thêm
+                {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
               </Link>
             </div>
             {(!listJobNew || listJobNew.length === 0) && <List />}
@@ -228,11 +231,11 @@ const JobListGeneral: React.FC = () => {
             <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
               <span className="block text-white uppercase font-semibold">
                 <i className="fas fa-coins mr-3" />
-                Việc làm lương cao
+                {intl.formatMessage({ id: 'JOBS.HIGH_SALARY_JOBS' })}
               </span>
               <Link to="/jobs/high-salary" className="text-white font-medium">
                 <i className="fas fa-angle-double-right mr-2" />
-                Xem thêm
+                {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
               </Link>
             </div>
             {listJobHighSalary &&
@@ -284,11 +287,11 @@ const JobListGeneral: React.FC = () => {
             <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
               <span className="block text-white uppercase font-semibold">
                 <i className="fas fa-user-graduate mr-3" />
-                Tuyển dụng thực tập sinh
+                {intl.formatMessage({ id: 'JOBS.INTERNS_JOBS' })}
               </span>
               <Link to="/jobs/intern" className="text-white font-medium">
                 <i className="fas fa-angle-double-right mr-2" />
-                Xem thêm
+                {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
               </Link>
             </div>
             {listJobIntern &&
@@ -340,7 +343,7 @@ const JobListGeneral: React.FC = () => {
             <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
               <span className="block text-white uppercase font-semibold">
                 <i className="fas fa-briefcase mr-3" />
-                Việc làm theo ngành nghề
+                {intl.formatMessage({ id: 'JOBS.JOBS_BY_INDUSTRIES' })}
               </span>
             </div>
             {ListCareerJob &&
@@ -360,7 +363,7 @@ const JobListGeneral: React.FC = () => {
                     <div className="ml-8">
                       <div>
                         <Link to={route} className="font-semibold text-lg">
-                          {`Việc làm ngành ${title}`}
+                          {intl.formatMessage({ id: `JOBS.${title}` })}
                         </Link>
                       </div>
                     </div>
@@ -376,7 +379,7 @@ const JobListGeneral: React.FC = () => {
             <div className="flex justify-between items-center col-span-2 bg-green-600 px-4 py-4">
               <span className="block text-white uppercase font-semibold">
                 <i className="fas fa-map-marker-alt mr-3" />
-                Việc làm theo địa điểm
+                {intl.formatMessage({ id: 'JOBS.JOBS_BY_LOCATION' })}
               </span>
             </div>
             {ListAdressJob &&
@@ -396,7 +399,9 @@ const JobListGeneral: React.FC = () => {
                     <div className="ml-8">
                       <div>
                         <Link to={route} className="font-semibold text-lg">
-                          {`Việc làm tại ${title}`}
+                          {`${intl.formatMessage({ id: 'JOBS.JOBS_IN' })} ${intl.formatMessage({
+                            id: `JOBS.${title}`
+                          })}`}
                         </Link>
                       </div>
                     </div>

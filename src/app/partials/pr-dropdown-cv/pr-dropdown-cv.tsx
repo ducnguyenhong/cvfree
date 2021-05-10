@@ -103,7 +103,7 @@ const PrDropdownCV: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className={`${className} relative inline-block text-left z-40`} ref={dropdownRef}>
+    <div className={`${className} relative inline-block text-left`} ref={dropdownRef}>
       <div>
         <button
           onClick={() => setVisible(!visible)}

@@ -22,11 +22,8 @@ import PrUpload from 'app/partials/pr-upload'
 import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import LoadingIcon from 'assets/icons/loading.svg'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
-import { DataDemoCV } from 'constants/data-demo-cv'
+import { DataRecommendCv, DataRecommendCvType, DataDemoCV, DataFontSizeCv, DataFontFamilyCv } from 'constants/data-cv'
 import { DataCareer, DataFormOfWork } from 'constants/data-employer'
-import { DataFontFamily } from 'constants/font-family-cv'
-import { DataFontSize } from 'constants/font-size-cv'
 import { SERVER_URL } from 'constants/index'
 import vi from 'date-fns/locale/vi'
 import Cookies from 'js-cookie'
@@ -77,6 +74,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
   const [fixedControl, setFixedControl] = useState<boolean>(false)
   const [cvHeight, setCvHeight] = useState<number>(0)
   const [loadingAction, setLoadingAction] = useState<boolean>(false)
+  const [isShowCropAvatar, setIsShowCropAvatar] = useState<boolean>(false)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [focusBirthday, setFocusBirthday] = useState<boolean>(false)
   const [showRecommend, setShowRecommend] = useState<boolean>(false)
@@ -878,7 +876,9 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
               top: fixedControl ? 76 : undefined,
               right: fixedControl && showRecommend ? '20%' : undefined
             }}
-            className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
+            className={`${
+              isShowCropAvatar ? '' : 'z-40'
+            } bg-white duration-300 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
               fixedControl ? 'fixed left-0 right-0 mx-auto' : 'relative'
             }`}
           >
@@ -896,8 +896,8 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
               <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
               <PrDropdownCV
                 dropdownClassName="w-full"
-                className="w-full"
-                options={DataFontSize}
+                className={`${isShowCropAvatar ? 'z-0' : ''} w-full`}
+                options={DataFontSizeCv}
                 onChange={(value) => setFontSize(value)}
                 defaultValue={defaultFontSize}
               />
@@ -908,8 +908,8 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
               <span className="block text-sm font-medium mb-1">Font chữ</span>
               <PrDropdownCV
                 dropdownClassName="w-full"
-                className="w-full"
-                options={DataFontFamily}
+                className={`${isShowCropAvatar ? 'z-0' : ''} w-full`}
+                options={DataFontFamilyCv}
                 onChange={(value) => {
                   setFontFamily(value)
                 }}
@@ -958,9 +958,13 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
               <div className="col-span-2 relative overflow-hidden">
                 <div className="div-top-left p-4 overflow-hidden relative" style={{ backgroundColor: color }}>
                   <div className="px-10 absolute top-10 left-0 right-0 mx-auto z-10 w-60 h-60">
-                    <PrUpload getImage={getImage} defaultURL={defaultAvatar} />
+                    <PrUpload
+                      getImage={getImage}
+                      defaultURL={defaultAvatar}
+                      onShowCrop={(show) => setIsShowCropAvatar(show)}
+                    />
                   </div>
-                  <div className="absolute top-52 z-10 left-0 h-52 w-full">
+                  <div className={`${isShowCropAvatar ? '' : 'z-10'} absolute top-52 left-0 h-52 w-full`}>
                     <div className="pl-20">
                       <PrInputCV
                         ref={fullnameRef}

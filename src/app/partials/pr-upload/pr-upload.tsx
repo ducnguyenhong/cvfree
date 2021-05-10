@@ -22,11 +22,12 @@ interface CVFUploadProps {
   defaultURL?: string
   shape?: 'circle' | 'rectangle' | 'square'
   className?: string
+  onShowCrop?: (show: boolean) => void
 }
 
 const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
   const intl = useIntl()
-  const { ratio, getImage, defaultURL, shape, className } = props
+  const { ratio, getImage, defaultURL, shape, className, onShowCrop } = props
   const [defaultImage, setDefaultImage] = useState<string>('')
   const [upImg, setUpImg] = useState<string | ArrayBuffer | null>('')
   const [croppingImg, setCroppingImg] = useState<ReactCrop.Crop | null>(null)
@@ -42,6 +43,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
       reader.addEventListener('load', () => setUpImg(reader.result))
       reader.readAsDataURL(e.target.files[0])
       modalRef && modalRef.current && modalRef.current.show()
+      onShowCrop && onShowCrop(true)
     }
   }, [])
 
@@ -53,6 +55,7 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
 
   const onChangeModal = useCallback(() => {
     setCompletedCrop(croppingImg)
+    onShowCrop && onShowCrop(false)
     if (modalRef && modalRef.current) {
       modalRef.current.hide()
     }

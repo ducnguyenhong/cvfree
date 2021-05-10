@@ -64,6 +64,52 @@ export default {
   AUTH: {
     LOGIN_SUCCESS: 'Logged in successfully',
     LOGOUT_SUCCESS: 'Logged out successfully',
-    LOGOUT: 'Logout'
+    LOGOUT: 'Logout',
+    SIGN_IN: 'Sign in',
+    SIGN_UP: 'Sign up',
+    SIGN_IN_ACCOUNT: 'Sign in to your account',
+    USERNAME: 'Username',
+    PASSWORD: 'Password',
+    FORGOT_PASSWORD: 'Forgot password',
+    NO_HAVE_ACCOUNT: 'Do not have an account ?',
+    SIGN_UP_ACCOUNT: 'Register an account',
+    OF: 'of',
+    CONFIRM_PASSWORD: 'Confirm password',
+    HAD_ACCOUNT: 'Do you already have an account?',
+    AND: 'and',
+    AGREE_TO: 'I agree to the'
+  },
+  CV_TEMPLATE_LIST: {
+    LIST_TEMPLATE: 'List of CV templates',
+    DEFAULT: 'Default',
+    DYNAMIC: 'Dynamic',
+    USE: 'Use'
+  },
+  ABOUT_US: {
+    ABOUT_US: 'About us',
+    CONTENT_1:
+      'is a website that helps you create CV (Curriculum Vitae) quickly and completely for free. There are many CV templates suitable for you to choose from and these CVs are stored online, so you can access anytime, anywhere.',
+    CONTENT_2:
+      '- Next to that is the super-speed job search system. Employers and candidates can interact with each other easily. And here everything is free.'
+  },
+  JOBS: {
+    EMPLOYMENT_AND_RECRUITMENT: 'Employment & Recruitment',
+    NEW_JOBS: 'New jobs',
+    HIGH_SALARY_JOBS: 'Hign salary jobs',
+    INTERNS_JOBS: 'Interns jobs',
+    JOBS_BY_INDUSTRIES: 'Jobs by industries',
+    JOBS_BY_LOCATION: 'Jobs by location',
+    SEE_MORE: 'See more',
+    JOBS_IN: 'Jobs in',
+    BUSINESS_JOBS: 'Business jobs',
+    IT_JOBS: 'IT jobs',
+    JOURNALISM_JOBS: 'Journalism jobs',
+    MARKETING_JOBS: 'Marketing jobs',
+    REAL_ESTATE_INDUSTRY_JOBS: 'Real estate industry jobs',
+    HA_NOI: 'Ha Noi',
+    DA_NANG: 'Da Nang',
+    HAI_PHONG: 'Hai Phong',
+    CAN_THO: 'Can Tho',
+    HO_CHI_MINH: 'Ho Chi Minh city'
   }
 }

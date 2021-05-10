@@ -5,8 +5,7 @@ import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import PrUpload from 'app/partials/pr-upload'
 import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
-import { DataFontFamily } from 'constants/font-family-cv'
-import { DataFontSize } from 'constants/font-size-cv'
+import { DataFontFamilyCv, DataFontSizeCv, DataDemoCV, DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
 import LoadingIcon from 'assets/icons/loading.svg'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import vi from 'date-fns/locale/vi'
@@ -30,11 +29,11 @@ import {
   getCategoryWhenDown,
   getCategoryWhenRemove,
   uploadServer,
-  getGenderFromInput
+  getGenderFromInput,
+  getValueDropdown,
+  getDefaultDataDropdown
 } from 'utils/helper'
 import { CvInfo } from 'models/cv-info'
-import { useRecoilValue } from 'recoil'
-import { userInfoState } from 'app/states/user-info-state'
 import { SERVER_URL } from 'constants/index'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import Cookies from 'js-cookie'
@@ -59,11 +58,7 @@ import moment from 'moment'
 import PrDropdown from 'app/partials/pr-dropdown/pr-dropdown'
 import { DataCareer, DataFormOfWork } from 'constants/data-employer'
 import { v4 as uuid } from 'uuid'
-
 import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import { getValueDropdown, getDefaultDataDropdown } from '../../../../../utils/helper'
-import { DataDemoCV } from 'constants/data-demo-cv'
-import { DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
@@ -899,7 +894,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
               <PrDropdownCV
                 dropdownClassName="w-full"
                 className="w-full"
-                options={DataFontSize}
+                options={DataFontSizeCv}
                 onChange={(value) => setFontSize(value)}
                 defaultValue={defaultFontSize}
               />
@@ -911,7 +906,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
               <PrDropdownCV
                 dropdownClassName="w-full"
                 className="w-full"
-                options={DataFontFamily}
+                options={DataFontFamilyCv}
                 onChange={(value) => {
                   setFontFamily(value)
                 }}

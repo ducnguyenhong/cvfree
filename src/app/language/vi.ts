@@ -64,6 +64,52 @@ export default {
   AUTH: {
     LOGIN_SUCCESS: 'Đăng nhập thành công',
     LOGOUT_SUCCESS: 'Đăng xuất thành công',
-    LOGOUT: 'Đăng xuất'
+    LOGOUT: 'Đăng xuất',
+    SIGN_IN: 'Đăng nhập',
+    SIGN_UP: 'Đăng ký',
+    SIGN_IN_ACCOUNT: 'Đăng nhập tài khoản',
+    USERNAME: 'Tài khoản',
+    PASSWORD: 'Mật khẩu',
+    FORGOT_PASSWORD: 'Quên mật khẩu',
+    NO_HAVE_ACCOUNT: 'Bạn chưa có tài khoản ?',
+    SIGN_UP_ACCOUNT: 'Đăng ký tài khoản',
+    OF: 'của',
+    CONFIRM_PASSWORD: 'Xác nhận mật khẩu',
+    HAD_ACCOUNT: 'Bạn đã có tài khoản ?',
+    AND: 'và',
+    AGREE_TO: 'Tôi đồng ý với'
+  },
+  CV_TEMPLATE_LIST: {
+    LIST_TEMPLATE: 'Danh sách các mẫu CV',
+    DEFAULT: 'Mặc định',
+    DYNAMIC: 'Năng động',
+    USE: 'Sử dụng'
+  },
+  ABOUT_US: {
+    ABOUT_US: 'Về chúng tôi',
+    CONTENT_1:
+      'là trang web giúp bạn có thể tạo CV (Curriculum Vitae) một cách nhanh chóng và hoàn toàn miễn phí. Có nhiều mẫu CV phù hợp cho bạn lựa chọn và những CV này được lưu trữ online, giúp bạn có thể truy cập mọi lúc mọi nơi.',
+    CONTENT_2:
+      '- Bên cạnh đó là hệ thống tìm việc làm siêu tốc. Nhà tuyển dụng và ứng viên có thể tương tác với nhau dễ dàng. Và ở đây, mọi thứ đều là miễn phí.'
+  },
+  JOBS: {
+    EMPLOYMENT_AND_RECRUITMENT: 'Việc làm & Tuyển dụng',
+    NEW_JOBS: 'Việc làm mới',
+    HIGH_SALARY_JOBS: 'Việc làm lương cao',
+    INTERNS_JOBS: 'Việc làm thực tập sinh',
+    JOBS_BY_INDUSTRIES: 'Việc làm theo ngành nghề',
+    JOBS_BY_LOCATION: 'Việc làm theo địa điểm',
+    SEE_MORE: 'Xem thêm',
+    JOBS_IN: 'Việc làm tại',
+    BUSINESS_JOBS: 'Việc làm ngành Kinh doanh',
+    IT_JOBS: 'Việc làm ngành Công nghệ thông tin',
+    JOURNALISM_JOBS: 'Việc làm ngành Báo chí',
+    MARKETING_JOBS: 'Việc làm ngành Marketing',
+    REAL_ESTATE_INDUSTRY_JOBS: 'Việc làm ngành Bất động sản',
+    HA_NOI: 'Hà Nội',
+    DA_NANG: 'Đà Nẵng',
+    HAI_PHONG: 'Hải Phòng',
+    CAN_THO: 'Cần Thơ',
+    HO_CHI_MINH: 'TP. Hồ Chí Minh'
   }
 }

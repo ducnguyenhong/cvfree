@@ -3,12 +3,15 @@ import EnterpriseHome from './home-enterprise'
 import FeatureHome from './home-feature'
 import TopHome from './home-top'
 import { HomeStyle } from './home.style'
+import { useIntl } from 'react-intl'
 
 interface HomeProps {}
 
 const HomeLayout: React.FC<HomeProps> = () => {
+  const intl = useIntl()
+
   useEffect(() => {
-    document.title = 'CVFREE | Hồ sơ miễn phí trực tuyến'
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'HOME.CVFREE' })}`
   }, [])
 
   return (

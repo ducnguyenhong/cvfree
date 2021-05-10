@@ -1,8 +1,30 @@
+import Image1 from 'assets/images/img-demo-temp-cv-1.png'
+import Image2 from 'assets/images/img-demo-temp-cv-2.png'
+
 export interface DataRecommendCvType {
   field: string
   recommend: string
   example: string
 }
+
+interface DataDemoCVType {
+  image: string
+  value: string
+  label: string
+}
+
+export const DataDemoCV: DataDemoCVType[] = [
+  {
+    image: Image1,
+    value: '1',
+    label: 'DEFAULT'
+  },
+  {
+    image: Image2,
+    value: '2',
+    label: 'DYNAMIC'
+  }
+]
 
 export const DataRecommendCv: DataRecommendCvType[] = [
   {
@@ -107,4 +129,20 @@ export const DataRecommendCv: DataRecommendCvType[] = [
       'Nhập link Facebook cá nhân của bạn, điều này có thể giúp việc liên lạc giữa bạn và nhà tuyển dụng nhanh chóng hơn',
     example: `fb.com/ducnh99`
   }
+]
+
+export const DataFontFamilyCv = [
+  { label: 'Quicksand', value: `"Quicksand", sans-serif` },
+  { label: 'Roboto', value: `"Roboto", sans-serif` },
+  { label: 'Nunito', value: `"Nunito", sans-serif` },
+  { label: 'Lora', value: `"Lora", sans-serif` },
+  { label: 'Dancing Script', value: `"Dancing Script", sans-serif` },
+  { label: 'Saira', value: `"Saira", sans-serif` }
+]
+
+export const DataFontSizeCv = [
+  { label: '13px', value: '13px' },
+  { label: '14px', value: '14px' },
+  { label: '15px', value: '15px' },
+  { label: '16px', value: '16px' }
 ]

@@ -113,14 +113,14 @@ const SignIn: React.FC<SignInProps> = () => {
   }
 
   useEffect(() => {
-    document.title = 'CVFREE | Đăng nhập'
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'AUTH.SIGN_IN' })}`
   }, [])
 
   return (
     <div className="w-full bg-white h-full">
       <div className="grid grid-cols-5 gap-4 h-full w-full">
         <div className="col-span-2">
-          <AuthIntro title="Đăng nhập tài khoản" />
+          <AuthIntro title={intl.formatMessage({ id: 'AUTH.SIGN_IN_ACCOUNT' })} />
         </div>
 
         <div className="col-span-3">
@@ -129,10 +129,15 @@ const SignIn: React.FC<SignInProps> = () => {
               <div className="flex items-center justify-center">
                 <form onSubmit={onSignIn} className="block w-2/5 pt-48">
                   <div className="mt-16">
-                    <PrInput label="Tài khoản" icon="fas fa-user" ref={usernameRef} />
+                    <PrInput label={intl.formatMessage({ id: 'AUTH.USERNAME' })} icon="fas fa-user" ref={usernameRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Mật khẩu" type="password" icon="fas fa-lock" ref={passwordRef} />
+                    <PrInput
+                      label={intl.formatMessage({ id: 'AUTH.PASSWORD' })}
+                      type="password"
+                      icon="fas fa-lock"
+                      ref={passwordRef}
+                    />
                   </div>
                   <div className="flex justify-center mt-12">
                     <button
@@ -142,7 +147,7 @@ const SignIn: React.FC<SignInProps> = () => {
                       {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                       </svg> */}
-                      <span className="font-semibold">Đăng nhập</span>
+                      <span className="font-semibold">{intl.formatMessage({ id: 'AUTH.SIGN_IN' })}</span>
                       <i className="ml-2 fas fa-sign-in-alt"></i>
                       {/* <LoginIcon className="ml-2" /> */}
                       {/* <img src={LoginIcon} className="w-5 mr-2"/>Đăng nhập  */}
@@ -151,14 +156,14 @@ const SignIn: React.FC<SignInProps> = () => {
                   </div>
                   <div className="mt-12">
                     <span className="block text-center">
-                      Bạn chưa có tài khoản?{' '}
+                      {intl.formatMessage({ id: 'AUTH.NO_HAVE_ACCOUNT' })}{' '}
                       <Link to="/sign-up" className="text-green-600 font-semibold">
-                        Đăng ký
+                        {intl.formatMessage({ id: 'AUTH.SIGN_UP' })}
                       </Link>
                       <span className="block mt-3">
                         hoặc&nbsp;
                         <Link to="/forgot-password" className="text-green-600 font-semibold">
-                          Quên mật khẩu
+                          {intl.formatMessage({ id: 'AUTH.FORGOT_PASSWORD' })}
                         </Link>
                       </span>
                     </span>
