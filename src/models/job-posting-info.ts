@@ -9,7 +9,12 @@ export interface JobPostingInfo {
     logo: string
     id: string
   }
-  candidateApplied?: string[]
+  candidateApplied?: {
+    userId: string
+    applyType: string // OTHER , CVFREE, PDF
+    applyValue: string
+    appliedAt: Date
+  }[]
   address?: {
     label: string
     value: {

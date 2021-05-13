@@ -3,7 +3,12 @@ import { atom, DefaultValue, selector } from 'recoil'
 interface DeactiveState {
   showModal: boolean
   jobId?: number | string
-  candidateApplied: string[]
+  candidateApplied: {
+    userId: string
+    applyType: string // OTHER , CVFREE, PDF
+    applyValue: string
+    appliedAt: Date
+  }[]
 }
 
 export const POPUP_APPLY_CANDIDATE_ATOM_KEY = 'POPUP_APPLY_CANDIDATE_ATOM_KEY'

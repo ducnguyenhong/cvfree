@@ -15,20 +15,19 @@ export interface TableColumn extends UserInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'fullname', title: 'Họ và tên' },
-  { enable: true, field: 'birthday', title: 'Ngày sinh' },
-  { enable: true, field: 'email', title: 'Email' },
-  { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'verify', title: 'Xác thực' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày tạo' },
-  { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: 'id', title: 'ID' },
+  { field: 'fullname', title: 'Họ và tên' },
+  { field: 'birthday', title: 'Ngày sinh' },
+  { field: 'email', title: 'Email' },
+  { field: 'phone', title: 'Điện thoại' },
+  { field: 'verify', title: 'Xác thực' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày tạo' },
+  { field: 'updatedAt', title: 'Ngày cập nhật' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/users`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -37,7 +36,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/users`,
       params: {
         page: input.page,
         size: input.size,

@@ -15,16 +15,15 @@ export interface TableColumn extends RequestUpdateCompanyInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: '_id', title: 'ID' },
-  { enable: true, field: 'userRequest', title: 'Người gửi yêu cầu' },
-  { enable: true, field: 'content', title: 'Yêu cầu chỉnh sửa' },
-  { enable: true, field: 'processStatus', title: 'Trạng thái xử lý' },
-  { enable: true, field: 'createdAt', title: 'Ngày yêu cầu' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: '_id', title: 'ID' },
+  { field: 'userRequest', title: 'Người gửi yêu cầu' },
+  { field: 'content', title: 'Yêu cầu chỉnh sửa' },
+  { field: 'processStatus', title: 'Trạng thái xử lý' },
+  { field: 'createdAt', title: 'Ngày yêu cầu' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/request-update-company/one-company`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -33,7 +32,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/request-update-company/one-company`,
       params: {
         page: input.page,
         size: input.size

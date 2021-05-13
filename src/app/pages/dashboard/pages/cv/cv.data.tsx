@@ -31,23 +31,22 @@ export interface TableColumn extends CvInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'info', title: 'Tên' },
-  { enable: true, field: 'creator', title: 'Người tạo' },
-  { enable: true, field: 'template', title: 'Template CV' },
-  { enable: true, field: 'formOfWork', title: 'Hình thức' },
-  { enable: true, field: 'career', title: 'Ngành nghề' },
-  { enable: true, field: 'birthday', title: 'Ngày sinh' },
-  { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'address', title: 'Địa chỉ' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày tạo' },
-  { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: 'id', title: 'ID' },
+  { field: 'info', title: 'Tên' },
+  { field: 'creator', title: 'Người tạo' },
+  { field: 'template', title: 'Template CV' },
+  { field: 'formOfWork', title: 'Hình thức' },
+  { field: 'career', title: 'Ngành nghề' },
+  { field: 'birthday', title: 'Ngày sinh' },
+  { field: 'phone', title: 'Điện thoại' },
+  { field: 'address', title: 'Địa chỉ' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày tạo' },
+  { field: 'updatedAt', title: 'Ngày cập nhật' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/cvs`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -56,7 +55,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/cvs`,
       params: {
         page: input.page,
         size: input.size

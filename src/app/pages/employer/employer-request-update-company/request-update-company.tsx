@@ -34,7 +34,7 @@ export const RequestUpdateCompanyList: React.FC = () => {
   const Wrapper: React.FC = (props) => {
     return (
       <WrapperTable title="Danh sách yêu cầu" toolbar={userInfo?.type === 'ADMIN' ? <MemoToolbar /> : undefined}>
-        <Filter dataFilter={dataFilter} />
+        <Filter ListFilterComponent={dataFilter} />
         {props.children}
       </WrapperTable>
     )

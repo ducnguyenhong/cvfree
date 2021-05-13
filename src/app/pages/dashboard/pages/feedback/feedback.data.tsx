@@ -15,18 +15,17 @@ export interface TableColumn extends FeedbackInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'fullname', title: 'Người gửi' },
-  { enable: true, field: 'contact', title: 'Thông tin liên hệ' },
-  { enable: true, field: 'content', title: 'Nội dung' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày tạo' },
-  { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' }
-  // { enable: true, field: 'action', title: 'Hành động' }
+  { field: 'id', title: 'ID' },
+  { field: 'fullname', title: 'Người gửi' },
+  { field: 'contact', title: 'Thông tin liên hệ' },
+  { field: 'content', title: 'Nội dung' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày tạo' },
+  { field: 'updatedAt', title: 'Ngày cập nhật' }
+  // { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/feedbacks`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -35,7 +34,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/feedbacks`,
       params: {
         page: input.page,
         size: input.size

@@ -19,17 +19,16 @@ export interface TableColumn extends CandidateManageInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: '_id', title: 'Mã' },
-  { enable: true, field: 'candidate', title: 'Hồ sơ ứng viên' },
-  { enable: true, field: 'contact', title: 'Thông tin liên hệ' },
-  { enable: true, field: 'jobId', title: 'Việc làm' },
-  { enable: true, field: 'isDone', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày duyệt ứng viên' },
-  { enable: true, field: 'action', title: 'Cập nhật trạng thái' }
+  { field: '_id', title: 'Mã' },
+  { field: 'candidate', title: 'Hồ sơ ứng viên' },
+  { field: 'contact', title: 'Thông tin liên hệ' },
+  { field: 'jobId', title: 'Việc làm' },
+  { field: 'isDone', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày duyệt ứng viên' },
+  { field: 'action', title: 'Cập nhật trạng thái' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/candidate-manage`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -38,7 +37,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/candidate-manage`,
       params: {
         page: input.page,
         size: input.size

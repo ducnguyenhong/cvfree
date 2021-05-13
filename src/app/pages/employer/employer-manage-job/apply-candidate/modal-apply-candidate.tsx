@@ -1,7 +1,7 @@
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { useRef, useEffect } from 'react'
 import { Table } from '@ekidpro/table'
-import { Columns, TableLoader } from './apply-candidate.data'
+import { Columns, getLoader } from './apply-candidate.data'
 import { SERVER_URL } from 'constants/index'
 import { useRecoilState } from 'recoil'
 import { showApplyCandidateState } from 'app/states/show-modal/apply-candidate-state'
@@ -12,11 +12,9 @@ export const prefix = 'applyCandidateList'
 
 export const ModalApplyCandidate: React.FC = () => {
   const modalRef = useRef<PrModalRefProps>(null)
-  const loader = useRef<typeof TableLoader>(TableLoader)
   const [showModalState, setShowModalState] = useRecoilState(showApplyCandidateState)
   const { jobId, showModal, candidateApplied } = showModalState
-
-  loader.current.url = `${SERVER_URL}/candidate/jobId=${jobId}/informations=${candidateApplied.join()}`
+  const loader = useRef(getLoader(`${SERVER_URL}/candidate/jobId=${jobId}/informations=${candidateApplied.join()}`))
 
   const onHideModal = () => {
     setShowModalState({ jobId: undefined, showModal: false, candidateApplied: [] })

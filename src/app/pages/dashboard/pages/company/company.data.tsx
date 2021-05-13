@@ -15,21 +15,20 @@ export interface TableColumn extends CompanyInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'name', title: 'Tên' },
-  { enable: true, field: 'taxCode', title: 'Mã số thuế' },
-  { enable: true, field: 'email', title: 'Email' },
-  { enable: true, field: 'phone', title: 'Điện thoại' },
-  { enable: true, field: 'address', title: 'Địa chỉ' },
-  { enable: true, field: 'personnelSize', title: 'Quy mô' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày tạo' },
-  { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: 'id', title: 'ID' },
+  { field: 'name', title: 'Tên' },
+  { field: 'taxCode', title: 'Mã số thuế' },
+  { field: 'email', title: 'Email' },
+  { field: 'phone', title: 'Điện thoại' },
+  { field: 'address', title: 'Địa chỉ' },
+  { field: 'personnelSize', title: 'Quy mô' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày tạo' },
+  { field: 'updatedAt', title: 'Ngày cập nhật' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/companies`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -38,7 +37,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/companies`,
       params: {
         page: input.page,
         size: input.size

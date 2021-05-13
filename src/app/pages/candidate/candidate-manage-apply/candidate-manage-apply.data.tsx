@@ -27,15 +27,15 @@ const renderStatusApply = (status?: string) => {
 }
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'jobId', title: 'Mã việc làm' },
-  { enable: true, field: 'jobName', title: 'Tên việc làm' },
-  { enable: true, field: 'cvName', title: 'Hồ sơ ứng tuyển' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày ứng tuyển' }
+  { field: '_id', title: 'ID' },
+  { field: 'jobName', title: 'Tên việc làm' },
+  { field: 'applyType', title: 'Hình thức ứng tuyển' },
+  { field: 'applyValue', title: 'Thông tin ứng tuyển' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày ứng tuyển' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/apply-manage`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -44,7 +44,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/apply-manage`,
       params: {
         page: input.page,
         size: input.size
@@ -77,20 +77,58 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { cvId, jobId, jobName, status, createdAt, cvName, cvFullname } = data
+    const { _id, jobId, jobName, status, createdAt, applyCandidate, applyType, applyValue } = data
 
-    switch (field) {
-      case 'jobId':
+    const getApplyType = () => {
+      if (applyType === 'OTHER') {
+        return <span>CV từ hệ thống khác</span>
+      }
+      if (applyType === 'PDF') {
+        return <span>File PDF</span>
+      }
+      return <span>Hồ sơ CVFREE</span>
+    }
+
+    const getApplyValue = () => {
+      if (applyType === 'OTHER') {
         return (
           <a
-            href={`/jobs/${slugURL(jobName)}.${jobId}`}
+            href={applyValue}
             target="_blank"
-            className="font-medium"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
             rel="noopener noreferrer"
           >
-            {jobId.slice(jobId.length - 5, jobId.length)}
+            Xem liên kết
           </a>
         )
+      }
+      if (applyType === 'PDF') {
+        return (
+          <a
+            href={applyValue}
+            target="_blank"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
+            rel="noopener noreferrer"
+          >
+            Xem file
+          </a>
+        )
+      }
+      return (
+        <a
+          href={`/cv-public/${slugURL(applyCandidate.fullname)}.${applyValue}`}
+          target="_blank"
+          className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
+          rel="noopener noreferrer"
+        >
+          Xem hồ sơ
+        </a>
+      )
+    }
+
+    switch (field) {
+      case '_id':
+        return <span className="font-medium"> {_id ? _id.slice(_id.length - 5, _id.length) : ''}</span>
 
       case 'jobName':
         return (
@@ -104,18 +142,11 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
           </a>
         )
 
-      case 'cvName':
-        return (
-          <a
-            href={`/cv-public/${slugURL(cvFullname)}.${cvId}`}
-            target="_blank"
-            className="font-medium"
-            rel="noopener noreferrer"
-          >
-            {cvFullname.toUpperCase()}
-            <span className="block opacity-50">{cvName}</span>
-          </a>
-        )
+      case 'applyType':
+        return getApplyType()
+
+      case 'applyValue':
+        return getApplyValue()
 
       case 'status':
         return <>{renderStatusApply(status)}</>

@@ -49,7 +49,7 @@ export const CandidateManageApply: React.FC = () => {
 
   const Wrapper: React.FC = (props) => {
     return (
-      <WrapperTable title="Danh sách hồ sơ cá nhân">
+      <WrapperTable title="Danh sách việc làm đã ứng tuyển">
         {props.children}
         <div className="mt-20 pb-10">
           <span className="block font-semibold mb-5 ml-10 text-red-500">* Chú thích trạng thái</span>

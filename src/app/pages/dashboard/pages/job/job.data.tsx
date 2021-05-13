@@ -15,24 +15,23 @@ export interface TableColumn extends JobPostingInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: 'id', title: 'ID' },
-  { enable: true, field: 'name', title: 'Tên công việc' },
-  { enable: true, field: 'formOfWork', title: 'Hình thức' },
-  { enable: true, field: 'numberRecruited', title: 'Số lượng cần tuyển' },
-  { enable: true, field: 'salary', title: 'Mức lương' },
-  { enable: true, field: 'recruitmentPosition', title: 'Vị trí tuyển dụng' },
-  { enable: true, field: 'career', title: 'Ngành nghề' },
-  { enable: true, field: 'company', title: 'Công ty' },
-  { enable: true, field: 'address', title: 'Địa chỉ' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'timeToApply', title: 'Thời hạn ứng tuyển' },
-  { enable: true, field: 'createdAt', title: 'Ngày tạo' },
-  { enable: true, field: 'updatedAt', title: 'Ngày cập nhật' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: 'id', title: 'ID' },
+  { field: 'name', title: 'Tên công việc' },
+  { field: 'formOfWork', title: 'Hình thức' },
+  { field: 'numberRecruited', title: 'Số lượng cần tuyển' },
+  { field: 'salary', title: 'Mức lương' },
+  { field: 'recruitmentPosition', title: 'Vị trí tuyển dụng' },
+  { field: 'career', title: 'Ngành nghề' },
+  { field: 'company', title: 'Công ty' },
+  { field: 'address', title: 'Địa chỉ' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'timeToApply', title: 'Thời hạn ứng tuyển' },
+  { field: 'createdAt', title: 'Ngày tạo' },
+  { field: 'updatedAt', title: 'Ngày cập nhật' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/jobs`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -41,7 +40,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/jobs`,
       params: {
         page: input.page,
         size: input.size

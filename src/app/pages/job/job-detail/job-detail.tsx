@@ -9,8 +9,7 @@ import { JobPostingInfo } from 'models/job-posting-info'
 import { showNotify } from 'app/partials/pr-notify'
 import { List } from 'react-content-loader'
 import moment from 'moment'
-import { getDefaultLabelDropdown } from 'utils/helper'
-
+import { getDefaultLabelDropdown, uploadServer } from 'utils/helper'
 import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
@@ -18,6 +17,12 @@ import { DropdownAsync, DropdownAsyncRef } from 'app/partials/dropdown-async'
 import Cookies from 'js-cookie'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { v4 as uuid } from 'uuid'
+
+interface DataApply {
+  applyType: 'CVFREE' | 'PDF' | 'OTHER'
+  applyValue: string
+}
 
 export const JobDetail: React.FC = () => {
   const [jobInfo, setJobInfo] = useState<JobPostingInfo | undefined | null>(undefined)
@@ -32,6 +37,12 @@ export const JobDetail: React.FC = () => {
   const history = useHistory()
   const cvSelectedRef = useRef<DropdownAsyncRef>(null)
   const [errMessageApply, setErrMessageApply] = useState<string>('')
+
+  const [disableWay1, setDisableWay1] = useState<boolean>(false)
+  const [disableWay2, setDisableWay2] = useState<boolean>(false)
+  const [disableWay3, setDisableWay3] = useState<boolean>(false)
+  const urlCvOtherRef = useRef<PrInputRefProps>(null)
+  const [fileCvWay2, setFileCvWay2] = useState<File | null>(null)
 
   const reporterFullname = useRef<PrInputRefProps>(null)
   const reporterContent = useRef<PrInputRefProps>(null)
@@ -67,7 +78,7 @@ export const JobDetail: React.FC = () => {
       })
   }
 
-  const callApiApply = (cvId: string) => {
+  const callApiApply = (data: DataApply) => {
     const accessToken = Cookies.get('token')
     const url = `${SERVER_URL}/jobs/${jobId}/candidate-apply`
     const headers = {
@@ -79,9 +90,7 @@ export const JobDetail: React.FC = () => {
       method: 'POST',
       headers,
       url,
-      data: {
-        cvId
-      },
+      data,
       timeout: 20000
     }
 
@@ -191,17 +200,47 @@ export const JobDetail: React.FC = () => {
     history.push('/sign-in')
   }
 
-  const onApplyJob = () => {
-    const cvSelected = cvSelectedRef.current?.getValue()
-    if (!cvSelected || cvSelected.length === 0) {
-      setErrMessageApply('Hãy chọn CV mà bạn muốn ứng tuyển')
+  const onApplyJob = async () => {
+    if (!validateApply()) {
       return
     }
-    callApiApply(cvSelected[0].value)
+    if (!disableWay1) {
+      // tức đang chọn cách 1
+      const data: DataApply = {
+        applyType: 'CVFREE',
+        applyValue: cvSelectedRef.current?.getValue()[0].value || ''
+      }
+      callApiApply(data)
+    }
+
+    if (!disableWay2) {
+      // tức đang chọn cách 2
+      const urlPDF = fileCvWay2 ? await uploadServer(fileCvWay2, uuid(), 'pdf', 'pdf') : ''
+      const data: DataApply = {
+        applyType: 'PDF',
+        applyValue: urlPDF
+      }
+      callApiApply(data)
+    }
+
+    if (!disableWay3) {
+      // tức đang chọn cách 3
+      const data: DataApply = {
+        applyType: 'OTHER',
+        applyValue: urlCvOtherRef.current?.getValue() || ''
+      }
+      callApiApply(data)
+    }
   }
 
   const onHideApplyJob = () => {
     setErrMessageApply('')
+    setDisableWay1(false)
+    setDisableWay2(false)
+    setDisableWay3(false)
+    setFileCvWay2(null)
+    cvSelectedRef.current?.reset()
+    urlCvOtherRef.current?.reset()
     modalConfirmApplyRef.current?.hide()
   }
 
@@ -239,6 +278,21 @@ export const JobDetail: React.FC = () => {
     }
     if (!reporterContent.current?.checkRequired()) {
       return false
+    }
+    return true
+  }
+
+  const validateApply = () => {
+    if (cvSelectedRef.current?.getValue().length === 0 && !urlCvOtherRef.current?.getValue() && !fileCvWay2) {
+      setErrMessageApply('Hãy chọn 1 trong 3 cách ứng tuyển')
+      return false
+    }
+    if (fileCvWay2) {
+      const isFilePDF = fileCvWay2.name.split('.')[fileCvWay2.name.split('.').length - 1] === 'pdf'
+      if (!isFilePDF) {
+        setErrMessageApply('Hãy chọn file theo định dạng PDF')
+      }
+      return isFilePDF
     }
     return true
   }
@@ -372,22 +426,88 @@ export const JobDetail: React.FC = () => {
         </div>
       </PrModal>
 
-      <PrModal title="Xác nhận ứng tuyển" onHide={onHideApplyJob} ref={modalConfirmApplyRef} onChange={onApplyJob}>
-        <div className="py-16 px-10">
-          <span className="block text-center font-semibold text-xl">Xác nhận ứng tuyển công việc này</span>
-          <div className="w-1/2 mt-10 mx-auto">
-            <DropdownAsync
-              required
-              onChange={(e) => {
-                if (e) {
-                  setErrMessageApply('')
-                }
-              }}
-              ref={cvSelectedRef}
-              label="Chọn hồ sơ muốn ứng tuyển"
-              urlApi="/cvs/my-cvs/suggest"
-              isSearchable={false}
-            />
+      <PrModal
+        title="Xác nhận ứng tuyển"
+        onHide={onHideApplyJob}
+        ref={modalConfirmApplyRef}
+        onChange={onApplyJob}
+        okTitle="Ứng tuyển"
+        cancelTitle="Hủy"
+      >
+        <div className="py-10 px-10">
+          <span className="block text-center font-semibold text-xl">Xác nhận ứng tuyển công việc này ?</span>
+          <span className="block mt-4 font-semibold text-gray-600">
+            <span className="text-red-500">*</span> Hãy chọn <span className="text-red-500">1</span> trong{' '}
+            <span className="text-red-500">3</span> cách ứng tuyển sau:
+          </span>
+          <div className="px-5">
+            <div className="mt-10">
+              <span className="block font-semibold mb-2">
+                1. Sử dụng hồ sơ tại CVFREE
+                <span className="ml-4 text-green-500">
+                  <i className="fas fa-check-circle mr-0.5 text-green-500" /> nên sử dụng
+                </span>
+              </span>
+              <div className="w-1/2 ">
+                <DropdownAsync
+                  onChange={(e) => {
+                    if (e.length > 0) {
+                      setErrMessageApply('')
+                      !disableWay2 && setDisableWay2(true)
+                      !disableWay3 && setDisableWay3(true)
+                    } else {
+                      disableWay2 && setDisableWay2(false)
+                      disableWay3 && setDisableWay3(false)
+                    }
+                  }}
+                  isDisabled={disableWay1}
+                  ref={cvSelectedRef}
+                  isClearable
+                  urlApi="/cvs/my-cvs/suggest"
+                  isSearchable={false}
+                />
+              </div>
+            </div>
+
+            <div className="mt-10">
+              <span className="block font-semibold mb-2">2. Tải hồ sơ của bạn lên (chỉ hỗ trợ file PDF)</span>
+              <input
+                type="file"
+                className="block"
+                accept=".pdf"
+                disabled={disableWay2}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setErrMessageApply('')
+                    setFileCvWay2(e.target.files[0])
+                    !disableWay1 && setDisableWay1(true)
+                    !disableWay3 && setDisableWay3(true)
+                  } else {
+                    setFileCvWay2(null)
+                    disableWay1 && setDisableWay1(false)
+                    disableWay3 && setDisableWay3(false)
+                  }
+                }}
+              />
+            </div>
+            <div className="mt-10">
+              <span className="block font-semibold mb-2">3. Sử dụng CV online của bạn ở hệ thống khác</span>
+              <PrInput
+                ref={urlCvOtherRef}
+                placeholder="Nhập URL theo định dạng http/https..."
+                disabled={disableWay3}
+                onChange={(e) => {
+                  if (e) {
+                    setErrMessageApply('')
+                    !disableWay1 && setDisableWay1(true)
+                    !disableWay2 && setDisableWay2(true)
+                  } else {
+                    disableWay1 && setDisableWay1(false)
+                    disableWay2 && setDisableWay2(false)
+                  }
+                }}
+              />
+            </div>
           </div>
           {errMessageApply && <span className="mt-5 text-red-500 block text-center">{errMessageApply}</span>}
         </div>

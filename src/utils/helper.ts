@@ -117,12 +117,12 @@ export const getDefaultAvatar = (gender?: string) => {
   return DefaultImage
 }
 
-export const uploadServer = async (img: File, id: string, folderServer?: string) => {
+export const uploadServer = async (img: File, id: string, folderServer?: string, format?: string) => {
   const formData = new FormData()
   formData.append('image', img)
   const accessToken = Cookies.get('token')
   return axios
-    .post(`${SERVER_URL}/media/upload/${folderServer ?? 'image'}/${id}`, formData, {
+    .post(`${SERVER_URL}/media/upload/${folderServer ?? 'images'}/${id}/${format || 'png'}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${accessToken}`

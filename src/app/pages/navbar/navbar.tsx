@@ -117,7 +117,7 @@ const NavbarHome: React.FC = () => {
 
     if (userInfo?.type === 'USER') {
       title = 'NAVBAR.MANAGE_CV'
-      route = 'manage-cv'
+      route = '/manage-cv'
     }
     if (userInfo?.type === 'EMPLOYER') {
       title = 'NAVBAR.DASHBOARD'

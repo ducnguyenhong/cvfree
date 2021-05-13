@@ -18,20 +18,19 @@ export interface TableColumn extends ReportJobInfo {
 export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
-  { enable: true, field: '_id', title: 'ID' },
-  { enable: true, field: 'job', title: 'Việc làm' },
-  { enable: true, field: 'reporter', title: 'Người báo cáo' },
-  { enable: true, field: 'creator', title: 'Người đăng việc làm' },
-  { enable: true, field: 'processStatus', title: 'Trạng thái xử lý' },
-  { enable: true, field: 'company', title: 'Công ty' },
-  { enable: true, field: 'status', title: 'Trạng thái' },
-  { enable: true, field: 'createdAt', title: 'Ngày yêu cầu' },
-  { enable: true, field: 'expiredAt', title: 'Ngày hết hạn' },
-  { enable: true, field: 'action', title: 'Hành động' }
+  { field: '_id', title: 'ID' },
+  { field: 'job', title: 'Việc làm' },
+  { field: 'reporter', title: 'Người báo cáo' },
+  { field: 'creator', title: 'Người đăng việc làm' },
+  { field: 'processStatus', title: 'Trạng thái xử lý' },
+  { field: 'company', title: 'Công ty' },
+  { field: 'status', title: 'Trạng thái' },
+  { field: 'createdAt', title: 'Ngày yêu cầu' },
+  { field: 'expiredAt', title: 'Ngày hết hạn' },
+  { field: 'action', title: 'Hành động' }
 ]
 
 export const TableLoader: Loader<TableColumn, TableFilter> = {
-  url: `${SERVER_URL}/report-job`,
   fetch: async (input) => {
     const accessToken = Cookies.get('token')
     const response = await axios({
@@ -40,7 +39,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`
       },
-      url: input.url,
+      url: `${SERVER_URL}/report-job`,
       params: {
         page: input.page,
         size: input.size

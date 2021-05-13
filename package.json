@@ -1,10 +1,10 @@
 {
   "name": "cvfree",
-  "version": "210511.00.45",
+  "version": "210514.03.35",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
-    "@ekidpro/table": "^1.0.17",
+    "@ekidpro/table": "^1.0.18",
     "@headlessui/react": "^0.2.0",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@testing-library/jest-dom": "^5.11.8",

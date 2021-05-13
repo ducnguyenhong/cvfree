@@ -5,7 +5,7 @@ import { SERVER_URL } from 'constants/index'
 import { memo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { Columns, TableLoader } from './candidate-manage-cv.data'
+import { Columns, getLoader } from './candidate-manage-cv.data'
 
 import { PopupDeactive } from './popup-deactive-cv'
 
@@ -13,8 +13,7 @@ export const prefix = 'candidateManageCv'
 
 export const CandidateManageCv: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
-  const loader = useRef<typeof TableLoader>(TableLoader)
-  loader.current.url = `${SERVER_URL}/cvs/my-cvs/${userInfo?._id}`
+  const loader = useRef(getLoader(`${SERVER_URL}/cvs/my-cvs/${userInfo?._id}`))
 
   const Toolbar: React.FC = () => {
     return (

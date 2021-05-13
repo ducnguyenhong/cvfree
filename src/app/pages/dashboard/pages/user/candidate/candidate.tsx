@@ -32,7 +32,7 @@ export const CandidateList: React.FC = () => {
   const Wrapper: React.FC = (props) => {
     return (
       <WrapperTable title="Danh sách ứng viên" toolbar={userInfo?.type === 'ADMIN' ? <MemoToolbar /> : undefined}>
-        <Filter dataFilter={dataFilter} />
+        <Filter ListFilterComponent={dataFilter} />
         {props.children}
       </WrapperTable>
     )
