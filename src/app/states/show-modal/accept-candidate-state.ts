@@ -2,7 +2,8 @@ import { atom, DefaultValue, selector } from 'recoil'
 
 interface DeactiveState {
   showModal: boolean
-  cvId?: number | string
+  applyType?: string
+  applyValue?: string
   jobId?: string
 }
 
@@ -14,7 +15,8 @@ export const showAcceptCandidateAtom = atom<DeactiveState>({
   default: {
     showModal: false,
     jobId: undefined,
-    cvId: undefined
+    applyType: undefined,
+    applyValue: undefined
   }
 })
 

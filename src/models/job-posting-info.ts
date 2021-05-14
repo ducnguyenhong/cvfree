@@ -10,10 +10,16 @@ export interface JobPostingInfo {
     id: string
   }
   candidateApplied?: {
+    _id?: string
     userId: string
     applyType: string // OTHER , CVFREE, PDF
     applyValue: string
     appliedAt: Date
+    candidate: {
+      fullname: string
+      avatar: string
+      gender: string
+    }
   }[]
   address?: {
     label: string

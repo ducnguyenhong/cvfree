@@ -1,51 +1,40 @@
-import React from 'react'
-import { useSetRecoilState } from 'recoil'
-import { slugURL } from 'utils/helper'
 import { showAcceptCandidateState } from 'app/states/show-modal/accept-candidate-state'
 import { showRejectCandidateState } from 'app/states/show-modal/reject-candidate-state'
+import React from 'react'
+import { useSetRecoilState } from 'recoil'
 
 interface ActionProps {
-  cvId?: string
-  name?: string
+  applyType?: string
+  applyValue?: string
   jobId?: string
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { cvId, name, jobId } = props
+  const { applyValue, jobId, applyType } = props
   const setShowAccept = useSetRecoilState(showAcceptCandidateState)
   const setShowReject = useSetRecoilState(showRejectCandidateState)
 
   const onShowAccept = () => {
-    setShowAccept({ showModal: true, cvId, jobId })
+    setShowAccept({ showModal: true, applyValue, jobId, applyType })
   }
 
   const onShowReject = () => {
-    setShowReject({ showModal: true, cvId, jobId })
+    setShowReject({ showModal: true, applyValue, jobId, applyType })
   }
 
   return (
     <div className="flex items-center">
-      <div className="flex rounded-md items-center justify-center bg-gray-500 hover:bg-gray-600 mr-8 duration-300">
-        <a
-          href={`/cv-public/${slugURL(name)}.${cvId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-3 py-1.5 text-white font-semibold"
-        >
-          Xem hồ sơ
-        </a>
-      </div>
       <div
         onClick={onShowAccept}
         className="cursor-pointer flex rounded-md items-center justify-center bg-green-500 hover:bg-green-600 mr-8 duration-300"
       >
-        <span className="px-3 py-1.5 text-white font-semibold">Chấp nhận</span>
+        <span className="px-3 py-1.5 text-white font-semibold whitespace-nowrap">Chấp nhận</span>
       </div>
       <div
         className="cursor-pointer bg-red-400 flex rounded-md items-center justify-center duration-300 hover:bg-red-500"
         onClick={onShowReject}
       >
-        <span className="px-3 py-1.5 text-white font-semibold">Từ chối</span>
+        <span className="px-3 py-1.5 text-white font-semibold whitespace-nowrap">Từ chối</span>
       </div>
     </div>
   )

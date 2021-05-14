@@ -17,10 +17,10 @@ export const PopupAcceptCandidate: React.FC = () => {
   const popupConfirmRef = useRef<PopupConfirmRef>(null)
   const [recoilState, setRecoilState] = useRecoilState(showAcceptCandidateState)
   const setShowModalApplyCandidate = useSetRecoilState(showApplyCandidateState)
-  const { cvId, jobId, showModal } = recoilState
+  const { applyType, applyValue, jobId, showModal } = recoilState
 
   const onHidePopup = useCallback(() => {
-    setRecoilState({ cvId: undefined, jobId: undefined, showModal: false })
+    setRecoilState({ applyType: undefined, applyValue: undefined, jobId: undefined, showModal: false })
   }, [setRecoilState])
 
   const onAccept = () => {
@@ -37,7 +37,8 @@ export const PopupAcceptCandidate: React.FC = () => {
       url,
       data: {
         jobId,
-        cvId
+        applyValue,
+        applyType
       },
       timeout: 20000
     }
@@ -49,13 +50,13 @@ export const PopupAcceptCandidate: React.FC = () => {
         if (!success) {
           throw Error(error?.message)
         }
-        setRecoilState({ cvId: undefined, jobId: undefined, showModal: false })
+        onHidePopup()
         showNotify.success(message)
         setShowModalApplyCandidate({ jobId: undefined, showModal: false, candidateApplied: [] })
         refreshTableJob()
       })
       .catch((e) => {
-        setRecoilState({ cvId: undefined, jobId: undefined, showModal: false })
+        onHidePopup()
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }

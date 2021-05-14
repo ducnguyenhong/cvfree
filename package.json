@@ -1,6 +1,6 @@
 {
   "name": "cvfree",
-  "version": "210514.03.35",
+  "version": "210515.03.05",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
@@ -29,6 +29,7 @@
     "@types/uuid": "^8.3.0",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "clsx": "^1.1.1",
     "date-fns": "^2.19.0",
     "flat": "^5.0.2",
     "html2canvas": "^1.0.0-rc.7",

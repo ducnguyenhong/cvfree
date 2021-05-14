@@ -1,4 +1,5 @@
 export interface CandidateInfo {
+  id?: string
   candidateId: string
   fullname: string
   gender: string

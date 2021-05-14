@@ -2,12 +2,18 @@ import { atom, DefaultValue, selector } from 'recoil'
 
 interface DeactiveState {
   showModal: boolean
-  jobId?: number | string
+  jobId?: string
   candidateApplied: {
+    _id?: string
     userId: string
     applyType: string // OTHER , CVFREE, PDF
     applyValue: string
     appliedAt: Date
+    candidate: {
+      fullname: string
+      avatar: string
+      gender: string
+    }
   }[]
 }
 
