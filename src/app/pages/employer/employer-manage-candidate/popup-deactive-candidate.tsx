@@ -1,7 +1,7 @@
 import { useRefresh } from '@ekidpro/table'
 import { PopupConfirm, PopupConfirmRef } from 'app/partials/popup-confirm'
 import { showNotify } from 'app/partials/pr-notify'
-import { showDoneManageCandidateState } from 'app/states/show-popup/done-manage-candidate-state'
+import { showDeactiveManageCandidateState } from 'app/states/show-popup/deactive-manage-candidate-state'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
@@ -10,7 +10,6 @@ import { ResponseDefault } from 'models/response-api'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { prefix } from './employer-manage-candidate'
-import { showDeactiveManageCandidateState } from 'app/states/show-popup/deactive-manage-candidate-state'
 
 export const PopupDeactiveCandidate: React.FC = () => {
   const refreshTable = useRefresh(prefix)
@@ -22,7 +21,7 @@ export const PopupDeactiveCandidate: React.FC = () => {
     setRecoilState({ id: undefined, showPopup: false })
   }, [setRecoilState])
 
-  const onDeactiveCv = () => {
+  const onDeactive = () => {
     const accessToken = Cookies.get('token')
     const url = `${SERVER_URL}/candidate-manage/delete-candidate`
     const headers = {
@@ -66,7 +65,7 @@ export const PopupDeactiveCandidate: React.FC = () => {
       size="sm"
       type="danger"
       onHide={onHidePopup}
-      onChange={onDeactiveCv}
+      onChange={onDeactive}
       okTitle="Xác nhận"
       cancelTitle="Hủy"
     >

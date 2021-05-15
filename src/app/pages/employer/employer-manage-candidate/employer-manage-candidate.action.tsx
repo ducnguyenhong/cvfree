@@ -6,15 +6,16 @@ import { showDeactiveManageCandidateState } from 'app/states/show-popup/deactive
 interface ActionProps {
   id?: number | string
   isDone?: boolean
+  userId?: string
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { id, isDone } = props
+  const { id, isDone, userId } = props
   const setShowDone = useSetRecoilState(showDoneManageCandidateState)
   const setShowDeactive = useSetRecoilState(showDeactiveManageCandidateState)
 
   const onShowDone = () => {
-    setShowDone({ showPopup: true, id })
+    setShowDone({ showPopup: true, id, userId })
   }
 
   const onShowDeactive = () => {

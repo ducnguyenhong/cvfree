@@ -13,7 +13,7 @@ export const prefix = 'employerManageJob'
 
 export const EmployerManageJob: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
-  const loader = useRef(getLoader(`${SERVER_URL}/jobs/employer/${userInfo?._id}`))
+  const loader = getLoader(`${SERVER_URL}/jobs/employer/${userInfo?._id}`)
 
   const Toolbar: React.FC = () => {
     return (
@@ -49,7 +49,7 @@ export const EmployerManageJob: React.FC = () => {
 
   return (
     <div className="pt-28 pb-10 w-2/3 mx-auto" style={{ minHeight: 'calc(100vh - 100px)' }}>
-      <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
+      <Table columns={Columns} loader={loader} prefix={prefix} Wrapper={memo(Wrapper)} />
       <ModalApplyCandidate />
       <PopupDeactive />
     </div>

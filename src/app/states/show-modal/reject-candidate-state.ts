@@ -5,6 +5,7 @@ interface DeactiveState {
   applyType?: string
   applyValue?: string
   jobId?: string
+  userId?: string
 }
 
 export const POPUP_REJECT_CANDIDATE_ATOM_KEY = 'POPUP_REJECT_CANDIDATE_ATOM_KEY'
@@ -16,7 +17,8 @@ export const showRejectCandidateAtom = atom<DeactiveState>({
     showModal: false,
     jobId: undefined,
     applyType: undefined,
-    applyValue: undefined
+    applyValue: undefined,
+    userId: undefined
   }
 })
 

@@ -6,9 +6,9 @@ import { get } from 'lodash'
 import { CandidateManageInfo } from 'models/candidate-manage-info'
 import { showNotify } from 'app/partials/pr-notify'
 import moment from 'moment'
-import { BasicCvInfo } from 'app/partials/table-columns/table-column-cv-info'
 import { slugURL } from 'utils/helper'
 import { Action } from './employer-manage-candidate.action'
+import { PublicUserInfo } from 'app/partials/table-columns'
 
 export interface TableColumn extends CandidateManageInfo {
   contact?: string
@@ -20,7 +20,9 @@ export interface TableFilter {}
 
 export const Columns: ColumnsProps[] = [
   { field: '_id', title: 'Mã' },
-  { field: 'candidate', title: 'Hồ sơ ứng viên' },
+  { field: 'candidate', title: 'Ứng viên' },
+  { field: 'applyType', title: 'Hình thức ứng tuyển' },
+  { field: 'applyValue', title: 'Thông tin ứng tuyển' },
   { field: 'contact', title: 'Thông tin liên hệ' },
   { field: 'jobId', title: 'Việc làm' },
   { field: 'isDone', title: 'Trạng thái' },
@@ -70,16 +72,69 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { cvId, jobId, jobName, isDone, createdAt, candidate, _id } = data
+    const { jobId, jobName, isDone, createdAt, candidate, _id, applyType, applyValue, userId } = data
 
     const { fullname, avatar, gender, phone, email, address } = candidate
+
+    const getApplyType = () => {
+      if (applyType === 'OTHER') {
+        return <span>CV từ hệ thống khác</span>
+      }
+      if (applyType === 'PDF') {
+        return <span>File PDF</span>
+      }
+      return <span>Hồ sơ CVFREE</span>
+    }
+
+    const getApplyValue = () => {
+      if (applyType === 'OTHER') {
+        return (
+          <a
+            href={applyValue}
+            target="_blank"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
+            rel="noopener noreferrer"
+          >
+            Xem liên kết
+          </a>
+        )
+      }
+      if (applyType === 'PDF') {
+        return (
+          <a
+            href={applyValue}
+            target="_blank"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
+            rel="noopener noreferrer"
+          >
+            Xem file
+          </a>
+        )
+      }
+      return (
+        <a
+          href={`/cv-public/${slugURL(fullname)}.${applyValue}`}
+          target="_blank"
+          className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
+          rel="noopener noreferrer"
+        >
+          Xem hồ sơ
+        </a>
+      )
+    }
 
     switch (field) {
       case '_id':
         return <span>{_id.slice(_id.length - 5, _id.length)}</span>
 
+      case 'applyType':
+        return getApplyType()
+
+      case 'applyValue':
+        return getApplyValue()
+
       case 'candidate':
-        return <BasicCvInfo id={cvId} fullname={fullname} avatar={avatar} gender={gender} />
+        return <PublicUserInfo name={fullname} avatar={avatar} gender={gender} />
 
       case 'contact':
         return (
@@ -134,7 +189,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{moment(createdAt).format('DD/MM/YYYY')}</span>
 
       case 'action':
-        return <Action id={_id} isDone={isDone} />
+        return <Action id={_id} isDone={isDone} userId={userId} />
 
       default:
         return <span>{get(data, 'field')}</span>

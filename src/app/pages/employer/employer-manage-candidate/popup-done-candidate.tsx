@@ -15,13 +15,13 @@ export const PopupDoneCandidate: React.FC = () => {
   const refreshTable = useRefresh(prefix)
   const popupConfirmRef = useRef<PopupConfirmRef>(null)
   const [recoilState, setRecoilState] = useRecoilState(showDoneManageCandidateState)
-  const { id, showPopup } = recoilState
+  const { id, showPopup, userId } = recoilState
 
   const onHidePopup = useCallback(() => {
-    setRecoilState({ id: undefined, showPopup: false })
+    setRecoilState({ id: undefined, showPopup: false, userId: undefined })
   }, [setRecoilState])
 
-  const onDeactiveCv = () => {
+  const onDone = () => {
     const accessToken = Cookies.get('token')
     const url = `${SERVER_URL}/candidate-manage/done-candidate`
     const headers = {
@@ -33,7 +33,7 @@ export const PopupDoneCandidate: React.FC = () => {
       method: 'POST',
       headers,
       url,
-      data: { cmId: id },
+      data: { cmId: id, userId },
       timeout: 20000
     }
 
@@ -65,7 +65,7 @@ export const PopupDoneCandidate: React.FC = () => {
       size="sm"
       type="success"
       onHide={onHidePopup}
-      onChange={onDeactiveCv}
+      onChange={onDone}
       okTitle="Xác nhận"
       cancelTitle="Hủy"
     >

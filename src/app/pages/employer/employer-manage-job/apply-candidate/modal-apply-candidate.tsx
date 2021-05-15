@@ -27,7 +27,7 @@ export const prefix = 'applyCandidateList'
 
 export const columns: ColumnsProps[] = [
   { field: 'id', title: 'Mã ứng tuyển' },
-  { field: 'userId', title: 'Thông tin ứng viên' },
+  { field: 'userId', title: 'Ứng viên' },
   { field: 'applyType', title: 'Hình thức ứng tuyển' },
   { field: 'applyValue', title: 'Thông tin ứng tuyển' },
   { field: 'appliedAt', title: 'Ngày ứng tuyển' },
@@ -117,7 +117,7 @@ export const ModalApplyCandidate: React.FC = () => {
         return <DateTime timestamp={appliedAt} format="DD/MM/YYYY" />
 
       case 'action':
-        return <Action applyValue={applyValue} applyType={applyType} jobId={jobId} />
+        return <Action applyValue={applyValue} applyType={applyType} jobId={jobId} userId={userId} />
 
       default:
         return <span></span>

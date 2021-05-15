@@ -3,6 +3,7 @@ import { atom, DefaultValue, selector } from 'recoil'
 interface DeactiveState {
   showPopup: boolean
   id?: number | string
+  userId?: string
 }
 
 export const POPUP_DONE_MANAGE_CANDIDATE_ATOM_KEY = 'POPUP_DONE_MANAGE_CANDIDATE_ATOM_KEY'
@@ -12,7 +13,8 @@ export const showDoneManageCandidateAtom = atom<DeactiveState>({
   key: POPUP_DONE_MANAGE_CANDIDATE_ATOM_KEY,
   default: {
     showPopup: false,
-    id: undefined
+    id: undefined,
+    userId: undefined
   }
 })
 

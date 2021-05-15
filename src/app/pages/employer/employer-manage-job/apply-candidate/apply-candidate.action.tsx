@@ -7,19 +7,20 @@ interface ActionProps {
   applyType?: string
   applyValue?: string
   jobId?: string
+  userId?: string
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { applyValue, jobId, applyType } = props
+  const { applyValue, jobId, applyType, userId } = props
   const setShowAccept = useSetRecoilState(showAcceptCandidateState)
   const setShowReject = useSetRecoilState(showRejectCandidateState)
 
   const onShowAccept = () => {
-    setShowAccept({ showModal: true, applyValue, jobId, applyType })
+    setShowAccept({ showModal: true, applyValue, jobId, applyType, userId })
   }
 
   const onShowReject = () => {
-    setShowReject({ showModal: true, applyValue, jobId, applyType })
+    setShowReject({ showModal: true, applyValue, jobId, applyType, userId })
   }
 
   return (

@@ -17,10 +17,16 @@ export const PopupAcceptCandidate: React.FC = () => {
   const popupConfirmRef = useRef<PopupConfirmRef>(null)
   const [recoilState, setRecoilState] = useRecoilState(showAcceptCandidateState)
   const setShowModalApplyCandidate = useSetRecoilState(showApplyCandidateState)
-  const { applyType, applyValue, jobId, showModal } = recoilState
+  const { applyType, applyValue, jobId, showModal, userId } = recoilState
 
   const onHidePopup = useCallback(() => {
-    setRecoilState({ applyType: undefined, applyValue: undefined, jobId: undefined, showModal: false })
+    setRecoilState({
+      applyType: undefined,
+      applyValue: undefined,
+      jobId: undefined,
+      showModal: false,
+      userId: undefined
+    })
   }, [setRecoilState])
 
   const onAccept = () => {
@@ -38,7 +44,8 @@ export const PopupAcceptCandidate: React.FC = () => {
       data: {
         jobId,
         applyValue,
-        applyType
+        applyType,
+        userId
       },
       timeout: 20000
     }

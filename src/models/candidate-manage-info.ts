@@ -2,9 +2,10 @@ export interface CandidateManageInfo {
   jobId: string
   jobName: string
   _id: string
-  cvId: string
+  userId: string
+  applyType: string
+  applyValue: string
   candidate: {
-    candidateId: string
     fullname: string
     avatar: string
     gender: string

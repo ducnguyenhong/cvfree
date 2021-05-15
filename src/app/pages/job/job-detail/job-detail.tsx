@@ -510,7 +510,7 @@ export const JobDetail: React.FC = () => {
             </div>
           </div>
           {disableWay1 && (
-            <span className="mt-8 text-pink-600 block text-center font-medium">
+            <span className="mt-8 text-purple-600 block text-center font-medium">
               * Bạn đang không lựa chọn hồ sơ từ CVFREE, hãy đảm bảo rằng bạn đã cung cấp đầy đủ thông tin liên lạc
               (email, điện thoại, địa chỉ...) trong CV tải lên (hoặc từ hệ thống khác) để nhà tuyển dụng có thể liên hệ
               với bạn
