@@ -1,6 +1,6 @@
 import { TabControl, TabContent } from 'app/partials/tabs/tabs'
 import { PortletBody, Portlet, PortletHeader } from 'app/partials/portlet'
-import moment from 'moment'
+import { TabCv } from './user-detail-tabs/tab-cv'
 import { TabInfo } from './user-detail-tabs/tab-info'
 import { useEffect, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
@@ -16,12 +16,19 @@ import { List } from 'react-content-loader'
 import { ImageRatio } from 'app/partials/image-ratio/image-ratio'
 import { useSetRecoilState } from 'recoil'
 import { userDetailState } from 'app/states/dashboard/user-detail-state'
+import { TabApply } from './user-detail-tabs/tab-applies'
+import { TabCandidate } from './user-detail-tabs/tab-candidate'
+import { TabJob } from './user-detail-tabs/tab-job'
 
 export const UserDetail: React.FC = () => {
   const match = useRouteMatch()
   const userId = get(match.params, 'id')
   const [userDetail, setUserDetail] = useState<UserInfo | null | undefined>(undefined)
   const setUserDetailState = useSetRecoilState(userDetailState)
+
+  useEffect(() => {
+    document.title = `CVFREE | Chi tiết người dùng`
+  }, [])
 
   const callApiUserInfo = () => {
     const accessToken = Cookies.get('token')
@@ -76,15 +83,29 @@ export const UserDetail: React.FC = () => {
       title: 'Danh sách CV',
       icon: 'fas fa-copy',
       route: 'cvs',
-      component: <span>ducnh</span>,
+      component: <TabCv />,
       isActive: !!(userDetail?.type === 'USER')
     },
     {
       title: 'Danh sách ứng tuyển',
       icon: 'fas fa-briefcase',
       route: 'applies',
-      component: <span>ducnh</span>,
+      component: <TabApply />,
       isActive: !!(userDetail?.type === 'USER')
+    },
+    {
+      title: 'Danh sách tin tuyển dụng',
+      icon: 'fas fa-briefcase',
+      route: 'jobs',
+      component: <TabJob />,
+      isActive: !!(userDetail?.type === 'EMPLOYER')
+    },
+    {
+      title: 'Danh sách ứng viên đã duyệt',
+      icon: 'fas fa-users',
+      route: 'candidates',
+      component: <TabCandidate />,
+      isActive: !!(userDetail?.type === 'EMPLOYER')
     }
   ]
 

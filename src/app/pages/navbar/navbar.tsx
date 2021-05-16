@@ -113,7 +113,7 @@ const NavbarHome: React.FC = () => {
 
   const renderSpecialButton = () => {
     let title = 'NAVBAR.EMPLOYER'
-    let route = 'employer-intro'
+    let route = '/employer-intro'
 
     if (userInfo?.type === 'USER') {
       title = 'NAVBAR.MANAGE_CV'

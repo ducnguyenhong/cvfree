@@ -1,11 +1,11 @@
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { FeedbackInfo } from 'models/feedback-info'
-import { useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { SERVER_URL } from 'constants/index'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { ResponseDefault } from '../../../models/response-api'
+import { ResponseDefault } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
@@ -69,6 +69,10 @@ export const Feedback: React.FC = () => {
     }
     callApiSendFeedback(data)
   }
+
+  useEffect(() => {
+    document.title = `CVFREE | Ý kiến đóng góp`
+  }, [])
 
   return (
     <WrapperPage title="Ý kiến đóng góp">

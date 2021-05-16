@@ -49,6 +49,10 @@ export const JobListIntern: React.FC = () => {
     callApiJobNew()
   }, [])
 
+  useEffect(() => {
+    document.title = `CVFREE | Việc làm thực tập sinh`
+  }, [])
+
   return (
     <WrapperPage title="Việc làm thực tập sinh">
       <div className="py-20">

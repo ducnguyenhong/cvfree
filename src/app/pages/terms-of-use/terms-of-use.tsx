@@ -1,6 +1,11 @@
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { useEffect } from 'react'
 
 export const TermsOfUse: React.FC = () => {
+  useEffect(() => {
+    document.title = `CVFREE | Điều khoản sử dụng`
+  }, [])
+
   return (
     <WrapperPage title="Điều khoản sử dụng">
       <div className="py-10 px-16">

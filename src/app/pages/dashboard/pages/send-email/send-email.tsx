@@ -1,7 +1,7 @@
 import { Portlet, PortletBody, PortletHeader } from 'app/partials/portlet'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import Cookies from 'js-cookie'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { SERVER_URL } from 'constants/index'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ResponseDefault } from 'models/response-api'
@@ -82,6 +82,10 @@ CVFREE`
 
     callApiSendEmail(data)
   }
+
+  useEffect(() => {
+    document.title = `CVFREE | Gửi email`
+  }, [])
 
   return (
     <Portlet>

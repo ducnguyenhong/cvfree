@@ -1,7 +1,12 @@
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 export const EmployerDashboard: React.FC = () => {
+  useEffect(() => {
+    document.title = `CVFREE | Bảng điều khiển`
+  }, [])
+
   return (
     <WrapperPage title="Bảng điều khiển">
       <div className="grid grid-cols-4 gap-16 mt-52 pb-52 px-20">
@@ -16,7 +21,7 @@ export const EmployerDashboard: React.FC = () => {
           to="employer/looking-for-candidates"
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-600 hover:bg-gray-700 px-6 py-12 block duration-300 hover:shadow-xl "
         >
-          <span className="uppercase text-md font-bold block text-center text-gray-50">Tìm kiếm ứng viên</span>
+          <span className="uppercase text-md font-bold block text-center text-gray-50">Tìm ứng viên</span>
           <i className="fas fa-search text-5xl block text-center mt-10 text-gray-300"></i>
         </Link>
         <Link

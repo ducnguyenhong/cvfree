@@ -59,55 +59,61 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
             leaveTo="opacity-0 sm:translate-y-4 translate-y-0 scale-95"
           >
             {(ref: RefObject<HTMLDivElement> | null | undefined) => (
-              <div
-                ref={ref}
-                className={`z-50 fixed top-24 left-0 right-0 mx-auto inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-headline"
-              >
-                {!disableHeader && (
-                  <>
-                    <div className="px-5 py-4 flex justify-between">
-                      {title && <span className="font-semibold text-lg">{title}</span>}
-                      {!disableX && (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          onClick={onHide}
-                          className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100 duration-300"
+              <div ref={ref} className="absolute top-24 z-50 left-0 right-0 overflow-y-auto">
+                <div
+                  className={`overflow-y-auto mx-auto mb-28 inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="modal-headline"
+                >
+                  {!disableHeader && (
+                    <>
+                      <div className="px-5 py-4 flex justify-between">
+                        {title && <span className="font-semibold text-lg">{title}</span>}
+                        {!disableX && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            onClick={onHide}
+                            className="w-6 h-6 cursor-pointer opacity-70 hover:opacity-100 duration-300"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <hr />
+                    </>
+                  )}
+                  <div className={`${disableFooter ? 'rounded-lg' : ''} bg-white p-5`}>{children}</div>
+                  {!disableFooter && (
+                    <>
+                      <hr />
+                      <div className="sm:px-5 py-4 px-6 flex flex-row-reverse">
+                        <button
+                          onClick={onChange}
+                          type="button"
+                          className="sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-700 font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-blue-800 ml-3 w-auto duration-300"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                    </div>
-                    <hr />
-                  </>
-                )}
-                <div className={`${disableFooter ? 'rounded-lg' : ''} bg-white p-5`}>{children}</div>
-                {!disableFooter && (
-                  <>
-                    <hr />
-                    <div className="sm:px-5 py-4 px-6 flex flex-row-reverse">
-                      <button
-                        onClick={onChange}
-                        type="button"
-                        className="sm:w-auto inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-700 font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-blue-800 ml-3 w-auto duration-300"
-                      >
-                        {okTitle || 'OK'}
-                      </button>
-                      <button
-                        onClick={onHide}
-                        type="button"
-                        className="sm:w-auto inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-50 mt-0 ml-3 w-auto duration-300"
-                      >
-                        {cancelTitle || 'Cancel'}
-                      </button>
-                    </div>
-                  </>
-                )}
+                          {okTitle || 'OK'}
+                        </button>
+                        <button
+                          onClick={onHide}
+                          type="button"
+                          className="sm:w-auto inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-50 mt-0 ml-3 w-auto duration-300"
+                        >
+                          {cancelTitle || 'Cancel'}
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </Transition>

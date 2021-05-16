@@ -388,6 +388,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = () => {
       fontSize,
       fontFamily,
       name,
+      language: 'vi',
       formOfWork,
       career,
       categoryInfo,

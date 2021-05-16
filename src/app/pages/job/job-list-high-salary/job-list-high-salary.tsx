@@ -49,6 +49,10 @@ export const JobListHighSalary: React.FC = () => {
     callApiJobNew()
   }, [])
 
+  useEffect(() => {
+    document.title = `CVFREE | Việc làm lương cao`
+  }, [])
+
   return (
     <WrapperPage title="Việc làm lương cao">
       <div className="py-20">

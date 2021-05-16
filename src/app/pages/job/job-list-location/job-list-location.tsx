@@ -53,6 +53,12 @@ export const JobListLocation: React.FC = () => {
     city && callApiJobList(city)
   }, [city])
 
+  useEffect(() => {
+    if (city) {
+      document.title = `CVFREE | Việc làm tại ${city.label}`
+    }
+  }, [city])
+
   if (!listJob) {
     return <List />
   }

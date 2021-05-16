@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { CvDetailTemplate1, CvDetailTemplate2 } from './cv-detail-template'
 import { CvInfo } from 'models/cv-info'
 import { useRouteMatch } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, upperFirst, upperCase } from 'lodash'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -50,6 +50,17 @@ const CvDetail: React.FC = () => {
       callApiCvDetail()
     }
   }, [cvId])
+
+  useEffect(() => {
+    if (cvInfo) {
+      const userFullname = cvInfo.detail.fullname.split(' ').reduce((prev, curr) => {
+        let name = ''
+        name += upperFirst(curr)
+        return `${prev} ${name}`
+      }, '')
+      document.title = `CVFREE | ${userFullname}`
+    }
+  }, [cvInfo])
 
   if (!cvInfo) {
     return <List />

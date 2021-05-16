@@ -50,6 +50,10 @@ export const CompanyRequestUpdate: React.FC = () => {
     callApiCompanyRequestInfo()
   }, [])
 
+  useEffect(() => {
+    document.title = `CVFREE | Yêu cầu cập nhật thông tin công ty`
+  }, [])
+
   if (typeof requestInfo === 'undefined') {
     return <List />
   }

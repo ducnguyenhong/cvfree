@@ -1,6 +1,6 @@
 import { Table, Filter } from '@ekidpro/table'
 import { WrapperTable } from 'app/partials/table/wrapper-table'
-import React, { useRef, memo } from 'react'
+import React, { useRef, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Columns, TableLoader } from './job.data'
@@ -13,6 +13,10 @@ export const JobList: React.FC = () => {
   const loader = useRef<typeof TableLoader>(TableLoader)
   const userInfo = useRecoilValue(userInfoState)
   const dataFilter = getDataFilter(prefix)
+
+  useEffect(() => {
+    document.title = `CVFREE | Danh sách việc làm`
+  }, [])
 
   const Toolbar: React.FC = () => {
     return (

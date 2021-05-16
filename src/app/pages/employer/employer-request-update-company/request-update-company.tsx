@@ -1,6 +1,6 @@
 import { Table, Filter } from '@ekidpro/table'
 import { WrapperTable } from 'app/partials/table/wrapper-table'
-import React, { useRef, memo } from 'react'
+import React, { useRef, memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Columns, TableLoader } from './request-update-company.data'
@@ -15,6 +15,10 @@ export const RequestUpdateCompanyList: React.FC = () => {
   const loader = useRef<typeof TableLoader>(TableLoader)
   const userInfo = useRecoilValue(userInfoState)
   const dataFilter = getDataFilter(prefix)
+
+  useEffect(() => {
+    document.title = `CVFREE | Yêu cầu chỉnh sửa công ty`
+  }, [])
 
   const Toolbar: React.FC = () => {
     return (

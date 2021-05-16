@@ -392,6 +392,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
       formOfWork,
       career,
       categoryInfo,
+      language: 'vi',
       categoryCV,
       detail: {
         fullname,

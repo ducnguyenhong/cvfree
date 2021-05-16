@@ -2,7 +2,7 @@ import { Table } from '@ekidpro/table'
 import { WrapperTable } from 'app/partials/table/wrapper-table'
 import { userInfoState } from 'app/states/user-info-state'
 import { SERVER_URL } from 'constants/index'
-import { memo, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Columns, getLoader } from './candidate-manage-cv.data'
@@ -14,6 +14,10 @@ export const prefix = 'candidateManageCv'
 export const CandidateManageCv: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
   const loader = useRef(getLoader(`${SERVER_URL}/cvs/my-cvs/${userInfo?._id}`))
+
+  useEffect(() => {
+    document.title = `CVFREE | Quản lý CV`
+  }, [])
 
   const Toolbar: React.FC = () => {
     return (

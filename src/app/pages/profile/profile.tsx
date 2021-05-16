@@ -6,6 +6,7 @@ import moment from 'moment'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import DefaultAvatar from 'assets/images/default-avatar.png'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export const Profile: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
@@ -28,6 +29,10 @@ export const Profile: React.FC = () => {
     birthday,
     type
   } = userInfo
+
+  useEffect(() => {
+    document.title = `CVFREE | Thông tin cá nhân`
+  }, [])
 
   return (
     <WrapperPage title="Thông tin cá nhân">

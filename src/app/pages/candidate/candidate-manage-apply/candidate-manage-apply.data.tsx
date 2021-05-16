@@ -95,7 +95,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
           <a
             href={applyValue}
             target="_blank"
-            className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
             rel="noopener noreferrer"
           >
             Xem liên kết
@@ -107,7 +107,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
           <a
             href={applyValue}
             target="_blank"
-            className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
             rel="noopener noreferrer"
           >
             Xem file
@@ -118,7 +118,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         <a
           href={`/cv-public/${slugURL(applyCandidate.fullname)}.${applyValue}`}
           target="_blank"
-          className="font-medium text-white bg-pink-500 px-4 py-2 rounded"
+          className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
           rel="noopener noreferrer"
         >
           Xem hồ sơ

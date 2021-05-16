@@ -122,6 +122,10 @@ export const CandidateDetail: React.FC = () => {
     }
   }, [candidateId])
 
+  useEffect(() => {
+    document.title = `CVFREE | Thông tin ứng viên`
+  }, [])
+
   if (!candidateInfo) {
     return (
       <div className="py-40 w-2/3 mx-auto shadow-md rounded-md bg-gray-100 px-10">

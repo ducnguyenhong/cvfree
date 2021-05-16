@@ -110,7 +110,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <TableLink to={`/cv-public/${slugURL(fullname)}.${_id}`} title={id} className="font-semibold" />
 
       case 'info':
-        return <BasicCvInfo id={id} avatar={avatar} fullname={fullname} cvName={name} gender={gender} />
+        return <BasicCvInfo id={_id} avatar={avatar} fullname={fullname} cvName={name} gender={gender} />
 
       case 'creator':
         return <BasicUserInfo id={creatorId} name={creator?.fullname || creator?.username} avatar={creator?.avatar} />
@@ -125,7 +125,11 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{career ? career.label : 'N/A'}</span>
 
       case 'birthday':
-        return birthday ? <DateTime timestamp={birthday} /> : <span className="text-gray-300">N/A</span>
+        return birthday ? (
+          <DateTime timestamp={birthday} isAge format="DD/MM/YYYY" />
+        ) : (
+          <span className="text-gray-300">N/A</span>
+        )
 
       case 'phone':
         return phone ? <Phone phone={phone} /> : <span className="text-gray-300">N/A</span>

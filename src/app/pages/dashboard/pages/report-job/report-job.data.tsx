@@ -21,6 +21,7 @@ export const Columns: ColumnsProps[] = [
   { field: '_id', title: 'ID' },
   { field: 'job', title: 'Việc làm' },
   { field: 'reporter', title: 'Người báo cáo' },
+  { field: 'content', title: 'Nội dung báo cáo' },
   { field: 'creator', title: 'Người đăng việc làm' },
   { field: 'processStatus', title: 'Trạng thái xử lý' },
   { field: 'company', title: 'Công ty' },
@@ -72,7 +73,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       return <></>
     }
 
-    const { status, _id, creator, reporter, job, company, createdAt, processStatus, expiredAt } = data
+    const { status, _id, creator, reporter, job, company, createdAt, processStatus, expiredAt, content } = data
 
     const renderExpiredAt = () => {
       if (!expiredAt) {
@@ -88,6 +89,9 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
     switch (field) {
       case '_id':
         return <span className="font-medium">{_id ? _id.slice(_id.length - 5, _id.length) : ''}</span>
+
+      case 'content':
+        return <span>{content}</span>
 
       case 'job':
         return (

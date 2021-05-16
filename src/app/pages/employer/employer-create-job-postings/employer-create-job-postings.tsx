@@ -241,6 +241,10 @@ export const EmployerCreateJobPostings: React.FC = () => {
   }, [jobId])
 
   useEffect(() => {
+    document.title = `CVFREE | ${jobId ? 'Chỉnh sửa' : 'Tạo'} tin tuyển dụng`
+  }, [])
+
+  useEffect(() => {
     if (jobDetail) {
       const {
         name,

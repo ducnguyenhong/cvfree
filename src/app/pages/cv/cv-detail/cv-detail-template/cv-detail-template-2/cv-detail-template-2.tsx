@@ -143,7 +143,8 @@ export const CvDetailTemplate2: React.FC<CvDetailProps> = (props) => {
 
           // Add the page to the PDF.
           if (page > 0) pdf.addPage()
-          debugger
+          // debugger
+
           const imgData = pageCanvas.toDataURL('image/' + image.type, image.quality)
           pdf.addImage(imgData, image.type, margin[1], margin[0], innerPageWidth, pageHeight)
         }

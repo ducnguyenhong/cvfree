@@ -156,6 +156,10 @@ export const ProfileUpdate: React.FC = () => {
     }
   }, [userInfo])
 
+  useEffect(() => {
+    document.title = `CVFREE | Cập nhật thông tin cá nhân`
+  }, [])
+
   return (
     <WrapperPage title="Cập nhật thông tin cá nhân">
       <div className="mt-10 px-10 pt-20 pb-32 rounded-md mx-auto w-2/3">

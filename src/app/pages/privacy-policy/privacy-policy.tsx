@@ -1,6 +1,11 @@
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { useEffect } from 'react'
 
 export const PrivacyPolicy: React.FC = () => {
+  useEffect(() => {
+    document.title = `CVFREE | Chính sách bảo mật`
+  }, [])
+
   return (
     <WrapperPage title="Chính sách bảo mật">
       <div className="py-10 px-16">

@@ -79,6 +79,10 @@ export const EmployerLookingForCandidates: React.FC = () => {
     callApiGetListCandidate()
   }, [location])
 
+  useEffect(() => {
+    document.title = `CVFREE | Tìm ứng viên`
+  }, [])
+
   if (!candidateList) {
     return (
       <div className="mt-28 mb-40 py-8 w-2/3 mx-auto shadow-md rounded-md bg-gray-100 px-10">
@@ -88,7 +92,7 @@ export const EmployerLookingForCandidates: React.FC = () => {
   }
 
   return (
-    <WrapperPage title="Tìm kiếm ứng viên">
+    <WrapperPage title="Tìm ứng viên">
       <div className="filter grid-cols-4 grid gap-8 mt-10 px-10">
         <div className="col-span-1">
           <PrSearch

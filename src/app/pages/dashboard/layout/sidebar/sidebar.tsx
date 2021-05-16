@@ -73,7 +73,7 @@ const ListMenu: MenuType[] = [
   },
   {
     route: '/dashboard/request-update-company',
-    title: 'Thông tin công ty',
+    title: 'Chỉnh sửa công ty',
     icon: 'fas fa-align-left',
     type: 'menu'
   },

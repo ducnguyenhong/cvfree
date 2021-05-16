@@ -13,15 +13,15 @@ import { get } from 'lodash'
 import { CompanyInfo } from 'models/company-info'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { getValueDropdown, uploadServer } from 'utils/helper'
+import { getValueDropdown, uploadServer, getDefaultDataDropdown } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
 import { useLocation } from 'react-router-dom'
 import { ResponseCompanyDetail } from 'models/response-api'
 
 import { List } from 'react-content-loader'
-import { getDefaultDataDropdown } from '../../../../utils/helper'
+
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
-import { RequestUpdateCompanyInfo } from '../../../../models/request-update-company-info'
+import { RequestUpdateCompanyInfo } from 'models/request-update-company-info'
 
 export const EmployerRegisterCompany: React.FC = () => {
   const location = useLocation()
@@ -323,6 +323,10 @@ export const EmployerRegisterCompany: React.FC = () => {
       isAdmin && positionRef.current?.setValue(position || null)
     }
   }, [companyDetail])
+
+  useEffect(() => {
+    document.title = `CVFREE | ${userInfo?.companyId ? 'Cập nhật thông tin công ty' : 'Đăng ký công ty'}`
+  }, [])
 
   if (!companyDetail) {
     return <List />

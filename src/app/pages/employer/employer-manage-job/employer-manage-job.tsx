@@ -2,7 +2,7 @@ import { Table } from '@ekidpro/table'
 import { WrapperTable } from 'app/partials/table/wrapper-table'
 import { userInfoState } from 'app/states/user-info-state'
 import { SERVER_URL } from 'constants/index'
-import { memo, useRef } from 'react'
+import { memo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { ModalApplyCandidate } from './apply-candidate/modal-apply-candidate'
@@ -14,6 +14,10 @@ export const prefix = 'employerManageJob'
 export const EmployerManageJob: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
   const loader = getLoader(`${SERVER_URL}/jobs/employer/${userInfo?._id}`)
+
+  useEffect(() => {
+    document.title = `CVFREE | Quản lý tin tuyển dụng`
+  }, [])
 
   const Toolbar: React.FC = () => {
     return (

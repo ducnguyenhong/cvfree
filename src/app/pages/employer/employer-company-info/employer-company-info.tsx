@@ -95,6 +95,10 @@ export const EmployerCompanyInfo: React.FC = () => {
     }
   }, [userInfo])
 
+  useEffect(() => {
+    document.title = `CVFREE | Thông tin công ty`
+  }, [])
+
   if (typeof companyInfo === 'undefined') {
     return <List />
   }

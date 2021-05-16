@@ -53,6 +53,12 @@ export const JobListCareer: React.FC = () => {
     career && callApiJobList(career)
   }, [career])
 
+  useEffect(() => {
+    if (career) {
+      document.title = `CVFREE | Việc làm ngành ${career.label}`
+    }
+  }, [career])
+
   if (!listJob) {
     return <List />
   }

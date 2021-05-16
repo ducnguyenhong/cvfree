@@ -1,7 +1,15 @@
 import ImgIntro from 'assets/images/img-employer-intro.png'
 import { Link } from 'react-router-dom'
+import { useIntl } from 'react-intl'
+import { useEffect } from 'react'
 
 export const EmployerIntro: React.FC = () => {
+  const intl = useIntl()
+
+  useEffect(() => {
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'NAVBAR.EMPLOYER' })}`
+  }, [])
+
   return (
     <div className="pt-12 max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 grid grid-cols-2 gap-20 bg-white h-screen">
       <div className="col-span-1 flex items-center">

@@ -313,6 +313,10 @@ export const JobDetail: React.FC = () => {
     callApiReportJob(data)
   }
 
+  useEffect(() => {
+    document.title = `CVFREE | Chi tiết việc làm`
+  }, [])
+
   return (
     <WrapperPage title="Chi tiết việc làm">
       <div className="px-8 py-10 mt-5">
