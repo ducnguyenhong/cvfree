@@ -5,6 +5,7 @@ interface PrButtonProps {
   type?: 'primary' | 'danger' | 'success'
   className?: string
   onClick?: () => void
+  disable?: boolean
 }
 
 const PrButtonStyle = styled.div`
@@ -28,16 +29,22 @@ const PrButtonStyle = styled.div`
       background-color: #bc0808;
     }
   }
+
+  .disable {
+    background-color: #919191;
+  }
 `
 
 const PrButtonLayout: React.FC<PrButtonProps> = (props) => {
-  const { children, type, className, onClick } = props
+  const { children, type, className, onClick, disable } = props
 
   return (
     <PrButtonStyle>
       <span
-        onClick={onClick}
-        className={`${className} bg-${type} inline-block px-4 py-2 duration-300 text-white rounded cursor-pointer`}
+        onClick={disable ? undefined : onClick}
+        className={`${className} bg-${
+          disable ? 'disable' : type
+        } inline-block px-4 py-2 duration-300 text-white rounded cursor-pointer`}
       >
         {children}
       </span>

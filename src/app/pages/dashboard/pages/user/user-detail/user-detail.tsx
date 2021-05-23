@@ -14,21 +14,28 @@ import { UserInfo } from 'models/user-info'
 import { showNotify } from 'app/partials/pr-notify'
 import { List } from 'react-content-loader'
 import { ImageRatio } from 'app/partials/image-ratio/image-ratio'
-import { useSetRecoilState } from 'recoil'
+import { useSetRecoilState, useRecoilState } from 'recoil'
 import { userDetailState } from 'app/states/dashboard/user-detail-state'
 import { TabApply } from './user-detail-tabs/tab-applies'
 import { TabCandidate } from './user-detail-tabs/tab-candidate'
 import { TabJob } from './user-detail-tabs/tab-job'
+import { TabUpdateInfo } from './user-detail-tabs/tab-update-info'
+import { refreshUserDetailState } from 'app/states/dashboard/refresh-user-info'
 
 export const UserDetail: React.FC = () => {
   const match = useRouteMatch()
   const userId = get(match.params, 'id')
   const [userDetail, setUserDetail] = useState<UserInfo | null | undefined>(undefined)
+  const [refreshUserDetail, setRefreshUserDetail] = useRecoilState(refreshUserDetailState)
   const setUserDetailState = useSetRecoilState(userDetailState)
 
   useEffect(() => {
     document.title = `CVFREE | Chi tiết người dùng`
   }, [])
+
+  useEffect(() => {
+    refreshUserDetail && callApiUserInfo()
+  }, [refreshUserDetail])
 
   const callApiUserInfo = () => {
     const accessToken = Cookies.get('token')
@@ -53,10 +60,12 @@ export const UserDetail: React.FC = () => {
         if (!success) {
           throw Error(error?.message)
         }
+        refreshUserDetail && setRefreshUserDetail(false)
         setUserDetail(data.userDetail)
         setUserDetailState(data.userDetail)
       })
       .catch((e) => {
+        refreshUserDetail && setRefreshUserDetail(false)
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
@@ -77,6 +86,13 @@ export const UserDetail: React.FC = () => {
       icon: 'fas fa-th-large',
       route: 'info',
       component: <TabInfo />,
+      isActive: true
+    },
+    {
+      title: 'Chỉnh sửa thông tin',
+      icon: 'fas fa-edit',
+      route: 'update-info',
+      component: <TabUpdateInfo />,
       isActive: true
     },
     {

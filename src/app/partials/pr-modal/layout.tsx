@@ -15,7 +15,8 @@ const PrModal = forwardRef((props: PrModalProps, ref: Ref<PrModalRefProps>) => {
     children,
     disableFooter,
     disableHeader,
-    disableX
+    disableX,
+    position
   } = props
 
   useImperativeHandle(ref, () => ({
@@ -37,6 +38,7 @@ const PrModal = forwardRef((props: PrModalProps, ref: Ref<PrModalRefProps>) => {
       visible={visible}
       title={title}
       onHide={onClose}
+      position={position}
       onChange={onChange}
       size={size}
       onShow={onShow}

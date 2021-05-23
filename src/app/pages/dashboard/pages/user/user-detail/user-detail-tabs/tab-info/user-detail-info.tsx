@@ -112,7 +112,7 @@ export const TabInfo: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 mt-3 gap-x-2">
+            {/* <div className="grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 mt-3 gap-x-2">
               <div className="col-span-1">
                 <span className="font-semibold text-gray-600 break-words w-full">Cảnh cáo</span>
               </div>
@@ -121,7 +121,7 @@ export const TabInfo: React.FC = () => {
                   {beWarned ? 'Cảnh cáo lần 1' : 'Không'}
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 mt-3 gap-x-2">
               <div className="col-span-1">

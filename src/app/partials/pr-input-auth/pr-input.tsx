@@ -16,7 +16,8 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
     type,
     icon,
     errorMessage,
-    required
+    required,
+    disable
   } = props
   const [valueInput, setValueInput] = useState<string>(defaultValue || '')
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -102,6 +103,7 @@ const PrInputLayout = forwardRef((props: PrInputProps, ref: Ref<PrInputRefProps>
           minLength={minLength}
           maxLength={maxLength || 255}
           type={typeInput}
+          disabled={disable}
           onFocus={onFocus}
           ref={inputRef}
           onBlur={onBlur}

@@ -10,7 +10,7 @@ import { showNotify } from 'app/partials/pr-notify'
 import { List } from 'react-content-loader'
 import moment from 'moment'
 import { getDefaultLabelDropdown, uploadServer } from 'utils/helper'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { DropdownAsync, DropdownAsyncRef } from 'app/partials/dropdown-async'
@@ -27,7 +27,7 @@ interface DataApply {
 export const JobDetail: React.FC = () => {
   const [jobInfo, setJobInfo] = useState<JobPostingInfo | undefined | null>(undefined)
   const match = useRouteMatch()
-  const userInfo = useRecoilValue(userInfoState)
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const jobId = get(match.params, 'id')
   const modalNeedLoginRef = useRef<PrModalRefProps>(null)
   const modalConfirmApplyRef = useRef<PrModalRefProps>(null)
@@ -134,6 +134,9 @@ export const JobDetail: React.FC = () => {
           throw Error(error?.message)
         }
         modalReportJobRef.current?.hide()
+        if (userInfo) {
+          setUserInfo({ ...userInfo, numberOfReportJob: 0 })
+        }
         modalNotifyReportRef.current?.show()
       })
       .catch((e) => {
@@ -141,6 +144,10 @@ export const JobDetail: React.FC = () => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
+
+  useEffect(() => {
+    document.title = `CVFREE | Chi tiết việc làm`
+  }, [])
 
   useEffect(() => {
     if (jobId) {
@@ -312,10 +319,6 @@ export const JobDetail: React.FC = () => {
 
     callApiReportJob(data)
   }
-
-  useEffect(() => {
-    document.title = `CVFREE | Chi tiết việc làm`
-  }, [])
 
   return (
     <WrapperPage title="Chi tiết việc làm">

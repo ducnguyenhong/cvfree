@@ -16,7 +16,8 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
     children,
     disableFooter,
     disableHeader,
-    disableX
+    disableX,
+    position
   } = props
 
   const modalSize = getModalSize(size)
@@ -59,9 +60,9 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
             leaveTo="opacity-0 sm:translate-y-4 translate-y-0 scale-95"
           >
             {(ref: RefObject<HTMLDivElement> | null | undefined) => (
-              <div ref={ref} className="absolute top-24 z-50 left-0 right-0 overflow-y-auto">
+              <div ref={ref} className={`${position || 'absolute'} top-24 z-50 left-0 right-0`}>
                 <div
-                  className={`overflow-y-auto mx-auto mb-28 inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
+                  className={`mx-auto mb-28 inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform transition-all 2xl:${modalSize['2xl']} xl:${modalSize.xl} lg:${modalSize.lg} md:${modalSize.md} sm:${modalSize.sm} ${modalSize.xs}`}
                   role="dialog"
                   aria-modal="true"
                   aria-labelledby="modal-headline"
@@ -91,7 +92,13 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                       <hr />
                     </>
                   )}
-                  <div className={`${disableFooter ? 'rounded-lg' : ''} bg-white p-5`}>{children}</div>
+                  <div
+                    className={`${disableFooter ? 'rounded-lg' : ''} ${
+                      position === 'fixed' ? 'overflow-hidden' : ''
+                    } bg-white p-5`}
+                  >
+                    {children}
+                  </div>
                   {!disableFooter && (
                     <>
                       <hr />

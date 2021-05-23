@@ -8,10 +8,11 @@ import { SERVER_URL } from 'constants/index'
 import { get } from 'lodash'
 import md5 from 'md5'
 import { UserInfo } from 'models/user-info'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { useIntl } from 'react-intl'
+import LoadingIcon from 'assets/icons/loading.svg'
 
 interface SignInProps {}
 
@@ -40,12 +41,15 @@ const SignIn: React.FC<SignInProps> = () => {
   const passwordRef = useRef<PrInputRefProps>(null)
   const history = useHistory()
   const intl = useIntl()
-
+  const [loading, setLoading] = useState<boolean>(false)
+  const [disableInput, setDisableInput] = useState<boolean>(false)
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
 
   const onSignIn = (e: any) => {
     e.preventDefault()
+    setDisableInput(true)
+    setLoading(true)
     const username = usernameRef.current?.getValue() || ''
     const password = passwordRef.current?.getValue() || ''
 
@@ -54,14 +58,13 @@ const SignIn: React.FC<SignInProps> = () => {
       password: md5(password)
     }
 
-    callApi(data)
+    callApiSignIn(data)
   }
 
-  const callApi = (data: DataSignIn) => {
+  const callApiSignIn = (data: DataSignIn) => {
     const url = `${SERVER_URL}/auth/sign-in`
     const headers = {
       'Content-Type': 'application/json'
-      // Authorization: `Bearer ${accessToken}`
     }
 
     const config: AxiosRequestConfig = {
@@ -81,8 +84,9 @@ const SignIn: React.FC<SignInProps> = () => {
         }
 
         const { auth, userInfo } = data
-
-        showNotify.success(intl.formatMessage({ id: `AUTH.${message}` }))
+        setLoading(false)
+        setDisableInput(false)
+        showNotify.success(intl.formatMessage({ id: `API.${message}` }))
         setUserInfoRecoil(userInfo)
         setUserTokenRecoil({ token: auth.token, expiredAt: auth.expiredAt })
 
@@ -102,13 +106,13 @@ const SignIn: React.FC<SignInProps> = () => {
             history.push('/dashboard')
           }
         }
-
-        // setLoading(false)
-        // resetInput()
       })
       .catch((e) => {
-        // setLoading(false)
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        setLoading(false)
+        setDisableInput(false)
+        showNotify.error(
+          e ? intl.formatMessage({ id: `API.${get(e, 'response.data.error.message')}` }) : 'Lỗi hệ thống!'
+        )
       })
   }
 
@@ -127,31 +131,37 @@ const SignIn: React.FC<SignInProps> = () => {
           <div>
             <div className="mx-auto">
               <div className="flex items-center justify-center">
-                <form onSubmit={onSignIn} className="block w-2/5 pt-48">
+                <form onSubmit={disableInput ? undefined : onSignIn} className="block w-2/5 pt-48">
                   <div className="mt-16">
-                    <PrInput label={intl.formatMessage({ id: 'AUTH.USERNAME' })} icon="fas fa-user" ref={usernameRef} />
+                    <PrInput
+                      label={intl.formatMessage({ id: 'AUTH.USERNAME' })}
+                      disable={disableInput}
+                      icon="fas fa-user"
+                      ref={usernameRef}
+                    />
                   </div>
                   <div className="mt-5">
                     <PrInput
                       label={intl.formatMessage({ id: 'AUTH.PASSWORD' })}
                       type="password"
                       icon="fas fa-lock"
+                      disable={disableInput}
                       ref={passwordRef}
                     />
                   </div>
                   <div className="flex justify-center mt-12">
                     <button
                       type="submit"
-                      className="flex items-center text-white bg-green-600 px-4 py-2 rounded focus:outline-none duration-300 hover:bg-green-700"
+                      className={`${
+                        disableInput ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'
+                      } flex items-center text-white px-4 py-2 rounded focus:outline-none duration-300`}
                     >
-                      {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                      </svg> */}
                       <span className="font-semibold">{intl.formatMessage({ id: 'AUTH.SIGN_IN' })}</span>
-                      <i className="ml-2 fas fa-sign-in-alt"></i>
-                      {/* <LoginIcon className="ml-2" /> */}
-                      {/* <img src={LoginIcon} className="w-5 mr-2"/>Đăng nhập  */}
-                      {/* <img src={LoadingIcon} className="w-5 mr-2"/>Đăng nhập */}
+                      {loading ? (
+                        <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />
+                      ) : (
+                        <i className="fas fa-user-plus ml-2 text-sm"></i>
+                      )}
                     </button>
                   </div>
                   <div className="mt-12">

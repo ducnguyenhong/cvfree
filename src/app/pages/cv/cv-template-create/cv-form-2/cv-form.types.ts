@@ -1,3 +1,4 @@
+import { CvInfo } from 'models/cv-info'
 import { RefObject } from 'react'
 
 export interface CategoryControlProps extends CategoryComponentProps {
@@ -35,4 +36,7 @@ export interface CategoryProps {
   inputRef?: RefObject<PrInputCVRefProps>
 }
 
-export interface CvFormProps {}
+export interface CvFormProps {
+  cvInfo?: CvInfo | null
+  refreshCvInfo?: () => void
+}

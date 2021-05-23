@@ -11,6 +11,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { showNotify } from '../../../partials/pr-notify/pr-notify'
 import { SignInStyle } from './styles'
+import { useIntl } from 'react-intl'
+import AuthIntro from 'app/pages/auth/auth-intro'
 
 interface SignInProps {}
 
@@ -18,6 +20,8 @@ export const ForgotPassword: React.FC<SignInProps> = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const emailRef = useRef<PrInputRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
+  const intl = useIntl()
+  const [disableInput, setDisableInput] = useState<boolean>(false)
 
   const onShowModal = () => {
     modalRef.current?.show()
@@ -50,7 +54,7 @@ export const ForgotPassword: React.FC<SignInProps> = () => {
         if (!success) {
           throw Error(error)
         }
-
+        setDisableInput(false)
         showNotify.success(message)
         modalRef.current?.show()
         setLoading(false)
@@ -58,6 +62,7 @@ export const ForgotPassword: React.FC<SignInProps> = () => {
       })
       .catch((e) => {
         setLoading(false)
+        setDisableInput(false)
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
       })
   }
@@ -75,110 +80,94 @@ export const ForgotPassword: React.FC<SignInProps> = () => {
   }
 
   const onGetNewPassword = () => {
+    setDisableInput(true)
     setLoading(true)
     if (!validate()) {
       setLoading(false)
+      setDisableInput(false)
       return
     }
     callApiForgotPassword()
   }
 
   useEffect(() => {
-    document.title = 'CVFREE | Quên mật khẩu'
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'AUTH.FORGOT_PASSWORD' })}`
   }, [])
 
   return (
-    <div className="w-full h-screen overflow-hidden">
-      <SignInStyle>
-        <div className="grid grid-cols-5 gap-4 h-full w-full">
-          <div className="col-span-2 bg-blue-50 h-full">
-            <div className="h-1/2 flex justify-center items-center">
-              <div className="text-center">
-                <img src={Logo} alt="logo" className="block mx-auto w-36" />
-                <span className="text-3xl uppercase mt-7 block font-extrabold text-green-700">
-                  Hồ sơ trực tuyến miễn phí
-                </span>
-              </div>
-            </div>
-            <div className="h-1/2 flex justify-center items-center">
-              <img src={BgLogo} className="h-full" alt="bg-login" />
-            </div>
-          </div>
+    <div className="w-full h-full bg-white">
+      <div className="grid grid-cols-5 gap-4 h-full w-full">
+        <div className="col-span-2">
+          <AuthIntro title={intl.formatMessage({ id: 'AUTH.FORGOT_PASSWORD' })} />
+        </div>
 
-          <div className="col-span-3 h-full">
-            <div className="h-full">
-              <div className="h-5/6 flex items-center justify-center">
-                <div className="w-2/5">
-                  <span className="block text-2xl font-bold text-center">
-                    Chào mừng đến với <span className="text-green-600">CVFREE</span>
+        <div className="col-span-3 h-full bg-white">
+          <div className="h-full">
+            <div className="h-5/6 flex items-center justify-center">
+              <div className="w-2/5">
+                <div className="mt-7">
+                  <PrInput
+                    placeholder="example@abc.com"
+                    label={intl.formatMessage({ id: 'AUTH.INPUT_YOUR_EMAIL' })}
+                    icon="fas fa-envelope"
+                    disabled={disableInput}
+                    required
+                    ref={emailRef}
+                  />
+                </div>
+                <div className="flex justify-center mt-12">
+                  <Button
+                    type="success"
+                    className="flex items-center"
+                    disable={disableInput}
+                    onClick={disableInput ? undefined : onGetNewPassword}
+                  >
+                    <span className="font-semibold">{intl.formatMessage({ id: 'AUTH.FORGOT_PASSWORD' })}</span>
+                    {loading ? (
+                      <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />
+                    ) : (
+                      <i className="ml-2 text-sm fas fa-unlock-alt"></i>
+                    )}
+                  </Button>
+                </div>
+                <div className="mt-10">
+                  <span className="block text-center">
+                    {intl.formatMessage({ id: 'AUTH.HAD_ACCOUNT' })}{' '}
+                    <Link to="/sign-in" className="text-green-600 font-semibold">
+                      {intl.formatMessage({ id: 'AUTH.SIGN_IN' })}
+                    </Link>
                   </span>
-                  <div className="mt-7">
-                    <PrInput
-                      placeholder="example@abc.com"
-                      label="Nhập email của bạn"
-                      icon="fas fa-envelope"
-                      required
-                      ref={emailRef}
-                    />
-                  </div>
-                  <div className="flex justify-center mt-12">
-                    <Button type="success" className="flex items-center" onClick={onGetNewPassword}>
-                      <span className="font-semibold">Quên mật khẩu</span>
-                      {loading ? (
-                        <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />
-                      ) : (
-                        <i className="ml-2 text-sm fas fa-unlock-alt"></i>
-                      )}
-                    </Button>
-                  </div>
-                  <div className="mt-10">
-                    <span className="block text-center">
-                      Bạn đã có tài khoản?{' '}
-                      <Link to="/sign-in" className="text-green-600 font-semibold">
-                        Đăng nhập
-                      </Link>
-                    </span>
-                  </div>
                 </div>
               </div>
-              <div className="h-1/6 flex justify-center items-center">
-                <span className="text-green-700 font-semibold">2021© CVFREE</span>
-                <Link to="/terms-of-use" className="mx-10 text-green-700 font-semibold">
-                  Điều khoản sử dụng
-                </Link>
-                <Link to="/contact" className="text-green-700 font-semibold">
-                  Liên hệ
-                </Link>
-              </div>
             </div>
           </div>
         </div>
-      </SignInStyle>
 
-      <PrModal ref={modalRef} size="nm" onShow={onShowModal} onHide={onHideModal} disableFooter disableHeader>
-        <div>
-          <div className="flex items-center justify-center my-10">
-            <i className="far fa-check-circle text-5xl text-green-600 mr-6"></i>
-            <span className="text-xl text-green-700 font-semibold">
-              Gửi yêu cầu thành công. Mật khẩu mới đã được gửi tới email của bạn
-            </span>
-          </div>
-          <div className="flex justify-center mb-10">
-            <Link
-              to="/sign-in"
-              className="font-semibold px-4 py-2 text-white duration-150 rounded cursor-pointer bg-green-600 hover:bg-green-700 flex items-center mr-10"
-            >
-              <span className="font-semibold">Đăng nhập ngay</span>
-              <i className="ml-2 fas fa-sign-in-alt"></i>
-            </Link>
+        <PrModal ref={modalRef} size="nm" onShow={onShowModal} onHide={onHideModal} disableFooter disableHeader>
+          <div>
+            <div className="flex items-center justify-center my-10">
+              <i className="far fa-check-circle text-5xl text-green-600 mr-6"></i>
+              <span className="text-xl text-green-700 font-semibold">
+                Gửi yêu cầu thành công. Mật khẩu mới đã được gửi tới email của bạn
+              </span>
+            </div>
+            <div className="flex justify-center mb-10">
+              <Link
+                to="/sign-in"
+                className="font-semibold px-4 py-2 text-white duration-150 rounded cursor-pointer bg-green-600 hover:bg-green-700 flex items-center mr-10"
+              >
+                <span className="font-semibold">Đăng nhập ngay</span>
+                <i className="ml-2 fas fa-sign-in-alt"></i>
+              </Link>
 
-            <Button onClick={onHideModal} type="danger" className="flex items-center">
-              <span className="font-semibold">Trở về</span>
-              <i className="fas fa-times ml-2"></i>
-            </Button>
+              <Button onClick={onHideModal} type="danger" className="flex items-center">
+                <span className="font-semibold">Trở về</span>
+                <i className="fas fa-times ml-2"></i>
+              </Button>
+            </div>
           </div>
-        </div>
-      </PrModal>
+        </PrModal>
+      </div>
     </div>
   )
 }

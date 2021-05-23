@@ -2,6 +2,22 @@ export default {
   COMMON: {
     AGE: 'years old'
   },
+  API: {
+    CHANGED_TEMPLATE_CV_SUCCESS: 'Successfully changed CV template',
+    EMAIL_ALREADY_EXISTS: 'Email already exists',
+    USERNAME_ALREADY_EXISTS: 'Username already exists',
+    USER_TYPE_INVALID: 'Invalid user type',
+    CREATED_ACCOUNT_SUCCESS: 'Successful account registration',
+    USERNAME_OR_PASSWORD_INCORRECT: 'Username or password incorrect',
+    ACCOUNT_NOT_VERIFY: 'Unverified account',
+    ACCOUNT_HAS_BEEN_LOCKED: 'Account has been locked',
+    CANNOT_GENERATE_TOKEN: 'Cannot generate token',
+    LOGIN_SUCCESS: 'Logged in successfully',
+    SEND_EMAIL_ERROR: 'Email sending error',
+    NOT_EXISTS_EMAIL: 'Email does not exist in the system',
+    USER_NOT_EXISTS: 'User does not exist in the system',
+    FORGOT_PASSWORD_SUCCESS: 'Forgot password success'
+  },
   HOME: {
     TEST_VERSION: 'Test version',
     CVFREE: 'Free online Curriculum Vitae',
@@ -77,7 +93,8 @@ export default {
     CONFIRM_PASSWORD: 'Confirm password',
     HAD_ACCOUNT: 'Do you already have an account?',
     AND: 'and',
-    AGREE_TO: 'I agree to the'
+    AGREE_TO: 'I agree to the',
+    INPUT_YOUR_EMAIL: 'Your email'
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'List of CV templates',

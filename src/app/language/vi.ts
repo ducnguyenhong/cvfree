@@ -2,6 +2,22 @@ export default {
   COMMON: {
     AGE: 'tuổi'
   },
+  API: {
+    CHANGED_TEMPLATE_CV_SUCCESS: 'Thay đổi mẫu CV thành công',
+    EMAIL_ALREADY_EXISTS: 'Email đã tồn tại',
+    USERNAME_ALREADY_EXISTS: 'Tài khoản đã tồn tại',
+    USER_TYPE_INVALID: 'Loại tài khoản không hợp lệ',
+    CREATED_ACCOUNT_SUCCESS: 'Đăng ký tài khoản thành công',
+    USERNAME_OR_PASSWORD_INCORRECT: 'Tài khoản hoặc mật khẩu không chính xác',
+    ACCOUNT_NOT_VERIFY: 'Tài khoản chưa được xác thực',
+    ACCOUNT_HAS_BEEN_LOCKED: 'Tài khoản đã bị khóa',
+    CANNOT_GENERATE_TOKEN: 'Không thể tạo token',
+    LOGIN_SUCCESS: 'Đăng nhập thành công',
+    SEND_EMAIL_ERROR: 'Lỗi gửi email xác thực',
+    NOT_EXISTS_EMAIL: 'Email không tồn tại trong hệ thống',
+    USER_NOT_EXISTS: 'Tài khoản không tồn tại trong hệ thống',
+    FORGOT_PASSWORD_SUCCESS: 'Quên mật khẩu thành công'
+  },
   HOME: {
     TEST_VERSION: 'Phiên bản thử nghiệm',
     CVFREE: 'Hồ sơ trực tuyến miễn phí',
@@ -77,7 +93,8 @@ export default {
     CONFIRM_PASSWORD: 'Xác nhận mật khẩu',
     HAD_ACCOUNT: 'Bạn đã có tài khoản ?',
     AND: 'và',
-    AGREE_TO: 'Tôi đồng ý với'
+    AGREE_TO: 'Tôi đồng ý với',
+    INPUT_YOUR_EMAIL: 'Nhập email của bạn'
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'Danh sách các mẫu CV',

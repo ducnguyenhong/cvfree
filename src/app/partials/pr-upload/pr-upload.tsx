@@ -15,6 +15,9 @@ const UploadStyle = styled.div`
   .square {
     aspect-ratio: 1/1;
   }
+  .content {
+    max-height: 60vh;
+  }
 `
 interface CVFUploadProps {
   ratio?: { x: number; y: number }
@@ -148,12 +151,13 @@ const CVFUploadImage: React.FC<CVFUploadProps> = (props) => {
           </div>
         }
         size="nm"
+        position="fixed"
         onHide={onHideModal}
         onChange={onChangeModal}
         okTitle={intl.formatMessage({ id: 'PR_UPLOAD_CROP.OK' })}
         cancelTitle={intl.formatMessage({ id: 'PR_UPLOAD_CROP.CANCEL' })}
       >
-        <div className="pb-5">
+        <div className="pb-5 content">
           <div className="w-80 mx-auto py-12">
             <ReactCrop
               src={`${upImg}`}

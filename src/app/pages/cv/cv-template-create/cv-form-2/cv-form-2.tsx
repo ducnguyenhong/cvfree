@@ -19,10 +19,11 @@ import PrInputCV from 'app/partials/pr-input-cv'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { showNotify } from 'app/partials/pr-notify'
 import PrUpload from 'app/partials/pr-upload'
+import { userInfoState } from 'app/states/user-info-state'
 import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import LoadingIcon from 'assets/icons/loading.svg'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DataRecommendCv, DataRecommendCvType, DataDemoCV, DataFontSizeCv, DataFontFamilyCv } from 'constants/data-cv'
+import { DataDemoCV, DataFontFamilyCv, DataFontSizeCv, DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
 import { DataCareer, DataFormOfWork } from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
 import vi from 'date-fns/locale/vi'
@@ -34,6 +35,7 @@ import moment from 'moment'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { useRouteMatch } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import {
   getCategoryWhenDown,
   getCategoryWhenRemove,
@@ -59,13 +61,17 @@ import {
 } from './category'
 import { CVFormStyle } from './cv-form.styles'
 import { CategoryProps, CvFormProps, PrInputCVRefProps } from './cv-form.types'
+import { useIntl } from 'react-intl'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
-export const CvFormLayout2: React.FC<CvFormProps> = () => {
+export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
   const match = useRouteMatch()
   const cvId = get(match.params, 'id')
+  const { cvInfo, refreshCvInfo } = props
+  const intl = useIntl()
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [defaultAvatar, setDefaultAvatar] = useState<string>('')
   const [color, setColor] = useState<string>('#DF4082')
@@ -79,7 +85,6 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
   const [focusBirthday, setFocusBirthday] = useState<boolean>(false)
   const [showRecommend, setShowRecommend] = useState<boolean>(false)
   const [showSubInfo, setShowSubInfo] = useState<boolean>(true)
-  const [cvInfo, setCvInfo] = useState<CvInfo | null>(null)
   const [recommend, setRecommend] = useState<DataRecommendCvType | undefined>(undefined)
 
   const cvNameRef = useRef<PrInputRefProps>(null)
@@ -283,9 +288,9 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
         if (!success) {
           throw Error(error?.message)
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `API.${message}` }))
         modalChangeTemplateRef.current?.hide()
-        callApiCvDetail()
+        refreshCvInfo && refreshCvInfo()
       })
       .catch((e) => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
@@ -299,33 +304,42 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
   const validate = () => {
     if (!cvNameRef.current?.checkRequired()) {
       setShowRecommend(false)
+      showNotify.error('Hãy nhập tên CV')
       return false
     }
     if (!careerRef.current?.checkRequired()) {
       setShowRecommend(false)
+      showNotify.error('Hãy chọn ngành nghề của bạn')
       return false
     }
     if (!formOfWorkRef.current?.checkRequired()) {
       setShowRecommend(false)
+      showNotify.error('Hãy chọn hình thức làm việc')
       return false
     }
     if (!fullnameRef.current?.checkRequired()) {
+      showNotify.error('Hãy nhập họ và tên')
       return false
     }
     if (!applyPositionRef.current?.checkRequired()) {
+      showNotify.error('Hãy nhập vị trí ứng tuyển')
       return false
     }
     if (!birthday) {
+      showNotify.error('Hãy nhập ngày sinh')
       setFocusBirthday(true)
       return false
     }
     if (!genderRef.current?.checkRequired()) {
+      showNotify.error('Hãy nhập giới tính')
       return false
     }
     if (!phoneRef.current?.checkRequired()) {
+      showNotify.error('Hãy nhập số điện thoại')
       return false
     }
     if (!emailRef.current?.checkRequired()) {
+      showNotify.error('Hãy nhập email')
       return false
     }
     return true
@@ -334,7 +348,6 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
   const onSaveCV = async () => {
     setLoadingAction(true)
     if (!validate()) {
-      showNotify.error('Hãy nhập đủ thông tin')
       setLoadingAction(false)
       return
     }
@@ -428,8 +441,6 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
       unlockedEmployers: []
     }
 
-    console.log('ducnh', dataCV)
-
     callApiSave(dataCV)
   }
 
@@ -457,6 +468,10 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
           throw Error(error?.message)
         }
         setLoadingAction(false)
+
+        if (userInfo && userInfo.numberOfCreateCv && !cvId) {
+          setUserInfo({ ...userInfo, numberOfCreateCv: userInfo.numberOfCreateCv - 1 })
+        }
         showNotify.success(message)
       })
       .catch((e) => {
@@ -542,36 +557,6 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
     setCategoryCheckedLeft(categoryLeft)
   }
 
-  const callApiCvDetail = () => {
-    const url = `${SERVER_URL}/cvs/${cvId}`
-    const accessToken = Cookies.get('token')
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`
-    }
-
-    const config: AxiosRequestConfig = {
-      method: 'GET',
-      headers,
-      url,
-      data: undefined,
-      timeout: 20000
-    }
-
-    axios(config)
-      .then((response: AxiosResponse<ResponseCVDetail>) => {
-        const { success, data, error } = response.data
-
-        if (!success) {
-          throw Error(error?.message)
-        }
-        setCvInfo(data.cvDetail)
-      })
-      .catch((e) => {
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
-      })
-  }
-
   const onHideAddress = () => {
     setAddress(address)
   }
@@ -587,12 +572,6 @@ export const CvFormLayout2: React.FC<CvFormProps> = () => {
     addressRef.current?.setValue(`${district?.label}, ${city?.label}`)
     modalAddressRef.current?.hide()
   }
-
-  useEffect(() => {
-    if (cvId) {
-      callApiCvDetail()
-    }
-  }, [cvId])
 
   const handleScroll = useCallback(() => {
     if (window.pageYOffset > 50) {

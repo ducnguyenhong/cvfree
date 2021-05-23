@@ -11,6 +11,7 @@ export interface ModalLibProps {
   disableFooter?: boolean
   disableHeader?: boolean
   disableX?: boolean
+  position?: 'fixed' | 'absolute'
 }
 
 export interface PrModalProps {
@@ -25,6 +26,7 @@ export interface PrModalProps {
   disableFooter?: boolean
   disableHeader?: boolean
   disableX?: boolean
+  position?: 'fixed' | 'absolute'
 }
 
 export interface PrModalRefProps {

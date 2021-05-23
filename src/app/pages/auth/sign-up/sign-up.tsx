@@ -26,6 +26,7 @@ const SignUp: React.FC<SignUpProps> = () => {
   const confPasswordRef = useRef<PrInputRefProps>(null)
   const emailRef = useRef<PrInputRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
+  const [disableInput, setDisableInput] = useState<boolean>(false)
 
   const validateInput = () => {
     if (!usernameRef.current?.checkRequired()) {
@@ -83,7 +84,9 @@ const SignUp: React.FC<SignUpProps> = () => {
   }
 
   const onSignUp = () => {
+    setDisableInput(true)
     if (!validateInput()) {
+      setDisableInput(false)
       return
     }
     setLoading(true)
@@ -96,10 +99,7 @@ const SignUp: React.FC<SignUpProps> = () => {
       password: md5(password),
       email,
       type: 'USER',
-      status: 'ACTIVE',
-      seeCV: true,
-      findJob: true,
-      typeAccount: 'NORMAL'
+      status: 'ACTIVE'
     }
 
     callApiCreate(data)
@@ -120,21 +120,21 @@ const SignUp: React.FC<SignUpProps> = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error } = response.data
+        const { success, error } = response.data
         if (!success) {
           throw Error(error)
         }
-
-        showNotify.success(message)
+        setDisableInput(false)
         setLoading(false)
         resetInput()
-        setTimeout(() => {
-          modalRef.current?.show()
-        }, 4000)
+        modalRef.current?.show()
       })
       .catch((e) => {
         setLoading(false)
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        setDisableInput(false)
+        showNotify.error(
+          e ? intl.formatMessage({ id: `API.${get(e, 'response.data.error.message')}` }) : 'Lỗi hệ thống!'
+        )
       })
   }
 
@@ -155,12 +155,18 @@ const SignUp: React.FC<SignUpProps> = () => {
               <div className="h-5/6 flex items-center justify-center">
                 <div className="w-2/5 mt-40">
                   <div className="mt-20">
-                    <PrInput label={intl.formatMessage({ id: 'AUTH.USERNAME' })} icon="fas fa-user" ref={usernameRef} />
+                    <PrInput
+                      label={intl.formatMessage({ id: 'AUTH.USERNAME' })}
+                      disable={disableInput}
+                      icon="fas fa-user"
+                      ref={usernameRef}
+                    />
                   </div>
                   <div className="mt-5">
                     <PrInput
                       label={intl.formatMessage({ id: 'AUTH.PASSWORD' })}
                       type="password"
+                      disable={disableInput}
                       icon="fas fa-lock"
                       ref={passwordRef}
                     />
@@ -169,17 +175,19 @@ const SignUp: React.FC<SignUpProps> = () => {
                     <PrInput
                       label={intl.formatMessage({ id: 'AUTH.CONFIRM_PASSWORD' })}
                       type="password"
+                      disable={disableInput}
                       icon="fas fa-lock"
                       ref={confPasswordRef}
                     />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Email" icon="fas fa-envelope" ref={emailRef} />
+                    <PrInput label="Email" icon="fas fa-envelope" ref={emailRef} disable={disableInput} />
                   </div>
                   <div className="mt-5">
                     <label className="inline-flex mt-3 items-start">
                       <input
                         type="checkbox"
+                        disabled={disableInput}
                         className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
                         onChange={() => setCheckPolicy(!checkPolicy)}
                         checked={checkPolicy}
@@ -198,7 +206,7 @@ const SignUp: React.FC<SignUpProps> = () => {
                     </label>
                   </div>
                   <div className="flex justify-center mt-10">
-                    <Button type="success" className="flex items-center" onClick={onSignUp}>
+                    <Button type="success" className="flex items-center" onClick={onSignUp} disable={disableInput}>
                       <span className="font-semibold">{intl.formatMessage({ id: 'AUTH.SIGN_UP' })}</span>
                       {loading ? (
                         <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />

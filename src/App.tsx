@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil'
 
 const AppLayout = () => {
   return (
-    <div className="bg-cvfree" style={{ fontFamily: `'Quicksand', sans-serif` }}>
+    <div style={{ fontFamily: `'Quicksand', sans-serif`, backgroundColor: '#EEF0F8' }}>
       <RecoilRoot>
         <RouteURL />
         <PrNotify />

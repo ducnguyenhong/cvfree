@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useSetRecoilState } from 'recoil'
 import { slugURL } from 'utils/helper'
-import { showDeactiveCvState } from 'app/states/show-popup/deactive-cv-state'
 
 interface ActionProps {
   id?: number | string
@@ -11,11 +9,11 @@ interface ActionProps {
 
 export const Action: React.FC<ActionProps> = (props) => {
   const { id, fullname } = props
-  const setShowDeactive = useSetRecoilState(showDeactiveCvState)
+  // const setShowDeactive = useSetRecoilState(showDeactiveCvState)
 
-  const onShowDeactiveCv = () => {
-    setShowDeactive({ showPopup: true, id })
-  }
+  // const onShowDeactiveCv = () => {
+  //   setShowDeactive({ showPopup: true, id })
+  // }
 
   return (
     <>
@@ -36,7 +34,7 @@ export const Action: React.FC<ActionProps> = (props) => {
             <i className="fas fa-edit text-gray-500 px-3 py-4 hover:text-white"></i>
           </Link>
         </div>
-        <div
+        {/* <div
           className="cursor-pointer hover:bg-red-400 flex rounded-md items-center justify-center duration-300 bg-gray-100"
           style={{ width: 32, height: 32 }}
           onClick={onShowDeactiveCv}
@@ -44,7 +42,7 @@ export const Action: React.FC<ActionProps> = (props) => {
           <span>
             <i className="hover:text-white text-gray-500 fas fa-trash px-3 py-4"></i>
           </span>
-        </div>
+        </div> */}
       </div>
     </>
   )

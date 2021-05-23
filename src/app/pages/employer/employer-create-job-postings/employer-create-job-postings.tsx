@@ -21,7 +21,7 @@ import { JobPostingInfo } from 'models/job-posting-info'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { getValueDropdown, getDefaultDataDropdown } from 'utils/helper'
 import { useRecoilState } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
@@ -31,6 +31,7 @@ import { showNotify } from 'app/partials/pr-notify'
 export const EmployerCreateJobPostings: React.FC = () => {
   const match = useRouteMatch()
   const jobId = get(match.params, 'id')
+  const history = useHistory()
   const [jobDetail, setJobDetail] = useState<JobPostingInfo | null>(null)
   const [timeToApply, setTimeToApply] = useState<any>(new Date())
   const [city, setCity] = useState<OptionProps | null>(null)
@@ -110,10 +111,12 @@ export const EmployerCreateJobPostings: React.FC = () => {
           showNotify.success(message)
           callApiJobDetail()
         } else {
-          modalNotifySuccessRef.current?.show()
+          // modalNotifySuccessRef.current?.show()
+          showNotify.success(message)
           if (userInfo && userInfo.numberOfPosting) {
             setUserInfo({ ...userInfo, numberOfPosting: userInfo.numberOfPosting - 1 })
           }
+          history.push('/employer/manage-job')
           resetInput()
         }
       })
