@@ -1,13 +1,13 @@
-import { Table, Filter } from '@ekidpro/table'
+import { Table } from '@ekidpro/table'
 import { WrapperTable } from 'app/partials/table/wrapper-table'
-import React, { useRef, memo, useEffect } from 'react'
+import { userInfoState } from 'app/states/user-info-state'
+import React, { memo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { Columns, TableLoader } from './request-update-company.data'
-import { userInfoState } from 'app/states/user-info-state'
-import { getDataFilter } from './request-update-company.filter'
 import { ModalAcceptRequest } from './modal-accept-request-update-company'
 import { ModalRejectRequest } from './modal-reject-request-update-company.tsx'
+import { Columns, TableLoader } from './request-update-company.data'
+import { getDataFilter } from './request-update-company.filter'
 
 export const prefix = 'requestUpdateCompanyListEmployer'
 
@@ -38,7 +38,7 @@ export const RequestUpdateCompanyList: React.FC = () => {
   const Wrapper: React.FC = (props) => {
     return (
       <WrapperTable title="Danh sách yêu cầu" toolbar={userInfo?.type === 'ADMIN' ? <MemoToolbar /> : undefined}>
-        <Filter ListFilterComponent={dataFilter} />
+        {/* <Filter ListFilterComponent={dataFilter} /> */}
         {props.children}
       </WrapperTable>
     )

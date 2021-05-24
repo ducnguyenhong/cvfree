@@ -1,10 +1,7 @@
-import { showBanRequestUpdateCompanyState } from 'app/states/show-modal/ban-request-update-company-state'
-import { showSendEmailRequestUpdateCompanyState } from 'app/states/show-modal/send-email-request-update-company-state'
-import React from 'react'
-import { useSetRecoilState } from 'recoil'
-import { showDeactiveRequestUpdateCompanyState } from 'app/states/show-popup/deactive-request-update-company-state'
 import { showAcceptRequestUpdateCompanyState } from 'app/states/show-modal/accept-request-update-company-state'
 import { showRejectRequestUpdateCompanyState } from 'app/states/show-modal/reject-request-update-company-state'
+import React from 'react'
+import { useSetRecoilState } from 'recoil'
 
 interface ActionProps {
   id?: string
@@ -16,7 +13,7 @@ export const Action: React.FC<ActionProps> = (props) => {
   const setShowAcceptRequest = useSetRecoilState(showAcceptRequestUpdateCompanyState)
   const setShowRejectRequest = useSetRecoilState(showRejectRequestUpdateCompanyState)
 
-  const isDisable = !!(processStatus !== 'SENT_AD_COMPANY')
+  const isDisable = processStatus !== 'SENT_AD_COMPANY'
 
   const onAccept = () => {
     setShowAcceptRequest({ showModal: true, id })

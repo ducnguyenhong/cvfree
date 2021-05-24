@@ -2,6 +2,7 @@ import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { showNotify } from 'app/partials/pr-notify'
 import PrUpload from 'app/partials/pr-upload'
 import { userInfoState } from 'app/states/user-info-state'
@@ -11,38 +12,32 @@ import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { CompanyInfo } from 'models/company-info'
+import { RequestUpdateCompanyInfo } from 'models/request-update-company-info'
+import { ResponseCompanyDetail } from 'models/response-api'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { getValueDropdown, uploadServer, getDefaultDataDropdown } from 'utils/helper'
+import { getDefaultDataDropdown, getValueDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
-import { useLocation } from 'react-router-dom'
-import { ResponseCompanyDetail } from 'models/response-api'
-
-import { List } from 'react-content-loader'
-
-import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
-import { RequestUpdateCompanyInfo } from 'models/request-update-company-info'
 
 export const EmployerRegisterCompany: React.FC = () => {
-  const location = useLocation()
-  const isUpdate = !!(location.pathname === '/employer/update-company')
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
+  const isUpdate = !!userInfo?.companyId
   const [city, setCity] = useState<OptionProps | null>(null)
-  const [addressInput, setAddressInput] = useState<{
-    value: {
-      city?: { value: string; label: string }
-      district?: { value: string; label: string }
-      street?: string
-    }
-    label: string
-  } | null>(null)
+  // const [addressInput, setAddressInput] = useState<{
+  //   value: {
+  //     city?: { value: string; label: string }
+  //     district?: { value: string; label: string }
+  //     street?: string
+  //   }
+  //   label: string
+  // } | null>(null)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null)
   const [employeeIdCardFile, setEmployeeIdCardFile] = useState<File | null>(null)
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [companyDetail, setCompanyDetail] = useState<CompanyInfo | null>(null)
-  const isAdmin = !!(companyDetail?.creatorId === userInfo?._id)
+  const isAdmin = companyDetail?.creatorId === userInfo?._id
 
   // ref
   const modalNotifyRequestRef = useRef<PrModalRefProps>(null)
@@ -143,11 +138,14 @@ export const EmployerRegisterCompany: React.FC = () => {
         if (!success) {
           throw Error(error)
         }
-        if (userInfo && userInfo.numberOfRequestUpdateCompany) {
-          setUserInfo({ ...userInfo, numberOfRequestUpdateCompany: userInfo.numberOfRequestUpdateCompany - 1 })
+        if (isUpdate && !isAdmin) {
+          if (userInfo && userInfo.numberOfRequestUpdateCompany) {
+            setUserInfo({ ...userInfo, numberOfRequestUpdateCompany: userInfo.numberOfRequestUpdateCompany - 1 })
+          }
+          modalNotifyRequestRef.current?.show()
+        } else {
+          callApiCompanyDetail()
         }
-        modalNotifyRequestRef.current?.show()
-        showNotify.success(message)
       })
       .catch((e) => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
@@ -197,7 +195,7 @@ export const EmployerRegisterCompany: React.FC = () => {
     if (!validate()) {
       return
     }
-    if (!userInfo?.numberOfRequestUpdateCompany) {
+    if (!userInfo?.numberOfRequestUpdateCompany && isUpdate && !isAdmin) {
       modalNotifyCantRequestRef.current?.show()
       return
     }
@@ -232,13 +230,15 @@ export const EmployerRegisterCompany: React.FC = () => {
         employeeIdCardId,
         position: companyDetail?.creator.position || positionRef.current?.getValue()[0]
       },
-      address: companyDetail?.address || {
+      address: {
         value: {
-          district: addressInput?.value.district,
-          city: addressInput?.value.city,
-          street: addressInput?.value.street || ''
+          district: districtRef.current?.getValue()[0],
+          city: cityRef.current?.getValue()[0],
+          street: streetRef.current?.getValue()
         },
-        label: addressInput?.label ?? ''
+        label: `${streetRef.current?.getValue()}, ${districtRef.current?.getValue()[0].label}, ${
+          cityRef.current?.getValue()[0].label
+        }`
       },
       taxCode: taxCodeRef.current?.getValue(),
       intro: introRef.current?.getValue(),
@@ -263,13 +263,15 @@ export const EmployerRegisterCompany: React.FC = () => {
         email: emailRef.current?.getValue() ?? '',
         phone: phoneRef.current?.getValue() ?? '',
         website: websiteRef.current?.getValue(),
-        address: companyDetail?.address || {
+        address: {
           value: {
-            district: addressInput?.value.district,
-            city: addressInput?.value.city,
-            street: addressInput?.value.street || ''
+            district: districtRef.current?.getValue()[0],
+            city: cityRef.current?.getValue()[0],
+            street: streetRef.current?.getValue()
           },
-          label: addressInput?.label ?? ''
+          label: `${streetRef.current?.getValue()}, ${districtRef.current?.getValue()[0].label}, ${
+            cityRef.current?.getValue()[0].label
+          }`
         },
         taxCode: taxCodeRef.current?.getValue(),
         intro: introRef.current?.getValue(),
@@ -277,7 +279,8 @@ export const EmployerRegisterCompany: React.FC = () => {
       }
     }
 
-    if (isAdmin) {
+    if (!isAdmin && !isUpdate) {
+      // đăng ký
       callApiRegister(data)
     } else {
       callApiRequestUpdate(dataRequest)
@@ -411,18 +414,18 @@ export const EmployerRegisterCompany: React.FC = () => {
               ref={districtRef}
               isDisabled={disableDistrict}
               urlApi={`/locations/cities/${city?.value}`}
-              onChange={(e) => {
-                setAddressInput({
-                  label: `${e[0].label}, ${city?.label}`,
-                  value: {
-                    district: { value: `${e[0].value}`, label: `${e[0].label}` },
-                    city: { value: `${city?.value}`, label: `${city?.label}` }
-                  }
-                })
-              }}
+              // onChange={(e) => {
+              //   setAddressInput({
+              //     label: `${e[0].label}, ${city?.label}`,
+              //     value: {
+              //       district: { value: `${e[0].value}`, label: `${e[0].label}` },
+              //       city: { value: `${city?.value}`, label: `${city?.label}` }
+              //     }
+              //   })
+              // }}
             />
           </div>
-          <div className="mt-4 px-10">
+          <div className="mt-4 pl-10 ">
             <PrInput label="Tên đường/phố" icon="fas fa-map-marker-alt" ref={streetRef} required />
           </div>
         </div>
