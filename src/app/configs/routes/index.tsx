@@ -77,8 +77,6 @@ const DashboardRoute: React.FC = () => {
   const userInfoRecoil = useRecoilValue(userInfoState)
   const userType = userInfoRecoil?.type || ''
 
-  console.log('ducnh3')
-
   if (!token) {
     return <Redirect to="/sign-in" />
   }

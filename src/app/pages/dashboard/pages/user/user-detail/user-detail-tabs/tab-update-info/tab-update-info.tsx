@@ -10,7 +10,7 @@ import { userDetailState } from 'app/states/dashboard/user-detail-state'
 import DefaultAvatarFemale from 'assets/images/default-avatar-female.png'
 import DefaultAvatar from 'assets/images/default-avatar.png'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DataGender } from 'constants/data-common'
+import { DataGender, DataVerify } from 'constants/data-common'
 import { SERVER_URL } from 'constants/index'
 import vi from 'date-fns/locale/vi'
 import Cookies from 'js-cookie'
@@ -23,6 +23,7 @@ import DatePicker from 'react-datepicker'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { checkEmail, checkPhone, getDefaultDataDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
+import { dataOptionActive } from 'constants/data-filter'
 
 export const TabUpdateInfo: React.FC = () => {
   const userDetail = useRecoilValue(userDetailState)
@@ -47,6 +48,8 @@ export const TabUpdateInfo: React.FC = () => {
   const numberOfRequestUpdateCompanyRef = useRef<PrInputRefProps>(null)
   const numberOfCandidateOpeningRef = useRef<PrInputRefProps>(null)
   const numberOfReportJobRef = useRef<PrInputRefProps>(null)
+  const statusRef = useRef<PrDropdownRefProps>(null)
+  const verifyRef = useRef<PrDropdownRefProps>(null)
 
   const validate = () => {
     if (!fullnameRef.current?.checkRequired()) {
@@ -104,7 +107,7 @@ export const TabUpdateInfo: React.FC = () => {
 
     axios(config)
       .then((response: AxiosResponse<ResponseUserDetail>) => {
-        const { success, message, error, data } = response.data
+        const { success, message, error } = response.data
 
         if (!success) {
           throw Error(error?.message)
@@ -135,6 +138,8 @@ export const TabUpdateInfo: React.FC = () => {
     const numberOfCreateCv = parseInt(numberOfCreateCvRef.current?.getValue() || '0')
     const numberOfPosting = parseInt(numberOfPostingRef.current?.getValue() || '0')
     const numberOfRequestUpdateCompany = parseInt(numberOfRequestUpdateCompanyRef.current?.getValue() || '0')
+    const status = statusRef.current?.getValue()[0].value
+    const verify = verifyRef.current?.getValue()[0].value === 'true'
 
     const data = {
       fullname,
@@ -149,7 +154,9 @@ export const TabUpdateInfo: React.FC = () => {
       numberOfCandidateOpening,
       numberOfCreateCv,
       numberOfPosting,
-      numberOfRequestUpdateCompany
+      numberOfRequestUpdateCompany,
+      status,
+      verify
     }
 
     callApiUpdate(data)
@@ -169,7 +176,9 @@ export const TabUpdateInfo: React.FC = () => {
         numberOfCreateCv,
         numberOfPosting,
         numberOfRequestUpdateCompany,
-        type
+        type,
+        verify,
+        status
       } = userDetail
       const defaultGender = getDefaultDataDropdown(DataGender, [gender || ''])
       setBirthday(birthday ? moment(userDetail.birthday).toDate() : null)
@@ -191,6 +200,8 @@ export const TabUpdateInfo: React.FC = () => {
           numberOfCandidateOpening || numberOfCandidateOpening === 0 ? `${numberOfCandidateOpening}` : ''
         )
       }
+      verifyRef.current?.setValue(getDefaultDataDropdown(DataVerify, [`${verify}`]))
+      statusRef.current?.setValue(getDefaultDataDropdown(dataOptionActive, [status]))
     }
   }, [userDetail])
 
@@ -410,6 +421,28 @@ export const TabUpdateInfo: React.FC = () => {
               </div>
             </>
           )}
+
+          <div className="grid grid-cols-3 gap-x-10 mt-10">
+            <div className="col-span-1">
+              <span className="font-medium">Xác thực</span>
+            </div>
+            <div className="col-span-2">
+              <div className="w-full">
+                <PrDropdown isClearable={false} ref={verifyRef} options={DataVerify} />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-x-10 mt-10">
+            <div className="col-span-1">
+              <span className="font-medium">Trạng thái</span>
+            </div>
+            <div className="col-span-2">
+              <div className="w-full">
+                <PrDropdown isClearable={false} ref={statusRef} options={dataOptionActive} />
+              </div>
+            </div>
+          </div>
 
           {errorMessage && (
             <div className="mt-20">

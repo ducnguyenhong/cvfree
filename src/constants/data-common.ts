@@ -17,3 +17,14 @@ export const DataGender: DropdownProps[] = [
     label: 'Khác'
   }
 ]
+
+export const DataVerify: DropdownProps[] = [
+  {
+    value: 'true',
+    label: 'Verified'
+  },
+  {
+    value: 'false',
+    label: 'Not verify'
+  }
+]
