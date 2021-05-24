@@ -328,18 +328,16 @@ export const EmployerRegisterCompany: React.FC = () => {
     document.title = `CVFREE | ${userInfo?.companyId ? 'Cập nhật thông tin công ty' : 'Đăng ký công ty'}`
   }, [])
 
-  if (!companyDetail) {
-    return <List />
-  }
-
-  const { logo, background, creator } = companyDetail
-  const { employeeIdCard } = creator
+  const logo = companyDetail?.logo
+  const background = companyDetail?.background
+  const creator = companyDetail?.creator
+  const employeeIdCard = creator?.employeeIdCard
 
   const renderTitleButton = () => {
     if (!isUpdate) {
       return 'Đăng ký công ty'
     } else {
-      return companyDetail.creatorId === userInfo?._id ? 'Cập nhật công ty' : 'Gửi yêu cầu chỉnh sửa'
+      return companyDetail?.creatorId === userInfo?._id ? 'Cập nhật công ty' : 'Gửi yêu cầu chỉnh sửa'
     }
   }
 
@@ -347,7 +345,7 @@ export const EmployerRegisterCompany: React.FC = () => {
     if (!isUpdate) {
       return 'Đăng ký công ty'
     } else {
-      return companyDetail.creatorId === userInfo?._id
+      return companyDetail?.creatorId === userInfo?._id
         ? 'Cập nhật thông tin công ty'
         : 'Gửi yêu cầu chỉnh sửa thông tin'
     }

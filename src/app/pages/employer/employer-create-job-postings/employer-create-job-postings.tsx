@@ -113,7 +113,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
         } else {
           // modalNotifySuccessRef.current?.show()
           showNotify.success(message)
-          if (userInfo && userInfo.numberOfPosting) {
+          if (userInfo && userInfo.numberOfPosting && !jobId) {
             setUserInfo({ ...userInfo, numberOfPosting: userInfo.numberOfPosting - 1 })
           }
           history.push('/employer/manage-job')
