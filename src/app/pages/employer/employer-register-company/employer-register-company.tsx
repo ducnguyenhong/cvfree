@@ -143,6 +143,9 @@ export const EmployerRegisterCompany: React.FC = () => {
             setUserInfo({ ...userInfo, numberOfRequestUpdateCompany: userInfo.numberOfRequestUpdateCompany - 1 })
           }
           modalNotifyRequestRef.current?.show()
+        } else if (isUpdate && isAdmin) {
+          showNotify.success(message)
+          callApiCompanyDetail()
         } else {
           callApiCompanyDetail()
         }

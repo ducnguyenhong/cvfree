@@ -11,7 +11,7 @@ export const AboutUs: React.FC = () => {
   }, [])
 
   return (
-    <div className="bg-white px-80 pt-28 pb-10" style={{ minHeight: 'calc(100vh - 100px)' }}>
+    <div className="bg-white lg:px-28 xl:px-48 2xl:px-80 pt-28 pb-10" style={{ minHeight: 'calc(100vh - 100px)' }}>
       <span className="block text-center font-semibold text-2xl uppercase mt-10">
         {intl.formatMessage({ id: 'ABOUT_US.ABOUT_US' })}
       </span>

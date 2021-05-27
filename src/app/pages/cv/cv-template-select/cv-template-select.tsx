@@ -31,7 +31,7 @@ export const TemplateSelectCV: React.FC = () => {
 
   return (
     <div className="bg-white">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 py-40">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 xl:px-32 2xl:px-64 py-40">
         <div className="text-center mb-20">
           <span className="uppercase text-3xl font-bold text-green-600">
             {intl.formatMessage({ id: 'CV_TEMPLATE_LIST.LIST_TEMPLATE' })}
@@ -56,7 +56,7 @@ export const TemplateSelectCV: React.FC = () => {
                   >
                     {(!userInfo || userInfo?.type === 'USER') && (
                       <div
-                        className="text-green-600 bg-gray-50 px-6 py-3 cursor-pointer rounded-md uppercase font-bold flex items-center"
+                        className="text-green-600 bg-gray-50 lg:px-4 lg:py-1.5 xl:py-2.5 2xl:px-6 2xl:py-3 cursor-pointer rounded-md uppercase font-bold flex items-center"
                         onClick={() => onOpenCreateCVPage(value)}
                       >
                         <i className="fas fa-check-circle mr-3" />

@@ -15,7 +15,9 @@ const HomeIntro: React.FC = () => {
         </span>
       </div>
       <div className="mt-12">
-        <span className="uppercase text-4xl text-green-700 font-bold">{intl.formatMessage({ id: 'HOME.CVFREE' })}</span>
+        <span className="uppercase lg:text-2xl xl:text-3xl 2xl:text-4xl text-green-700 font-bold">
+          {intl.formatMessage({ id: 'HOME.CVFREE' })}
+        </span>
       </div>
       <div className="mt-10 pl-8">
         <div>
@@ -30,14 +32,14 @@ const HomeIntro: React.FC = () => {
       <div className="mt-20">
         <Link
           to="/template-cv"
-          className="group rotate-parent px-4 py-3 bg-green-600 mr-8 text-white rounded-md font-semibold duration-300 hover:bg-green-700"
+          className="group rotate-parent lg:py-1.5 xl:py-2.5 lg:px-4 2xl:py-3 bg-green-600 mr-8 text-white rounded-md font-semibold duration-300 hover:bg-green-700"
         >
           <i className="fas fa-plus mr-2 duration-300" />
           {intl.formatMessage({ id: 'HOME.CREATE_CV_NOW' })}
         </Link>
         <Link
           to="/jobs"
-          className="rotate-parent px-4 py-3 bg-purple-700 text-white rounded-md font-semibold duration-300 hover:bg-purple-800"
+          className="rotate-parent lg:px-4 lg:py-1.5 xl:py-2.5 2xl:py-3 bg-purple-700 text-white rounded-md font-semibold duration-300 hover:bg-purple-800"
         >
           <i className="fas fa-search mr-2 duration-300" />
           {intl.formatMessage({ id: 'HOME.FIND_JOB' })}

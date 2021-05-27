@@ -233,9 +233,9 @@ const JobListGeneral: React.FC = () => {
                 <i className="fas fa-coins mr-3" />
                 {intl.formatMessage({ id: 'JOBS.HIGH_SALARY_JOBS' })}
               </span>
-              <Link to="/jobs/high-salary" className="text-white font-medium">
+              <Link to="/jobs/high-salary" className="text-white font-medium" title="Xem thêm">
                 <i className="fas fa-angle-double-right mr-2" />
-                {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
+                <span className="lg:hidden xl:inline">{intl.formatMessage({ id: 'JOBS.SEE_MORE' })}</span>
               </Link>
             </div>
             {listJobHighSalary &&
@@ -289,9 +289,9 @@ const JobListGeneral: React.FC = () => {
                 <i className="fas fa-user-graduate mr-3" />
                 {intl.formatMessage({ id: 'JOBS.INTERNS_JOBS' })}
               </span>
-              <Link to="/jobs/intern" className="text-white font-medium">
+              <Link to="/jobs/intern" className="text-white font-medium" title="Xem thêm">
                 <i className="fas fa-angle-double-right mr-2" />
-                {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
+                <span className="lg:hidden xl:inline">{intl.formatMessage({ id: 'JOBS.SEE_MORE' })}</span>
               </Link>
             </div>
             {listJobIntern &&
@@ -355,9 +355,9 @@ const JobListGeneral: React.FC = () => {
                     key={`new_${route}`}
                     className="col-span-1 flex items-center mt-4 border px-4 py-3 rounded duration-300 hover:bg-gray-100"
                   >
-                    <div className="">
-                      <Link to={route}>
-                        <img src={Logo} alt="logo" className="w-20 h-20" />
+                    <div className="lg:w-16 lg:h-16 2xl:w-20 2xl:h-20" style={{ aspectRatio: '1/1' }}>
+                      <Link to={route} className="w-full h-full block">
+                        <img src={Logo} alt="logo" className="w-full h-full block" />
                       </Link>
                     </div>
                     <div className="ml-8">
@@ -391,9 +391,9 @@ const JobListGeneral: React.FC = () => {
                     key={`new_${route}`}
                     className="col-span-1 flex items-center mt-4 border px-4 py-3 rounded duration-300 hover:bg-gray-100"
                   >
-                    <div className="">
-                      <Link to={route}>
-                        <img src={Logo} alt="logo" className="w-20 h-20" />
+                    <div className="lg:w-16 lg:h-16 2xl:w-20 2xl:h-20" style={{ aspectRatio: '1/1' }}>
+                      <Link to={route} className="w-full h-full block">
+                        <img src={Logo} alt="logo" className="w-full h-full block" />
                       </Link>
                     </div>
                     <div className="ml-8">

@@ -1,22 +1,22 @@
-import { get } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
-import { useRouteMatch, Link, useHistory } from 'react-router-dom'
-import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DataCareer, DataGender, DataRecruitmentPosition, DataFormOfWork } from 'constants/data-employer'
-import { ResponseDefault, ResponseJobDetail } from 'models/response-api'
-import { JobPostingInfo } from 'models/job-posting-info'
-import { showNotify } from 'app/partials/pr-notify'
-import { List } from 'react-content-loader'
-import moment from 'moment'
-import { getDefaultLabelDropdown, uploadServer } from 'utils/helper'
-import { useRecoilValue, useRecoilState } from 'recoil'
-import { userInfoState } from 'app/states/user-info-state'
-import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { DropdownAsync, DropdownAsyncRef } from 'app/partials/dropdown-async'
-import Cookies from 'js-cookie'
-import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
+import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { showNotify } from 'app/partials/pr-notify'
+import { userInfoState } from 'app/states/user-info-state'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { DataCareer, DataFormOfWork, DataGender, DataRecruitmentPosition } from 'constants/data-employer'
+import { SERVER_URL } from 'constants/index'
+import Cookies from 'js-cookie'
+import { get } from 'lodash'
+import { JobPostingInfo } from 'models/job-posting-info'
+import { ResponseDefault, ResponseJobDetail } from 'models/response-api'
+import moment from 'moment'
+import { useEffect, useRef, useState } from 'react'
+import { List } from 'react-content-loader'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { getDefaultLabelDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
 
 interface DataApply {
@@ -146,8 +146,10 @@ export const JobDetail: React.FC = () => {
   }
 
   useEffect(() => {
-    document.title = `CVFREE | Chi tiết việc làm`
-  }, [])
+    if (jobInfo) {
+      document.title = `CVFREE | ${jobInfo.name}`
+    }
+  }, [jobInfo])
 
   useEffect(() => {
     if (jobId) {
@@ -363,15 +365,15 @@ export const JobDetail: React.FC = () => {
           </div>
           <span className="font-semibold block text-xl uppercase mt-16">2. Mô tả công việc</span>
           <div>
-            <div dangerouslySetInnerHTML={{ __html: jobDescription }} />
+            <div className="px-5 mt-3" dangerouslySetInnerHTML={{ __html: jobDescription }} />
           </div>
           <span className="font-semibold block text-xl uppercase mt-16">3. Yêu cầu ứng viên</span>
           <div>
-            <div dangerouslySetInnerHTML={{ __html: requirementForCandidate }} />
+            <div className="px-5 mt-3" dangerouslySetInnerHTML={{ __html: requirementForCandidate }} />
           </div>
           <span className="font-semibold block text-xl uppercase mt-16">4. Quyền lợi</span>
           <div>
-            <div dangerouslySetInnerHTML={{ __html: benefitToEnjoy }} />
+            <div className="px-5 mt-3" dangerouslySetInnerHTML={{ __html: benefitToEnjoy }} />
           </div>
         </div>
         <div className="mt-16 text-center">

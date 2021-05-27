@@ -17,13 +17,14 @@ import ImgIntro from 'assets/images/img-employer-intro.png'
 import PrDropdown, { PrDropdownRefProps } from 'app/partials/pr-dropdown'
 import { DataCareer } from 'constants/data-employer'
 import { DataGender } from 'constants/data-common'
+import { useIntl } from 'react-intl'
 
 interface SignUpProps {}
 
 export const EmployerSignUp: React.FC<SignUpProps> = () => {
   const [checkPolicy, setCheckPolicy] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
-
+  const intl = useIntl()
   const usernameRef = useRef<PrInputRefProps>(null)
   const passwordRef = useRef<PrInputRefProps>(null)
   const confPasswordRef = useRef<PrInputRefProps>(null)
@@ -32,6 +33,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   const phonelRef = useRef<PrInputRefProps>(null)
   const genderRef = useRef<PrDropdownRefProps>(null)
   const modalRef = useRef<PrModalRefProps>(null)
+  const [disableInput, setDisableInput] = useState<boolean>(false)
 
   const validateInput = () => {
     if (!usernameRef.current?.checkRequired()) {
@@ -98,7 +100,9 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
   }
 
   const onSignUp = () => {
+    setDisableInput(true)
     if (!validateInput()) {
+      setDisableInput(false)
       return
     }
     setLoading(true)
@@ -145,22 +149,22 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
         if (!success) {
           throw Error(error)
         }
-
-        showNotify.success(message)
         setLoading(false)
         resetInput()
-        setTimeout(() => {
-          modalRef.current?.show()
-        }, 4000)
+        setDisableInput(false)
+        modalRef.current?.show()
       })
       .catch((e) => {
         setLoading(false)
-        showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')
+        setDisableInput(false)
+        showNotify.error(
+          e ? intl.formatMessage({ id: `API.${get(e, 'response.data.error.message')}` }) : 'Lỗi hệ thống!'
+        )
       })
   }
 
   useEffect(() => {
-    document.title = 'CVFREE | Đăng ký tài khoản nhà tuyển dụng'
+    document.title = `CVFREE | ${intl.formatMessage({ id: 'AUTH.EMPLOYER_SIGN_UP' })}`
   }, [])
 
   return (
@@ -177,13 +181,27 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                 <div className="w-2/5 mt-20">
                   <span className="block uppercase font-bold text-lg">1. Thông tin đăng nhập</span>
                   <div className="mt-5">
-                    <PrInput label="Tài khoản" icon="fas fa-user-circle" required ref={usernameRef} />
-                  </div>
-                  <div className="mt-5">
-                    <PrInput label="Mật khẩu" type="password" required icon="fas fa-lock" ref={passwordRef} />
+                    <PrInput
+                      label="Tài khoản"
+                      disable={disableInput}
+                      icon="fas fa-user-circle"
+                      required
+                      ref={usernameRef}
+                    />
                   </div>
                   <div className="mt-5">
                     <PrInput
+                      label="Mật khẩu"
+                      disable={disableInput}
+                      type="password"
+                      required
+                      icon="fas fa-lock"
+                      ref={passwordRef}
+                    />
+                  </div>
+                  <div className="mt-5">
+                    <PrInput
+                      disable={disableInput}
                       label="Xác nhận mật khẩu"
                       required
                       type="password"
@@ -193,17 +211,24 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                   </div>
                   <span className="block uppercase font-bold text-lg mt-12">2. Thông tin cá nhân</span>
                   <div className="mt-5">
-                    <PrInput label="Họ và tên" icon="fas fa-user" required ref={fullnameRef} />
+                    <PrInput disable={disableInput} label="Họ và tên" icon="fas fa-user" required ref={fullnameRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Email" required icon="fas fa-envelope" ref={emailRef} />
+                    <PrInput disable={disableInput} label="Email" required icon="fas fa-envelope" ref={emailRef} />
                   </div>
                   <div className="mt-5">
-                    <PrInput label="Số điện thoại" required icon="fas fa-phone" ref={phonelRef} />
+                    <PrInput
+                      disable={disableInput}
+                      label="Số điện thoại"
+                      required
+                      icon="fas fa-phone"
+                      ref={phonelRef}
+                    />
                   </div>
                   <div className="mt-5">
                     <PrDropdown
                       required
+                      isDisabled={disableInput}
                       ref={genderRef}
                       options={DataGender}
                       label="Giới tính"
@@ -215,6 +240,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                     <label className="inline-flex mt-3 items-start">
                       <input
                         type="checkbox"
+                        disabled={disableInput}
                         className="form-checkbox h-5 w-5 text-green-600 cursor-pointer mt-0.5"
                         onChange={() => setCheckPolicy(!checkPolicy)}
                         checked={checkPolicy}
@@ -233,7 +259,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
                     </label>
                   </div>
                   <div className="flex justify-center mt-10">
-                    <Button type="success" className="flex items-center" onClick={onSignUp}>
+                    <Button disable={disableInput} type="success" className="flex items-center" onClick={onSignUp}>
                       <span className="font-semibold">Đăng ký tài khoản</span>
                       {loading ? (
                         <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />

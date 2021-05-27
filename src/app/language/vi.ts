@@ -94,7 +94,8 @@ export default {
     HAD_ACCOUNT: 'Bạn đã có tài khoản ?',
     AND: 'và',
     AGREE_TO: 'Tôi đồng ý với',
-    INPUT_YOUR_EMAIL: 'Nhập email của bạn'
+    INPUT_YOUR_EMAIL: 'Nhập email của bạn',
+    EMPLOYER_SIGN_UP: 'Đăng ký tài khoản nhà tuyển dụng'
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'Danh sách các mẫu CV',
@@ -113,7 +114,7 @@ export default {
     EMPLOYMENT_AND_RECRUITMENT: 'Việc làm & Tuyển dụng',
     NEW_JOBS: 'Việc làm mới',
     HIGH_SALARY_JOBS: 'Việc làm lương cao',
-    INTERNS_JOBS: 'Việc làm thực tập sinh',
+    INTERNS_JOBS: 'Việc làm thực tập',
     JOBS_BY_INDUSTRIES: 'Việc làm theo ngành nghề',
     JOBS_BY_LOCATION: 'Việc làm theo địa điểm',
     SEE_MORE: 'Xem thêm',

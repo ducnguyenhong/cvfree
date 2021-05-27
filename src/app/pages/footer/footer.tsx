@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
   const intl = useIntl()
 
   return (
-    <div className="bg-gray-700 pt-12 pb-7 px-40">
+    <div className="bg-gray-700 pt-12 pb-7 lg:px-20 xl:px-40">
       <div className="grid grid-cols-4">
         <div className="col-span-1">
           <img src={Logo} alt="logo" className="w-16 h-16 block mx-auto" />

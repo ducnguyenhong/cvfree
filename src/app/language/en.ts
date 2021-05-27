@@ -94,7 +94,8 @@ export default {
     HAD_ACCOUNT: 'Do you already have an account?',
     AND: 'and',
     AGREE_TO: 'I agree to the',
-    INPUT_YOUR_EMAIL: 'Your email'
+    INPUT_YOUR_EMAIL: 'Your email',
+    EMPLOYER_SIGN_UP: 'Sign up for employers'
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'List of CV templates',

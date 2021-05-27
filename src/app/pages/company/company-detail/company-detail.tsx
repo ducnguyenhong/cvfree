@@ -1,19 +1,20 @@
+import { BreadCrumb } from 'app/pages/bread-crumb'
+import { Pagination, PaginationType } from 'app/partials/layout/pagination'
+import { WrapperPage } from 'app/partials/layout/wrapper-page'
 import { showNotify } from 'app/partials/pr-notify'
+import BackgroundDefault from 'assets/images/bg-default-company.jpg'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
-import { ResponseCompanyDetail, ResponseListJob } from 'models/response-api'
-import { useEffect, useState, memo } from 'react'
 import { CompanyInfo } from 'models/company-info'
-import { List } from 'react-content-loader'
-import { BreadCrumb } from 'app/pages/bread-crumb'
-import { Link, useRouteMatch } from 'react-router-dom'
-import { DropdownAsync } from 'app/partials/dropdown-async'
 import { JobPostingInfo } from 'models/job-posting-info'
+import { ResponseCompanyDetail, ResponseListJob } from 'models/response-api'
 import moment from 'moment'
-import { Pagination, PaginationType } from 'app/partials/layout/pagination'
-import { WrapperPage } from 'app/partials/layout/wrapper-page'
+import { memo, useEffect, useState } from 'react'
+import { List } from 'react-content-loader'
+import { useRouteMatch, Link } from 'react-router-dom'
+import { slugURL } from 'utils/helper'
 
 export const CompanyDetail: React.FC = () => {
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | undefined | null>(undefined)
@@ -102,26 +103,50 @@ export const CompanyDetail: React.FC = () => {
     }
 
     return (
-      <div className="mt-10">
+      <div className="mt-5">
         {listJob &&
           listJob.length > 0 &&
           listJob.map((item) => {
-            const { name, salary, timeToApply, address, formOfWork } = item
+            const { name, salary, timeToApply, address, formOfWork, _id } = item
+            const renderSalary = () => {
+              if (salary.salaryType === 'AGREE') {
+                return 'Thỏa thuận'
+              }
+              if (salary.salaryType === 'FROM_TO') {
+                return `${salary.salaryFrom} đến ${salary.salaryTo} (${salary.salaryCurrency})`
+              }
+            }
             return (
-              <div key={name}>
+              <a
+                href={`/jobs/${slugURL(name)}.${_id}`}
+                className="block"
+                target="_blank"
+                rel="noopener noreferrer"
+                key={_id}
+              >
                 <div className="py-8">
                   <span className="block uppercase text-md font-semibold">{name}</span>
                   <div className="grid grid-cols-4 mt-3">
-                    <span className="block col-span-1">{moment(timeToApply).format('DD/MM/YYYY')}</span>
-                    <span className="block col-span-1">
-                      {salary.salaryFrom} - {salary.salaryTo} {salary.salaryCurrency}
-                    </span>
-                    <span className="block col-span-1">{formOfWork}</span>
-                    <span className="block col-span-1">{address?.label}</span>
+                    <div className="flex items-center col-span-1">
+                      <i className="far fa-clock mr-2 text-gray-500" />
+                      <span className="font-medium">{moment(timeToApply).format('DD/MM/YYYY')}</span>
+                    </div>
+                    <div className="flex items-center col-span-1">
+                      <i className="fas fa-coins mr-2 text-gray-500" />
+                      <span className="font-medium">{renderSalary()}</span>
+                    </div>
+                    <div className="flex items-center col-span-1">
+                      <i className="fas fa-briefcase mr-2 text-gray-500" />
+                      <span className="font-medium">{formOfWork}</span>
+                    </div>
+                    <div className="flex items-center col-span-1">
+                      <i className="fas fa-map-marker-alt mr-2 text-gray-500" />
+                      <span className="font-medium">{address?.label}</span>
+                    </div>
                   </div>
                 </div>
                 <hr />
-              </div>
+              </a>
             )
           })}
         {paginationListJob && <Pagination pagination={paginationListJob} />}
@@ -150,7 +175,7 @@ export const CompanyDetail: React.FC = () => {
     <WrapperPage title="Thông tin công ty">
       <div className="px-8 py-10 mt-10">
         <div style={{ aspectRatio: '5/2' }} className="relative">
-          <img src={background} alt="background" className="w-full h-full" />
+          <img src={background || BackgroundDefault} alt="background" className="w-full h-full" />
           <img
             src={logo}
             alt="logo"
@@ -161,7 +186,7 @@ export const CompanyDetail: React.FC = () => {
           <span className="block text-center font-semibold text-3xl">{name}</span>
         </div>
         <div className="px-10 mt-10">
-          <span className="block uppercase text-xl font-bold mb-5">1. Thông tin công ty</span>
+          <span className="block uppercase text-xl font-bold mb-5 text-green-700">1. Thông tin công ty</span>
           <span className="block font-semibold mb-3">
             - Website:{' '}
             <a href={website} target="_blank" rel="noopener noreferrer" className="font-normal ml-3">
@@ -180,7 +205,7 @@ export const CompanyDetail: React.FC = () => {
           <span className="block font-semibold mb-3 text-justify">
             - Giới thiệu: <span className="font-normal ml-3">{intro}</span>
           </span>
-          <span className="block uppercase text-xl font-bold mt-20">2. Việc làm tuyển dụng</span>
+          <span className="block uppercase text-xl font-bold mt-20 text-green-700">2. Việc làm tuyển dụng</span>
           <MemoJobList listJob={listJob} />
         </div>
       </div>

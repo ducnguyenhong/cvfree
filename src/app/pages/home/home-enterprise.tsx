@@ -46,7 +46,7 @@ const EnterpriseHome: React.FC = () => {
 
   return (
     <div
-      className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-64 mt-16 pt-32 pb-32 home-enterprise"
+      className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-32 xl:px-48 2xl:px-64 mt-16 pt-32 pb-32 home-enterprise"
       style={{ backgroundImage: `url(${ImageBackground})` }}
     >
       <div className="grid grid-cols-3">
@@ -74,7 +74,7 @@ const EnterpriseHome: React.FC = () => {
         <hr />
       </div>
 
-      <div className="grid grid-cols-3 mt-28 pb-32 px-20">
+      <div className="grid grid-cols-3 mt-28 pb-32 lg:px-0 2xl:px-20">
         <div className="col-span-3 text-center mb-32">
           <span className="font-bold text-3xl uppercase">{intl.formatMessage({ id: 'HOME.EXPERIENCE_NOW' })}</span>
         </div>

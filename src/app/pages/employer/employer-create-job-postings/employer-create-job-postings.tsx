@@ -19,7 +19,7 @@ import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { JobPostingInfo } from 'models/job-posting-info'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, RefObject } from 'react'
 import DatePicker from 'react-datepicker'
 import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { getValueDropdown, getDefaultDataDropdown } from 'utils/helper'
@@ -41,12 +41,12 @@ export const EmployerCreateJobPostings: React.FC = () => {
   >(undefined)
   const addressRef = useRef<PrInputRefProps>(null)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
-  const [jobDescription, setJobDescription] = useState<string>('')
-  const [requirementForCandidate, setRequirementForCandidate] = useState<string>('')
-  const [benefitToEnjoy, setBenefitToEnjoy] = useState<string>('')
   const [disableSalary, setDisableSalary] = useState<boolean>(true)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
+  const [initJobDes, setInitJobDes] = useState<string>('')
+  const [initReqCandidate, setInitReqCandidate] = useState<string>('')
+  const [initBenefit, setInitBenefit] = useState<string>('')
 
   // ref
   const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
@@ -63,6 +63,9 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const salaryTypeRef = useRef<PrDropdownRefProps>(null)
   const salaryToRef = useRef<PrInputRefProps>(null)
   const salaryCurrencyRef = useRef<PrDropdownRefProps>(null)
+  const jobDescriptionRef = useRef<Editor | null>(null)
+  const requirementForCandidateRef = useRef<Editor | null>(null)
+  const benefitToEnjoyRef = useRef<Editor | null>(null)
 
   const resetInput = () => {
     nameRef.current?.reset()
@@ -80,9 +83,9 @@ export const EmployerCreateJobPostings: React.FC = () => {
     salaryToRef.current?.reset()
     salaryCurrencyRef.current?.reset()
     salaryTypeRef.current?.reset()
-    setJobDescription('')
-    setRequirementForCandidate('')
-    setBenefitToEnjoy('')
+    jobDescriptionRef.current?.editor?.setContent('')
+    requirementForCandidateRef.current?.editor?.setContent('')
+    benefitToEnjoyRef.current?.editor?.setContent('')
   }
 
   const callApiCreate = (data: JobPostingInfo) => {
@@ -182,9 +185,9 @@ export const EmployerCreateJobPostings: React.FC = () => {
         salaryTo: salaryToRef.current?.getValue() ?? '0',
         salaryCurrency: getValueDropdown(salaryCurrencyRef.current?.getValue())[0]
       },
-      jobDescription,
-      requirementForCandidate,
-      benefitToEnjoy,
+      jobDescription: jobDescriptionRef.current?.editor?.getContent() || '',
+      requirementForCandidate: requirementForCandidateRef.current?.editor?.getContent() || '',
+      benefitToEnjoy: benefitToEnjoyRef.current?.editor?.getContent() || '',
       status: 'ACTIVE'
     }
 
@@ -279,14 +282,14 @@ export const EmployerCreateJobPostings: React.FC = () => {
         salaryToRef.current?.setValue(`${salary.salaryTo}`)
         salaryCurrencyRef.current?.setValue(getDefaultDataDropdown(DataCurrency, [salary.salaryCurrency || '']))
       }
-      setJobDescription(jobDescription)
-      setRequirementForCandidate(requirementForCandidate)
-      setBenefitToEnjoy(benefitToEnjoy)
+      setInitJobDes(jobDescription)
+      setInitReqCandidate(requirementForCandidate)
+      setInitBenefit(benefitToEnjoy)
     }
-  }, [jobDetail])
+  }, [jobDetail, jobDescriptionRef])
 
   useEffect(() => {
-    if (userInfo && Number(userInfo?.numberOfPosting) < 1) {
+    if (userInfo && Number(userInfo?.numberOfPosting) < 1 && !jobId) {
       modalOutOfTurnRef.current?.show()
     }
   }, [userInfo])
@@ -414,8 +417,10 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <div className="mt-8">
           <Editor
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue={jobDescription || '<p>Mô tả chi tiết về công việc đang tuyển dụng</p>'}
+            ref={jobDescriptionRef}
+            initialValue={initJobDes}
             init={{
+              placeholder: 'Mô tả chi tiết về công việc đang tuyển dụng',
               height: 500,
               menubar: false,
               plugins: [
@@ -427,9 +432,6 @@ export const EmployerCreateJobPostings: React.FC = () => {
                 'undo redo | formatselect | bold italic backcolor | \
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat | help'
-            }}
-            onEditorChange={(e) => {
-              setJobDescription(e)
             }}
           />
         </div>
@@ -437,9 +439,11 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <span className="block text-lg font-semibold uppercase mt-28">3. Yêu cầu ứng viên</span>
         <div className="mt-8">
           <Editor
+            initialValue={initReqCandidate}
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue={requirementForCandidate || '<p>Đưa ra các yêu cầu về ứng viên cần tuyển dụng</p>'}
+            ref={requirementForCandidateRef}
             init={{
+              placeholder: 'Đưa ra các yêu cầu về ứng viên cần tuyển dụng',
               height: 500,
               menubar: false,
               plugins: [
@@ -451,9 +455,6 @@ export const EmployerCreateJobPostings: React.FC = () => {
                 'undo redo | formatselect | bold italic backcolor | \
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat | help'
-            }}
-            onEditorChange={(e) => {
-              setRequirementForCandidate(e)
             }}
           />
         </div>
@@ -461,9 +462,11 @@ export const EmployerCreateJobPostings: React.FC = () => {
         <span className="block text-lg font-semibold uppercase mt-28">4. Quyền lợi được hưởng</span>
         <div className="mt-8">
           <Editor
+            initialValue={initBenefit}
             apiKey="59sr9opfpahrgsu12eontg1qxohmci93evk3ahxx125hx0jj"
-            initialValue={benefitToEnjoy || '<p>Nêu các quyền lợi mà ứng viên sẽ được hưởng</p>'}
+            ref={benefitToEnjoyRef}
             init={{
+              placeholder: 'Nêu các quyền lợi mà ứng viên sẽ được hưởng',
               height: 500,
               menubar: false,
               plugins: [
@@ -475,9 +478,6 @@ export const EmployerCreateJobPostings: React.FC = () => {
                 'undo redo | formatselect | bold italic backcolor | \
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat | help'
-            }}
-            onEditorChange={(e) => {
-              setBenefitToEnjoy(e)
             }}
           />
         </div>

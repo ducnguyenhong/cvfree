@@ -130,7 +130,7 @@ const NavbarHome: React.FC = () => {
     return (
       <Link
         to={route}
-        className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer px-3 py-2 text-md font-semibold hover:bg-purple-700 hover:text-white duration-300"
+        className="uppercase rounded-md bg-purple-50 text-purple-700 cursor-pointer whitespace-nowrap px-3 py-2 lg:text-sm xl:text-base font-semibold hover:bg-purple-700 hover:text-white duration-300"
       >
         {intl.formatMessage({ id: title })}
       </Link>
@@ -140,80 +140,37 @@ const NavbarHome: React.FC = () => {
   return (
     <div className="w-full py-2 z-50 shadow-md fixed top-0 left-0 bg-white">
       <nav>
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-40">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 2xl:px-40">
           <div className="relative flex items-center justify-between" style={{ height: 60 }}>
-            <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-              {/* Mobile menu button*/}
-              <button
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Open main menu</span>
-                {/* Icon when menu is closed. */}
-                {/*
-      Heroicon name: menu
-
-      Menu open: "hidden", Menu closed: "block"
-    */}
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                {/* Icon when menu is open. */}
-                {/*
-      Heroicon name: x
-
-      Menu open: "block", Menu closed: "hidden"
-    */}
-                <svg
-                  className="hidden h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex-shrink-0 flex items-center">
                 <Link to="/">
                   <img className="block h-10 w-auto" src={Logo} alt="Logo" />
                 </Link>
-                {/* <img className="hidden lg:block h-8 w-auto" src={Logo} alt="Workflow" /> */}
               </div>
               <div className="hidden sm:flex sm:ml-12 items-center">
                 <div className="flex space-x-4">
-                  {/* Current: "bg-gray-900 text-white", Default: "text-gray-300  hover:text-white" */}
                   <Link
                     to="/"
-                    className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
+                    className="text-gray-500 whitespace-nowrap cursor-pointer px-3 py-2 lg:text-sm xl:text-base font-semibold hover:text-gray-700 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.HOME' })}
                   </Link>
                   <Link
                     to="/template-cv"
-                    className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
+                    className="text-gray-500 whitespace-nowrap cursor-pointer px-3 py-2 lg:text-sm xl:text-base font-semibold hover:text-gray-700 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.CV_TEMPLATE' })}
                   </Link>
                   <Link
                     to="/jobs"
-                    className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
+                    className="text-gray-500 whitespace-nowrap cursor-pointer px-3 py-2 lg:text-sm xl:text-base font-semibold hover:text-gray-700 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.NEW_JOB' })}
                   </Link>
                   <Link
                     to="/about-us"
-                    className="text-gray-500 cursor-pointer px-3 py-2 text-md font-semibold hover:text-gray-700 duration-300"
+                    className="text-gray-500 whitespace-nowrap cursor-pointer px-3 py-2 lg:text-sm xl:text-base font-semibold hover:text-gray-700 duration-300"
                   >
                     {intl.formatMessage({ id: 'NAVBAR.ABOUT_US' })}
                   </Link>
@@ -279,13 +236,13 @@ const NavbarHome: React.FC = () => {
                   <div className="flex items-center">
                     <Link
                       to="/sign-in"
-                      className="text-white rounded-xl bg-blue-500 shadow-lg block hover:bg-blue-600 duration-300 px-4 py-1.5 text-md font-semibold mr-5"
+                      className="text-white whitespace-nowrap rounded-xl bg-blue-500 shadow-lg block hover:bg-blue-600 duration-300 px-4 py-1.5 lg:text-sm xl:text-base font-semibold mr-5"
                     >
                       {intl.formatMessage({ id: 'NAVBAR.SIGN_IN' })}
                     </Link>
                     <Link
                       to="/sign-up"
-                      className="text-blue-600 rounded-2xl bg-gray-50 shadow-lg block hover:bg-gray-100 duration-300 px-4 py-1.5 text-md font-semibold"
+                      className="text-blue-600 whitespace-nowrap rounded-2xl bg-gray-50 shadow-lg block hover:bg-gray-100 duration-300 px-4 py-1.5 lg:text-sm xl:text-base font-semibold"
                     >
                       {intl.formatMessage({ id: 'NAVBAR.SIGN_UP' })}
                     </Link>
@@ -333,14 +290,16 @@ const NavbarHome: React.FC = () => {
                                 className="px-6 py-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                               >
                                 <i className={`${icon} mr-2`}></i>
-                                <span className="text-md">{title}</span>
+                                <span className="lg:text-sm xl:text-base">{title}</span>
                               </Link>
                             )
                           })}
                         <div className="px-6 mb-4 mt-3">
                           <Button type="danger" onClick={onSignOut}>
                             <i className="fas fa-sign-out-alt mr-2"></i>
-                            <span className="text-white text-md">{intl.formatMessage({ id: 'AUTH.LOGOUT' })}</span>
+                            <span className="text-white lg:text-sm xl:text-base">
+                              {intl.formatMessage({ id: 'AUTH.LOGOUT' })}
+                            </span>
                           </Button>
                         </div>
                       </div>
