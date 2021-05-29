@@ -324,6 +324,14 @@ export const JobDetail: React.FC = () => {
 
   return (
     <WrapperPage title="Chi tiết việc làm">
+      {/* <div
+        onClick={() => {
+          const a = JSON.parse(jobInfo.name)
+          alert(a)
+        }}
+      >
+        Test sentry
+      </div> */}
       <div className="px-8 py-10 mt-5">
         <div className="grid grid-cols-5 gap-x-10">
           <div className="col-span-1 px-4">
@@ -410,6 +418,7 @@ export const JobDetail: React.FC = () => {
       <PrModal
         title="Yêu cầu đăng nhập"
         disableFooter
+        position="fixed"
         onHide={() => modalNeedLoginRef.current?.hide()}
         ref={modalNeedLoginRef}
       >
@@ -437,6 +446,7 @@ export const JobDetail: React.FC = () => {
 
       <PrModal
         title="Xác nhận ứng tuyển"
+        position="fixed"
         onHide={onHideApplyJob}
         ref={modalConfirmApplyRef}
         onChange={onApplyJob}
@@ -533,6 +543,7 @@ export const JobDetail: React.FC = () => {
         title="Không thể báo cáo"
         onHide={() => modalNotifyOutOfTurnReportRef.current?.hide()}
         disableFooter
+        position="fixed"
         ref={modalNotifyOutOfTurnReportRef}
       >
         <div className="py-16 px-10">
@@ -547,6 +558,7 @@ export const JobDetail: React.FC = () => {
       <PrModal
         title="Báo cáo tin tuyển dụng này"
         disableFooter
+        position="fixed"
         onHide={() => modalReportJobRef.current?.hide()}
         ref={modalReportJobRef}
       >

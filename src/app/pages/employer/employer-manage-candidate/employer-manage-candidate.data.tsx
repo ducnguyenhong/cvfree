@@ -80,6 +80,9 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       if (applyType === 'OTHER') {
         return <span>CV từ hệ thống khác</span>
       }
+      if (applyType === 'LOOKING_FOR') {
+        return <span>Mở khóa</span>
+      }
       if (applyType === 'PDF') {
         return <span>File PDF</span>
       }
@@ -96,6 +99,18 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
             rel="noopener noreferrer"
           >
             Xem liên kết
+          </a>
+        )
+      }
+      if (applyType === 'LOOKING_FOR') {
+        return (
+          <a
+            href={`/cv-public/${slugURL(fullname)}.${applyValue}`}
+            target="_blank"
+            className="font-medium text-white bg-pink-500 px-4 py-2 rounded w-36 text-center block whitespace-nowrap"
+            rel="noopener noreferrer"
+          >
+            Xem hồ sơ
           </a>
         )
       }

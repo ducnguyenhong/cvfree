@@ -60,6 +60,12 @@ const NavbarHome: React.FC = () => {
       title: 'Bảng điều khiển',
       icon: 'fas fa-tasks',
       isActive: !!['ADMIN'].includes(userType)
+    },
+    {
+      route: '/change-password',
+      title: 'Đổi mật khẩu',
+      icon: 'fas fa-lock',
+      isActive: true
     }
   ]
 

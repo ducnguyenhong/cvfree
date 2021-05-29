@@ -2,7 +2,7 @@ import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon }
 import { CvInfo } from 'models/cv-info'
 import { useEffect, useRef, useState } from 'react'
 import { CVDetailStyle } from '../../cv-detail.styles'
-import AvatarTest from 'assets/images/avatar.jpg'
+import AvatarDefault from 'assets/images/default-avatar-cv.png'
 import {
   BasicSkillInfo,
   CareerGoalsInfo,
@@ -18,7 +18,6 @@ import {
 } from './cv-detail-category-2'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
-import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { getGenderMultiLanguage } from 'utils/helper'
 import { useRecoilValue } from 'recoil'
@@ -167,7 +166,7 @@ export const CvDetailTemplate2: React.FC<CvDetailProps> = (props) => {
     <div className="w-full bg-gradient-to-r from-purple-500 via-pink-400 bg-yellow-400 py-32 pt-5">
       <CVDetailStyle>
         {/* Control */}
-        <div className="fixed bottom-8 right-8">
+        <div className="fixed bottom-8 left-8">
           <a
             href="/"
             className="mb-3 bg-gray-500 cursor-pointer rounded-full w-12 h-12 flex justify-center items-center hover:bg-gray-600 duration-300"
@@ -210,7 +209,12 @@ export const CvDetailTemplate2: React.FC<CvDetailProps> = (props) => {
             <div className="col-span-2 bg-white relative overflow-hidden">
               <div className="div-top-left-2 p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
                 <div className="px-10 absolute top-10 left-0 right-0 mx-auto z-10 w-60 h-60 rounded-full overflow-hidden">
-                  <img src={avatar} alt="avatar" className="w-full rounded-full" style={{ aspectRatio: '1/1' }} />
+                  <img
+                    src={avatar || AvatarDefault}
+                    alt="avatar"
+                    className="w-full rounded-full"
+                    style={{ aspectRatio: '1/1' }}
+                  />
                 </div>
                 <div className="absolute top-52 z-10 left-0 h-52 w-full">
                   <div className="mt-3 pl-20">

@@ -3,6 +3,7 @@ import { lazy, LazyExoticComponent } from 'react'
 const SignUp = lazy(() => import('app/pages/auth/sign-up'))
 const ForgotPassword = lazy(() => import('app/pages/auth/forgot-password'))
 const VerifyAccount = lazy(() => import('app/pages/auth/verify'))
+const ChangePassword = lazy(() => import('app/pages/auth/change-password'))
 
 const ErrorComponent = lazy(() => import('app/pages/error'))
 const Home = lazy(() => import('app/pages/home'))
@@ -226,6 +227,12 @@ export const PRIVATE_ROUTES: RouteType[] = [
   {
     path: '/profile',
     component: Profile,
+    exact: true,
+    role: []
+  },
+  {
+    path: '/change-password',
+    component: ChangePassword,
     exact: true,
     role: []
   },

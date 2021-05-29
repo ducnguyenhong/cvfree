@@ -1,11 +1,13 @@
 {
   "name": "cvfree",
-  "version": "210527.20.55",
+  "version": "210529.22.25",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
     "@ekidpro/table": "^1.0.18",
     "@headlessui/react": "^0.2.0",
+    "@sentry/react": "^6.4.1",
+    "@sentry/tracing": "^6.4.1",
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.2",

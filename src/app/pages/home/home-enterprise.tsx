@@ -101,7 +101,7 @@ const EnterpriseHome: React.FC = () => {
           </div>
         </Link>
 
-        {userInfo?.type === 'USER' && (
+        {(userInfo?.type === 'USER' || userInfo?.type === 'ADMIN') && (
           <div className="w-40 h-40 mx-auto relative one-exp-now duration-300">
             <MemoExpRecruitment />
           </div>

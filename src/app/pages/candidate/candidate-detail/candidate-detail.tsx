@@ -335,6 +335,7 @@ export const CandidateDetail: React.FC = () => {
         onChange={onUnlockCandidate}
         onHide={onHideUnlockCandidate}
         okTitle="Mở khóa"
+        disableFooter={!employerInfo?.numberOfCandidateOpening}
         onShow={onShowUnlockCandidate}
         cancelTitle="Hủy bỏ"
       >

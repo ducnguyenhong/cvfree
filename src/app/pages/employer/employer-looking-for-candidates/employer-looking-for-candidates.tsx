@@ -32,7 +32,7 @@ export const EmployerLookingForCandidates: React.FC = () => {
   const location = useLocation()
   const filterCityStorage = localStorage.getItem('filter-city')
   const filterCity = filterCityStorage ? JSON.parse(filterCityStorage) : undefined
-  const defaultCity: OptionProps | undefined = city === filterCity.value ? filterCity : undefined
+  const defaultCity: OptionProps | undefined = filterCity && city === filterCity.value ? filterCity : undefined
 
   const history = useHistory()
 
