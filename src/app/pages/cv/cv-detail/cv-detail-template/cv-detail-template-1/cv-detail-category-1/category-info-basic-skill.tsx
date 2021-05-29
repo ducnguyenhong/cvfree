@@ -1,5 +1,5 @@
 import { ActiveStarIcon, InactiveStarIcon } from 'assets/icons'
-import BasicSkillIcon from 'assets/icons/basic-skill.svg'
+import BasicSkillIcon from 'assets/images/icon-basic-skill.png'
 
 interface BasicSkillInfoProps {
   basicSkill?: {

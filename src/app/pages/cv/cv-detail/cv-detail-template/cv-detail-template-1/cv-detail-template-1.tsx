@@ -188,7 +188,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
 
         {/* CV Main */}
         <div
-          style={{ width: '210mm', minHeight: '297mm', fontFamily: fontFamily, fontSize: fontSize }}
+          style={{ width: '210mm', minHeight: '270mm', fontFamily: fontFamily, fontSize: fontSize }}
           className="mx-auto relative shadow-2xl mt-10"
           ref={cvRef}
           id="cv-detail"
@@ -203,7 +203,7 @@ export const CvDetailTemplate1: React.FC<CvDetailProps> = (props) => {
               <span className="text-white font-semibold">Trang 3</span>
             </div>
           )}
-          <div className="grid grid-cols-3" style={{ minHeight: '297mm' }}>
+          <div className="grid grid-cols-3" style={{ minHeight: '270mm' }}>
             {/* CV Left */}
             <div className="col-span-1 bg-gray-100 relative overflow-hidden">
               <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>

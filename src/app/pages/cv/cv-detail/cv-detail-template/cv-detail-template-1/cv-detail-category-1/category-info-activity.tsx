@@ -1,4 +1,4 @@
-import ActivityIcon from 'assets/icons/activity.svg'
+import ActivityIcon from 'assets/images/icon-activity.png'
 
 interface ActivityInfoProps {
   activity?: {

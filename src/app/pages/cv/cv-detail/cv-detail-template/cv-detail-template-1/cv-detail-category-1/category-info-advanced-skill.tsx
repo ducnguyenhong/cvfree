@@ -1,4 +1,4 @@
-import AdvancedSkillIcon from 'assets/icons/advanced-skill.svg'
+import AdvancedSkillIcon from 'assets/images/icon-advance-skill.png'
 
 interface AdvancedSkillInfoProps {
   advancedSkill?: {
