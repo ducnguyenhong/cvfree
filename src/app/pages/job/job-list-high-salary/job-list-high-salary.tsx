@@ -11,9 +11,18 @@ import { Link } from 'react-router-dom'
 import { List } from 'react-content-loader'
 import { Pagination, PaginationType } from 'app/partials/layout/pagination'
 
-export const JobListHighSalary: React.FC = () => {
-  const [listJob, setListJob] = useState<JobPostingInfo[] | undefined | null>(undefined)
-  const [pagination, setPagination] = useState<PaginationType | undefined>(undefined)
+interface DataResponseJob {
+  items?: JobPostingInfo[] | null
+  pagination?: PaginationType
+}
+
+interface TestProps {
+  defaultData?: DataResponseJob | null
+}
+
+export const JobListHighSalary: React.FC<TestProps> = (props) => {
+  const [listJob, setListJob] = useState<JobPostingInfo[] | undefined | null>(props.defaultData?.items ?? undefined)
+  const [pagination, setPagination] = useState<PaginationType | undefined>(props.defaultData?.pagination ?? undefined)
 
   const callApiJobNew = () => {
     const url = `${SERVER_URL}/jobs/high-salary`
@@ -63,7 +72,12 @@ export const JobListHighSalary: React.FC = () => {
               Việc làm lương cao
             </span>
           </div>
-          {(!listJob || listJob.length === 0) && <List />}
+          {!listJob && <List />}
+          {listJob && listJob.length === 0 && (
+            <div className="flex justify-center items-center">
+              <span>Chưa có việc làm</span>
+            </div>
+          )}
           {listJob &&
             listJob.length > 0 &&
             listJob.map((item) => {
@@ -71,6 +85,7 @@ export const JobListHighSalary: React.FC = () => {
               return (
                 <div
                   key={`new_${_id}`}
+                  data-testid="job-list-success"
                   className="col-span-1 flex items-center mt-4 border px-4 py-3 rounded duration-300 hover:bg-gray-100"
                 >
                   <div className="">

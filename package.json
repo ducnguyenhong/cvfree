@@ -1,6 +1,6 @@
 {
   "name": "cvfree",
-  "version": "210529.23.00",
+  "version": "210531.18.00",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
@@ -40,6 +40,7 @@
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
+    "msw": "^0.29.0",
     "postcss": "^7.0.35",
     "prettier": "^2.2.1",
     "query-string": "^7.0.0",
