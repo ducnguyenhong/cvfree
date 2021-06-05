@@ -210,7 +210,13 @@ const JobListGeneral: React.FC = () => {
                         <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
                         <span className="font-medium text-gray-600">
                           {salary.salaryType === 'FROM_TO'
-                            ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
+                            ? `${Number(salary.salaryFrom).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })} - ${Number(salary.salaryTo).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })}`
                             : 'Thỏa thuận'}
                         </span>
                       </div>
@@ -266,7 +272,13 @@ const JobListGeneral: React.FC = () => {
                         <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
                         <span className="font-medium text-gray-600">
                           {salary.salaryType === 'FROM_TO'
-                            ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
+                            ? `${Number(salary.salaryFrom).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })} - ${Number(salary.salaryTo).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })}`
                             : 'Thỏa thuận'}
                         </span>
                       </div>
@@ -322,7 +334,13 @@ const JobListGeneral: React.FC = () => {
                         <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
                         <span className="font-medium text-gray-600">
                           {salary.salaryType === 'FROM_TO'
-                            ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
+                            ? `${Number(salary.salaryFrom).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })} - ${Number(salary.salaryTo).toLocaleString('it-IT', {
+                                style: 'currency',
+                                currency: salary.salaryCurrency
+                              })}`
                             : 'Thỏa thuận'}
                         </span>
                       </div>

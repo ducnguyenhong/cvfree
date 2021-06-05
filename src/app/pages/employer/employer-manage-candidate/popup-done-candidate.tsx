@@ -10,9 +10,11 @@ import { ResponseDefault } from 'models/response-api'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 import { prefix } from './employer-manage-candidate'
+import { useIntl } from 'react-intl'
 
 export const PopupDoneCandidate: React.FC = () => {
   const refreshTable = useRefresh(prefix)
+  const intl = useIntl()
   const popupConfirmRef = useRef<PopupConfirmRef>(null)
   const [recoilState, setRecoilState] = useRecoilState(showDoneManageCandidateState)
   const { id, showPopup, userId } = recoilState
@@ -45,7 +47,7 @@ export const PopupDoneCandidate: React.FC = () => {
           throw Error(error?.message)
         }
         setRecoilState({ id: undefined, showPopup: false })
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `MANAGE_CANDIDATE.${message}` }))
         refreshTable()
       })
       .catch((e) => {

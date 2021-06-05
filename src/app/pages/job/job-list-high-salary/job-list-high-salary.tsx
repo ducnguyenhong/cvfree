@@ -62,6 +62,77 @@ export const JobListHighSalary: React.FC<TestProps> = (props) => {
     document.title = `CVFREE | Việc làm lương cao`
   }, [])
 
+  const renderListJob = (listJob: null | undefined | JobPostingInfo[]) => {
+    if (typeof listJob === 'undefined') {
+      return (
+        <div data-testid="job-list-loading">
+          <List />
+        </div>
+      )
+    }
+
+    if (listJob === null) {
+      return (
+        <div data-testid="job-list-error" className="flex justify-center items-center">
+          <span>Lỗi từ phía máy chủ. Vui lòng truy cập lại sau</span>
+        </div>
+      )
+    }
+
+    if (listJob && listJob.length === 0) {
+      return (
+        <div data-testid="job-list-empty" className="flex justify-center items-center">
+          <span>Chưa có việc làm</span>
+        </div>
+      )
+    }
+
+    return (
+      <div data-testid="job-list-success">
+        {listJob &&
+          listJob.length > 0 &&
+          listJob.map((item) => {
+            const { name, _id, salary, address, company } = item
+            return (
+              <div
+                key={`new_${_id}`}
+                className="col-span-1 flex items-center mt-4 border px-4 py-3 rounded duration-300 hover:bg-gray-100"
+              >
+                <div className="">
+                  <Link to={`/jobs/${slugURL(name)}.${_id}`}>
+                    <img src={company?.logo} alt="logo" className="w-20 h-20" />
+                  </Link>
+                </div>
+                <div className="ml-4">
+                  <div>
+                    <Link to={`/jobs/${slugURL(name)}.${_id}`} className="font-bold text-lg">
+                      {name}
+                    </Link>
+                  </div>
+                  <div className="flex mt-2">
+                    <i className="fas fa-building mr-2 text-sm text-gray-600" />
+                    <span className="font-medium text-gray-600">{company?.name}</span>
+                  </div>
+                  <div className="mt-1">
+                    <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
+                    <span className="font-medium text-gray-600">
+                      {salary.salaryType === 'FROM_TO'
+                        ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
+                        : 'Thỏa thuận'}
+                    </span>
+                  </div>
+                  <div className="mt-1">
+                    <i className="fas fa-map-marker-alt mr-2 text-sm text-gray-600" />
+                    <span className="font-medium text-gray-600">{address?.label}</span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+      </div>
+    )
+  }
+
   return (
     <WrapperPage title="Việc làm lương cao">
       <div className="py-20">
@@ -72,53 +143,8 @@ export const JobListHighSalary: React.FC<TestProps> = (props) => {
               Việc làm lương cao
             </span>
           </div>
-          {!listJob && <List />}
-          {listJob && listJob.length === 0 && (
-            <div className="flex justify-center items-center">
-              <span>Chưa có việc làm</span>
-            </div>
-          )}
-          {listJob &&
-            listJob.length > 0 &&
-            listJob.map((item) => {
-              const { name, _id, salary, address, company } = item
-              return (
-                <div
-                  key={`new_${_id}`}
-                  data-testid="job-list-success"
-                  className="col-span-1 flex items-center mt-4 border px-4 py-3 rounded duration-300 hover:bg-gray-100"
-                >
-                  <div className="">
-                    <Link to={`/jobs/${slugURL(name)}.${_id}`}>
-                      <img src={company?.logo} alt="logo" className="w-20 h-20" />
-                    </Link>
-                  </div>
-                  <div className="ml-4">
-                    <div>
-                      <Link to={`/jobs/${slugURL(name)}.${_id}`} className="font-bold text-lg">
-                        {name}
-                      </Link>
-                    </div>
-                    <div className="flex mt-2">
-                      <i className="fas fa-building mr-2 text-sm text-gray-600" />
-                      <span className="font-medium text-gray-600">{company?.name}</span>
-                    </div>
-                    <div className="mt-1">
-                      <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
-                      <span className="font-medium text-gray-600">
-                        {salary.salaryType === 'FROM_TO'
-                          ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
-                          : 'Thỏa thuận'}
-                      </span>
-                    </div>
-                    <div className="mt-1">
-                      <i className="fas fa-map-marker-alt mr-2 text-sm text-gray-600" />
-                      <span className="font-medium text-gray-600">{address?.label}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+
+          {renderListJob(listJob)}
         </div>
         <Pagination pagination={pagination} />
       </div>

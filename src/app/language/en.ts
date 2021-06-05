@@ -128,6 +128,21 @@ export default {
     DA_NANG: 'Da Nang',
     HAI_PHONG: 'Hai Phong',
     CAN_THO: 'Can Tho',
-    HO_CHI_MINH: 'Ho Chi Minh city'
+    HO_CHI_MINH: 'Ho Chi Minh city',
+    CREATED_JOB_SUCCESS: 'Posted job posting successfully',
+    UPDATED_JOB_SUCCESS: 'Updated job posting successfully'
+  },
+  CV: {
+    CREATED_CV_SUCCESS: 'Created CV successfully',
+    UPDATED_CV_SUCCESS: 'Updated CV successfully'
+  },
+  CANDIDATE: {
+    UNLOCKED_CANDIDATE_SUCCESS: 'Unlocked candidate successfully',
+    ACCEPTED_CANDIDATE_SUCCESS: 'Accepted candidate successfully',
+    REJECTED_CANDIDATE_SUCCESS: 'Rejected candidate successfully'
+  },
+  MANAGE_CANDIDATE: {
+    UPDATED_STATUS_SUCCESS: 'Updated status successfully',
+    DELETED_CANDIDATE_SUCCESS: 'Deleted candidate successfully'
   }
 }

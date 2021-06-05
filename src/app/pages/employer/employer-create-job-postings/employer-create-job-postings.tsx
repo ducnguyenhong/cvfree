@@ -27,10 +27,12 @@ import { useRecoilState } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import { ResponseJobDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
+import { useIntl } from 'react-intl'
 
 export const EmployerCreateJobPostings: React.FC = () => {
   const match = useRouteMatch()
   const jobId = get(match.params, 'id')
+  const intl = useIntl()
   const history = useHistory()
   const [jobDetail, setJobDetail] = useState<JobPostingInfo | null>(null)
   const [timeToApply, setTimeToApply] = useState<any>(new Date())
@@ -114,8 +116,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
           showNotify.success(message)
           callApiJobDetail()
         } else {
-          // modalNotifySuccessRef.current?.show()
-          showNotify.success(message)
+          showNotify.success(intl.formatMessage({ id: `JOBS.${message}` }))
           if (userInfo && userInfo.numberOfPosting && !jobId) {
             setUserInfo({ ...userInfo, numberOfPosting: userInfo.numberOfPosting - 1 })
           }

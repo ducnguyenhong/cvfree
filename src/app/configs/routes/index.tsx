@@ -4,7 +4,7 @@ import { userTokenState, userInfoState } from 'app/states/user-info-state'
 import { Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { IntlProvider } from 'react-intl'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { MainRouteWrapper } from './main-route-wrapper'
 import { DASHBOARD_ROUTES, PRIVATE_ROUTES, PUBLIC_ROUTES } from './route'
@@ -142,13 +142,13 @@ const RouteURL: React.FC = () => {
   const language = useRecoilValue(languageState)
   return (
     <IntlProvider locale={language} messages={localeData[language] as Record<string, string>}>
-      <BrowserRouter>
+      <Router>
         <Suspense fallback={<LoadingPage />}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <SwitchRenderer />
           </ErrorBoundary>
         </Suspense>
-      </BrowserRouter>
+      </Router>
     </IntlProvider>
   )
 }

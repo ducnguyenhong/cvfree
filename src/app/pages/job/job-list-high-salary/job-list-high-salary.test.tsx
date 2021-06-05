@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { act, render } from '@testing-library/react'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { get } from 'lodash'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
 import { JobListHighSalary } from './job-list-high-salary'
@@ -73,12 +73,9 @@ const server = setupServer(
       ctx.json({
         success: true,
         message: '200',
-        data: null
+        data: undefined
       })
     )
-  }),
-  rest.get('/jobs/high-salary/html', (req, res, ctx) => {
-    return res(ctx.text('<html>abc</html>'))
   })
 )
 
@@ -97,10 +94,7 @@ const getDataFromApi = (url: string) => {
   return axios
     .get(url, config)
     .then((response: AxiosResponse<ResponseListJob>) => {
-      const { success, error, data } = response.data
-      if (!success) {
-        throw Error(error?.message)
-      }
+      const { data } = response.data
       return data
     })
     .catch((error) => {
@@ -112,7 +106,13 @@ test('1. Exist List Job', async () => {
   await act(async () => {
     getDataFromApi('/jobs/high-salary/success')
       .then((data) => {
-        const { findByTestId } = render(<JobListHighSalary defaultData={data} />)
+        const { findByTestId } = render(
+          <Router>
+            <Router>
+              <JobListHighSalary defaultData={data} />
+            </Router>
+          </Router>
+        )
         const jobList = findByTestId('job-list-success')
         expect(jobList).toBeTruthy()
       })
@@ -122,48 +122,56 @@ test('1. Exist List Job', async () => {
   })
 })
 
-// test('4. Empty data', async () => {
-//   await act(async () => {
-//     const configLoader = UserLoader
-//     configLoader.url = '/user/empty'
-//     const { findByTestId } = render(<Table loader={configLoader} columns={ColumnsAdminList} />)
-//     const empty = await findByTestId('empty')
-//     const table = await findByTestId('table')
+test('2. Data Empty From Server', async () => {
+  await act(async () => {
+    getDataFromApi('/jobs/high-salary/empty')
+      .then((data) => {
+        const { findByTestId } = render(
+          <Router>
+            <JobListHighSalary defaultData={data} />
+          </Router>
+        )
+        const jobList = findByTestId('job-list-empty')
+        expect(jobList).toBeTruthy()
+      })
+      .catch((e) => {
+        throw new Error(e?.message)
+      })
+  })
+})
 
-//     expect(empty).toBeTruthy()
-//     expect(table).toBeTruthy()
-//   })
-// })
+test('3. Exist Loading', async () => {
+  await act(async () => {
+    getDataFromApi('/jobs/high-salary/loading')
+      .then((data) => {
+        const { findByTestId } = render(
+          <Router>
+            <JobListHighSalary defaultData={data} />
+          </Router>
+        )
+        const jobList = findByTestId('job-list-loading')
+        expect(jobList).toBeTruthy()
+      })
+      .catch((e) => {
+        throw new Error(e?.message)
+      })
+  })
+})
 
-// test('5. API error', async () => {
-//   await act(async () => {
-//     const configLoader = UserLoader
-//     configLoader.url = '/user/error'
-//     const { findByTestId } = render(<Table loader={configLoader} columns={ColumnsAdminList} />)
-//     const error = await findByTestId('error')
-
-//     expect(error).toBeTruthy()
-//   })
-// })
-
-// test('6. Exist loading', async () => {
-//   await act(async () => {
-//     const configLoader = UserLoader
-//     configLoader.url = '/user/loading'
-//     const { findByTestId } = render(<Table loader={configLoader} columns={ColumnsAdminList} />)
-//     const loading = await findByTestId('loading')
-
-//     expect(loading).toBeTruthy()
-//   })
-// })
-
-// test('7. API error html', async () => {
-//   await act(async () => {
-//     const configLoader = UserLoader
-//     configLoader.url = '/user/html'
-//     const { findByTestId } = render(<Table loader={configLoader} columns={ColumnsAdminList} />)
-//     const error = await findByTestId('error')
-
-//     expect(error).toBeTruthy()
-//   })
-// })
+test('4. Error From Server', async () => {
+  await act(async () => {
+    getDataFromApi('/jobs/high-salary/server-error')
+      .then((data) => {
+        const { findByTestId } = render(
+          <Router>
+            <JobListHighSalary defaultData={data} />
+          </Router>
+        )
+        const jobList = findByTestId('job-list-error')
+        expect(jobList).toBeTruthy()
+      })
+      .catch((e) => {
+        throw new Error(e?.message)
+      })
+  })
+})

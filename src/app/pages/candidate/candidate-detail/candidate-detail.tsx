@@ -15,11 +15,14 @@ import { useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import { slugURL } from 'utils/helper'
 import { EmployerInfo } from 'models/employer-info'
+import { useIntl } from 'react-intl'
+import { getAge } from '../../../../utils/helper'
 
 export const CandidateDetail: React.FC = () => {
   const match = useRouteMatch()
   const candidateId = get(match.params, 'id')
   const userInfo = useRecoilValue(userInfoState)
+  const intl = useIntl()
   const modalUnlockCandidate = useRef<PrModalRefProps>(null)
   const [candidateInfo, setCandidateInfo] = useState<CandidateInfo | null>(null)
   const [employerInfo, setEmployerInfo] = useState<EmployerInfo | null>(null)
@@ -77,7 +80,7 @@ export const CandidateDetail: React.FC = () => {
         if (!success) {
           throw Error(error?.message)
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `CANDIDATE.${message}` }))
         modalUnlockCandidate.current?.hide()
         callApiCandidateDetail()
       })
@@ -207,7 +210,7 @@ export const CandidateDetail: React.FC = () => {
             </span>
             <div className="mt-4 flex items-center">
               <i className="fas fa-birthday-cake text-gray-500 mr-3"></i>
-              <span className="block font-medium">{moment().diff(birthday, 'years')} tuổi</span>
+              <span className="block font-medium">{getAge(birthday)} tuổi</span>
             </div>
 
             <div className="flex items-center mt-4">
@@ -218,7 +221,7 @@ export const CandidateDetail: React.FC = () => {
             <div className="flex items-center mt-4">
               <i className="fas fa-briefcase text-gray-500 mr-3"></i>
               <span>Ngành nghề: </span>
-              <span className="block font-medium ml-4">{career}Kế toán</span>
+              <span className="block font-medium ml-4">{career}</span>
             </div>
           </div>
         </div>

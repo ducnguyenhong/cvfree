@@ -472,7 +472,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
         if (userInfo && userInfo.numberOfCreateCv && !cvId) {
           setUserInfo({ ...userInfo, numberOfCreateCv: userInfo.numberOfCreateCv - 1 })
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `CV.${message}` }))
       })
       .catch((e) => {
         setLoadingAction(false)

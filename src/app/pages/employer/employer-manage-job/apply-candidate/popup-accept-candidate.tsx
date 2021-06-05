@@ -11,9 +11,11 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { prefix as prefixManageJob } from 'app/pages/employer/employer-manage-job/employer-manage-job'
 import { showApplyCandidateState } from 'app/states/show-modal/apply-candidate-state'
+import { useIntl } from 'react-intl'
 
 export const PopupAcceptCandidate: React.FC = () => {
   const refreshTableJob = useRefresh(prefixManageJob)
+  const intl = useIntl()
   const popupConfirmRef = useRef<PopupConfirmRef>(null)
   const [recoilState, setRecoilState] = useRecoilState(showAcceptCandidateState)
   const setShowModalApplyCandidate = useSetRecoilState(showApplyCandidateState)
@@ -58,7 +60,7 @@ export const PopupAcceptCandidate: React.FC = () => {
           throw Error(error?.message)
         }
         onHidePopup()
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `CANDIDATE.${message}` }))
         setShowModalApplyCandidate({ jobId: undefined, showModal: false, candidateApplied: [] })
         refreshTableJob()
       })

@@ -128,6 +128,21 @@ export default {
     DA_NANG: 'Đà Nẵng',
     HAI_PHONG: 'Hải Phòng',
     CAN_THO: 'Cần Thơ',
-    HO_CHI_MINH: 'TP. Hồ Chí Minh'
+    HO_CHI_MINH: 'TP. Hồ Chí Minh',
+    CREATED_JOB_SUCCESS: 'Đăng tin tuyển dụng thành công',
+    UPDATED_JOB_SUCCESS: 'Cập nhật tin tuyển dụng thành công'
+  },
+  CV: {
+    CREATED_CV_SUCCESS: 'Tạo hồ sơ thành công',
+    UPDATED_CV_SUCCESS: 'Cập nhật hồ sơ thành công'
+  },
+  CANDIDATE: {
+    UNLOCKED_CANDIDATE_SUCCESS: 'Mở khóa ứng viên thành công',
+    ACCEPTED_CANDIDATE_SUCCESS: 'Chấp nhận ứng viên thành công',
+    REJECTED_CANDIDATE_SUCCESS: 'Từ chối ứng viên thành công'
+  },
+  MANAGE_CANDIDATE: {
+    UPDATED_STATUS_SUCCESS: 'Cập nhật trạng thái thành công',
+    DELETED_CANDIDATE_SUCCESS: 'Xóa ứng viên thành công'
   }
 }
