@@ -63,7 +63,17 @@ export const JobListIntern: React.FC = () => {
               Việc làm thực tập sinh
             </span>
           </div>
-          {(!listJob || listJob.length === 0) && <List />}
+          {typeof listJob === 'undefined' && <List />}
+          {listJob === null && (
+            <div className="flex justify-center items-center">
+              <span className="block mt-5">Lỗi từ phía máy chủ</span>
+            </div>
+          )}
+          {listJob && listJob.length === 0 && (
+            <div className="flex justify-center items-center">
+              <span className="block mt-5">Chưa có việc làm</span>
+            </div>
+          )}
           {listJob &&
             listJob.length > 0 &&
             listJob.map((item) => {

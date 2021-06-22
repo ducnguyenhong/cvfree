@@ -34,7 +34,7 @@ export default {
     FEATURE_3_NAME: 'ABSOLUTE SECURITY',
     FEATURE_3_CONTENT: 'Secure user information',
     FEATURE_4_NAME: 'ALL FREE',
-    FEATURE_4_CONTENT: 'And here, everything is free',
+    FEATURE_4_CONTENT: 'And here the features are free to use',
     CANDIDATE_PROFILE: 'Candidate profiles',
     HOT_JOBS: 'HOT Jobs',
     RECRUITMENT_BUSINESSES: 'Recruitment businesses',

@@ -23,7 +23,14 @@ import { userInfoState } from 'app/states/user-info-state'
 import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import LoadingIcon from 'assets/icons/loading.svg'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DataDemoCV, DataFontFamilyCv, DataFontSizeCv, DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
+import {
+  DataDemoCV,
+  DataFontFamilyCv,
+  DataFontSizeCv,
+  DataPublicCv,
+  DataRecommendCv,
+  DataRecommendCvType
+} from 'constants/data-cv'
 import { DataCareer, DataFormOfWork } from 'constants/data-employer'
 import { SERVER_URL } from 'constants/index'
 import vi from 'date-fns/locale/vi'
@@ -90,6 +97,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
   const cvNameRef = useRef<PrInputRefProps>(null)
   const careerRef = useRef<PrDropdownRefProps>(null)
   const formOfWorkRef = useRef<PrDropdownRefProps>(null)
+  const isPublicRef = useRef<PrDropdownRefProps>(null)
 
   const fullnameRef = useRef<PrInputCVRefProps>(null)
   const applyPositionRef = useRef<PrInputCVRefProps>(null)
@@ -359,6 +367,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
 
     const name = cvNameRef.current?.getValue() ?? ''
     const formOfWork = getValueDropdown(formOfWorkRef.current?.getValue())
+    const isPublic = getValueDropdown(isPublicRef.current?.getValue())[0]
     const career = careerRef.current?.getValue()[0]
 
     const fullname = fullnameRef.current?.getValue() ?? ''
@@ -394,6 +403,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
 
     const dataCV: CvInfo = {
       color,
+      isPublic,
       status: 'ACTIVE',
       template: {
         value: '2',
@@ -597,7 +607,18 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
 
   useEffect(() => {
     if (cvInfo) {
-      const { color, fontFamily, fontSize, categoryCV, categoryInfo, detail, name, career, formOfWork } = cvInfo
+      const {
+        color,
+        fontFamily,
+        fontSize,
+        categoryCV,
+        categoryInfo,
+        detail,
+        name,
+        career,
+        formOfWork,
+        isPublic
+      } = cvInfo
       const {
         fullname,
         avatar,
@@ -625,6 +646,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
         cvNameRef.current?.setValue(name || '')
         careerRef.current?.setValue(career || null)
         formOfWorkRef.current?.setValue(getDefaultDataDropdown(DataFormOfWork, formOfWork || []))
+        isPublicRef.current?.setValue(getDefaultDataDropdown(DataPublicCv, isPublic ? [isPublic] : []))
       }
       setColor(color)
       setFontFamily(fontFamily)
@@ -818,7 +840,18 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
               />
               <span className="text-sm">(Có thể chọn nhiều)</span>
             </div>
-            <div className="mt-10">
+            <div className="mt-5">
+              <PrDropdown
+                label="Trạng thái CV"
+                isClearable={false}
+                options={DataPublicCv}
+                defaultValue={DataPublicCv[0]}
+                required
+                ref={isPublicRef}
+              />
+              <span className="text-sm">(Nhà tuyển dụng sẽ chỉ nhìn thấy CV công khai)</span>
+            </div>
+            <div className="mt-5">
               <span className="block italic font-medium text-justify">
                 <span className="text-red-500 font-semibold">Lưu ý:</span> Những thông tin tại đây sẽ không hiển thị
                 trong CV. Nhưng sẽ giúp CV của bạn tiếp cận đến nhiều nhà tuyển dụng hơn.

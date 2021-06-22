@@ -3,6 +3,7 @@ export interface CvInfo {
   id?: number
   status: string
   creatorId?: string
+  isPublic: string
   language?: string
   creator?: {
     fullname?: string

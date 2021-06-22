@@ -146,3 +146,8 @@ export const DataFontSizeCv = [
   { label: '15px', value: '15px' },
   { label: '16px', value: '16px' }
 ]
+
+export const DataPublicCv = [
+  { label: 'Công khai', value: 'PUBLIC' },
+  { label: 'Riêng tư', value: 'PRIVATE' }
+]

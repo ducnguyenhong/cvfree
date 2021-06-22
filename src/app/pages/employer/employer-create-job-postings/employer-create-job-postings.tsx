@@ -28,6 +28,7 @@ import { userInfoState } from 'app/states/user-info-state'
 import { ResponseJobDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { useIntl } from 'react-intl'
+import { DataPublicCv } from '../../../../constants/data-cv'
 
 export const EmployerCreateJobPostings: React.FC = () => {
   const match = useRouteMatch()
@@ -68,6 +69,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const jobDescriptionRef = useRef<Editor | null>(null)
   const requirementForCandidateRef = useRef<Editor | null>(null)
   const benefitToEnjoyRef = useRef<Editor | null>(null)
+  const isPublicRef = useRef<PrDropdownRefProps | null>(null)
 
   const resetInput = () => {
     nameRef.current?.reset()
@@ -180,6 +182,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
       formOfWork: getValueDropdown(formOfWorkRef.current?.getValue()),
       numberRecruited: parseInt(numberRecruitedRef.current?.getValue() ?? '1'),
       genderRequirement: getValueDropdown(genderRequirementRef.current?.getValue()),
+      isPublic: getValueDropdown(isPublicRef.current?.getValue())[0],
       salary: {
         salaryType: salaryTypeRef.current?.getValue()[0].value || '',
         salaryFrom: salaryFromRef.current?.getValue() ?? '0',
@@ -265,7 +268,8 @@ export const EmployerCreateJobPostings: React.FC = () => {
         salary,
         jobDescription,
         requirementForCandidate,
-        benefitToEnjoy
+        benefitToEnjoy,
+        isPublic
       } = jobDetail
 
       nameRef.current?.setValue(name)
@@ -276,6 +280,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
       formOfWorkRef.current?.setValue(getDefaultDataDropdown(DataFormOfWork, formOfWork))
       numberRecruitedRef.current?.setValue(`${numberRecruited}`)
       genderRequirementRef.current?.setValue(getDefaultDataDropdown(DataGender, genderRequirement))
+      isPublicRef.current?.setValue(getDefaultDataDropdown(DataPublicCv, [isPublic]))
       salaryTypeRef.current?.setValue(getDefaultDataDropdown(DataSalaryType, [salary.salaryType]))
       if (salary.salaryType === 'FROM_TO') {
         setDisableSalary(false)
@@ -375,6 +380,16 @@ export const EmployerCreateJobPostings: React.FC = () => {
               ref={genderRequirementRef}
               options={DataGender}
               label="Yêu cầu giới tính"
+              labelClassName="text-green-700 font-semibold"
+            />
+          </div>
+          <div className="col-span-1">
+            <PrDropdown
+              ref={isPublicRef}
+              options={DataPublicCv}
+              defaultValue={DataPublicCv[0]}
+              isClearable={false}
+              label="Trạng thái tin"
               labelClassName="text-green-700 font-semibold"
             />
           </div>

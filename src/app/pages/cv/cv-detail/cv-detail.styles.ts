@@ -37,11 +37,11 @@ export const CVDetailStyle = styled.div`
   }
 
   .cv-page-2 {
-    top: 1115px;
+    top: 1000px;
     left: -100px;
   }
   .cv-page-3 {
-    top: 2230px;
+    top: 2115px;
     left: -100px;
   }
 `

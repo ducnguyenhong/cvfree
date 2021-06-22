@@ -4,6 +4,7 @@ export interface JobPostingInfo {
   name: string
   isApplied?: boolean
   creatorId?: string
+  isPublic: string
   company?: {
     name: string
     logo: string

@@ -181,7 +181,17 @@ const JobListGeneral: React.FC = () => {
                 {intl.formatMessage({ id: 'JOBS.SEE_MORE' })}
               </Link>
             </div>
-            {(!listJobNew || listJobNew.length === 0) && <List />}
+            {typeof listJobNew === 'undefined' && <List />}
+            {listJobNew === null && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Lỗi từ phía máy chủ</span>
+              </div>
+            )}
+            {listJobNew && listJobNew.length === 0 && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Chưa có việc làm</span>
+              </div>
+            )}
             {listJobNew &&
               listJobNew.length > 0 &&
               listJobNew.map((item) => {
@@ -244,6 +254,17 @@ const JobListGeneral: React.FC = () => {
                 <span className="lg:hidden xl:inline">{intl.formatMessage({ id: 'JOBS.SEE_MORE' })}</span>
               </Link>
             </div>
+            {typeof listJobHighSalary === 'undefined' && <List />}
+            {listJobHighSalary === null && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Lỗi từ phía máy chủ</span>
+              </div>
+            )}
+            {listJobHighSalary && listJobHighSalary.length === 0 && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Chưa có việc làm</span>
+              </div>
+            )}
             {listJobHighSalary &&
               listJobHighSalary.length > 0 &&
               listJobHighSalary.map((item) => {
@@ -306,6 +327,17 @@ const JobListGeneral: React.FC = () => {
                 <span className="lg:hidden xl:inline">{intl.formatMessage({ id: 'JOBS.SEE_MORE' })}</span>
               </Link>
             </div>
+            {typeof listJobIntern === 'undefined' && <List />}
+            {listJobIntern === null && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Lỗi từ phía máy chủ</span>
+              </div>
+            )}
+            {listJobIntern && listJobIntern.length === 0 && (
+              <div className="flex justify-center items-center">
+                <span className="block mt-5">Chưa có việc làm</span>
+              </div>
+            )}
             {listJobIntern &&
               listJobIntern.length > 0 &&
               listJobIntern.map((item) => {

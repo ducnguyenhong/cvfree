@@ -1,6 +1,6 @@
 import { ColumnsProps, Loader, Pagination } from '@ekidpro/table'
 import { showNotify } from 'app/partials/pr-notify'
-import { BasicCvPublicInfo, DateTime, Status } from 'app/partials/table-columns'
+import { BasicCvPublicInfo, DateTime, IsPublic } from 'app/partials/table-columns'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
@@ -20,6 +20,7 @@ export const Columns: ColumnsProps[] = [
   { field: 'template', title: 'Mẫu CV' },
   { field: 'createdAt', title: 'Ngày tạo' },
   { field: 'updatedAt', title: 'Ngày cập nhật' },
+  { field: 'isPublic', title: 'Trạng thái' },
   { field: 'action', title: 'Hành động' }
 ]
 
@@ -66,7 +67,7 @@ export const getLoader = (url?: string) => {
         return <></>
       }
 
-      const { name, _id, detail, createdAt, updatedAt, template } = data
+      const { name, _id, detail, createdAt, updatedAt, template, isPublic } = data
       const { fullname, avatar, gender } = detail
 
       switch (field) {
@@ -87,6 +88,9 @@ export const getLoader = (url?: string) => {
 
         case 'template':
           return <span>{template.label}</span>
+
+        case 'isPublic':
+          return <IsPublic isPublic={isPublic} />
 
         case 'createdAt':
           return <DateTime timestamp={createdAt} />

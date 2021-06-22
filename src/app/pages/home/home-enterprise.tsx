@@ -80,16 +80,16 @@ const EnterpriseHome: React.FC = () => {
         </div>
 
         {userInfo?.type === 'EMPLOYER' ? (
-          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
             <MemoExpCreateCV />
           </div>
         ) : (
-          <Link to="/template-cv" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
+          <Link to="/template-cv" className="block w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
             <MemoExpCreateCV />
           </Link>
         )}
 
-        <Link to="/jobs" className="block w-40 h-40 mx-auto relative one-exp-now duration-300">
+        <Link to="/jobs" className="block w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
           <div className="absolute top-0 left-0 col-span-1 one-exp-now-rotate duration-300 bg-gray-500 w-full h-full flex justify-center items-center transform rotate-45"></div>
           <div className="transform w-full h-full absolute left-0 right-0 mx-auto flex items-center justify-center">
             <div className="cursor-pointer">
@@ -102,19 +102,19 @@ const EnterpriseHome: React.FC = () => {
         </Link>
 
         {(userInfo?.type === 'USER' || userInfo?.type === 'ADMIN') && (
-          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+          <div className="w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
             <MemoExpRecruitment />
           </div>
         )}
 
         {userInfo?.type === 'EMPLOYER' && (
-          <Link to="/employer" className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+          <Link to="/employer" className="w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
             <MemoExpRecruitment />
           </Link>
         )}
 
         {!userInfo && (
-          <Link to="/employer-intro" className="w-40 h-40 mx-auto relative one-exp-now duration-300">
+          <Link to="/employer-intro" className="w-40 h-40 mx-auto relative one-exp-now duration-300 hidden lg:block">
             <MemoExpRecruitment />
           </Link>
         )}

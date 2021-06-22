@@ -1,17 +1,16 @@
 import { ColumnsProps, Loader, Pagination } from '@ekidpro/table'
 import { showNotify } from 'app/partials/pr-notify'
-import { BasicCvPublicInfo, DateTime, Status } from 'app/partials/table-columns'
+import { DateTime, IsPublic } from 'app/partials/table-columns'
+import { showApplyCandidateState } from 'app/states/show-modal/apply-candidate-state'
 import axios from 'axios'
+import { DataGender } from 'constants/data-common'
+import { DataFormOfWork, DataRecruitmentPosition } from 'constants/data-employer'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { JobPostingInfo } from 'models/job-posting-info'
-import { slugURL, getDefaultLabelDropdown } from 'utils/helper'
-import { Action } from './employer-manage-job.action'
-
-import { DataGender } from 'constants/data-common'
-import { DataFormOfWork, DataRecruitmentPosition } from 'constants/data-employer'
 import { useSetRecoilState } from 'recoil'
-import { showApplyCandidateState } from 'app/states/show-modal/apply-candidate-state'
+import { getDefaultLabelDropdown, slugURL } from 'utils/helper'
+import { Action } from './employer-manage-job.action'
 
 export interface TableColumn extends JobPostingInfo {
   action?: string
@@ -27,6 +26,7 @@ export const Columns: ColumnsProps[] = [
   { field: 'numberRecruited', title: 'Số lượng tuyển' },
   { field: 'timeToApply', title: 'Thời hạn ứng tuyển' },
   { field: 'formOfWork', title: 'Hình thức' },
+  { field: 'isPublic', title: 'Trạng thái' },
   { field: 'genderRequirement', title: 'Yêu cầu giới tính' },
   { field: 'createdAt', title: 'Ngày tạo' },
   { field: 'updatedAt', title: 'Ngày cập nhật' },
@@ -37,6 +37,8 @@ export const getLoader = (url?: string) => {
   const TableLoader: Loader<TableColumn, TableFilter> = {
     fetch: async (input) => {
       const accessToken = Cookies.get('token')
+      console.log('ducnh2')
+
       const response = await axios({
         method: 'GET',
         headers: {
@@ -50,14 +52,18 @@ export const getLoader = (url?: string) => {
         }
       })
 
+      console.log('ducnh4', response.data)
       const { success, data, error } = response.data
-      const { items, pagination } = data
-      const { page, size, totalItems, totalPages } = pagination
-
       if (!success) {
         showNotify.error(error.message)
         throw Error(error.message)
       }
+      console.log('ducnh5', response.data)
+      const { items, pagination } = data
+      console.log('ducnh6', response.data)
+      const { page, size, totalItems, totalPages } = pagination
+
+      console.log('ducnh7', response.data)
 
       const result: Pagination<JobPostingInfo> = {
         data: items,
@@ -89,7 +95,8 @@ export const getLoader = (url?: string) => {
         genderRequirement,
         numberRecruited,
         recruitmentPosition,
-        timeToApply
+        timeToApply,
+        isPublic
       } = data
 
       const onShowListCandidate = (id?: string) => {
@@ -120,6 +127,9 @@ export const getLoader = (url?: string) => {
               {name}
             </a>
           )
+
+        case 'isPublic':
+          return <IsPublic isPublic={isPublic} />
 
         case 'candidateApplied':
           return (

@@ -34,7 +34,7 @@ export default {
     FEATURE_3_NAME: 'BẢO MẬT TUYỆT ĐỐI',
     FEATURE_3_CONTENT: 'Bảo mật an toàn thông tin người sử dụng',
     FEATURE_4_NAME: 'HOÀN TOÀN MIỄN PHÍ',
-    FEATURE_4_CONTENT: 'Và ở đây, mọi thứ đều là miễn phí',
+    FEATURE_4_CONTENT: 'Và ở đây, các tính năng được sử dụng miễn phí',
     CANDIDATE_PROFILE: 'Hồ sơ ứng viên',
     HOT_JOBS: 'Việc làm HOT',
     RECRUITMENT_BUSINESSES: 'Doanh nghiệp tuyển dụng',

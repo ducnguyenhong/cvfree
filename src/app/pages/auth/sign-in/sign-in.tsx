@@ -1,18 +1,19 @@
 import AuthIntro from 'app/pages/auth/auth-intro'
-import Button from 'app/partials/pr-button'
 import PrInput, { PrInputRefProps } from 'app/partials/pr-input-auth'
 import { showNotify } from 'app/partials/pr-notify'
 import { userInfoState, userTokenState } from 'app/states/user-info-state'
+import LoadingIcon from 'assets/icons/loading.svg'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { SERVER_URL } from 'constants/index'
 import { get } from 'lodash'
 import md5 from 'md5'
 import { UserInfo } from 'models/user-info'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useIntl } from 'react-intl'
 import { Link, useHistory } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { useIntl } from 'react-intl'
-import LoadingIcon from 'assets/icons/loading.svg'
+import { checkUsername } from 'utils/helper'
+import { v4 as uuid } from 'uuid'
 
 interface SignInProps {}
 
@@ -46,16 +47,45 @@ const SignIn: React.FC<SignInProps> = () => {
   const setUserInfoRecoil = useSetRecoilState(userInfoState)
   const setUserTokenRecoil = useSetRecoilState(userTokenState)
 
+  const validate = () => {
+    if (!usernameRef.current?.checkRequired()) {
+      return false
+    }
+    if (!passwordRef.current?.checkRequired()) {
+      return false
+    }
+    if (usernameRef.current.getValue().length < 6 || usernameRef.current.getValue().length > 14) {
+      usernameRef.current.setErrorMessage('Tài khoản phải từ 6 đến 14 ký tự!')
+      return false
+    }
+    if (!checkUsername(usernameRef.current.getValue())) {
+      usernameRef.current.setErrorMessage('Tài khoản phải là chữ cái a-z hoặc số 0-9!')
+      return false
+    }
+    return true
+  }
+
   const onSignIn = (e: any) => {
     e.preventDefault()
     setDisableInput(true)
     setLoading(true)
+    if (!validate()) {
+      setDisableInput(false)
+      setLoading(false)
+      return null
+    }
     const username = usernameRef.current?.getValue() || ''
     const password = passwordRef.current?.getValue() || ''
+    let deviceId = localStorage.getItem('device-id')
+    if (!deviceId) {
+      deviceId = uuid()
+      localStorage.setItem('device-id', deviceId)
+    }
 
     const data: DataSignIn = {
       username,
-      password: md5(password)
+      password: md5(password),
+      deviceId
     }
 
     callApiSignIn(data)
@@ -160,7 +190,7 @@ const SignIn: React.FC<SignInProps> = () => {
                       {loading ? (
                         <img src={LoadingIcon} alt="loading" className="w-5 ml-2" />
                       ) : (
-                        <i className="fas fa-user-plus ml-2 text-sm"></i>
+                        <i className="fas fa-sign-out-alt ml-2"></i>
                       )}
                     </button>
                   </div>

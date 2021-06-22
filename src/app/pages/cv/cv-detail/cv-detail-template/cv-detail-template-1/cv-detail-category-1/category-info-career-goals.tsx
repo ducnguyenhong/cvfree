@@ -18,7 +18,7 @@ export const CareerGoalsInfo: React.FC<CareerGoalsInfoProps> = (props) => {
         <span className="uppercase font-bold">Mục tiêu nghề nghiệp</span>
       </div>
       <div>
-        <span className="text-justify block px-2">{careerGoals}</span>
+        <div className="text-justify block px-2">{`${careerGoals}`}</div>
       </div>
     </div>
   )

@@ -17,6 +17,8 @@ export const prefix = 'employerManageJob'
 export const EmployerManageJob: React.FC = () => {
   const userInfo = useRecoilValue(userInfoState)
   const loader = getLoader(`${SERVER_URL}/jobs/employer/${userInfo?._id}`)
+  console.log('ducnh3')
+
   const history = useHistory()
 
   const modalNeedRegisterCompanyRef = useRef<PrModalRefProps>(null)
