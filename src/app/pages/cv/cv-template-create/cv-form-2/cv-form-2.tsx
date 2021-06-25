@@ -487,7 +487,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
         if (userInfo && userInfo.numberOfCreateCv && !cvId) {
           setUserInfo({ ...userInfo, numberOfCreateCv: userInfo.numberOfCreateCv - 1 })
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `CV.${message}` }))
       })
       .catch((e) => {
         setLoadingAction(false)
@@ -901,7 +901,7 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
             }`}
           >
             {/* Màu CV */}
-            <PrInputColor onChange={onChangColorCV} defaultColor="#DF4082" />
+            <PrInputColor onChange={onChangColorCV} defaultColor={color || '#DF4082'} />
             {/* Đổi mẫu */}
             {cvId && (
               <div className="mx-4 text-center" onClick={() => modalChangeTemplateRef.current?.show()}>

@@ -8,12 +8,14 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ResponseDefault } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { get } from 'lodash'
+import { useIntl } from 'react-intl'
 
 export const ChangePassword: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const oldPasswordRef = useRef<PrInputRefProps>(null)
   const newPasswordRef = useRef<PrInputRefProps>(null)
   const confPasswordRef = useRef<PrInputRefProps>(null)
+  const intl = useIntl()
 
   const validate = () => {
     if (!oldPasswordRef.current?.checkRequired()) {
@@ -54,12 +56,12 @@ export const ChangePassword: React.FC = () => {
 
     axios(config)
       .then((response: AxiosResponse<ResponseDefault>) => {
-        const { success, message, error, data } = response.data
+        const { success, message, error } = response.data
 
         if (!success) {
           throw Error(error?.message)
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `API.${message}` }))
       })
       .catch((e) => {
         setErrorMessage(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')

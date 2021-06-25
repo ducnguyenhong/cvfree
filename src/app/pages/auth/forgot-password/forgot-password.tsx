@@ -49,13 +49,12 @@ export const ForgotPassword: React.FC<SignInProps> = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error } = response.data
+        const { success, error } = response.data
 
         if (!success) {
           throw Error(error)
         }
         setDisableInput(false)
-        showNotify.success(message)
         modalRef.current?.show()
         setLoading(false)
         emailRef.current?.reset()

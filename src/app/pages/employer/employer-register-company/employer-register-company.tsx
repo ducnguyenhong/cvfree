@@ -19,19 +19,13 @@ import { useRecoilState } from 'recoil'
 import { getDefaultDataDropdown, getValueDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
 import { DropdownAsyncRef } from 'app/partials/dropdown-async/dropdown-async.type'
+import { useIntl } from 'react-intl'
 
 export const EmployerRegisterCompany: React.FC = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
+  const intl = useIntl()
   const isUpdate = !!userInfo?.companyId
   const [city, setCity] = useState<OptionProps | null>(null)
-  // const [addressInput, setAddressInput] = useState<{
-  //   value: {
-  //     city?: { value: string; label: string }
-  //     district?: { value: string; label: string }
-  //     street?: string
-  //   }
-  //   label: string
-  // } | null>(null)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [backgroundFile, setBackgroundFile] = useState<File | null>(null)
@@ -111,7 +105,7 @@ export const EmployerRegisterCompany: React.FC = () => {
         } else {
           callApiCompanyDetail()
         }
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `API.${message}` }))
       })
       .catch((e) => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')

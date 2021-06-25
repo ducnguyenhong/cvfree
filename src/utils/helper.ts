@@ -138,11 +138,15 @@ export const uploadServer = async (img: File, id: string, folderServer?: string,
     })
 }
 
-const isSingleElement = (data: OptionsType<OptionProps> | OptionProps | null): data is OptionProps => {
+const isSingleElement = (
+  data: OptionsType<OptionProps | OptionProps[]> | OptionProps | OptionProps[] | null
+): data is OptionProps => {
   return !Array.isArray(data)
 }
 
-export const getDataDropdown = (data: OptionsType<OptionProps> | OptionProps | null): OptionProps[] => {
+export const getDataDropdown = (
+  data: OptionsType<OptionProps | OptionProps[]> | OptionProps | OptionProps[] | null
+): OptionProps[] => {
   if (!data) {
     return []
   }

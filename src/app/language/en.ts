@@ -16,7 +16,9 @@ export default {
     SEND_EMAIL_ERROR: 'Email sending error',
     NOT_EXISTS_EMAIL: 'Email does not exist in the system',
     USER_NOT_EXISTS: 'User does not exist in the system',
-    FORGOT_PASSWORD_SUCCESS: 'Forgot password success'
+    FORGOT_PASSWORD_SUCCESS: 'Forgot password success',
+    CHANGED_PASSWORD_SUCCESS: 'Changed password successfully',
+    CREATED_COMPANY_SUCCESS: 'Successful company registration'
   },
   HOME: {
     TEST_VERSION: 'Test version',

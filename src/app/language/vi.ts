@@ -16,7 +16,9 @@ export default {
     SEND_EMAIL_ERROR: 'Lỗi gửi email xác thực',
     NOT_EXISTS_EMAIL: 'Email không tồn tại trong hệ thống',
     USER_NOT_EXISTS: 'Tài khoản không tồn tại trong hệ thống',
-    FORGOT_PASSWORD_SUCCESS: 'Quên mật khẩu thành công'
+    FORGOT_PASSWORD_SUCCESS: 'Quên mật khẩu thành công',
+    CHANGED_PASSWORD_SUCCESS: 'Đổi mật khẩu thành công',
+    CREATED_COMPANY_SUCCESS: 'Đăng ký công ty thành công'
   },
   HOME: {
     TEST_VERSION: 'Phiên bản thử nghiệm',

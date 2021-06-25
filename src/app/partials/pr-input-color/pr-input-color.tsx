@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 interface Props {
   onChange: (e: string) => void
   defaultColor?: string
@@ -8,6 +8,10 @@ const PrInputColor: React.FC<Props> = (props) => {
   const { onChange, defaultColor } = props
 
   const [color, setColor] = useState<string>(defaultColor || '')
+
+  useEffect(() => {
+    defaultColor && setColor(defaultColor)
+  }, [defaultColor])
 
   return (
     <div className="mx-4 text-center">
