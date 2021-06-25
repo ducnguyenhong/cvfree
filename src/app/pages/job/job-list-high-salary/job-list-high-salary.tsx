@@ -117,7 +117,9 @@ export const JobListHighSalary: React.FC<TestProps> = (props) => {
                     <i className="fas fa-coins mr-1.5 text-sm text-gray-600" />
                     <span className="font-medium text-gray-600">
                       {salary.salaryType === 'FROM_TO'
-                        ? `${salary.salaryFrom} - ${salary.salaryTo} ${salary.salaryCurrency}`
+                        ? `${salary.salaryFrom?.replaceAll('.', '')} - ${salary.salaryTo?.replaceAll('.', '')} ${
+                            salary.salaryCurrency
+                          }`
                         : 'Thỏa thuận'}
                     </span>
                   </div>

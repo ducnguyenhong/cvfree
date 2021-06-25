@@ -252,7 +252,7 @@ export const EmployerLookingForCandidates: React.FC = () => {
                       <div className="flex items-center my-1">
                         <i className="fas fa-award text-gray-500 mr-3"></i>
                         <span className="block font-medium">
-                          {workExperience && workExperience.length > 0 ? 'Đã' : 'Chưa'} có kinh nghiệm làm việc
+                          {workExperience ? 'Đã' : 'Chưa'} có kinh nghiệm làm việc
                         </span>
                       </div>
                     </div>

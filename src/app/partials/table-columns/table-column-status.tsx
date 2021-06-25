@@ -14,8 +14,11 @@ const StatusStyle = styled.div`
   }
 `
 
-export const Status: React.FC<{ status: string }> = (props) => {
+export const Status: React.FC<{ status?: string }> = (props) => {
   const renderStatus = () => {
+    if (!status) {
+      return null
+    }
     if (props.status === 'INACTIVE') {
       return (
         <span className="inline-block text-center px-3 py-1 rounded-md inactive font-semibold whitespace-nowrap">

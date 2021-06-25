@@ -120,11 +120,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
       fullname,
       type: 'EMPLOYER',
       phone,
-      status: 'ACTIVE',
-      gender: gender ? gender[0].value : 'ANOTHER',
-      typeAccount: 'NORMAL',
-      numberOfCandidateOpening: 2,
-      numberOfPosting: 2
+      gender: gender ? gender[0].value : 'ANOTHER'
     }
 
     callApiCreate(data)
@@ -145,7 +141,7 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
 
     axios(config)
       .then((response) => {
-        const { success, message, error } = response.data
+        const { success, error } = response.data
         if (!success) {
           throw Error(error)
         }

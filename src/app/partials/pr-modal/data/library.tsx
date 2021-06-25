@@ -92,13 +92,7 @@ const ModalLib: React.FC<ModalLibProps> = (props) => {
                       <hr />
                     </>
                   )}
-                  <div
-                    className={`${disableFooter ? 'rounded-lg' : ''} ${
-                      position === 'fixed' ? 'overflow-hidden' : ''
-                    } bg-white p-5`}
-                  >
-                    {children}
-                  </div>
+                  <div className={`${disableFooter ? 'rounded-lg' : ''} bg-white p-5`}>{children}</div>
                   {!disableFooter && (
                     <>
                       <hr />

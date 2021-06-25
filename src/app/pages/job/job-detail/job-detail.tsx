@@ -258,11 +258,11 @@ export const JobDetail: React.FC = () => {
       return 'Thỏa thuận'
     }
     if (salary.salaryType === 'FROM_TO') {
-      const salaryFrom = Number(salary.salaryFrom).toLocaleString('it-IT', {
+      const salaryFrom = Number(salary.salaryFrom?.replaceAll('.', '')).toLocaleString('it-IT', {
         style: 'currency',
         currency: salary.salaryCurrency
       })
-      const salaryTo = Number(salary.salaryTo).toLocaleString('it-IT', {
+      const salaryTo = Number(salary.salaryTo?.replaceAll('.', '')).toLocaleString('it-IT', {
         style: 'currency',
         currency: salary.salaryCurrency
       })

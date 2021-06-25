@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { getDefaultDataDropdown, getValueDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
+import { DropdownAsyncRef } from 'app/partials/dropdown-async/dropdown-async.type'
 
 export const EmployerRegisterCompany: React.FC = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
@@ -48,8 +49,8 @@ export const EmployerRegisterCompany: React.FC = () => {
   const websiteRef = useRef<PrInputRefProps>(null)
   const taxCodeRef = useRef<PrInputRefProps>(null)
   const streetRef = useRef<PrInputRefProps>(null)
-  const cityRef = useRef<PrDropdownRefProps>(null)
-  const districtRef = useRef<PrDropdownRefProps>(null)
+  const cityRef = useRef<DropdownAsyncRef>(null)
+  const districtRef = useRef<DropdownAsyncRef>(null)
   const personnelSizeRef = useRef<PrDropdownRefProps>(null)
   const positionRef = useRef<PrDropdownRefProps>(null)
   const introRef = useRef<PrInputRefProps>(null)
@@ -105,7 +106,7 @@ export const EmployerRegisterCompany: React.FC = () => {
         if (!isUpdate) {
           const { userDetail } = data
           if (userInfo) {
-            setUserInfo({ ...userInfo, companyId: userDetail.companyId })
+            setUserInfo({ ...userInfo, companyId: userDetail.companyId, isAdminOfCompany: true })
           }
         } else {
           callApiCompanyDetail()

@@ -201,7 +201,7 @@ export const TabUpdateInfo: React.FC = () => {
         )
       }
       verifyRef.current?.setValue(getDefaultDataDropdown(DataVerify, [`${verify}`]))
-      statusRef.current?.setValue(getDefaultDataDropdown(dataOptionActive, [status]))
+      statusRef.current?.setValue(getDefaultDataDropdown(dataOptionActive, [status || '']))
     }
   }, [userDetail])
 

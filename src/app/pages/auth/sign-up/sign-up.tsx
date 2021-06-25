@@ -98,8 +98,7 @@ const SignUp: React.FC<SignUpProps> = () => {
       username,
       password: md5(password),
       email,
-      type: 'USER',
-      status: 'ACTIVE'
+      type: 'USER'
     }
 
     callApiCreate(data)

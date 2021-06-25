@@ -31,7 +31,9 @@ import {
   uploadServer,
   getGenderFromInput,
   getValueDropdown,
-  getDefaultDataDropdown
+  getDefaultDataDropdown,
+  getGenderMultiLanguage,
+  slugURL
 } from 'utils/helper'
 import { CvInfo } from 'models/cv-info'
 import { SERVER_URL } from 'constants/index'
@@ -51,7 +53,7 @@ import {
   AnotherInfoRef,
   PresenterRef
 } from 'app/partials/metadata/metadata.type'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
 import moment from 'moment'
@@ -72,6 +74,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   const cvId = get(match.params, 'id')
   const { cvInfo, refreshCvInfo } = props
   const intl = useIntl()
+  const history = useHistory()
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [defaultAvatar, setDefaultAvatar] = useState<string>('')
@@ -444,8 +447,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
       unlockedEmployers: []
     }
 
-    console.log('ducnh', dataCV)
-
     callApiSave(dataCV)
   }
 
@@ -467,10 +468,14 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
 
     axios(config)
       .then((response: AxiosResponse<ResponseCVDetail>) => {
-        const { success, message, error } = response.data
+        const { success, message, error, data } = response.data
 
         if (!success) {
           throw Error(error?.message)
+        }
+        const { detail, _id } = data.cvDetail
+        if (!cvId) {
+          history.push(`/update-cv/${slugURL(detail.fullname)}.${_id}`)
         }
         setLoadingAction(false)
         if (userInfo && userInfo.numberOfCreateCv && !cvId) {
@@ -649,7 +654,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
       setDefaultAvatar(avatar || '')
       applyPositionRef.current?.setValue(applyPosition || '')
       setBirthday(moment(birthday).toDate())
-      genderRef.current?.setValue(gender)
+      genderRef.current?.setValue(getGenderMultiLanguage(gender, 'vi'))
       phoneRef.current?.setValue(phone)
       addressRef.current?.setValue(address?.label || '')
       emailRef.current?.setValue(email)
@@ -932,7 +937,9 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               className="mx-4 text-center bg-green-600 px-4 py-2 rounded cursor-pointer duration-300 hover:bg-green-700"
               onClick={onSaveCV}
             >
-              <span className="block text-sm text-white font-semibold whitespace-nowrap">Lưu CV</span>
+              <span className="block text-sm text-white font-semibold whitespace-nowrap">
+                {cvId ? 'Lưu CV' : 'Tạo CV'}
+              </span>
               {loadingAction ? (
                 <img src={LoadingIcon} alt="loading" className="w-7 h-7 block mx-auto mt-1" />
               ) : (
@@ -1139,6 +1146,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
           title={'Chọn mục hiển thị'}
           cancelTitle="Đóng"
           okTitle="Xác nhận"
+          position="fixed"
           onChange={onChangeCategoryList}
           onHide={onHideCategoryList}
         >
@@ -1205,6 +1213,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
           okTitle="Xác nhận"
           onChange={onChangeAddress}
           onHide={onHideAddress}
+          position="fixed"
         >
           <div className="grid-cols-2 grid gap-x-12 p-8">
             <DropdownAsync
@@ -1233,6 +1242,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
           cancelTitle="Đóng"
           okTitle="Xác nhận"
           size="lg"
+          position="fixed"
           disableFooter
           onHide={() => modalChangeTemplateRef.current?.hide()}
         >

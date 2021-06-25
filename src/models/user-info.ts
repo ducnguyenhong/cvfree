@@ -22,7 +22,7 @@ export interface UserInfo {
   isAdminOfCompany?: boolean
   beWarned?: boolean
   phone?: string
-  status: string
+  status?: string
   type: string
   avatar?: string
   avatarId?: string
