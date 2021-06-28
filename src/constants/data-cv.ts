@@ -1,5 +1,6 @@
 import Image1 from 'assets/images/img-demo-temp-cv-1.png'
 import Image2 from 'assets/images/img-demo-temp-cv-2.png'
+import Image3 from 'assets/images/img-demo-temp-cv-3.png'
 
 export interface DataRecommendCvType {
   field: string
@@ -23,6 +24,11 @@ export const DataDemoCV: DataDemoCVType[] = [
     image: Image2,
     value: '2',
     label: 'DYNAMIC'
+  },
+  {
+    image: Image3,
+    value: '3',
+    label: 'CREATION'
   }
 ]
 

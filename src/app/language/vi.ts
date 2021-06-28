@@ -103,6 +103,7 @@ export default {
     LIST_TEMPLATE: 'Danh sách các mẫu CV',
     DEFAULT: 'Mặc định',
     DYNAMIC: 'Năng động',
+    CREATION: 'Sáng tạo',
     USE: 'Sử dụng'
   },
   ABOUT_US: {

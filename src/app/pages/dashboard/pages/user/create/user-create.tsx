@@ -393,6 +393,8 @@ export const UserCreate: React.FC = () => {
                   <DatePicker
                     wrapperClassName="w-full"
                     className="w-full h-9 px-4"
+                    showYearDropdown
+                    showMonthDropdown
                     selected={birthday}
                     onChange={(e) => {
                       e && setErrorMessage('')

@@ -48,7 +48,7 @@ export const BasicCvInfo: React.FC<CvInfoProps> = (props) => {
         >
           {fullname ? (
             <span className={`display-name flex-nowrap block hover:text-blue-800 font-bold'`}>
-              {fullname}
+              {fullname.toUpperCase()}
               {renderGender(gender)}
             </span>
           ) : (

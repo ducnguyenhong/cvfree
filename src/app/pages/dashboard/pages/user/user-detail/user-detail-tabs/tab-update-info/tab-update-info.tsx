@@ -285,6 +285,8 @@ export const TabUpdateInfo: React.FC = () => {
                     wrapperClassName="w-full"
                     className="w-full h-9 px-4"
                     selected={birthday}
+                    showYearDropdown
+                    showMonthDropdown
                     onChange={(e) => {
                       e && setErrorMessage('')
                       setBirthday(e)

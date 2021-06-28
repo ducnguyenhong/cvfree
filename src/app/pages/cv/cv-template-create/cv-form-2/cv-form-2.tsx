@@ -1018,7 +1018,8 @@ export const CvFormLayout2: React.FC<CvFormProps> = (props) => {
                         placeholderText="Ngày sinh"
                         onFocus={() => onChangeRecommend('birthday')}
                         onBlur={() => onChangeRecommend(null)}
-                        // value={}
+                        showYearDropdown
+                        showMonthDropdown
                         selected={birthday}
                         autoFocus={focusBirthday}
                         locale={vi}

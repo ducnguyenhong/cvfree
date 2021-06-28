@@ -1,75 +1,81 @@
+import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
+import {
+  ActivityRef,
+  AdvancedSkillRef,
+  AnotherInfoRef,
+  AwardRef,
+  BasicSkillRef,
+  CertificateRef,
+  EducationRef,
+  PresenterRef,
+  WorkExperienceRef
+} from 'app/partials/metadata/metadata.type'
+import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
 import PrDropdownCV from 'app/partials/pr-dropdown-cv'
+import PrDropdown from 'app/partials/pr-dropdown/pr-dropdown'
+import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import PrInputColor from 'app/partials/pr-input-color'
 import PrInputCV from 'app/partials/pr-input-cv'
-import PrInput, { PrInputRefProps } from 'app/partials/pr-input'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
+import { showNotify } from 'app/partials/pr-notify'
 import PrUpload from 'app/partials/pr-upload'
-import { EmailIcon, FacebookIcon, GenderIcon, BirthdayIcon, MapIcon, PhoneIcon } from 'assets/icons'
-import { DataFontFamilyCv, DataFontSizeCv, DataDemoCV, DataRecommendCv, DataRecommendCvType } from 'constants/data-cv'
+import { userInfoState } from 'app/states/user-info-state'
+import { BirthdayIcon, EmailIcon, FacebookIcon, GenderIcon, MapIcon, PhoneIcon } from 'assets/icons'
 import LoadingIcon from 'assets/icons/loading.svg'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import {
+  DataDemoCV,
+  DataFontFamilyCv,
+  DataFontSizeCv,
+  DataPublicCv,
+  DataRecommendCv,
+  DataRecommendCvType
+} from 'constants/data-cv'
+import { DataCareer, DataFormOfWork } from 'constants/data-employer'
+import { SERVER_URL } from 'constants/index'
 import vi from 'date-fns/locale/vi'
+import Cookies from 'js-cookie'
+import { get } from 'lodash'
+import { CvInfo } from 'models/cv-info'
+import { ResponseCVDetail } from 'models/response-api'
+import moment from 'moment'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import DatePicker from 'react-datepicker'
+import { useRouteMatch, useHistory } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import {
+  getCategoryWhenDown,
+  getCategoryWhenRemove,
+  getCategoryWhenUp,
+  getDefaultDataDropdown,
+  getGenderFromInput,
+  getGenderMultiLanguage,
+  getValueDropdown,
+  slugURL,
+  uploadServer
+} from 'utils/helper'
+import { v4 as uuid } from 'uuid'
 import {
   Activities,
   AdvancedSkills,
   AnotherInfos,
   Awards,
   BasicSkills,
-  Certificates,
-  WorkExperiences,
   CareerGoals,
+  Certificates,
+  Educations,
   Hobbies,
   Presenters,
-  Educations
+  WorkExperiences
 } from './category'
 import { CVFormStyle } from './cv-form.styles'
 import { CategoryProps, CvFormProps, PrInputCVRefProps } from './cv-form.types'
-import {
-  getCategoryWhenUp,
-  getCategoryWhenDown,
-  getCategoryWhenRemove,
-  uploadServer,
-  getGenderFromInput,
-  getValueDropdown,
-  getDefaultDataDropdown,
-  getGenderMultiLanguage,
-  slugURL
-} from 'utils/helper'
-import { CvInfo } from 'models/cv-info'
-import { SERVER_URL } from 'constants/index'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import Cookies from 'js-cookie'
-import { ResponseCVDetail } from 'models/response-api'
-import { showNotify } from 'app/partials/pr-notify'
-import { get } from 'lodash'
-import {
-  BasicSkillRef,
-  EducationRef,
-  ActivityRef,
-  WorkExperienceRef,
-  AdvancedSkillRef,
-  AwardRef,
-  CertificateRef,
-  AnotherInfoRef,
-  PresenterRef
-} from 'app/partials/metadata/metadata.type'
-import { useRouteMatch, useHistory } from 'react-router-dom'
-import DatePicker from 'react-datepicker'
-import { DropdownAsync, OptionProps } from 'app/partials/dropdown-async'
-import moment from 'moment'
-import PrDropdown from 'app/partials/pr-dropdown/pr-dropdown'
-import { DataCareer, DataFormOfWork } from 'constants/data-employer'
-import { v4 as uuid } from 'uuid'
-import { PrDropdownRefProps } from 'app/partials/pr-dropdown'
-import { useRecoilState } from 'recoil'
-import { userInfoState } from 'app/states/user-info-state'
 import { useIntl } from 'react-intl'
-import { DataPublicCv } from '../../../../../constants/data-cv'
 
 const defaultFontFamily = { label: 'Quicksand', value: `"Quicksand", sans-serif` }
 const defaultFontSize = { label: '14px', value: '14px' }
 
-export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
+export const CvFormLayout3: React.FC<CvFormProps> = (props) => {
   const match = useRouteMatch()
   const cvId = get(match.params, 'id')
   const { cvInfo, refreshCvInfo } = props
@@ -78,12 +84,13 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [defaultAvatar, setDefaultAvatar] = useState<string>('')
-  const [color, setColor] = useState<string>('#176F9B')
+  const [color, setColor] = useState<string>('#3C5D79')
   const [fontFamily, setFontFamily] = useState<string>(defaultFontFamily.value)
   const [fontSize, setFontSize] = useState<string>(defaultFontSize.value)
   const [fixedControl, setFixedControl] = useState<boolean>(false)
   const [cvHeight, setCvHeight] = useState<number>(0)
   const [loadingAction, setLoadingAction] = useState<boolean>(false)
+  const [isShowCropAvatar, setIsShowCropAvatar] = useState<boolean>(false)
   const [disableDistrict, setDisableDistrict] = useState<boolean>(true)
   const [focusBirthday, setFocusBirthday] = useState<boolean>(false)
   const [showRecommend, setShowRecommend] = useState<boolean>(false)
@@ -402,16 +409,16 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
       isPublic,
       status: 'ACTIVE',
       template: {
-        value: '1',
-        label: 'DEFAULT'
+        value: '3',
+        label: 'CREATION'
       },
       fontSize,
       fontFamily,
       name,
-      language: 'vi',
       formOfWork,
       career,
       categoryInfo,
+      language: 'vi',
       categoryCV,
       detail: {
         fullname,
@@ -469,7 +476,6 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
     axios(config)
       .then((response: AxiosResponse<ResponseCVDetail>) => {
         const { success, message, error, data } = response.data
-
         if (!success) {
           throw Error(error?.message)
         }
@@ -842,10 +848,10 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
             <div className="mt-5">
               <PrDropdown
                 label="Trạng thái CV"
+                isClearable={false}
                 options={DataPublicCv}
                 defaultValue={DataPublicCv[0]}
                 required
-                isClearable={false}
                 ref={isPublicRef}
               />
               <span className="text-sm">(Nhà tuyển dụng sẽ chỉ nhìn thấy CV công khai)</span>
@@ -888,12 +894,14 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               top: fixedControl ? 76 : undefined,
               right: fixedControl && showRecommend ? '20%' : undefined
             }}
-            className={`bg-white duration-300 z-40 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
+            className={`${
+              isShowCropAvatar ? '' : 'z-40'
+            } bg-white duration-300 mx-auto shadow-md w-full flex items-center justify-between py-2 px-5 ${
               fixedControl ? 'fixed left-0 right-0 mx-auto' : 'relative'
             }`}
           >
             {/* Màu CV */}
-            <PrInputColor onChange={onChangColorCV} defaultColor={color || '#176F9B'} />
+            <PrInputColor onChange={onChangColorCV} defaultColor={color || '#DF4082'} />
             {/* Đổi mẫu */}
             {cvId && (
               <div className="mx-4 text-center" onClick={() => modalChangeTemplateRef.current?.show()}>
@@ -906,7 +914,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               <span className="block text-sm font-medium mb-1">Cỡ chữ</span>
               <PrDropdownCV
                 dropdownClassName="w-full"
-                className="w-full"
+                className={`${isShowCropAvatar ? 'z-0' : ''} w-full`}
                 options={DataFontSizeCv}
                 onChange={(value) => setFontSize(value)}
                 defaultValue={defaultFontSize}
@@ -918,7 +926,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               <span className="block text-sm font-medium mb-1">Font chữ</span>
               <PrDropdownCV
                 dropdownClassName="w-full"
-                className="w-full"
+                className={`${isShowCropAvatar ? 'z-0' : ''} w-full`}
                 options={DataFontFamilyCv}
                 onChange={(value) => {
                   setFontFamily(value)
@@ -964,160 +972,179 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
                 <span className="text-white font-semibold">Trang 3</span>
               </div>
             )}
-            <div className="grid grid-cols-3 h-full">
+
+            <div className="grid grid-cols-5 h-full">
+              {/* CV Top */}
+              <div className="col-span-5 grid grid-cols-5" style={{ backgroundColor: color }}>
+                <div className="col-span-2" />
+                <div className="col-span-3 flex items-center justify-center px-10 py-10">
+                  <div className="w-4/5">
+                    <div className="">
+                      <PrInputCV
+                        ref={fullnameRef}
+                        placeholder="Họ và tên"
+                        onFocus={() => onChangeRecommend('fullname')}
+                        onBlur={() => onChangeRecommend(null)}
+                        divClassName="h-8"
+                        className="bg-transparent uppercase font-bold text-2xl text-center text-pink-100 py-2 placeholder-pink-100"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <PrInputCV
+                        ref={applyPositionRef}
+                        noScrollOnFocus
+                        onFocus={() => onChangeRecommend('applyPosition')}
+                        onBlur={() => onChangeRecommend(null)}
+                        placeholder="Vị trí ứng tuyển"
+                        divClassName="h-8"
+                        className="bg-transparent uppercase font-medium text-center text-white py-2 placeholder-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* CV Left */}
-              <div className="col-span-1 bg-gray-100 relative overflow-hidden">
-                <div className="div-top-left p-4 pb-10 overflow-hidden relative" style={{ backgroundColor: color }}>
-                  <div className="mb-3">
-                    <PrInputCV
-                      ref={fullnameRef}
-                      placeholder="Họ và tên"
-                      onFocus={() => onChangeRecommend('fullname')}
-                      onBlur={() => onChangeRecommend(null)}
-                      divClassName="h-8"
-                      className="bg-transparent placeholder-white uppercase font-bold text-lg w-full text-center text-white py-2"
-                    />
-                  </div>
-                  <div className="px-6">
-                    <PrUpload getImage={getImage} defaultURL={defaultAvatar} />
-                  </div>
-                  <div className="mt-3 mb-5">
-                    <PrInputCV
-                      ref={applyPositionRef}
-                      noScrollOnFocus
-                      onFocus={() => onChangeRecommend('applyPosition')}
-                      onBlur={() => onChangeRecommend(null)}
-                      placeholder="Vị trí ứng tuyển"
-                      divClassName="h-8"
-                      className="bg-transparent placeholder-white uppercase font-medium w-full text-center text-gray-200 py-2"
-                    />
-                  </div>
-                  <div className="absolute -bottom-10 -left-10 w-60 h-16 transform rotate-12 bg-gray-100"></div>
-                  <div className="absolute -bottom-10 -right-10 w-60 h-16 transform -rotate-12 bg-gray-100"></div>
-                </div>
-
-                <div className="div-middle-left mx-4">
-                  <div className="flex items-center">
-                    <BirthdayIcon />
-                    <DatePicker
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Ngày sinh"
-                      onFocus={() => onChangeRecommend('birthday')}
-                      onBlur={() => onChangeRecommend(null)}
-                      showYearDropdown
-                      showMonthDropdown
-                      selected={birthday}
-                      autoFocus={focusBirthday}
-                      locale={vi}
-                      popperModifiers={{
-                        offset: {
-                          enabled: true,
-                          offset: '-20px, 0px'
-                        },
-                        preventOverflow: {
-                          enabled: true,
-                          escapeWithReference: false,
-                          boundariesElement: 'viewport'
-                        }
-                      }}
-                      onChange={(e: Date | null) => setBirthday(e)}
-                      className="h-8 w-full py-2 ml-4 bg-transparent focus:outline-none"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <GenderIcon />
-                    <PrInputCV
-                      ref={genderRef}
-                      placeholder="Giới tính"
-                      onFocus={() => onChangeRecommend('gender')}
-                      onBlur={() => onChangeRecommend(null)}
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <PhoneIcon />
-                    <PrInputCV
-                      ref={phoneRef}
-                      onFocus={() => onChangeRecommend('phone')}
-                      onBlur={() => onChangeRecommend(null)}
-                      placeholder="Điện thoại"
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <EmailIcon />
-                    <PrInputCV
-                      ref={emailRef}
-                      placeholder="Email"
-                      onFocus={() => onChangeRecommend('email')}
-                      onBlur={() => onChangeRecommend(null)}
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <MapIcon />
-                    <PrInputCV
-                      ref={addressRef}
-                      onFocus={() => modalAddressRef.current?.show()}
-                      placeholder="Địa chỉ"
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                  </div>
-                  <div className="flex items-center mb-3">
-                    <FacebookIcon />
-                    <PrInputCV
-                      ref={facebookRef}
-                      placeholder="Facebook"
-                      onFocus={() => onChangeRecommend('facebook')}
-                      onBlur={() => onChangeRecommend(null)}
-                      divClassName="h-8 w-full"
-                      className="bg-transparent w-full py-2"
-                    />
-                  </div>
-                  <hr />
-                </div>
-
-                <div className="div-bottom-left bg-gray-100 mx-2">
-                  <div className="mb-16">
-                    {categoryLeft &&
-                      categoryLeft.length > 0 &&
-                      categoryLeft.map((item) => {
-                        const { name, enable, component, categoryRef, inputRef } = item
-                        if (!enable) {
-                          return null
-                        }
-                        return (
-                          <div key={name}>
-                            {component({
-                              onDownCategoryLeft,
-                              onUpCategoryLeft,
-                              onRemoveCategoryLeft,
-                              categoryRef,
-                              inputRef
-                            })}
-                          </div>
-                        )
-                      })}
+              <div className="col-span-2">
+                <div className="bg-pink-100 -top-28 relative w-5/6 mx-auto pb-1">
+                  <div className="div-top-left p-4">
+                    <div className="mx-auto w-52 h-52 mt-4">
+                      <PrUpload
+                        getImage={getImage}
+                        defaultURL={defaultAvatar}
+                        shape="square"
+                        onShowCrop={(show) => setIsShowCropAvatar(show)}
+                      />
+                    </div>
                   </div>
 
-                  <div
-                    className="div-triangle-bottom-left absolute -bottom-20 -left-7 w-48 h-28"
-                    style={{ backgroundColor: color }}
-                  ></div>
+                  <div className="div-middle-left ml-8 mr-12 mt-4">
+                    <div className="flex items-center">
+                      <div className="flex items-center">
+                        <div className="opacity-70">
+                          <BirthdayIcon />
+                        </div>
+                        <DatePicker
+                          dateFormat="dd/MM/yyyy"
+                          placeholderText="Ngày sinh"
+                          onFocus={() => onChangeRecommend('birthday')}
+                          onBlur={() => onChangeRecommend(null)}
+                          selected={birthday}
+                          showYearDropdown
+                          showMonthDropdown
+                          autoFocus={focusBirthday}
+                          locale={vi}
+                          popperModifiers={{
+                            offset: {
+                              enabled: true,
+                              offset: '-20px, 0px'
+                            },
+                            preventOverflow: {
+                              enabled: true,
+                              escapeWithReference: false,
+                              boundariesElement: 'viewport'
+                            }
+                          }}
+                          onChange={(e: Date | null) => setBirthday(e)}
+                          className="h-8 w-full py-2 pl-4 bg-transparent focus:outline-none z-20"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="opacity-70">
+                        <GenderIcon />
+                      </div>
+                      <PrInputCV
+                        ref={genderRef}
+                        placeholder="Giới tính"
+                        onFocus={() => onChangeRecommend('gender')}
+                        onBlur={() => onChangeRecommend(null)}
+                        divClassName="h-8 w-full"
+                        className="bg-transparent w-full py-2"
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <div className="opacity-70">
+                        <PhoneIcon />
+                      </div>
+                      <PrInputCV
+                        ref={phoneRef}
+                        onFocus={() => onChangeRecommend('phone')}
+                        onBlur={() => onChangeRecommend(null)}
+                        placeholder="Điện thoại"
+                        divClassName="h-8 w-full"
+                        className="bg-transparent w-full py-2"
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <div className="opacity-70">
+                        <EmailIcon />
+                      </div>
+                      <PrInputCV
+                        ref={emailRef}
+                        placeholder="Email"
+                        onFocus={() => onChangeRecommend('email')}
+                        onBlur={() => onChangeRecommend(null)}
+                        divClassName="h-8 w-full"
+                        className="bg-transparent w-full py-2"
+                      />
+                    </div>
+                    <div className="flex items-center">
+                      <div className="opacity-70">
+                        <MapIcon />
+                      </div>
+                      <PrInputCV
+                        ref={addressRef}
+                        onFocus={() => modalAddressRef.current?.show()}
+                        placeholder="Địa chỉ"
+                        divClassName="h-8 w-full"
+                        className="bg-transparent w-full py-2"
+                      />
+                    </div>
+                    <div className="flex items-center mb-3">
+                      <div className="opacity-70">
+                        <FacebookIcon />
+                      </div>
+                      <PrInputCV
+                        ref={facebookRef}
+                        placeholder="Facebook"
+                        onFocus={() => onChangeRecommend('facebook')}
+                        onBlur={() => onChangeRecommend(null)}
+                        divClassName="h-8 w-full"
+                        className="bg-transparent w-full py-2"
+                      />
+                    </div>
+                    <hr />
+                  </div>
+
+                  <div className="div-bottom-left mx-5 mt-5">
+                    <div className="mb-16">
+                      {categoryLeft &&
+                        categoryLeft.length > 0 &&
+                        categoryLeft.map((item) => {
+                          const { name, enable, component, categoryRef, inputRef } = item
+                          if (!enable) {
+                            return null
+                          }
+                          return (
+                            <div key={name}>
+                              {component({
+                                onDownCategoryLeft,
+                                onUpCategoryLeft,
+                                onRemoveCategoryLeft,
+                                categoryRef,
+                                inputRef
+                              })}
+                            </div>
+                          )
+                        })}
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* CV Right */}
-              <div className="col-span-2 relative p-4 overflow-hidden">
-                <div
-                  className="div-triangle-top-right absolute -top-12 z-20 -right-12 w-48 h-20"
-                  style={{ backgroundColor: color }}
-                ></div>
-
+              <div className="col-span-3 relative p-4 overflow-hidden">
                 {category &&
                   category.length > 0 &&
                   category.map((item) => {

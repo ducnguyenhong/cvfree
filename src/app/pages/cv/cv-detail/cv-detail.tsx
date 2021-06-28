@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { CvDetailTemplate1, CvDetailTemplate2 } from './cv-detail-template'
+import { CvDetailTemplate1, CvDetailTemplate2, CvDetailTemplate3 } from './cv-detail-template'
 import { CvInfo } from 'models/cv-info'
 import { useRouteMatch } from 'react-router-dom'
 import { get, upperFirst } from 'lodash'
@@ -68,15 +68,15 @@ const CvDetail: React.FC = () => {
 
   const { template } = cvInfo
 
-  if (template.value === '1') {
-    return <CvDetailTemplate1 data={cvInfo} />
-  }
-
   if (template.value === '2') {
     return <CvDetailTemplate2 data={cvInfo} />
   }
 
-  return <div>a</div>
+  if (template.value === '3') {
+    return <CvDetailTemplate3 data={cvInfo} />
+  }
+
+  return <CvDetailTemplate1 data={cvInfo} />
 }
 
 export default CvDetail

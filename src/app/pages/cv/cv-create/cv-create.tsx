@@ -1,4 +1,4 @@
-import { CvFormLayout1, CvFormLayout2 } from 'app/pages/cv/cv-template-create'
+import { CvFormLayout1, CvFormLayout2, CvFormLayout3 } from 'app/pages/cv/cv-template-create'
 import PrModal, { PrModalRefProps } from 'app/partials/pr-modal'
 import { userInfoState } from 'app/states/user-info-state'
 import { get } from 'lodash'
@@ -63,6 +63,10 @@ export const CvCreate: React.FC = () => {
   const renderCvForm = () => {
     if (selectedCvTemplate === '2' || (cvInfo && cvInfo.template.value === '2')) {
       return cvId ? <CvFormLayout2 cvInfo={cvInfo} refreshCvInfo={refreshCvInfo} /> : <CvFormLayout2 />
+    }
+
+    if (selectedCvTemplate === '3' || (cvInfo && cvInfo.template.value === '3')) {
+      return cvId ? <CvFormLayout3 cvInfo={cvInfo} refreshCvInfo={refreshCvInfo} /> : <CvFormLayout3 />
     }
 
     return cvId ? <CvFormLayout1 cvInfo={cvInfo} refreshCvInfo={refreshCvInfo} /> : <CvFormLayout1 />

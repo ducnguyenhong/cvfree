@@ -192,8 +192,10 @@ export const Dashboard: React.FC = () => {
               cvs.map((item, index) => {
                 const { _id, detail } = item
                 return (
-                  <Link
-                    to={`/cv-public/${slugURL(detail.fullname)}.${_id}`}
+                  <a
+                    href={`/cv-public/${slugURL(detail.fullname)}.${_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     key={_id}
                     className={`${
                       index !== cvs.length - 1 ? 'border border-t-0 border-r-0 border-l-0 border-dashed' : ''
@@ -203,7 +205,7 @@ export const Dashboard: React.FC = () => {
                     <span className="ml-2">
                       {detail.fullname.toUpperCase()} <Gender className="ml-2" gender={detail.gender} />
                     </span>
-                  </Link>
+                  </a>
                 )
               })}
           </div>

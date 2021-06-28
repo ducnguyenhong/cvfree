@@ -103,6 +103,7 @@ export default {
     LIST_TEMPLATE: 'List of CV templates',
     DEFAULT: 'Default',
     DYNAMIC: 'Dynamic',
+    CREATION: 'Creation',
     USE: 'Use'
   },
   ABOUT_US: {

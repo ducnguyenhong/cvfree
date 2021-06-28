@@ -342,6 +342,8 @@ export const EmployerCreateJobPostings: React.FC = () => {
             <div className="border border-gray-300 rounded overflow-hidden">
               <DatePicker
                 wrapperClassName="w-full"
+                showYearDropdown
+                showMonthDropdown
                 dateFormat="dd/MM/yyyy"
                 className="w-full h-9 px-4"
                 selected={timeToApply}
