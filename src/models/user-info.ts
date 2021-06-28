@@ -11,7 +11,7 @@ export interface UserInfo {
       city: string
       district: string
     }
-  }
+  } | null
   birthday?: Date
   coin?: number
   country?: string
@@ -23,7 +23,7 @@ export interface UserInfo {
   beWarned?: boolean
   phone?: string
   status?: string
-  type: string
+  type: string | null
   avatar?: string
   avatarId?: string
   verify?: boolean

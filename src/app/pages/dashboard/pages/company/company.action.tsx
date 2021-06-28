@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil'
 // import { showDeactiveUserState } from 'state/deactive-user-state';
 
 interface ActionProps {
-  id?: number
+  id?: number | string
   status?: string
 }
 

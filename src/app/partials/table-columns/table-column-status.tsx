@@ -16,7 +16,7 @@ const StatusStyle = styled.div`
 
 export const Status: React.FC<{ status?: string }> = (props) => {
   const renderStatus = () => {
-    if (!status) {
+    if (!props?.status) {
       return null
     }
     if (props.status === 'INACTIVE') {

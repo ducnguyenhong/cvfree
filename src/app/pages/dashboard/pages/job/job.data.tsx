@@ -6,7 +6,16 @@ import { get } from 'lodash'
 import { showNotify } from 'app/partials/pr-notify'
 import { Action } from './job.action'
 import { JobPostingInfo } from 'models/job-posting-info'
-import { Email, Phone, DateTime, Status, Active, TableLink, BasicCompanyInfo } from 'app/partials/table-columns'
+import {
+  Email,
+  Phone,
+  DateTime,
+  Status,
+  Active,
+  TableLink,
+  BasicCompanyInfo,
+  IsPublic
+} from 'app/partials/table-columns'
 
 export interface TableColumn extends JobPostingInfo {
   action?: string
@@ -24,6 +33,7 @@ export const Columns: ColumnsProps[] = [
   { field: 'career', title: 'Ngành nghề' },
   { field: 'company', title: 'Công ty' },
   { field: 'address', title: 'Địa chỉ' },
+  { field: 'isPublic', title: 'Công khai' },
   { field: 'status', title: 'Trạng thái' },
   { field: 'timeToApply', title: 'Thời hạn ứng tuyển' },
   { field: 'createdAt', title: 'Ngày tạo' },
@@ -87,8 +97,25 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       createdAt,
       updatedAt,
       address,
-      creatorId
+      isPublic
     } = data
+
+    const renderSalary = () => {
+      if (salary.salaryType === 'AGREE') {
+        return 'Thỏa thuận'
+      }
+      if (salary.salaryType === 'FROM_TO') {
+        const salaryFrom = Number(salary.salaryFrom?.replaceAll('.', '')).toLocaleString('it-IT', {
+          style: 'currency',
+          currency: salary.salaryCurrency
+        })
+        const salaryTo = Number(salary.salaryTo?.replaceAll('.', '')).toLocaleString('it-IT', {
+          style: 'currency',
+          currency: salary.salaryCurrency
+        })
+        return `${salaryFrom} đến ${salaryTo}`
+      }
+    }
 
     switch (field) {
       case 'id':
@@ -101,13 +128,13 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <DateTime timestamp={timeToApply} />
 
       case 'formOfWork':
-        return <span>{formOfWork}</span>
+        return <span>{formOfWork.join(', ')}</span>
 
       case 'numberRecruited':
         return <span>{numberRecruited}</span>
 
       case 'salary':
-        return <span>{salary.salaryType}</span>
+        return <span>{renderSalary()}</span>
 
       case 'recruitmentPosition':
         return <span>{recruitmentPosition}</span>
@@ -116,7 +143,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{career}</span>
 
       case 'company':
-        return <BasicCompanyInfo name={company?.name} id={creatorId} logo={company?.logo} />
+        return <BasicCompanyInfo name={company?.name} id={company?.id} logo={company?.logo} />
 
       case 'address':
         return <span className="whitespace-nowrap">{address && address.label}</span>
@@ -129,6 +156,9 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
       case 'updatedAt':
         return <DateTime timestamp={updatedAt} />
+
+      case 'isPublic':
+        return <IsPublic isPublic={isPublic} />
 
       case 'action':
         return <Action id={id} status={status} />

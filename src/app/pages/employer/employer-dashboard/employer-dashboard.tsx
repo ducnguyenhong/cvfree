@@ -28,7 +28,7 @@ export const EmployerDashboard: React.FC = () => {
           to="employer/manage-candidate"
           className="col-span-1 rounded-md overflow-hidden shadow-md bg-gray-600 hover:bg-gray-700 px-6 py-12 block duration-300 hover:shadow-xl "
         >
-          <span className="uppercase text-md font-bold block text-center text-gray-50">CV ứng tuyển</span>
+          <span className="uppercase text-md font-bold block text-center text-gray-50">Quản lý tuyển dụng</span>
           <i className="fas fa-users text-5xl block text-center mt-10 text-gray-300"></i>
         </Link>
         {/* <Link

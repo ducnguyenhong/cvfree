@@ -15,7 +15,7 @@ export const EmployerManageCandidate: React.FC = () => {
   }, [])
 
   const Wrapper: React.FC = (props) => {
-    return <WrapperTable title="Danh sách ứng viên">{props.children}</WrapperTable>
+    return <WrapperTable title="Quản lý ứng viên">{props.children}</WrapperTable>
   }
 
   return (

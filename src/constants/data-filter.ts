@@ -1,6 +1,6 @@
 import { OptionProps } from 'app/partials/pr-dropdown'
 
-export const dataOptionActive: OptionProps[] = [
+export const DataOptionActive: OptionProps[] = [
   { value: 'ACTIVE', label: 'Active' },
   { value: 'INACTIVE', label: 'Inactive' }
 ]

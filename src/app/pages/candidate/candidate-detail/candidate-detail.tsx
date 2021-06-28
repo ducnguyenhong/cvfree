@@ -199,7 +199,7 @@ export const CandidateDetail: React.FC = () => {
               </div>
             )}
             <span className="block text-2xl font-semibold mt-4">
-              {fullname}
+              {fullname.toUpperCase()}
               <span className="ml-4">
                 {gender === 'MALE' ? (
                   <i className="fas fa-mars text-blue-500"></i>
@@ -216,7 +216,7 @@ export const CandidateDetail: React.FC = () => {
             <div className="flex items-center mt-4">
               <i className="fas fa-user text-gray-500 mr-3"></i>
               <span>Vị trí ứng tuyển: </span>
-              <span className="block font-medium ml-4">{applyPosition}</span>
+              <span className="block font-medium ml-4">{applyPosition.toUpperCase()}</span>
             </div>
             <div className="flex items-center mt-4">
               <i className="fas fa-briefcase text-gray-500 mr-3"></i>

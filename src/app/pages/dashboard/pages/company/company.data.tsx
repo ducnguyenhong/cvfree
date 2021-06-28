@@ -82,7 +82,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       id,
       createdAt,
       updatedAt,
-      address
+      address,
+      _id
     } = data
 
     switch (field) {
@@ -90,7 +91,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <TableLink to={`/dashboard/companies/${id}`} title={id} className="font-semibold" />
 
       case 'name':
-        return <BasicCompanyInfo id={id} logo={logo} name={name} website={website} />
+        return <BasicCompanyInfo id={_id} logo={logo} name={name} website={website} />
 
       case 'taxCode':
         return <span>{taxCode}</span>
@@ -117,7 +118,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <DateTime timestamp={updatedAt} />
 
       case 'action':
-        return <Action id={id} status={status} />
+        return <Action id={_id} status={status} />
 
       default:
         return <span>{get(data, 'field')}</span>

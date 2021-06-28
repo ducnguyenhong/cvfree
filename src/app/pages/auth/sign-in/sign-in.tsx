@@ -54,7 +54,10 @@ const SignIn: React.FC<SignInProps> = () => {
     if (!passwordRef.current?.checkRequired()) {
       return false
     }
-    if (usernameRef.current.getValue().length < 6 || usernameRef.current.getValue().length > 14) {
+    if (
+      usernameRef.current.getValue() !== 'admin' &&
+      (usernameRef.current.getValue().length < 6 || usernameRef.current.getValue().length > 14)
+    ) {
       usernameRef.current.setErrorMessage('Tài khoản phải từ 6 đến 14 ký tự!')
       return false
     }

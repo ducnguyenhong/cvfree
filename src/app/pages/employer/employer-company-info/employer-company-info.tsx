@@ -171,7 +171,7 @@ export const EmployerCompanyInfo: React.FC = () => {
               to={`/employer/request-update-company`}
               className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
             >
-              <i className="fas fa-eye mr-3 text-gray-600" />
+              <i className="fas fa-building mr-3 text-gray-600" />
               <span className="text-gray-700">Yêu cầu cập nhật thông tin</span>
             </Link>
           </div>

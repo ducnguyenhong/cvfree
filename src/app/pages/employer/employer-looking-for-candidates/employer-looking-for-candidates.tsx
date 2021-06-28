@@ -218,7 +218,7 @@ export const EmployerLookingForCandidates: React.FC = () => {
                       )}
                       <Link to={`/candidate/${candidateId}`} className="block">
                         <span className="block text-xl font-bold">
-                          {fullname}
+                          {fullname.toUpperCase()}
                           <span className="ml-3">
                             {gender === 'MALE' ? (
                               <i className="fas fa-mars text-blue-500"></i>
@@ -236,11 +236,11 @@ export const EmployerLookingForCandidates: React.FC = () => {
 
                       <div className="flex items-center my-1">
                         <i className="fas fa-user text-gray-500 mr-3"></i>
-                        <span className="block font-medium">{applyPosition}</span>
+                        <span className="block font-medium">{applyPosition.toUpperCase()}</span>
                       </div>
 
                       <div className="flex items-center my-1">
-                        <i className="fas fa-briefcase text-gray-500 mr-3"></i>
+                        <i className="fas fa-briefcase text-gray-500 mr-2.5"></i>
                         <span className="block font-medium">{career}</span>
                       </div>
 

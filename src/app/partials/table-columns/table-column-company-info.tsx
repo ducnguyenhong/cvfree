@@ -20,12 +20,12 @@ export const BasicCompanyInfo: React.FC<CompanyInfoProps> = (props) => {
   return (
     <div className="flex whitespace-nowrap">
       <div className="w-12 h-12">
-        <Link to={`/dashboard/companies/${id}`}>
+        <Link to={`/companies/${id}`}>
           <ImageRatio src={logo || DefaultImage} />
         </Link>
       </div>
       <div className="ml-3">
-        <Link to={`/users/${id}`}>
+        <Link to={`/companies/${id}`}>
           {name ? (
             <span
               className={`display-name flex-nowrap block hover:text-blue-800 ${logo ? 'font-bold' : 'font-extrabold'}`}

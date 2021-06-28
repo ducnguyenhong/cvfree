@@ -21,7 +21,7 @@ export const EmployerList: React.FC = () => {
   const Toolbar: React.FC = () => {
     return (
       <Link
-        to="/users/create"
+        to="/dashboard/users/create?type=EMPLOYER"
         className="flex items-center rotate-parent bg-green-600 rounded-md px-4 py-3 sm:py-2 hover:bg-green-700 duration-300"
       >
         <i className="fas fa-plus sm:mr-3 mr-2 duration-500 text-white"></i>

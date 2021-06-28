@@ -1,22 +1,13 @@
-import { Loader, Pagination, ColumnsProps } from '@ekidpro/table'
+import { ColumnsProps, Loader, Pagination } from '@ekidpro/table'
+import { showNotify } from 'app/partials/pr-notify'
+import { BasicCvInfo, BasicUserInfo, DateTime, IsPublic, Phone, Status, TableLink } from 'app/partials/table-columns'
 import axios from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
-import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './cv.action'
 import { CvInfo } from 'models/cv-info'
-import {
-  BasicCvInfo,
-  Email,
-  Phone,
-  DateTime,
-  Status,
-  Active,
-  TableLink,
-  BasicUserInfo
-} from 'app/partials/table-columns'
 import { slugURL } from 'utils/helper'
+import { Action } from './cv.action'
 
 export interface TableColumn extends CvInfo {
   info?: string
@@ -40,6 +31,7 @@ export const Columns: ColumnsProps[] = [
   { field: 'birthday', title: 'Ngày sinh' },
   { field: 'phone', title: 'Điện thoại' },
   { field: 'address', title: 'Địa chỉ' },
+  { field: 'isPublic', title: 'Công khai' },
   { field: 'status', title: 'Trạng thái' },
   { field: 'createdAt', title: 'Ngày tạo' },
   { field: 'updatedAt', title: 'Ngày cập nhật' },
@@ -100,7 +92,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       id,
       createdAt,
       updatedAt,
-      creatorId
+      creatorId,
+      isPublic
     } = data
 
     const { fullname, avatar, birthday, gender, phone, address } = detail
@@ -145,6 +138,9 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
       case 'updatedAt':
         return <DateTime timestamp={updatedAt} />
+
+      case 'isPublic':
+        return <IsPublic isPublic={isPublic} />
 
       case 'action':
         return <Action id={id} status={status} />

@@ -57,6 +57,7 @@ const SendEmail = lazy(() => import('app/pages/dashboard/pages/send-email'))
 const UserDetail = lazy(() => import('app/pages/dashboard/pages/user/user-detail'))
 const FeedbackList = lazy(() => import('app/pages/dashboard/pages/feedback'))
 const ReportJobList = lazy(() => import('app/pages/dashboard/pages/report-job'))
+const UserCreate = lazy(() => import('app/pages/dashboard/pages/user/create'))
 
 interface RouteType {
   path: string
@@ -509,6 +510,12 @@ export const DASHBOARD_ROUTES: RouteType[] = [
     role: ['ADMIN']
   },
   {
+    path: '/dashboard/users/create',
+    component: UserCreate,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
     path: '/dashboard/users/:id',
     component: UserDetail,
     exact: true,
@@ -526,6 +533,7 @@ export const DASHBOARD_ROUTES: RouteType[] = [
     exact: true,
     role: ['ADMIN']
   }
+
   // ...PRIVATE_ROUTES,
   // ...PUBLIC_ROUTES
 ]

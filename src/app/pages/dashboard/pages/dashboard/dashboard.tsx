@@ -109,14 +109,20 @@ export const Dashboard: React.FC = () => {
           </div>
           <hr />
           <div className="py-8 px-10 grid grid-cols-2 gap-x-10 gap-y-8">
-            <div className="col-span-1 bg-purple-100 rounded-md px-4 py-4 duration-300 hover:bg-purple-200">
+            <Link
+              to="/dashboard/users/create?type=USER"
+              className="col-span-1 bg-purple-100 rounded-md px-4 py-4 duration-300 hover:bg-purple-200"
+            >
               <i className="fas fa-user-plus block text-2xl text-purple-700 text-center" />
               <span className="block text-center mt-2 text-purple-700 font-semibold">Tạo ứng viên</span>
-            </div>
-            <div className="col-span-1 bg-green-100 rounded-md px-4 py-4 duration-300 hover:bg-green-200">
+            </Link>
+            <Link
+              to="/dashboard/users/create?type=EMPLOYER"
+              className="col-span-1 bg-green-100 rounded-md px-4 py-4 duration-300 hover:bg-green-200"
+            >
               <i className="fas fa-plus-circle block text-2xl text-green-700 text-center" />
               <span className="block text-center mt-2 text-green-700 font-semibold">Tạo nhà tuyển dụng</span>
-            </div>
+            </Link>
             <Link
               to="/dashboard/send-email"
               className="block col-span-1 bg-red-100 rounded-md px-4 py-4 duration-300 hover:bg-red-200"
@@ -195,7 +201,7 @@ export const Dashboard: React.FC = () => {
                   >
                     •{' '}
                     <span className="ml-2">
-                      {detail.fullname} <Gender className="ml-2" gender={detail.gender} />
+                      {detail.fullname.toUpperCase()} <Gender className="ml-2" gender={detail.gender} />
                     </span>
                   </Link>
                 )
