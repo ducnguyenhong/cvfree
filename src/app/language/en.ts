@@ -101,7 +101,7 @@ export default {
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'List of CV templates',
-    DEFAULT: 'Default',
+    DEFAULT: 'Normal',
     DYNAMIC: 'Dynamic',
     CREATION: 'Creation',
     USE: 'Use'

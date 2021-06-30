@@ -6,6 +6,8 @@ import { useRecoilValue } from 'recoil'
 import { Columns, TableLoader } from './cv.data'
 import { userInfoState } from 'app/states/user-info-state'
 import { getDataFilter } from './cv.filter'
+import { PopupDeactive } from './popup-deactive-cv'
+import { PopupActive } from './popup-active-cv'
 
 export const prefix = 'cvList'
 
@@ -45,6 +47,8 @@ export const CvList: React.FC = () => {
   return (
     <div>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
+      <PopupDeactive />
+      <PopupActive />
     </div>
   )
 }

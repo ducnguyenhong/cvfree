@@ -101,7 +101,7 @@ export default {
   },
   CV_TEMPLATE_LIST: {
     LIST_TEMPLATE: 'Danh sách các mẫu CV',
-    DEFAULT: 'Mặc định',
+    DEFAULT: 'Cơ bản',
     DYNAMIC: 'Năng động',
     CREATION: 'Sáng tạo',
     USE: 'Sử dụng'

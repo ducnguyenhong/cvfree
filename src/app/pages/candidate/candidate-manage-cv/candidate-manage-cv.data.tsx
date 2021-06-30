@@ -70,6 +70,16 @@ export const getLoader = (url?: string) => {
       const { name, _id, detail, createdAt, updatedAt, template, isPublic } = data
       const { fullname, avatar, gender } = detail
 
+      const renderTemplateCv = () => {
+        if (template.value === 'DYNAMIC') {
+          return 'Năng động'
+        }
+        if (template.value === 'CREATION') {
+          return 'Sáng tạo'
+        }
+        return 'Cơ bản'
+      }
+
       switch (field) {
         case '_id':
           return (
@@ -87,7 +97,7 @@ export const getLoader = (url?: string) => {
           return <BasicCvPublicInfo id={_id} avatar={avatar} fullname={fullname} cvName={name} gender={gender} />
 
         case 'template':
-          return <span>{template.label}</span>
+          return <span>{renderTemplateCv()}</span>
 
         case 'isPublic':
           return <IsPublic isPublic={isPublic} />

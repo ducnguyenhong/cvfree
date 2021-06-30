@@ -1,21 +1,12 @@
-import { Loader, Pagination, ColumnsProps } from '@ekidpro/table'
+import { ColumnsProps, Loader, Pagination } from '@ekidpro/table'
+import { showNotify } from 'app/partials/pr-notify'
+import { BasicCompanyInfo, BasicJobInfo, DateTime, IsPublic, Status, TableLink } from 'app/partials/table-columns'
 import axios from 'axios'
 import { SERVER_URL } from 'constants/index'
 import Cookies from 'js-cookie'
 import { get } from 'lodash'
-import { showNotify } from 'app/partials/pr-notify'
-import { Action } from './job.action'
 import { JobPostingInfo } from 'models/job-posting-info'
-import {
-  Email,
-  Phone,
-  DateTime,
-  Status,
-  Active,
-  TableLink,
-  BasicCompanyInfo,
-  IsPublic
-} from 'app/partials/table-columns'
+import { Action } from './job.action'
 
 export interface TableColumn extends JobPostingInfo {
   action?: string
@@ -97,7 +88,8 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
       createdAt,
       updatedAt,
       address,
-      isPublic
+      isPublic,
+      _id
     } = data
 
     const renderSalary = () => {
@@ -122,7 +114,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <TableLink to={`/dashboard/jobs/${id}`} title={id} className="font-semibold" />
 
       case 'name':
-        return <span className="whitespace-nowrap">{name}</span>
+        return <BasicJobInfo name={name} id={_id} />
 
       case 'timeToApply':
         return <DateTime timestamp={timeToApply} />
@@ -161,7 +153,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <IsPublic isPublic={isPublic} />
 
       case 'action':
-        return <Action id={id} status={status} />
+        return <Action id={_id} name={name} status={status} />
 
       default:
         return <span>{get(data, 'field')}</span>

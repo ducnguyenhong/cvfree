@@ -11,7 +11,7 @@ const FeatureHome: React.FC = () => {
 
   return (
     <div
-      className="home-feature max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 2xl:px-64 mt-20 py-32"
+      className="home-feature max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 xl:px-20 2xl:px-64 py-32"
       style={{ backgroundImage: `url(${BgFeature})` }}
     >
       <div className="text-center mb-16">

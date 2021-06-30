@@ -1,19 +1,27 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-// import { showDeactiveUserState } from 'state/deactive-user-state';
+import { slugURL } from 'utils/helper'
+import { showActiveCvAdminState } from 'app/states/show-popup/active-cv-state-admin'
+import { showDeactiveCvAdminState } from 'app/states/show-popup/deactive-cv-state-admin'
 
 interface ActionProps {
-  id?: number
+  id?: number | string
   status?: string
+  fullname?: string
 }
 
 export const Action: React.FC<ActionProps> = (props) => {
-  const { id, status } = props
-  // const setShowDeactive = useSetRecoilState(showDeactiveUserState);
+  const { id, status, fullname } = props
+  const setShowDeactive = useSetRecoilState(showDeactiveCvAdminState)
+  const setShowActive = useSetRecoilState(showActiveCvAdminState)
 
-  const onShowDeactiveUser = () => {
-    // setShowDeactive({ showPopup: true, uid });
+  const onShowDeactiveCv = () => {
+    setShowDeactive({ showPopup: true, id })
+  }
+
+  const onShowActiveCv = () => {
+    setShowActive({ showPopup: true, id })
   }
 
   return (
@@ -23,33 +31,44 @@ export const Action: React.FC<ActionProps> = (props) => {
           className="flex rounded-md items-center justify-center bg-gray-100 hover:bg-indigo-500 mr-4 duration-300"
           style={{ width: 32, height: 32 }}
         >
-          <Link to={`/users/${id}`}>
+          <a
+            href={`/cv-public/${slugURL(fullname)}.${id}`}
+            target="_blank"
+            className="font-medium"
+            rel="noopener noreferrer"
+          >
             <i className="fas fa-eye text-gray-500 px-3 py-4 hover:text-white"></i>
-          </Link>
+          </a>
         </div>
         <div
           className="flex rounded-md items-center justify-center bg-gray-100 hover:bg-indigo-500 mr-4 duration-300"
           style={{ width: 32, height: 32 }}
         >
-          <Link to={`/users/update/${id}`}>
+          <Link to={`/update-cv/${slugURL(fullname)}.${id}`}>
             <i className="fas fa-edit text-gray-500 px-3 py-4 hover:text-white"></i>
           </Link>
         </div>
-        <div
-          className={`${
-            status === 'INACTIVE' ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-red-400'
-          } flex rounded-md items-center justify-center duration-300 bg-gray-100`}
-          style={{ width: 32, height: 32 }}
-          onClick={status === 'ACTIVE' ? onShowDeactiveUser : undefined}
-        >
-          <span>
-            <i
-              className={`${
-                status === 'INACTIVE' ? 'text-gray-300' : 'hover:text-white text-gray-500'
-              } fas fa-trash px-3 py-4`}
-            ></i>
-          </span>
-        </div>
+        {status === 'INACTIVE' ? (
+          <div
+            className="cursor-pointer hover:bg-green-600 flex rounded-md items-center justify-center duration-300 bg-gray-100"
+            style={{ width: 32, height: 32 }}
+            onClick={onShowActiveCv}
+          >
+            <span>
+              <i className="hover:text-white text-gray-500 fas fa-toggle-on text-lg px-3 py-4"></i>
+            </span>
+          </div>
+        ) : (
+          <div
+            className="cursor-pointer hover:bg-red-400 flex rounded-md items-center justify-center duration-300 bg-gray-100"
+            style={{ width: 32, height: 32 }}
+            onClick={onShowDeactiveCv}
+          >
+            <span>
+              <i className="hover:text-white text-gray-500 fas fa-trash px-3 py-4"></i>
+            </span>
+          </div>
+        )}
       </div>
     </>
   )

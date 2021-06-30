@@ -51,7 +51,7 @@ export const CompanyRequestUpdate: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    document.title = `CVFREE | Yêu cầu cập nhật thông tin công ty`
+    document.title = `CVFREE | Danh sách yêu cầu cập nhật thông tin công ty`
   }, [])
 
   if (typeof requestInfo === 'undefined') {
@@ -71,7 +71,7 @@ export const CompanyRequestUpdate: React.FC = () => {
   const { reasonRejectOfAdminCompany } = requestInfo
 
   return (
-    <WrapperPage title="Yêu cầu cập nhật thông tin công ty">
+    <WrapperPage title="Danh sách yêu cầu cập nhật thông tin công ty">
       <div className="px-8 py-10 mt-10">
         <div style={{ aspectRatio: '5/2' }} className="relative">
           <img src={background} alt="background" className="w-full h-full" />

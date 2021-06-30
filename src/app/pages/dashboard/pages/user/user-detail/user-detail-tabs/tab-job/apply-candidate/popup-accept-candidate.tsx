@@ -88,7 +88,7 @@ export const PopupAcceptCandidate: React.FC = () => {
         <span className="block mt-5 font-medium">
           - Sau khi xác nhận, một email tự động sẽ được gửi tới ứng viên thông báo rằng họ đã được nhà tuyển dụng chấp
           nhận
-          <br />- Thông tin ứng viên này sẽ được chuyển tới mục Quản lý ứng viên trong Bảng điều khiển
+          <br />- Thông tin ứng viên này sẽ được chuyển tới mục Quản tuyển dụng trong Bảng điều khiển
         </span>
       </div>
     </PopupConfirm>

@@ -6,6 +6,8 @@ import { useRecoilValue } from 'recoil'
 import { Columns, TableLoader } from './company.data'
 import { userInfoState } from 'app/states/user-info-state'
 import { getDataFilter } from './company.filter'
+import { PopupActive } from './popup-active-company'
+import { PopupDeactive } from './popup-deactive-company'
 
 export const prefix = 'companyList'
 
@@ -45,6 +47,8 @@ export const CompanyList: React.FC = () => {
   return (
     <div>
       <Table columns={Columns} loader={loader.current} prefix={prefix} Wrapper={memo(Wrapper)} />
+      <PopupActive />
+      <PopupDeactive />
     </div>
   )
 }

@@ -19,16 +19,16 @@ import Cookies from 'js-cookie'
 import { get } from 'lodash'
 import { JobPostingInfo } from 'models/job-posting-info'
 import moment from 'moment'
-import { useEffect, useRef, useState, RefObject } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { getValueDropdown, getDefaultDataDropdown } from 'utils/helper'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { userInfoState } from 'app/states/user-info-state'
 import { ResponseJobDetail } from 'models/response-api'
 import { showNotify } from 'app/partials/pr-notify'
 import { useIntl } from 'react-intl'
-import { DataPublicCv } from '../../../../constants/data-cv'
+import { DataPublicCv } from 'constants/data-cv'
 
 export const EmployerCreateJobPostings: React.FC = () => {
   const match = useRouteMatch()
@@ -50,6 +50,7 @@ export const EmployerCreateJobPostings: React.FC = () => {
   const [initJobDes, setInitJobDes] = useState<string>('')
   const [initReqCandidate, setInitReqCandidate] = useState<string>('')
   const [initBenefit, setInitBenefit] = useState<string>('')
+  const useInfo = useRecoilValue(userInfoState)
 
   // ref
   const modalOutOfTurnRef = useRef<PrModalRefProps>(null)
@@ -136,6 +137,36 @@ export const EmployerCreateJobPostings: React.FC = () => {
       })
   }
 
+  const callApiAdminUpdate = (data: JobPostingInfo) => {
+    const url = `${SERVER_URL}/admin/jobs/${jobId}`
+    const accessToken = Cookies.get('token')
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      headers,
+      url,
+      data
+    }
+
+    axios(config)
+      .then((response) => {
+        const { success, error, message } = response.data
+        if (!success) {
+          throw Error(error)
+        }
+
+        if (jobId) {
+          showNotify.success(message)
+          callApiJobDetail()
+        }
+      })
+      .catch((e) => showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!'))
+  }
+
   const validate = () => {
     if (!nameRef.current?.checkRequired()) {
       return false
@@ -195,7 +226,11 @@ export const EmployerCreateJobPostings: React.FC = () => {
       status: 'ACTIVE'
     }
 
-    callApiCreate(data)
+    if (userInfo?.type === 'ADMIN' && jobId) {
+      callApiAdminUpdate(data)
+    } else {
+      callApiCreate(data)
+    }
   }
 
   const onHideAddress = () => {

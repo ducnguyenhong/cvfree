@@ -18,6 +18,8 @@ export const MainRouteWrapper: React.FC = (props) => {
   useEffect(() => {
     if (location.pathname.includes('/dashboard')) {
       setNeedFooter(false)
+    } else {
+      setNeedFooter(true)
     }
   }, [location])
 

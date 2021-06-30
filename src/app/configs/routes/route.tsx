@@ -58,6 +58,7 @@ const UserDetail = lazy(() => import('app/pages/dashboard/pages/user/user-detail
 const FeedbackList = lazy(() => import('app/pages/dashboard/pages/feedback'))
 const ReportJobList = lazy(() => import('app/pages/dashboard/pages/report-job'))
 const UserCreate = lazy(() => import('app/pages/dashboard/pages/user/create'))
+const AdminUpdateCompany = lazy(() => import('app/pages/dashboard/pages/company/company.update'))
 
 interface RouteType {
   path: string
@@ -304,10 +305,10 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: ['EMPLOYER']
   },
   {
-    path: '/employer/jobs/update/:id',
+    path: '/jobs/update/:id',
     component: EmployerCreateJobPostings,
     exact: true,
-    role: ['EMPLOYER']
+    role: ['EMPLOYER', 'ADMIN']
   },
   {
     path: '/employer/payment',
@@ -322,7 +323,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     role: ['EMPLOYER']
   },
   {
-    path: '/employer/update-company',
+    path: '/update-company',
     component: EmployerRegisterCompany,
     exact: true,
     role: ['EMPLOYER']
@@ -404,7 +405,7 @@ export const PRIVATE_ROUTES: RouteType[] = [
     path: '/update-cv/:name.:id',
     component: CvForm,
     exact: true,
-    role: ['USER']
+    role: ['USER', 'ADMIN']
   },
   {
     path: '/manage-cv',
@@ -530,6 +531,12 @@ export const DASHBOARD_ROUTES: RouteType[] = [
   {
     path: '/dashboard/report-job',
     component: ReportJobList,
+    exact: true,
+    role: ['ADMIN']
+  },
+  {
+    path: '/dashboard/companies/:id/update',
+    component: AdminUpdateCompany,
     exact: true,
     role: ['ADMIN']
   }

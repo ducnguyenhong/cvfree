@@ -172,7 +172,7 @@ export const EmployerCompanyInfo: React.FC = () => {
               className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
             >
               <i className="fas fa-building mr-3 text-gray-600" />
-              <span className="text-gray-700">Yêu cầu cập nhật thông tin</span>
+              <span className="text-gray-700">Danh sách yêu cầu cập nhật thông tin</span>
             </Link>
           </div>
         )}
@@ -217,7 +217,7 @@ export const EmployerCompanyInfo: React.FC = () => {
         </div>
         <div className="text-center my-20">
           <Link
-            to="/employer/update-company"
+            to="/update-company"
             className="px-4 py-3 rounded text-white bg-blue-500 font-semibold cursor-pointer duration-300 hover:bg-blue-600"
           >
             {userInfo?._id === companyInfo.creatorId ? 'Chỉnh sửa thông tin' : 'Gửi yêu cầu chỉnh sửa thông tin'}

@@ -32,7 +32,7 @@ export const Action: React.FC<ActionProps> = (props) => {
           className="flex rounded-md items-center justify-center bg-gray-100 hover:bg-indigo-500 mr-4 duration-300"
           style={{ width: 32, height: 32 }}
         >
-          <Link to={`/employer/jobs/update/${id}`}>
+          <Link to={`/jobs/update/${id}`}>
             <i className="fas fa-edit text-gray-500 px-3 py-4 hover:text-white"></i>
           </Link>
         </div>

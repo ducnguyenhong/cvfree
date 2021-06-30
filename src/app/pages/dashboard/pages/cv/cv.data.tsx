@@ -98,6 +98,16 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
 
     const { fullname, avatar, birthday, gender, phone, address } = detail
 
+    const renderTemplateCv = () => {
+      if (template.value === 'DYNAMIC') {
+        return 'Năng động'
+      }
+      if (template.value === 'CREATION') {
+        return 'Sáng tạo'
+      }
+      return 'Cơ bản'
+    }
+
     switch (field) {
       case 'id':
         return <TableLink to={`/cv-public/${slugURL(fullname)}.${_id}`} title={id} className="font-semibold" />
@@ -109,7 +119,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <BasicUserInfo id={creatorId} name={creator?.fullname || creator?.username} avatar={creator?.avatar} />
 
       case 'template':
-        return <span>{template.label}</span>
+        return <span>{renderTemplateCv()}</span>
 
       case 'formOfWork':
         return <span>{formOfWork}</span>
@@ -143,7 +153,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <IsPublic isPublic={isPublic} />
 
       case 'action':
-        return <Action id={id} status={status} />
+        return <Action id={_id} status={status} fullname={fullname} />
 
       default:
         return <span>{get(data, 'field')}</span>
