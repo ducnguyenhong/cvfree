@@ -64,7 +64,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "node index.tsx",
+    "start": "node src/index.tsx",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
