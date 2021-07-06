@@ -228,7 +228,15 @@ const SignUp: React.FC<SignUpProps> = () => {
           </div>
         </div>
       </SignInStyle>
-      <PrModal ref={modalRef} size="nm" onShow={onShowModal} onHide={onHideModal} disableFooter disableHeader>
+      <PrModal
+        ref={modalRef}
+        size="nm"
+        position="fixed"
+        onShow={onShowModal}
+        onHide={onHideModal}
+        disableFooter
+        disableHeader
+      >
         <div>
           <div className="flex items-center justify-center my-10">
             <i className="far fa-check-circle text-5xl text-green-600 mr-6"></i>

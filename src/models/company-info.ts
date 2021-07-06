@@ -13,6 +13,8 @@ export interface CompanyInfo {
   creator: {
     employeeIdCard: string
     employeeIdCardId: string
+    fullname?: string
+    id?: string
     position?: {
       value: string
       label: string

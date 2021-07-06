@@ -1,6 +1,6 @@
 {
   "name": "cvfree",
-  "version": "210630.21.40",
+  "version": "210706.21.55",
   "private": true,
   "engines": {
     "npm": "6.14.10",
@@ -68,7 +68,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "SET PORT=1112 && craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"

@@ -48,9 +48,10 @@ const AdminUpdateCompany: React.FC = () => {
   const personnelSizeRef = useRef<PrDropdownRefProps>(null)
   const positionRef = useRef<PrDropdownRefProps>(null)
   const introRef = useRef<PrInputRefProps>(null)
+  const creatorRef = useRef<DropdownAsyncRef>(null)
 
   const callApiCompanyDetail = () => {
-    const url = `${SERVER_URL}/companies/${companyId}`
+    const url = `${SERVER_URL}/admin/companies/${companyId}`
     const accessToken = Cookies.get('token')
     const headers = {
       'Content-Type': 'application/json',
@@ -171,6 +172,7 @@ const AdminUpdateCompany: React.FC = () => {
         employeeIdCardId,
         position: companyDetail?.creator.position || positionRef.current?.getValue()[0]
       },
+      creatorId: creatorRef.current?.getValue()[0].value,
       address: {
         value: {
           district: districtRef.current?.getValue()[0],
@@ -210,8 +212,8 @@ const AdminUpdateCompany: React.FC = () => {
 
   useEffect(() => {
     if (companyDetail) {
-      const { name, phone, email, taxCode, website, personnelSize, creator, address, intro } = companyDetail
-      const { position } = creator
+      const { name, phone, email, taxCode, website, personnelSize, creator, address, intro, creatorId } = companyDetail
+      const { position, fullname, id } = creator
       if (address.value.district) {
         setDisableDistrict(false)
       }
@@ -226,7 +228,8 @@ const AdminUpdateCompany: React.FC = () => {
       websiteRef.current?.setValue(website || '')
       introRef.current?.setValue(intro || '')
       personnelSizeRef.current?.setValue(getDefaultDataDropdown(DataPersonnelSize, [personnelSize]))
-      // positionRef.current?.setValue(position || null)
+      positionRef.current?.setValue(position || null)
+      creatorRef.current?.setValue({ value: creatorId || '', label: fullname ? `${fullname} (ID: ${id})` : '' })
     }
   }, [companyDetail])
 
@@ -332,22 +335,29 @@ const AdminUpdateCompany: React.FC = () => {
 
             <span className="block mt-20 uppercase font-semibold text-xl">2. Người quản trị công ty</span>
 
-            <div className="mt-8 grid grid-cols-5 gap-x-20">
-              <div className="col-span-2">
-                <span className="block font-medium mb-2">
-                  Ảnh thẻ nhân viên <span className="font-bold text-red-500">*</span>
-                </span>
+            <div className="mt-8 grid grid-cols-3 gap-x-20">
+              <div className="col-span-1">
+                <span className="block font-medium mb-2">Ảnh thẻ nhân viên</span>
                 <div className="w-1/2 mx-auto border">
                   <PrUpload
                     getImage={getEmployeeIdCard}
                     shape="square"
                     ratio={{ x: 3, y: 2 }}
                     className="w-full"
-                    // defaultURL={employeeIdCard}
+                    defaultURL={employeeIdCard}
                   />
                 </div>
               </div>
-              <div className="col-span-2 h-12">
+              <div className="col-span-1">
+                <DropdownAsync
+                  urlApi="/admin/users/suggest?isAdminOfCompany=false&type=EMPLOYER"
+                  label="Họ và tên"
+                  required
+                  displayId
+                  ref={creatorRef}
+                />
+              </div>
+              <div className="col-span-1 h-12">
                 <PrDropdown
                   label="Chức vụ/Vị trí"
                   required

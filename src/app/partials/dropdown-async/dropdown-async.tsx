@@ -21,7 +21,8 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
     onChange,
     isDisabled,
     isSearchable,
-    isClearable
+    isClearable,
+    displayId
   } = props
   const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue ?? null)
 
@@ -49,7 +50,7 @@ export const DropdownAsync = forwardRef((props: DropdownAsyncProps, ref: Ref<Dro
           if (data.items[i]) {
             dataLoad.push({
               value: data.items[i].value,
-              label: data.items[i].label
+              label: displayId ? `${data.items[i].label} (ID: ${data.items[i].value})` : data.items[i].label
             })
           }
         }

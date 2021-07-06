@@ -10,6 +10,7 @@ export interface DropdownAsyncProps {
   isDisabled?: boolean
   isSearchable?: boolean
   isClearable?: boolean
+  displayId?: boolean
 }
 
 export interface DropdownAsyncRef {
