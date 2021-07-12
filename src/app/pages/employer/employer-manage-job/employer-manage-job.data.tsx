@@ -52,18 +52,13 @@ export const getLoader = (url?: string) => {
         }
       })
 
-      console.log('ducnh4', response.data)
       const { success, data, error } = response.data
       if (!success) {
         showNotify.error(error.message)
         throw Error(error.message)
       }
-      console.log('ducnh5', response.data)
       const { items, pagination } = data
-      console.log('ducnh6', response.data)
       const { page, size, totalItems, totalPages } = pagination
-
-      console.log('ducnh7', response.data)
 
       const result: Pagination<JobPostingInfo> = {
         data: items,

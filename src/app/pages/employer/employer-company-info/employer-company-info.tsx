@@ -154,29 +154,42 @@ export const EmployerCompanyInfo: React.FC = () => {
   return (
     <WrapperPage title="Thông tin công ty">
       <div className="bg-white px-8 py-10 mt-10">
-        <div className="text-right mb-10">
-          <a
-            href={`/companies/${_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
-          >
-            <i className="fas fa-eye mr-3 text-gray-600" />
-            <span className="text-gray-700">Thông tin công ty ở chế độ công khai</span>
-          </a>
-        </div>
-        {userInfo?.isAdminOfCompany && (
-          <div className="text-right mb-10">
-            <Link
-              to={`/employer/request-update-company`}
-              className="bg-gray-300 px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
+        <div className="grid grid-cols-3 gap-x-10">
+          <div className="text-right mb-10 col-span-1 flex items-center justify-center">
+            <a
+              href={`/companies/${_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gray-300 block px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
             >
-              <i className="fas fa-building mr-3 text-gray-600" />
-              <span className="text-gray-700">Danh sách yêu cầu cập nhật thông tin</span>
-            </Link>
+              <i className="fas fa-eye mr-3 text-gray-600" />
+              <span className="text-gray-700">Thông tin công ty ở chế độ công khai</span>
+            </a>
           </div>
-        )}
-        <div style={{ aspectRatio: '5/2' }} className="relative">
+          {userInfo?.isAdminOfCompany && (
+            <>
+              <div className="text-right mb-10 col-span-1 flex items-center justify-center">
+                <Link
+                  to={`/employer/request-update-company`}
+                  className="bg-gray-300 px-6 block py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
+                >
+                  <i className="fas fa-building mr-3 text-gray-600" />
+                  <span className="text-gray-700">Yêu cầu cập nhật thông tin</span>
+                </Link>
+              </div>
+              <div className="text-right mb-10 col-span-1 flex items-center justify-center">
+                <Link
+                  to={`/employer/staffs-of-company`}
+                  className="bg-gray-300 block px-6 py-2.5 rounded font-semibold hover:bg-gray-200 duration-300"
+                >
+                  <i className="fas fa-users mr-3 text-gray-600" />
+                  <span className="text-gray-700">Danh sách nhà tuyển dụng</span>
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+        <div style={{ aspectRatio: '5/2' }} className="relative mt-10">
           <img src={background || BackgroundDefault} alt="background" className="w-full h-full" />
           <img
             src={logo || LogoDefault}
