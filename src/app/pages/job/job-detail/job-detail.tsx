@@ -18,6 +18,7 @@ import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { getDefaultLabelDropdown, uploadServer } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
+import { useIntl } from 'react-intl'
 
 interface DataApply {
   applyType: 'CVFREE' | 'PDF' | 'OTHER'
@@ -37,6 +38,7 @@ export const JobDetail: React.FC = () => {
   const history = useHistory()
   const cvSelectedRef = useRef<DropdownAsyncRef>(null)
   const [errMessageApply, setErrMessageApply] = useState<string>('')
+  const intl = useIntl()
 
   const [disableWay1, setDisableWay1] = useState<boolean>(false)
   const [disableWay2, setDisableWay2] = useState<boolean>(false)
@@ -103,7 +105,7 @@ export const JobDetail: React.FC = () => {
         }
         callApiJobDetail(jobId)
         modalConfirmApplyRef.current?.hide()
-        showNotify.success(message)
+        showNotify.success(intl.formatMessage({ id: `API.${message}` }))
       })
       .catch((e) => {
         showNotify.error(e ? get(e, 'response.data.error.message') : 'Lỗi hệ thống!')

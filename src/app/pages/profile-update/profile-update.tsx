@@ -307,6 +307,7 @@ export const ProfileUpdate: React.FC = () => {
           title={'Chọn địa chỉ của bạn'}
           cancelTitle="Đóng"
           okTitle="Xác nhận"
+          position="fixed"
           onChange={onChangeAddress}
           onHide={onHideAddress}
         >

@@ -137,7 +137,7 @@ export const CompanyDetail: React.FC = () => {
                     </div>
                     <div className="flex items-center col-span-1">
                       <i className="fas fa-briefcase mr-2 text-gray-500" />
-                      <span className="font-medium">{formOfWork}</span>
+                      <span className="font-medium">{[...formOfWork].map((item) => item).join(', ')}</span>
                     </div>
                     <div className="flex items-center col-span-1">
                       <i className="fas fa-map-marker-alt mr-2 text-gray-500" />

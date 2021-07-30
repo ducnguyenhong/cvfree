@@ -18,7 +18,8 @@ export default {
     USER_NOT_EXISTS: 'User does not exist in the system',
     FORGOT_PASSWORD_SUCCESS: 'Forgot password success',
     CHANGED_PASSWORD_SUCCESS: 'Changed password successfully',
-    CREATED_COMPANY_SUCCESS: 'Successful company registration'
+    CREATED_COMPANY_SUCCESS: 'Successful company registration',
+    APPLY_JOB_SUCCESS: 'Applied job successfully'
   },
   HOME: {
     TEST_VERSION: 'Test version',

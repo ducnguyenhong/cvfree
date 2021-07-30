@@ -18,7 +18,8 @@ export default {
     USER_NOT_EXISTS: 'Tài khoản không tồn tại trong hệ thống',
     FORGOT_PASSWORD_SUCCESS: 'Quên mật khẩu thành công',
     CHANGED_PASSWORD_SUCCESS: 'Đổi mật khẩu thành công',
-    CREATED_COMPANY_SUCCESS: 'Đăng ký công ty thành công'
+    CREATED_COMPANY_SUCCESS: 'Đăng ký công ty thành công',
+    APPLY_JOB_SUCCESS: 'Ứng tuyển việc làm thành công'
   },
   HOME: {
     TEST_VERSION: 'Phiên bản thử nghiệm',
