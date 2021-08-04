@@ -90,6 +90,9 @@ export const EmployerSignUp: React.FC<SignUpProps> = () => {
     confPasswordRef.current?.reset()
     passwordRef.current?.reset()
     emailRef.current?.reset()
+    fullnameRef.current?.reset()
+    phonelRef.current?.reset()
+    genderRef.current?.reset()
   }
 
   const onShowModal = () => {

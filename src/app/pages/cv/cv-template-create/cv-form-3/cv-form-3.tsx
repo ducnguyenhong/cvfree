@@ -850,7 +850,7 @@ export const CvFormLayout3: React.FC<CvFormProps> = (props) => {
                 label="Trạng thái CV"
                 isClearable={false}
                 options={DataPublicCv}
-                defaultValue={DataPublicCv[0]}
+                value={DataPublicCv[0]}
                 required
                 ref={isPublicRef}
               />

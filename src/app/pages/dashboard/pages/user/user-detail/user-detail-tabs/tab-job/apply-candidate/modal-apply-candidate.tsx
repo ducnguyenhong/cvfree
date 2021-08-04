@@ -125,7 +125,14 @@ export const ModalApplyCandidate: React.FC = () => {
   }
 
   return (
-    <PrModal title="Danh sách ứng viên ứng tuyển" size="lg" disableFooter onHide={onHideModal} ref={modalRef}>
+    <PrModal
+      title="Danh sách ứng viên ứng tuyển"
+      size="lg"
+      position="fixed"
+      disableFooter
+      onHide={onHideModal}
+      ref={modalRef}
+    >
       <div>
         <div className="flex items-center justify-center my-10 font-semibold text-lg">
           <span className="text-red-500">* Chú ý: </span>

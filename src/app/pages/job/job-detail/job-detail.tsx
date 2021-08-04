@@ -369,7 +369,9 @@ export const JobDetail: React.FC = () => {
           <div className="px-4 font-medium">
             <span className="block mb-1">- Ngành nghề: {getDefaultLabelDropdown(DataCareer, career)}</span>
             <span className="block mb-1">- Thời hạn nộp hồ sơ: {moment(timeToApply).format('DD/MM/YYYY')}</span>
-            <span className="block mb-1">- Mức lương: {renderSalary()}</span>
+            <span className="block mb-1">
+              - Mức lương: <span className="text-red-500">{renderSalary()}</span>
+            </span>
             <span className="block mb-1">
               - Hình thức làm việc: {getDefaultLabelDropdown(DataFormOfWork, formOfWork)}
             </span>
@@ -605,6 +607,7 @@ export const JobDetail: React.FC = () => {
         disableFooter
         onHide={() => modalNotifyReportRef.current?.hide()}
         ref={modalNotifyReportRef}
+        position="fixed"
       >
         <div className="py-10 px-10">
           <span className="block text-center font-semibold text-xl text-green-600">

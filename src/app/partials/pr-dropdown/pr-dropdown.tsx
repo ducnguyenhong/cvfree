@@ -19,9 +19,10 @@ const PrDropdown = forwardRef((props: PrDropdownProps, ref: Ref<PrDropdownRefPro
     required,
     isLanguage,
     requiredMesseage,
-    labelClassName
+    labelClassName,
+    value
   } = props
-  const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(defaultValue || null)
+  const [dataDropdown, setDataDropdown] = useState<OptionProps | OptionProps[] | null>(value || defaultValue || null)
   const [validateRequired, setValidateRequired] = useState<boolean>(false)
   const [focus, setFocus] = useState<boolean>(false)
 

@@ -843,7 +843,7 @@ export const CvFormLayout1: React.FC<CvFormProps> = (props) => {
               <PrDropdown
                 label="Trạng thái CV"
                 options={DataPublicCv}
-                defaultValue={DataPublicCv[0]}
+                value={DataPublicCv[0]}
                 required
                 isClearable={false}
                 ref={isPublicRef}

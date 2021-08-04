@@ -16,7 +16,7 @@ export const MainRouteWrapper: React.FC = (props) => {
   }, [])
 
   useEffect(() => {
-    if (location.pathname.includes('/dashboard')) {
+    if (location.pathname.includes('/dashboard') || location.pathname.includes('/cv-public/')) {
       setNeedFooter(false)
     } else {
       setNeedFooter(true)

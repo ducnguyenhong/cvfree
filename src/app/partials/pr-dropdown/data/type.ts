@@ -2,6 +2,7 @@ export interface PrDropdownProps {
   options: OptionProps[]
   onChange?: any
   defaultValue?: OptionProps[] | OptionProps
+  value?: OptionProps[] | OptionProps
   isMulti?: boolean
   isClearable?: boolean
   isDisabled?: boolean

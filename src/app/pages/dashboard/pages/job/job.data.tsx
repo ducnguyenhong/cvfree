@@ -129,7 +129,7 @@ export const TableLoader: Loader<TableColumn, TableFilter> = {
         return <span>{renderSalary()}</span>
 
       case 'recruitmentPosition':
-        return <span>{recruitmentPosition}</span>
+        return <span>{recruitmentPosition.map((item) => item).join(', ')}</span>
 
       case 'career':
         return <span>{career}</span>
