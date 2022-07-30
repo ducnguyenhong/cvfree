@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil'
 import { languageState } from 'app/states/language-state'
 import { showNotify } from 'app/partials/pr-notify'
+import Cookies from 'js-cookie'
 
 interface DialogListType {
   route: string
@@ -79,6 +80,7 @@ const NavbarHome: React.FC = () => {
     setShowUserDialog(false)
     setUserInfoRecoil(undefined)
     setUserTokenRecoil(undefined)
+    Cookies.remove('gtm-uid')
   }, [])
 
   const onChangeLanguage = useCallback((lang: string) => {

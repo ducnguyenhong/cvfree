@@ -31,7 +31,7 @@ export const PublicUserInfo: React.FC<UserInfoProps> = (props) => {
         <span>
           {name ? (
             <span className={`display-name flex-nowrap block ${avatar ? 'font-bold' : 'font-extrabold'}`}>
-              {name}
+              {name.toUpperCase()}
               {renderGender(gender)}
             </span>
           ) : (

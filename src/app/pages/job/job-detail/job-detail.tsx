@@ -313,6 +313,16 @@ export const JobDetail: React.FC = () => {
       }
       return isFilePDF
     }
+    if (!disableWay3) {
+      const regexUrl = /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/
+      const url = urlCvOtherRef.current?.getValue() || ''
+      const check = regexUrl.test(url)
+      if (!check) {
+        setErrMessageApply('Hãy nhập URL hợp lệ')
+      }
+      return check
+    }
+
     return true
   }
 

@@ -14,6 +14,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { checkUsername } from 'utils/helper'
 import { v4 as uuid } from 'uuid'
+import Cookies from 'js-cookie'
 
 interface SignInProps {}
 
@@ -122,6 +123,7 @@ const SignIn: React.FC<SignInProps> = () => {
         showNotify.success(intl.formatMessage({ id: `API.${message}` }))
         setUserInfoRecoil(userInfo)
         setUserTokenRecoil({ token: auth.token, expiredAt: auth.expiredAt })
+        Cookies.set('gtm-uid', `${userInfo.id}`)
 
         const redirectTo = localStorage.getItem('redirect-to')
         if (redirectTo) {
