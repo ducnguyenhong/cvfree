@@ -5,4 +5,4 @@ export const API_VERSION = 'v1'
 // export const CLIENT_URL = 'http://localhost:1112' // https://cvfree.top
 
 export const SERVER_URL = `https://guarded-retreat-57965.herokuapp.com/${API_VERSION}`
-export const CLIENT_URL = 'https://cvfree-vn.herokuapp.com'
+export const CLIENT_URL = 'http://cvfree.epizy.com'
